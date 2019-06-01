@@ -9,8 +9,8 @@
         android:roundIcon="@drawable/agora"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Signup"></activity>
-        <activity android:name=".Login" />
+        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".LogInActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
