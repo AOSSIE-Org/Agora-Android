@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LogInActivity"
-    android:background="@drawable/whitebackgroung">
+    android:background="@drawable/white_background">
 
     <androidx.cardview.widget.CardView
         android:layout_width="350dp"
@@ -40,7 +40,7 @@
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:hint="User Name"
+                android:hint="@string/user_name"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -61,7 +61,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:hint="Password"
+                android:hint="@string/password"
                 app:boxStrokeColor="@color/colorPrimary"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Login"
+                android:text="@string/login"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:backgroundTint="#FCD116"
@@ -104,7 +104,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Forgot Password ?"
+                android:text="@string/forgot_password"
                 android:textColor="#2196F3"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +124,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/agora" />
+                app:srcCompat="@mipmap/agora"
+                android:contentDescription="@string/agora_vote"/>
 
             <TextView
                 android:id="@+id/textView3"
@@ -135,7 +136,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="User Login"
+                android:text="@string/user_login"
                 android:textSize="36sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"

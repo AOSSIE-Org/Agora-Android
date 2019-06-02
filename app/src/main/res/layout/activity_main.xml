@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/whitebackgroung"
+    android:background="@drawable/white_background"
     tools:context=".MainActivity">
     <ImageView
         android:id="@+id/imageView2"
@@ -15,11 +15,11 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/agora_vote"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/agora" />
+        app:srcCompat="@mipmap/agora" />
 
     <TextView
         android:id="@+id/agoratext"
@@ -48,13 +48,13 @@
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/faceboook"
+        app:layout_constraintBottom_toTopOf="@+id/facebook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/faceboook"
+        android:id="@+id/facebook"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
