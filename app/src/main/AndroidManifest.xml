@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/agora"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".LogInActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.signup.SignUpActivity"/>
+        <activity android:name=".ui.login.LogInActivity" />
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

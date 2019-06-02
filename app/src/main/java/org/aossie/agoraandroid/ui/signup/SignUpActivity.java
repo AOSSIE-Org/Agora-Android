@@ -1,14 +1,16 @@
-package org.aossie.agoraandroid;
+package org.aossie.agoraandroid.ui.signup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class LogInActivity extends AppCompatActivity {
+import org.aossie.agoraandroid.R;
+
+public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_sign_up);
     }
 }
