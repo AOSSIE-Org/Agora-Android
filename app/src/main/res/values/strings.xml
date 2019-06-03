@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Agora Vote</string>
+    <string name="agora_vote">Agora Vote</string>
+    <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
+    <string name="log_in">LOG IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="content_description_for_agora_logo">Agora Logo</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="user_login">User Login</string>
+    <string name="user_sign_up">User Sign Up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="already_have_an_account">Already Have An Account ?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Forgot Password ?</string>
+
+</resources>
