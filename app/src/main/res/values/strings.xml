@@ -4,7 +4,7 @@
     <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
     <string name="log_in">LOG IN</string>
     <string name="sign_up">SIGN UP</string>
-    <string name="ContentDescription">Agora Logo</string>
+    <string name="content_description_for_agora_logo">Agora Logo</string>
     <string name="user_name">User Name</string>
     <string name="password">Password</string>
     <string name="login">Login</string>

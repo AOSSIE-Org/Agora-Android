@@ -37,11 +37,11 @@
            android:layout_marginTop="24dp"
            android:layout_marginEnd="8dp"
            android:layout_marginRight="8dp"
-           android:contentDescription="@string/ContentDescription"
+           android:contentDescription="@string/content_description_for_agora_logo"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent"
-           android:src="@mipmap/agora" />
+           android:src="@drawable/agora" />
 
        <com.google.android.material.textfield.TextInputLayout
            android:id="@+id/textInputLayout3"

@@ -124,7 +124,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/agora"
+                app:srcCompat="@drawable/agora"
                 android:contentDescription="@string/agora_vote"/>
 
             <TextView
