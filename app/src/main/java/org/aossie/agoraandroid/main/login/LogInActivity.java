@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.login;
+package org.aossie.agoraandroid.main.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 

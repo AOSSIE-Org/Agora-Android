@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.signup;
+package org.aossie.agoraandroid.main.signup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,23 +7,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import net.steamcrafted.loadtoast.LoadToast;
 
 import org.aossie.agoraandroid.R;
 
 public class SignUpActivity extends AppCompatActivity {
     private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText, mPasswordEditText;
-    private LoadToast loadToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        loadToast = new LoadToast(this);
-        loadToast.setText("Creating Account");
+
 
         mUserNameEditText = findViewById(R.id.signUpUserName);
         mFirstNameEditText = findViewById(R.id.signUpFirstName);
