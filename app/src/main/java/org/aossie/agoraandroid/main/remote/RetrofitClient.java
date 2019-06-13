@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.main.Remote;
+package org.aossie.agoraandroid.main.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,9 +14,12 @@ public class RetrofitClient {
 
         Gson gson = new GsonBuilder().setLenient().create();
 
-        return new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
+        return new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory
+                .create(gson))
+                .build();
     }
-
 
 
     public static APIService getAPIService() {

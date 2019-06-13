@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.main.signup.SignUpActivity;
-import org.aossie.agoraandroid.main.login.LogInActivity;
+import org.aossie.agoraandroid.main.signUp.SignUpActivity;
+import org.aossie.agoraandroid.main.logIn.LogInActivity;
 
 public class MainActivity extends AppCompatActivity {
 

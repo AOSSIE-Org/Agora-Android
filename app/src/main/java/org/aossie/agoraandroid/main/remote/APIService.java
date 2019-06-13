@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.main.Remote;
+package org.aossie.agoraandroid.main.remote;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -14,6 +14,6 @@ public interface APIService {
     Call<ResponseBody> createUser(@Field("identifier") String username,
              @Field("password") String password,
              @Field("email") String email,
-             @Field("firstname") String firstname,
-             @Field("lastname") String lastname);
+             @Field("firstName") String firstName,
+             @Field("lastName") String lastName);
 }
