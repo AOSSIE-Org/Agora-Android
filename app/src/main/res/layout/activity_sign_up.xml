@@ -7,18 +7,18 @@
 
         <variable
             name="signupview"
-            type="org.aossie.agoraandroid.main.signUp.SignUpViewModel" />
+            type="org.aossie.agoraandroid.signUp.SignUpViewModel" />
 
         <variable
             name="presenter"
-            type="org.aossie.agoraandroid.main.presenter.Presenter" />
+            type="org.aossie.agoraandroid.presenter.Presenter" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/white_background"
-        tools:context=".main.signUp.SignUpActivity">
+        tools:context=".signUp.SignUpActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

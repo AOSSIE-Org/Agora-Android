@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.main.presenter;
+package org.aossie.agoraandroid.presenter;
 
 public interface Presenter {
     void signUpData();

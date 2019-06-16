@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.main.signUp;
+package org.aossie.agoraandroid.signUp;
 
 
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import androidx.databinding.ObservableField;
 
-import org.aossie.agoraandroid.main.remote.APIService;
-import org.aossie.agoraandroid.main.remote.RetrofitClient;
+import org.aossie.agoraandroid.remote.APIService;
+import org.aossie.agoraandroid.remote.RetrofitClient;
 
 import java.util.Observable;
 

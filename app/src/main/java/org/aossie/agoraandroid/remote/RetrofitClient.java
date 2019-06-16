@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.main.remote;
+package org.aossie.agoraandroid.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

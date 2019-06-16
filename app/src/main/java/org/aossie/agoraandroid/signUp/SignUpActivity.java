@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.main.signUp;
+package org.aossie.agoraandroid.signUp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.databinding.ActivitySignUpBinding;
-import org.aossie.agoraandroid.main.presenter.Presenter;
+import org.aossie.agoraandroid.presenter.Presenter;
 
 public class SignUpActivity extends AppCompatActivity {
 

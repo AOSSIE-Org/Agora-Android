@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.main.remote;
+package org.aossie.agoraandroid.remote;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
