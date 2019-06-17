@@ -1,56 +1,67 @@
 package org.aossie.agoraandroid.signUp;
 
 
-import android.content.Context;
+import android.app.Application;
 import android.widget.Toast;
 
 
-import androidx.databinding.ObservableField;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.Observable;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpViewModel extends Observable {
+public class SignUpViewModel extends AndroidViewModel {
 
-    private final Context context;
-    public final ObservableField<String> userName = new ObservableField<>("");
-    public final ObservableField<String> userEmail = new ObservableField<>("");
-    public final ObservableField<String> userPass = new ObservableField<>("");
-    public final ObservableField<String> firstName = new ObservableField<>("");
-    public final ObservableField<String> lastName = new ObservableField<>("");
-
-
-    public SignUpViewModel(Context context) {
-
-        this.context = context;
+    public SignUpViewModel(@NonNull Application application) {
+        super(application);
     }
 
 
-    public void signUpRequest(String userName, String userPassword, String userEmail, String firstName, String lastName) {
+    public void signUpRequest(final String userName, String userPassword, String userEmail, String firstName, String lastName) {
+        JSONObject jsonObject = new JSONObject();
+//        JsonObject jsonObject=new JsonObject();
+       try {
+//            jsonObject.addProperty("identifier", userName);
+//            jsonObject.addProperty("password", userPassword);
+//            jsonObject.addProperty("email", userEmail);
+//            jsonObject.addProperty("firstName",firstName);
+//            jsonObject.addProperty("lastName", lastName);
+
+            jsonObject.put("identifier", userName);
+            jsonObject.put("password", userPassword);
+            jsonObject.put("email", userEmail);
+            jsonObject.put("firstName",firstName);
+            jsonObject.put("lastName", lastName);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         APIService apiService = RetrofitClient.getAPIService();
-        Call<ResponseBody> signUpResponse = apiService.createUser(userName, userPassword, userEmail, firstName, lastName);
-        signUpResponse.enqueue(new Callback<ResponseBody>() {
+        Call<JSONObject> signUpResponse = apiService.createUser(jsonObject);
+        signUpResponse.enqueue(new Callback<JSONObject>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(context, "" + response.body(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                Toast.makeText(getApplication(), "" + response.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(context, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Toast.makeText(getApplication(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
     }
+
+
 
 
 }

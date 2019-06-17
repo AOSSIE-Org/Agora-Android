@@ -1,62 +1,74 @@
 package org.aossie.agoraandroid.signUp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
-
+import android.view.View;
+import android.widget.Button;
+import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.databinding.ActivitySignUpBinding;
-import org.aossie.agoraandroid.presenter.Presenter;
+import org.aossie.agoraandroid.remote.RetrofitClient;
 
 public class SignUpActivity extends AppCompatActivity {
+    private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText, mPasswordEditText;
 
-    private ActivitySignUpBinding activitySignUpBinding;
     private SignUpViewModel signUpViewModel;
-
+    private RetrofitClient retro;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up);
 
-        activitySignUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
-        signUpViewModel = new SignUpViewModel(this);
-        activitySignUpBinding.setSignupview(signUpViewModel);
+        signUpViewModel = new SignUpViewModel(getApplication());
+        retro=new RetrofitClient();
 
-        activitySignUpBinding.setPresenter(new Presenter() {
+        mUserNameEditText = findViewById(R.id.signUpUserName);
+        mFirstNameEditText = findViewById(R.id.signUpFirstName);
+        mLastNameEditText = findViewById(R.id.signUpLastName);
+        mEmailEditText = findViewById(R.id.signUpEmail);
+        mPasswordEditText = findViewById(R.id.signUpPassword);
+        Button mSignUpButton = findViewById(R.id.signUpButton);
+
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void signUpData() {
-                final String userName = activitySignUpBinding.signUpUserName.getEditText().getText().toString();
-                final String firstName = activitySignUpBinding.signUpFirstName.getEditText().getText().toString();
-                final String lastName = activitySignUpBinding.signUpLastName.getEditText().getText().toString();
-                final String userEmail = activitySignUpBinding.signUpEmail.getEditText().getText().toString();
-                final String userPass = activitySignUpBinding.signUpPassword.getEditText().getText().toString();
+            public void onClick(View v) {
+                final String userName = mUserNameEditText.getEditText().getText().toString();
+                final String firstName = mFirstNameEditText.getEditText().getText().toString();
+                final String lastName = mLastNameEditText.getEditText().getText().toString();
+                final String userEmail = mEmailEditText.getEditText().getText().toString();
+                final String userPass = mPasswordEditText.getEditText().getText().toString();
 
                 if (userName.isEmpty())
-                    activitySignUpBinding.signUpUserName.setError("Please enter User Name");
-                else activitySignUpBinding.signUpUserName.setError(null);
+                    mUserNameEditText.setError("Please enter User Name");
+                else mUserNameEditText.setError(null);
 
                 if (firstName.isEmpty()) {
-                    activitySignUpBinding.signUpFirstName.setError("Please enter First Name");
-                } else activitySignUpBinding.signUpFirstName.setError(null);
+                    mFirstNameEditText.setError("Please enter First Name");
+                } else mFirstNameEditText.setError(null);
 
                 if (lastName.isEmpty()) {
-                    activitySignUpBinding.signUpLastName.setError("Please enter Last Name");
-                } else activitySignUpBinding.signUpLastName.setError(null);
+                    mLastNameEditText.setError("Please enter Last Name");
+                } else mLastNameEditText.setError(null);
 
                 if (userEmail.isEmpty()) {
-                    activitySignUpBinding.signUpEmail.setError("PLease enter Email Address");
-                } else activitySignUpBinding.signUpEmail.setError(null);
+                    mEmailEditText.setError("PLease enter Email Address");
+                } else mEmailEditText.setError(null);
 
                 if (userPass.isEmpty()) {
-                    activitySignUpBinding.signUpPassword.setError("Please enter password");
+                    mPasswordEditText.setError("Please enter password");
                 } else {
-                    activitySignUpBinding.signUpPassword.setError(null);
+                    mPasswordEditText.setError(null);
                     signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName);
                 }
+
             }
         });
 
+
     }
 
-}
+
+
+    }
+
+
 
