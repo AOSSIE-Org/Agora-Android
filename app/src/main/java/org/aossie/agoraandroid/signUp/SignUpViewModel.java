@@ -26,18 +26,12 @@ public class SignUpViewModel extends AndroidViewModel {
 
     public void signUpRequest(final String userName, String userPassword, String userEmail, String firstName, String lastName) {
         JSONObject jsonObject = new JSONObject();
-//        JsonObject jsonObject=new JsonObject();
-       try {
-//            jsonObject.addProperty("identifier", userName);
-//            jsonObject.addProperty("password", userPassword);
-//            jsonObject.addProperty("email", userEmail);
-//            jsonObject.addProperty("firstName",firstName);
-//            jsonObject.addProperty("lastName", lastName);
+        try {
 
             jsonObject.put("identifier", userName);
             jsonObject.put("password", userPassword);
             jsonObject.put("email", userEmail);
-            jsonObject.put("firstName",firstName);
+            jsonObject.put("firstName", firstName);
             jsonObject.put("lastName", lastName);
 
         } catch (JSONException e) {
@@ -45,23 +39,29 @@ public class SignUpViewModel extends AndroidViewModel {
         }
 
         APIService apiService = RetrofitClient.getAPIService();
-        Call<JSONObject> signUpResponse = apiService.createUser(jsonObject);
-        signUpResponse.enqueue(new Callback<JSONObject>() {
+        Call<String> signUpResponse = apiService.createUser(jsonObject.toString());
+        signUpResponse.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                Toast.makeText(getApplication(), "" + response.toString(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.message().equals("timeout")){
+                    Toast.makeText(getApplication(), "Network Connection issues please try again", Toast.LENGTH_LONG).show();
+                }
+                if (response.code()== 200) {
+                    Toast.makeText(getApplication(), "An activation link has been sent to your email. Follow it to activate your account.", Toast.LENGTH_LONG).show();
+                } else if (response.code() == 409) {
+                    Toast.makeText(getApplication(), "User With Same UserName already Exists", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_LONG).show();
+                }
 
-            }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getApplication(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
     }
-
-
 
 
 }
