@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.main;
+package org.aossie.agoraandroid.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.ui.signup.SignUpActivity;
-import org.aossie.agoraandroid.ui.login.LogInActivity;
+import org.aossie.agoraandroid.signUp.SignUpActivity;
+import org.aossie.agoraandroid.logIn.LogInActivity;
 
 public class MainActivity extends AppCompatActivity {
 
