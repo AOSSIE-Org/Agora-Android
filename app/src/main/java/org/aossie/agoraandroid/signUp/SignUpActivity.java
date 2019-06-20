@@ -19,7 +19,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        signUpViewModel = new SignUpViewModel(getApplication());
+        signUpViewModel = new SignUpViewModel(getApplication(),this);
 
 
         mUserNameEditText = findViewById(R.id.signUpUserName);
@@ -72,7 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
-
 
 
     }

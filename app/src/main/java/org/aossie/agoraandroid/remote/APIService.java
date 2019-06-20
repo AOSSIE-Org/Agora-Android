@@ -16,4 +16,16 @@ public interface APIService {
     })
     @POST("auth/signup")
     Call<String> createUser(@Body String body);
+
+    //POST request for LogIn
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+
+    @POST("auth/login")
+    Call<String> logIn(@Body String body);
+
+
+
 }
