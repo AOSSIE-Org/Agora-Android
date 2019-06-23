@@ -2,12 +2,15 @@ package org.aossie.agoraandroid.signUp;
 
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
+import org.aossie.agoraandroid.logIn.LogInActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.json.JSONException;
@@ -18,9 +21,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpViewModel extends AndroidViewModel {
-
-    public SignUpViewModel(@NonNull Application application) {
+private final Context context;
+    public SignUpViewModel(@NonNull Application application, Context context) {
         super(application);
+        this.context=context;
     }
 
 
@@ -48,6 +52,7 @@ public class SignUpViewModel extends AndroidViewModel {
                 }
                 if (response.code()== 200) {
                     Toast.makeText(getApplication(), "An activation link has been sent to your email. Follow it to activate your account.", Toast.LENGTH_LONG).show();
+                    context.startActivity(new Intent(context, LogInActivity.class));
                 } else if (response.code() == 409) {
                     Toast.makeText(getApplication(), "User With Same UserName already Exists", Toast.LENGTH_LONG).show();
                 } else
