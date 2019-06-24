@@ -17,4 +17,23 @@
     <string name="sign_in">Sign In</string>
     <string name="forgot_password">Forgot Password ?</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="profile">Profile</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="communicate">Communicate</string>
+    <string name="report_a_bug">Report a bug</string>
+    <string name="share_with_others">Share with others</string>
+    <string name="about_agora">About Agora</string>
+    <string name="my_invitations">My Invitations</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="about_info">Agora vote is a voting platform where users can create elections and invite friends to cast their votes.</string>
+    <string name="about_info2">It supports a wide range of voting algorithms some of which are Majority, Egalitarian, Australian STV just to name a few</string>
+    <string name="contact_us_desc">Feel free to contact us on our Gitter channels and work with us on Gitlab</string>
+    <string name="gitter_aossie">AOSSIE\'s GITTER</string>
+    <string name="gitlab_aossie">AOSSIE\'s GITLAB</string>
+
+
 </resources>

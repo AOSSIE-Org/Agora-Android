@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="org.aossie.agoraandroid.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="org.aossie.agoraandroid.home.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="org.aossie.agoraandroid.home.AboutFragment"
+        android:label="About Agora"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/contactUsFragment"
+        android:name="org.aossie.agoraandroid.home.ContactUsFragment"
+        android:label="Contact Us"
+        tools:layout="@layout/fragment_contact_us" />
+    <fragment
+        android:id="@+id/myInvitationFragment"
+        android:name="org.aossie.agoraandroid.home.MyInvitationFragment"
+        android:label="My Invitations"
+        tools:layout="@layout/fragment_my_invitation" />
+</navigation>

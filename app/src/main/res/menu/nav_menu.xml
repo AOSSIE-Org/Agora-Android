@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeFragment"
+            android:icon="@drawable/ic_view_carousel_black_24dp"
+            android:title="@string/dashboard" />
+
+        <item
+            android:id="@+id/profileFragment"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/profile" />
+
+
+        <item
+            android:id="@+id/aboutFragment"
+            android:icon="@drawable/ic_code_black_24dp"
+            android:title="@string/about_agora" />
+
+        <item
+            android:id="@+id/myInvitationFragment"
+            android:icon="@drawable/ic_call_received_black_24dp"
+            android:title="@string/my_invitations" />
+
+    </group>
+
+    <item android:title="@string/communicate">
+        <menu>
+            <item
+                android:id="@+id/bugFragment"
+                android:icon="@drawable/ic_bug_report_black_24dp"
+                android:title="@string/report_a_bug" />
+            <item
+                android:id="@+id/shareFragment"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="@string/share_with_others" />
+            <item
+                android:id="@+id/contactUsFragment"
+                android:icon="@drawable/ic_local_post_office_black_24dp"
+                android:title="@string/contact_us" />
+
+        </menu>
+    </item>
+</menu>
