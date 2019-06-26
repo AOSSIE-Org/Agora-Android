@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class LoginViewModel extends AndroidViewModel {
     private final Context context;
-    private SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
+    private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
 
 
     public LoginViewModel(@NonNull Application application, Context context) {

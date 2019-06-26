@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -18,18 +17,15 @@ import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.SharedPrefs;
 
 public class HomeActivity extends AppCompatActivity {
-    SharedPrefs sharedPrefs;
-    androidx.appcompat.widget.Toolbar toolbar;
-    NavigationView navView;
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        sharedPrefs = new SharedPrefs(getApplicationContext());
-        toolbar = findViewById(R.id.toolbar);
-        navView = findViewById(R.id.nav_view);
+        SharedPrefs sharedPrefs = new SharedPrefs(getApplicationContext());
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        NavigationView navView = findViewById(R.id.nav_view);
 
         View hView = navView.getHeaderView(0);
         TextView nav_user_name = hView.findViewById(R.id.header_user_name);

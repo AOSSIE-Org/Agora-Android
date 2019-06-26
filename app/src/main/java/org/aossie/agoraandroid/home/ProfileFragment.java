@@ -18,12 +18,11 @@ import org.aossie.agoraandroid.SharedPrefs;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
-    private SharedPrefs sharedPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        sharedPrefs = new SharedPrefs(getActivity());
+        SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, null);
         TextView userName = view.findViewById(R.id.userName);
         TextView emailId = view.findViewById(R.id.user_email_id);

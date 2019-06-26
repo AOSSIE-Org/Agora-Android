@@ -8,6 +8,7 @@ import android.widget.Button;
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
 
+@SuppressWarnings("ConstantConditions")
 public class LogInActivity extends AppCompatActivity {
     private TextInputLayout mLoginUserName, mLoginPassword;
     private LoginViewModel loginViewModel;

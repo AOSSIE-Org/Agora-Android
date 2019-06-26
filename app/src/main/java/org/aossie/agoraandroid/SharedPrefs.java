@@ -3,19 +3,18 @@ package org.aossie.agoraandroid;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefs {
 
-    private static final String myPrefs = "myprefs";
+    private static final String myPrefs = "myPrefs";
     private static final String UserNameKey = "userName";
-    private static final String EmailKey = "emaiId";
+    private static final String EmailKey = "emailId";
     private static final String FullNameKey = "fullName";
-    private final Context context;
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
 
 
     public SharedPrefs(Context context) {
-        this.context = context;
         sharedPreferences = context.getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }

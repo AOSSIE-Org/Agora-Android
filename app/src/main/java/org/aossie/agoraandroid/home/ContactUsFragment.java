@@ -19,6 +19,7 @@ import org.aossie.agoraandroid.R;
 /**
  * A simple {@link Fragment} subclass.
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class ContactUsFragment extends Fragment {
 
 
