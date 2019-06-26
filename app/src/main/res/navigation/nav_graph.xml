@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="org.aossie.agoraandroid.home.HomeFragment"
-        android:label="Home"
+        android:label="Dashboard"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/profileFragment"
@@ -30,4 +30,9 @@
         android:name="org.aossie.agoraandroid.home.MyInvitationFragment"
         android:label="My Invitations"
         tools:layout="@layout/fragment_my_invitation" />
+    <fragment
+        android:id="@+id/bugFragment"
+        android:name="org.aossie.agoraandroid.home.ReportBugFragment"
+        android:label="Report A Bug"
+        tools:layout="@layout/fragment_report_bug" />
 </navigation>

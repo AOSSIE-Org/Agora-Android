@@ -8,22 +8,36 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.SharedPrefs;
 
 public class HomeActivity extends AppCompatActivity {
+    SharedPrefs sharedPrefs;
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navView;
     DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        sharedPrefs = new SharedPrefs(getApplicationContext());
         toolbar = findViewById(R.id.toolbar);
         navView = findViewById(R.id.nav_view);
+
+        View hView = navView.getHeaderView(0);
+        TextView nav_user_name = hView.findViewById(R.id.header_user_name);
+        TextView nav_user_email = hView.findViewById(R.id.header_email);
+        nav_user_name.setText(sharedPrefs.getUserName());
+        nav_user_email.setText(sharedPrefs.getEmail());
+
+
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
@@ -34,6 +48,8 @@ public class HomeActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, Navigation.findNavController(this, R.id.fragment),
                 drawerLayout);
+
+
     }
 
     @Override
@@ -45,10 +61,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu,menu);
+        inflater.inflate(R.menu.option_menu, menu);
         return true;
     }
-
 
 
 }

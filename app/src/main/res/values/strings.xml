@@ -34,6 +34,15 @@
     <string name="contact_us_desc">Feel free to contact us on our Gitter channels and work with us on Gitlab</string>
     <string name="gitter_aossie">AOSSIE\'s GITTER</string>
     <string name="gitlab_aossie">AOSSIE\'s GITLAB</string>
+    <string name="raise_issue">Feel free to raise an issue so that our team can improve that as fast as possible</string>
+    <string name="change_password">Change Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="Create_Election">Create Election</string>
+    <string name="active_nelections">Active  \n Elections</string>
+    <string name="pending_nelections">Pending  \nElections</string>
+    <string name="total_nelections">Total \n Elections</string>
+    <string name="finished_nelections">Finished \n Elections</string>
 
 
 </resources>
