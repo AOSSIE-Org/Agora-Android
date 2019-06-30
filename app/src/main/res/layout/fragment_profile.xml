@@ -51,7 +51,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/userName"
+                    android:id="@+id/text_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:gravity="center"
-                    android:text="NAME"
+                    android:text="User Name"
                     android:textColor="#FCD116"
                     android:textSize="25sp"
                     android:textStyle="bold"
@@ -69,7 +69,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/fullName"
+                    android:id="@+id/text_full_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -77,16 +77,16 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="User Name"
+                    android:text="Full Name"
                     android:textColor="#FCD116"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/userName" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_user_name" />
 
                 <TextView
-                    android:id="@+id/user_email_id"
+                    android:id="@+id/text_email_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -96,14 +96,14 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:gravity="center"
-                    android:text="sometimes@gmail.com"
+                    android:text="user email id"
                     android:textColor="#FCD116"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fullName" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_full_name" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -111,7 +111,7 @@
 
 
         <ImageView
-            android:id="@+id/userImageProfile"
+            android:id="@+id/image_agora"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerHorizontal="true"
@@ -150,7 +150,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/text_change_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -167,7 +167,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout"
+                    android:id="@+id/textInputLayout_new_password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                     app:boxStrokeColor="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11"
+                    app:layout_constraintTop_toBottomOf="@+id/text_change_password"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -192,6 +192,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout_confirm_password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
@@ -204,7 +205,7 @@
                     app:boxStrokeColor="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout_new_password"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -218,7 +219,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/change_password"
+            android:id="@+id/button_change_password"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="24dp"

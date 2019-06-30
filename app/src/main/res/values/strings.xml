@@ -16,11 +16,6 @@
     <string name="already_have_an_account">Already Have An Account ?</string>
     <string name="sign_in">Sign In</string>
     <string name="forgot_password">Forgot Password ?</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
     <string name="profile">Profile</string>
     <string name="dashboard">Dashboard</string>
     <string name="communicate">Communicate</string>

@@ -24,9 +24,9 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, null);
-        TextView userName = view.findViewById(R.id.userName);
-        TextView emailId = view.findViewById(R.id.user_email_id);
-        TextView fullName = view.findViewById(R.id.fullName);
+        TextView userName = view.findViewById(R.id.text_user_name);
+        TextView emailId = view.findViewById(R.id.text_email_id);
+        TextView fullName = view.findViewById(R.id.text_full_name);
 
         String username = sharedPrefs.getUserName();
         String email = sharedPrefs.getEmail();

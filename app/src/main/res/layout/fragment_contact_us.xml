@@ -43,7 +43,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
         <Button
-            android:id="@+id/gitlab_btn"
+            android:id="@+id/button_gitlab"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
@@ -62,7 +62,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <Button
-            android:id="@+id/gitter_btn"
+            android:id="@+id/button_gitter"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gitlab_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/button_gitlab" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

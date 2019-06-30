@@ -31,8 +31,8 @@ public class ContactUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact_us, null);
-        Button gitlabBtn = view.findViewById(R.id.gitlab_btn);
-        Button gitterBtn = view.findViewById(R.id.gitter_btn);
+        Button gitlabBtn = view.findViewById(R.id.button_gitlab);
+        Button gitterBtn = view.findViewById(R.id.button_gitter);
         gitterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
