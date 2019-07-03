@@ -11,6 +11,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.logIn.LogInActivity;
 
+@SuppressWarnings("ConstantConditions")
 public class SignUpActivity extends AppCompatActivity {
     private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText, mPasswordEditText;
     private SignUpViewModel signUpViewModel;

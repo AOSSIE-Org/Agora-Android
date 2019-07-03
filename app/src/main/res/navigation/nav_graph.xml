@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_home">
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="org.aossie.agoraandroid.home.HomeFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="org.aossie.agoraandroid.home.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/fragment_about"
+        android:name="org.aossie.agoraandroid.home.AboutFragment"
+        android:label="About Agora"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/fragment_contact_us"
+        android:name="org.aossie.agoraandroid.home.ContactUsFragment"
+        android:label="Contact Us"
+        tools:layout="@layout/fragment_contact_us" />
+    <fragment
+        android:id="@+id/fragment_my_invitations"
+        android:name="org.aossie.agoraandroid.home.MyInvitationFragment"
+        android:label="My Invitations"
+        tools:layout="@layout/fragment_my_invitation" />
+    <fragment
+        android:id="@+id/fragment_report_bug"
+        android:name="org.aossie.agoraandroid.home.ReportBugFragment"
+        android:label="Report A Bug"
+        tools:layout="@layout/fragment_report_bug" />
+</navigation>
