@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".createElection.CreateElectionTwo"></activity>
+        <activity android:name=".createElection.CreateElectionTwo" />
         <activity android:name=".createElection.CreateElectionFour" />
         <activity android:name=".createElection.CreateElectionThree" />
         <activity android:name=".createElection.CreateElectionOne" />

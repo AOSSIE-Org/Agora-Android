@@ -48,12 +48,12 @@ public class LoginViewModel extends AndroidViewModel {
                         JSONObject token = jsonObjects.getJSONObject("token");
 
                         String key = token.getString("token");
-                        String username = jsonObjects.getString("username");
+                        String sUserName = jsonObjects.getString("username");
                         String email = jsonObjects.getString("email");
                         String firstName = jsonObjects.getString("firstName");
                         String lastName = jsonObjects.getString("lastName");
 
-                        sharedPrefs.saveUserName(username);
+                        sharedPrefs.saveUserName(sUserName);
                         sharedPrefs.saveEmail(email);
                         sharedPrefs.saveFullName(firstName, lastName);
                         sharedPrefs.saveToken(key);

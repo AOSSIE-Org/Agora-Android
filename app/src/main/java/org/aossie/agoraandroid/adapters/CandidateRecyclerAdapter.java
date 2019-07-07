@@ -11,11 +11,9 @@ import org.aossie.agoraandroid.R;
 import java.util.ArrayList;
 
 public class CandidateRecyclerAdapter extends RecyclerView.Adapter<CandidateRecyclerAdapter.CandidateViewHolder> {
-    private ArrayList<String> candidates;
-    private Context context;
+    private final ArrayList<String> candidates;
 
     public CandidateRecyclerAdapter(ArrayList<String> candidates, Context context) {
-        this.context = context;
         this.candidates = candidates;
     }
 
@@ -41,8 +39,8 @@ public class CandidateRecyclerAdapter extends RecyclerView.Adapter<CandidateRecy
     }
 
     static class CandidateViewHolder extends RecyclerView.ViewHolder {
-        TextView candidateName;
-        View itemView;
+        final TextView candidateName;
+        final View itemView;
 
         public CandidateViewHolder(@NonNull View itemView) {
             super(itemView);

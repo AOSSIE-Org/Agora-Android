@@ -39,7 +39,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="Select Voting Algorithm"
+                    android:text="@string/select_voting_algorithm"
                     android:textColor="@color/colorPrimary"
                     android:textSize="40sp"
                     android:textStyle="bold"
@@ -66,7 +66,7 @@
 
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Oklahoma"
+                        android:text="@string/oklahoma"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -75,7 +75,7 @@
 
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="RangeVoting"
+                        android:text="@string/rangevoting"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -84,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="RankedPairs"
+                        android:text="@string/rankedpairs"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -92,24 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Satisfaction Approval Voting"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
-
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#FCD116"
-                        android:text="SmithSet"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#FCD116"
-                        android:text="Sequential Propotional Approval Voting"
+                        android:text="@string/satisfaction_approval_voting"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -118,7 +101,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Approval"
+                        android:text="@string/smithset"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -126,24 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Exhaustive ballot with dropoff"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
-
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#FCD116"
-                        android:text="Copeland"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#FCD116"
-                        android:text="Uncovered Set"
+                        android:text="@string/sequential_proportional_approval_voting"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -152,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Borda"
+                        android:text="@string/approval"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -160,23 +126,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Minimax Condorcet"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#FCD116"
-                        android:text="Nanson"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#FCD116"
-                        android:text="Kemeny Young"
+                        android:text="@string/exhaustive_ballot_with_dropoff"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -185,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Random Ballot"
+                        android:text="@string/copeland"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -193,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Contingent Method"
+                        android:text="@string/uncovered_set"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -202,7 +152,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Instant Runoff 2-round"
+                        android:text="@string/borda"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -210,7 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Baldwin"
+                        android:text="@string/minimax_condorcet"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
 
@@ -218,7 +168,57 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
-                        android:text="Exhaustive Ballot"
+                        android:text="@string/nanson"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/kemeny_young"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/random_ballot"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/contingent_method"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/instant_runoff_2_round"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/baldwin"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/exhaustive_ballot"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp" />
                 </RadioGroup>
@@ -235,7 +235,7 @@
                     android:layout_marginBottom="20sp"
                     android:background="@drawable/rounded_button"
                     android:backgroundTint="#FCD116"
-                    android:text="Next"
+                    android:text="@string/next"
                     android:textColor="@android:color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"
