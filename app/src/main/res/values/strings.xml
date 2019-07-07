@@ -38,6 +38,20 @@
     <string name="pending_nelections">Pending  \nElections</string>
     <string name="total_nelections">Total \n Elections</string>
     <string name="finished_nelections">Finished \n Elections</string>
+    <string name="invite_voters">Invite Voters?</string>
+    <string name="get_real_time_results">Get real time results?</string>
+    <string name="how_secret_are_ballots">How secret are ballots?</string>
+    <string name="ballots_are_completely_secret">Ballots are completely secret and never shown to anyone</string>
+    <string name="ballots_visible_only_to_me">Ballots are visible only to me</string>
+    <string name="ballots_visible_to_everyone">Ballots are visible to everyone with access</string>
+    <string name="who_can_see_the_list_of_voters">Who can see the list of voters?</string>
+    <string name="only_me">Only me</string>
+    <string name="everyone_with_access_to_election">Everyone with access to election</string>
+    <string name="some_more_options">Some More Options</string>
+    <string name="next">Next</string>
+    <string name="add_candidate">Add Candidate</string>
+    <string name="name_of_candidate">Name of Candidate</string>
+    <string name="enter_candidate_s_name">Enter Candidate\'s Name</string>
 
 
 </resources>
