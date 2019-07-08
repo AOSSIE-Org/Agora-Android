@@ -4,19 +4,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-
-import com.google.gson.Gson;
-
 import org.aossie.agoraandroid.SharedPrefs;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,21 +42,28 @@ public class LoginViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.message().equals("OK")) {
-                    String data = response.body();
+                    try {
+                        JSONObject jsonObjects = new JSONObject(response.body());
 
-                    Gson g = new Gson();
-                    User user = g.fromJson(data, User.class);
+                        JSONObject token = jsonObjects.getJSONObject("token");
 
-                    String username = user.getUsername();
-                    String email = user.getEmail();
-                    String firstName = user.getFirstName();
-                    String lastName = user.getLastName();
+                        String key = token.getString("token");
+                        String sUserName = jsonObjects.getString("username");
+                        String email = jsonObjects.getString("email");
+                        String firstName = jsonObjects.getString("firstName");
+                        String lastName = jsonObjects.getString("lastName");
 
-                    sharedPrefs.saveUserName(username);
-                    sharedPrefs.saveEmail(email);
-                    sharedPrefs.saveFullName(firstName, lastName);
+                        sharedPrefs.saveUserName(sUserName);
+                        sharedPrefs.saveEmail(email);
+                        sharedPrefs.saveFullName(firstName, lastName);
+                        sharedPrefs.saveToken(key);
+                        context.startActivity(new Intent(context, HomeActivity.class));
 
-                    context.startActivity(new Intent(context, HomeActivity.class));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
                 }

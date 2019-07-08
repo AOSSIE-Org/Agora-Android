@@ -10,6 +10,7 @@ public class SharedPrefs {
     private static final String UserNameKey = "userName";
     private static final String EmailKey = "emailId";
     private static final String FullNameKey = "fullName";
+    private static final String TokenKey = "token";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
 
@@ -50,6 +51,16 @@ public class SharedPrefs {
 
     public String getfullName() {
         return sharedPreferences.getString(FullNameKey, null);
+    }
+
+    //Save Token and get Token when required
+    public void saveToken(String token) {
+        editor.putString(TokenKey, token);
+        editor.commit();
+    }
+
+    public String getToken() {
+        return sharedPreferences.getString(TokenKey, null);
     }
 
 
