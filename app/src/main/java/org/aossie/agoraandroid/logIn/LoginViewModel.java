@@ -16,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginViewModel extends AndroidViewModel {
+class LoginViewModel extends AndroidViewModel {
     private final Context context;
     private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
 

@@ -39,6 +39,15 @@ public interface APIService {
     Call<String> changePassword(@Body String body, @Header("X-Auth-Token") String authToken);
 
 
+    //POST request to create a new election
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @POST("election")
+    Call<String> createElection(@Body String body, @Header("X-Auth-Token") String authToken);
+
+
 
 
 }

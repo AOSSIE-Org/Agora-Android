@@ -43,7 +43,7 @@
     <string name="how_secret_are_ballots">How secret are ballots?</string>
     <string name="ballots_are_completely_secret">Ballots are completely secret and never shown to anyone</string>
     <string name="ballots_visible_only_to_me">Ballots are visible only to me</string>
-    <string name="ballots_visible_to_everyone">Ballots are visible to everyone with access</string>
+    <string name="ballots_visible_to_everyone">Ballots are visible to everyone with access to the election</string>
     <string name="who_can_see_the_list_of_voters">Who can see the list of voters?</string>
     <string name="only_me">Only me</string>
     <string name="everyone_with_access_to_election">Everyone with access to election</string>

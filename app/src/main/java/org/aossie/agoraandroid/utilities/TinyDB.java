@@ -41,6 +41,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+@SuppressWarnings("SpellCheckingInspection")
 public class TinyDB {
 
     private SharedPreferences preferences;
@@ -142,7 +143,7 @@ public class TinyDB {
             return false;
 
         boolean fileCreated = false;
-        boolean bitmapCompressed = false;
+        boolean bitmapCompressed;
         boolean streamClosed = false;
 
         File imageFile = new File(fullPath);

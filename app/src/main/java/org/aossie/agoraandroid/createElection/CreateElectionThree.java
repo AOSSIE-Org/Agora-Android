@@ -13,10 +13,10 @@ import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.utilities.SharedPrefs2;
 
 public class CreateElectionThree extends AppCompatActivity {
-    SharedPrefs2 sharedPrefs2;
-    String votingAlgorithm;
-    RadioGroup radioGroup;
-    RadioButton radioButton;
+    private SharedPrefs2 sharedPrefs2;
+    private String votingAlgorithm;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

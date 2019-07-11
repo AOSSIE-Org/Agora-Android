@@ -8,28 +8,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter;
 import org.aossie.agoraandroid.utilities.TinyDB;
-import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateElectionTwo extends AppCompatActivity {
-    TinyDB tinydb;
-    ArrayList<String> mCandidates = new ArrayList<>();
+    private TinyDB tinydb;
+    private ArrayList<String> mCandidates = new ArrayList<>();
     private CandidateRecyclerAdapter candidateRecyclerAdapter;
     private TextInputLayout mAddCandidateTextInput;
 

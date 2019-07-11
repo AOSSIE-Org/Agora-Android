@@ -26,11 +26,10 @@ public class CreateElectionOne extends AppCompatActivity {
     private TextInputLayout mNameTextLayout, mDescriptionTextLayout, mStartDateTextLayout, mEndDateTextLayout;
     private int sDay, sMonth, sYear;
     private int eDay, eMonth, eYear;
-    String mElectionName;
-    String mElectionDescription;
+    private String mElectionName;
+    private String mElectionDescription;
     private String mStartDate;
     private String mEndDate;
-    String mFinalStartDate, mFinalEndDate;
 
 
     @Override
@@ -115,14 +114,16 @@ public class CreateElectionOne extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 mStartDate = mStartDate + "," + hourOfDay + ":" + minute;
                 mStartDateTextLayout.getEditText().setText(mStartDate);
-                //Formatting the starting date
+
+
+                //Formatting the starting date in Date-Time format
                 Calendar calendar2 = Calendar.getInstance();
                 calendar2.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar2.set(Calendar.MINUTE, minute);
                 calendar2.set(Calendar.YEAR, sYear);
                 calendar2.set(Calendar.MONTH, sMonth);
                 calendar2.set(Calendar.DAY_OF_MONTH, sDay);
-                CharSequence charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss.687Z", calendar2);
+                CharSequence charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2);
 
                 sharedPrefs2.saveStartTime(charSequence.toString());
 
@@ -148,7 +149,6 @@ public class CreateElectionOne extends AppCompatActivity {
                 eYear = year;
                 eMonth = month;
                 eDay = dayOfMonth;
- //               mFinalEndDate = year + "-" + month + "-" + dayOfMonth;
             }
         }, YEAR, MONTH, DATE);
 
@@ -157,19 +157,19 @@ public class CreateElectionOne extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 mEndDate = mEndDate + "," + hourOfDay + ":" + minute;
                 mEndDateTextLayout.getEditText().setText(mEndDate);
-  //              mFinalEndDate = mFinalEndDate + "T" + hourOfDay + ":" + minute + ":00.871Z";
-                //Formatting the ending date
+
+
+                //Formatting the ending date in Date-Time format
                 Calendar calendar3 = Calendar.getInstance();
                 calendar3.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar3.set(Calendar.MINUTE, minute);
                 calendar3.set(Calendar.YEAR, eYear);
                 calendar3.set(Calendar.MONTH, eMonth);
                 calendar3.set(Calendar.DAY_OF_MONTH, eDay);
-                CharSequence charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss.687Z", calendar3);
+                CharSequence charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3);
 
                 sharedPrefs2.saveEndTime(charSequence2.toString());
 
-                //        sharedPrefs2.saveEndTime(mFinalEndDate);
             }
         }, HOUR, MINUTE, true);
         timePickerDialog.show();

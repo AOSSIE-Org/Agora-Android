@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefs2 {
     private static final String myPrefs = "myPrefs";
     private static final String NameKey = "electionName";
@@ -13,6 +14,7 @@ public class SharedPrefs2 {
     private static final String VoterListVisibilityKey = "voterListVisibility";
     private static final String DescriptionKey = "electionDescription";
     private static final String VotingAlgoKey = "votingAlgorithm";
+    private static final String BallotVisibilityKey = "ballotVisibility";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
 
@@ -108,6 +110,17 @@ public class SharedPrefs2 {
 
     public String getVotingAlgo() {
         return sharedPreferences.getString(VotingAlgoKey, null);
+    }
+
+
+    public void saveBallotVisibility(String ballotVisibility) {
+        editor.putString(BallotVisibilityKey, ballotVisibility);
+        editor.commit();
+
+    }
+
+    public String getBallotVisibility() {
+        return sharedPreferences.getString(BallotVisibilityKey, null);
     }
 
 
