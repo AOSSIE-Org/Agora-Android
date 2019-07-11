@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid;
+package org.aossie.agoraandroid.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;

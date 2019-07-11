@@ -62,17 +62,18 @@
 
 
                     <RadioButton
+                        android:id="@+id/Oklahoma"
                         android:layout_width="wrap_content"
-
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
                         android:text="@string/oklahoma"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:checked="true"/>
 
                     <RadioButton
+                        android:id="@+id/RangeVoting"
                         android:layout_width="wrap_content"
-
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
                         android:text="@string/rangevoting"
@@ -81,6 +82,7 @@
 
 
                     <RadioButton
+                        android:id="@+id/RankedPairs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -89,6 +91,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/SatisfactionApprovalVoting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -98,6 +101,7 @@
 
 
                     <RadioButton
+                        android:id="@+id/SmithSet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -106,6 +110,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/SequentialPropotionalApprovalVoting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -115,6 +120,7 @@
 
 
                     <RadioButton
+                        android:id="@+id/Approval"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -123,6 +129,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/ExhaustiveBallotWithDropoff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -132,6 +139,7 @@
 
 
                     <RadioButton
+                        android:id="@+id/Copeland"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -140,6 +148,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/UncoveredSet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -149,6 +158,7 @@
 
 
                     <RadioButton
+                        android:id="@+id/Broda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -157,6 +167,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/MinimaxCondorcet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -165,6 +176,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/Nanson"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -173,6 +185,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/KemenyYoung"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -182,6 +195,7 @@
 
 
                     <RadioButton
+                        android:id="@+id/RandomBallot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -190,6 +204,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/ContingentMethod"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -199,6 +214,7 @@
 
 
                     <RadioButton
+                        android:id="@+id/InstantRunoff2Round"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -207,6 +223,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/Baldwin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -215,6 +232,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
+                        android:id="@+id/ExhaustiveBallot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"

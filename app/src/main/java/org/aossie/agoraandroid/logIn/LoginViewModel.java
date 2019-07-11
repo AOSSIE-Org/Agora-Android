@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import org.aossie.agoraandroid.SharedPrefs;
+import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;

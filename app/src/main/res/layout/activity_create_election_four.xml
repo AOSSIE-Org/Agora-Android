@@ -58,6 +58,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
+                    android:buttonTint="#FCD116"
                     android:text="@string/invite_voters"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +75,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
+                    android:buttonTint="#FCD116"
                     android:text="@string/get_real_time_results"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -113,6 +115,8 @@
                         android:id="@+id/radio_btn_ballot_visibility_secret"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:checked="true"
                         android:text="@string/ballots_are_completely_secret"
                         android:textSize="20sp" />
 
@@ -120,6 +124,7 @@
                         android:id="@+id/radio_btn_ballot_visibility_only_me"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
                         android:text="@string/ballots_visible_only_to_me"
                         android:textSize="20sp" />
 
@@ -127,6 +132,7 @@
                         android:id="@+id/radio_btn_ballot_visibility_everyone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
                         android:text="@string/ballots_visible_to_everyone"
                         android:textSize="20sp" />
                 </RadioGroup>
@@ -165,6 +171,8 @@
                         android:id="@+id/radio_btn_access_only_me"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:checked="true"
                         android:text="@string/only_me"
                         android:textSize="20sp" />
 
@@ -172,6 +180,7 @@
                         android:id="@+id/radio_btn_access_everyone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
                         android:text="@string/everyone_with_access_to_election"
                         android:textSize="20sp" />
                 </RadioGroup>
