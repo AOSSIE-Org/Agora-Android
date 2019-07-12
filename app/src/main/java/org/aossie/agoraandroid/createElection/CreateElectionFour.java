@@ -12,10 +12,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.utilities.SharedPrefs2;
 
 public class CreateElectionFour extends AppCompatActivity {
-    private SharedPrefs2 sharedPrefs2;
+    private ElectionDetails electionDetails;
     private CreateElectionViewModel createElectionViewModel;
     private CheckBox isInvite;
     private CheckBox isRealTime;
@@ -30,7 +29,7 @@ public class CreateElectionFour extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPrefs2 = new SharedPrefs2(getApplication());
+        electionDetails = new ElectionDetails(getApplication());
         createElectionViewModel = new CreateElectionViewModel(getApplication(), this);
         setContentView(R.layout.activity_create_election_four);
         Button mSubmitButton = findViewById(R.id.button_submit_details);
@@ -55,10 +54,10 @@ public class CreateElectionFour extends AppCompatActivity {
 
                 mFinalIsInvite = isInvite.isChecked();
                 mFinalIsRealTime = isRealTime.isChecked();
-                sharedPrefs2.saveIsInvite(mFinalIsInvite);
-                sharedPrefs2.saveIsRealTime(mFinalIsRealTime);
-                sharedPrefs2.saveVoterListVisibility(voterListVisibility);
-                sharedPrefs2.saveBallotVisibility(radioButtonBallots.getText().toString().trim());
+                electionDetails.saveIsInvite(mFinalIsInvite);
+                electionDetails.saveIsRealTime(mFinalIsRealTime);
+                electionDetails.saveVoterListVisibility(voterListVisibility);
+                electionDetails.saveBallotVisibility(radioButtonBallots.getText().toString().trim());
                 createElectionViewModel.createElection();
             }
         });

@@ -1,10 +1,10 @@
-package org.aossie.agoraandroid.utilities;
+package org.aossie.agoraandroid.createElection;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class SharedPrefs2 {
+public class ElectionDetails {
     private static final String myPrefs = "myPrefs";
     private static final String NameKey = "electionName";
     private static final String StartTimeKey = "startTime";
@@ -19,7 +19,7 @@ public class SharedPrefs2 {
     private final SharedPreferences.Editor editor;
 
 
-    public SharedPrefs2(Context context) {
+    public ElectionDetails(Context context) {
         sharedPreferences = context.getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
@@ -121,6 +121,19 @@ public class SharedPrefs2 {
 
     public String getBallotVisibility() {
         return sharedPreferences.getString(BallotVisibilityKey, null);
+    }
+    public void clearElectionData() {
+        editor.putString(NameKey, null);
+        editor.putString(StartTimeKey, null);
+        editor.putString(EndTimeKey, null);
+        editor.putString(IsInvitedKey, null);
+        editor.putString(IsRealTimeKey, null);
+        editor.putString(VoterListVisibilityKey, null);
+        editor.putString(DescriptionKey, null);
+        editor.putString(VotingAlgoKey, null);
+        editor.putString(BallotVisibilityKey, null);
+
+        editor.commit();
     }
 
 

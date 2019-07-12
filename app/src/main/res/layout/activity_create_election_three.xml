@@ -62,7 +62,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/Oklahoma"
+                        android:id="@+id/radio_button_oklahoma"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -72,7 +72,7 @@
                         android:checked="true"/>
 
                     <RadioButton
-                        android:id="@+id/RangeVoting"
+                        android:id="@+id/radio_button_range_voting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -82,7 +82,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/RankedPairs"
+                        android:id="@+id/radio_button_ranked_pairs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -91,7 +91,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/SatisfactionApprovalVoting"
+                        android:id="@+id/radio_button_sav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -101,7 +101,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/SmithSet"
+                        android:id="@+id/radio_button_smith_set"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -110,7 +110,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/SequentialPropotionalApprovalVoting"
+                        android:id="@+id/radio_button_spav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -120,7 +120,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/Approval"
+                        android:id="@+id/radio_button_approval"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -129,7 +129,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/ExhaustiveBallotWithDropoff"
+                        android:id="@+id/radio_button_exhaustive_ballot_with_dropoff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -139,7 +139,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/Copeland"
+                        android:id="@+id/radio_button_copeland"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -148,7 +148,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/UncoveredSet"
+                        android:id="@+id/radio_button_uncovered_set"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -158,7 +158,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/Broda"
+                        android:id="@+id/radio_button_broda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -167,7 +167,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/MinimaxCondorcet"
+                        android:id="@+id/radio_button_minimax_condorcet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -176,7 +176,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/Nanson"
+                        android:id="@+id/radio_button_nanson"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -185,7 +185,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/KemenyYoung"
+                        android:id="@+id/radio_button_kemeny_young"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -195,7 +195,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/RandomBallot"
+                        android:id="@+id/radio_button_random_ballot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -204,7 +204,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/ContingentMethod"
+                        android:id="@+id/radio_button_contingent_method"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -214,7 +214,7 @@
 
 
                     <RadioButton
-                        android:id="@+id/InstantRunoff2Round"
+                        android:id="@+id/radio_button_instant_runoff_2_round"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -223,7 +223,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/Baldwin"
+                        android:id="@+id/radio_button_baldwin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
@@ -232,7 +232,7 @@
                         android:textSize="20sp" />
 
                     <RadioButton
-                        android:id="@+id/ExhaustiveBallot"
+                        android:id="@+id/radio_button_exhaustive_ballot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#FCD116"
