@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class ElectionDetails {
+public class ElectionDetailsSharedPrefs {
     private static final String myPrefs = "myPrefs";
     private static final String NameKey = "electionName";
     private static final String StartTimeKey = "startTime";
@@ -19,7 +19,7 @@ public class ElectionDetails {
     private final SharedPreferences.Editor editor;
 
 
-    public ElectionDetails(Context context) {
+    public ElectionDetailsSharedPrefs(Context context) {
         sharedPreferences = context.getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }

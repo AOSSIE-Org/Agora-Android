@@ -12,7 +12,7 @@ import android.widget.RadioGroup;
 import org.aossie.agoraandroid.R;
 
 public class CreateElectionThree extends AppCompatActivity {
-    private ElectionDetails electionDetails;
+    private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
     private String votingAlgorithm;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
@@ -21,7 +21,7 @@ public class CreateElectionThree extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_election_three);
-        electionDetails =new ElectionDetails(getApplication());
+        electionDetailsSharedPrefs =new ElectionDetailsSharedPrefs(getApplication());
         Button mFinalStepButton = findViewById(R.id.button_to_final_step);
         radioGroup = findViewById(R.id.radioGroup);
         mFinalStepButton.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +30,7 @@ public class CreateElectionThree extends AppCompatActivity {
                 int radioId = radioGroup.getCheckedRadioButtonId();
                 radioButton = findViewById(radioId);
                 votingAlgorithm = radioButton.getText().toString();
-                electionDetails.saveVotingAlgo(votingAlgorithm);
+                electionDetailsSharedPrefs.saveVotingAlgo(votingAlgorithm);
                 startActivity(new Intent(CreateElectionThree.this, CreateElectionFour.class));
             }
         });

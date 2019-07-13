@@ -30,7 +30,7 @@ import retrofit2.Response;
 
 class CreateElectionViewModel extends AndroidViewModel {
     private Context context;
-    private ElectionDetails electionDetails = new ElectionDetails(getApplication());
+    private ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
     private SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
     private TinyDB tinydb = new TinyDB(getApplication());
 
@@ -53,15 +53,15 @@ class CreateElectionViewModel extends AndroidViewModel {
             map.put("voterEmail", "");
             JSONArray ballot = new JSONArray(new Map[]{map});
             jsonObject.put("ballot", ballot);  //Append the other JSONObject to the parent one
-            jsonObject.put("name", electionDetails.getElectionName());
-            jsonObject.put("description", electionDetails.getElectionDesc());
-            jsonObject.put("voterListVisibility", electionDetails.getVoterListVisibility());
-            jsonObject.put("startingDate", electionDetails.getStartTime());
-            jsonObject.put("endingDate", electionDetails.getEndTime());
-            jsonObject.put("isInvite", electionDetails.getIsInvite());
-            jsonObject.put("ballotVisibility", electionDetails.getBallotVisibility());
-            jsonObject.put("isRealTime", electionDetails.getIsRealTime());
-            jsonObject.put("votingAlgo", electionDetails.getVotingAlgo());
+            jsonObject.put("name", electionDetailsSharedPrefs.getElectionName());
+            jsonObject.put("description", electionDetailsSharedPrefs.getElectionDesc());
+            jsonObject.put("voterListVisibility", electionDetailsSharedPrefs.getVoterListVisibility());
+            jsonObject.put("startingDate", electionDetailsSharedPrefs.getStartTime());
+            jsonObject.put("endingDate", electionDetailsSharedPrefs.getEndTime());
+            jsonObject.put("isInvite", electionDetailsSharedPrefs.getIsInvite());
+            jsonObject.put("ballotVisibility", electionDetailsSharedPrefs.getBallotVisibility());
+            jsonObject.put("isRealTime", electionDetailsSharedPrefs.getIsRealTime());
+            jsonObject.put("votingAlgo", electionDetailsSharedPrefs.getVotingAlgo());
             jsonObject.put("candidates", jsArray);
             jsonObject.put("noVacancies", 1);
         } catch (JSONException e) {
@@ -75,7 +75,7 @@ class CreateElectionViewModel extends AndroidViewModel {
 
                 if (response.message().equals("OK")) {
                     Toast.makeText(getApplication(), "Created Successfully", Toast.LENGTH_SHORT).show();
-                    electionDetails.clearElectionData();
+                    electionDetailsSharedPrefs.clearElectionData();
                     context.startActivity(new Intent(context, HomeActivity.class));
                 } else {
                     Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();

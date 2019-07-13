@@ -21,7 +21,7 @@ import java.util.Calendar;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateElectionOne extends AppCompatActivity {
-    private ElectionDetails electionDetails;
+    private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
     private TextInputLayout mNameTextLayout, mDescriptionTextLayout, mStartDateTextLayout, mEndDateTextLayout;
     private int sDay, sMonth, sYear;
     private int eDay, eMonth, eYear;
@@ -35,7 +35,7 @@ public class CreateElectionOne extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_election_one);
-        electionDetails = new ElectionDetails(getApplication());
+        electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
         mNameTextLayout = findViewById(R.id.text_layout_election_name);
         mDescriptionTextLayout = findViewById(R.id.text_layout_election_description);
         mStartDateTextLayout = findViewById(R.id.text_layout_start_date);
@@ -80,8 +80,8 @@ public class CreateElectionOne extends AppCompatActivity {
                     mEndDateTextLayout.setError("PLease enter end date");
                 } else {
                     mEndDateTextLayout.setError(null);
-                    electionDetails.saveElectionName(mElectionName);
-                    electionDetails.saveElectionDesc(mElectionDescription);
+                    electionDetailsSharedPrefs.saveElectionName(mElectionName);
+                    electionDetailsSharedPrefs.saveElectionDesc(mElectionDescription);
                     startActivity(new Intent(CreateElectionOne.this, CreateElectionTwo.class));
 
                 }
@@ -124,7 +124,7 @@ public class CreateElectionOne extends AppCompatActivity {
                 calendar2.set(Calendar.DAY_OF_MONTH, sDay);
                 CharSequence charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2);
 
-                electionDetails.saveStartTime(charSequence.toString());
+                electionDetailsSharedPrefs.saveStartTime(charSequence.toString());
 
             }
         }, HOUR, MINUTE, true);
@@ -167,7 +167,7 @@ public class CreateElectionOne extends AppCompatActivity {
                 calendar3.set(Calendar.DAY_OF_MONTH, eDay);
                 CharSequence charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3);
 
-                electionDetails.saveEndTime(charSequence2.toString());
+                electionDetailsSharedPrefs.saveEndTime(charSequence2.toString());
 
             }
         }, HOUR, MINUTE, true);
