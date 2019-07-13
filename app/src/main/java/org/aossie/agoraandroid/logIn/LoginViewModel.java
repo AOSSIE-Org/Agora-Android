@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import org.aossie.agoraandroid.SharedPrefs;
+import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -16,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginViewModel extends AndroidViewModel {
+class LoginViewModel extends AndroidViewModel {
     private final Context context;
     private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
 

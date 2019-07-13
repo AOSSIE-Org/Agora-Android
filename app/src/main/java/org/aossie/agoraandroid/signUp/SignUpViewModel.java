@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpViewModel extends AndroidViewModel {
+class SignUpViewModel extends AndroidViewModel {
 private final Context context;
     public SignUpViewModel(@NonNull Application application, Context context) {
         super(application);

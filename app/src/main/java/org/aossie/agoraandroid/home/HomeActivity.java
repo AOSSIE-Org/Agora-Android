@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.SharedPrefs;
+import org.aossie.agoraandroid.utilities.SharedPrefs;
 
 public class HomeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
