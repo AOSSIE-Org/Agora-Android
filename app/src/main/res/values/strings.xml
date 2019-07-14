@@ -83,6 +83,8 @@
     <string name="zero">0</string>
     <string name="full_name">Full Name</string>
     <string name="user_email_id">user email id</string>
+    <string name="send_link">Send Link</string>
+    <string name="enter_user_name_reset_pass_link">Please enter user name to receive password reset link</string>
 
 
 </resources>

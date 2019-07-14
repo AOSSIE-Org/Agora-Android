@@ -2,11 +2,16 @@ package org.aossie.agoraandroid.logIn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
 import com.google.android.material.textfield.TextInputLayout;
+
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.forgotPassword.ForgotPasswordSend;
 
 @SuppressWarnings("ConstantConditions")
 public class LogInActivity extends AppCompatActivity {
@@ -18,12 +23,19 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        loginViewModel = new LoginViewModel(getApplication(),this);
+        loginViewModel = new LoginViewModel(getApplication(), this);
 
 
-        mLoginPassword=findViewById(R.id.logInPassword);
-        mLoginUserName=findViewById(R.id.logInUserName);
-        Button mFinalLoginButton=findViewById(R.id.finalLogInButton);
+        mLoginPassword = findViewById(R.id.logInPassword);
+        mLoginUserName = findViewById(R.id.logInUserName);
+        Button mFinalLoginButton = findViewById(R.id.finalLogInButton);
+        TextView mForgotPassword = findViewById(R.id.text_view_forgot_password);
+        mForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LogInActivity.this, ForgotPasswordSend.class));
+            }
+        });
 
         mFinalLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override

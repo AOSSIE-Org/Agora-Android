@@ -1,15 +1,16 @@
 package org.aossie.agoraandroid.remote;
 
 
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 @SuppressWarnings("SpellCheckingInspection")
 public interface APIService {
-
     //POST Request For SignUp
     @Headers({
             "Accept: application/json",
@@ -46,6 +47,11 @@ public interface APIService {
     })
     @POST("election")
     Call<String> createElection(@Body String body, @Header("X-Auth-Token") String authToken);
+
+
+    //POST Request ToSend Link Of Forgot Password
+    @POST("auth/forgotPassword/send/{userName}")
+    Call<String> sendForgotPassword(@Path("userName") String userName);
 
 
 
