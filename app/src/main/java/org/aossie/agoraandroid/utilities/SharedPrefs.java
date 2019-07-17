@@ -28,7 +28,7 @@ public class SharedPrefs {
     }
 
     public String getUserName() {
-        return sharedPreferences.getString(UserNameKey, null);
+        return sharedPreferences.getString(UserNameKey, "0");
     }
 
 
@@ -65,7 +65,7 @@ public class SharedPrefs {
 
 
     public void clearLogin() {
-        editor.putString(UserNameKey, null);
+        editor.putString(UserNameKey, "0");
         editor.putString(EmailKey, null);
         editor.putString(FullNameKey, null);
         editor.commit();

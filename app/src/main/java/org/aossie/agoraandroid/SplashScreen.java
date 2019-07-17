@@ -8,7 +8,9 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.main.MainActivity;
+import org.aossie.agoraandroid.utilities.SharedPrefs;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -16,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
+        final SharedPrefs sharedPrefs = new SharedPrefs(SplashScreen.this);
         // Rotation And Fade Out Animation
 
         final ImageView rotatingAgora = findViewById(R.id.image_agora);
@@ -33,8 +35,17 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 rotatingAgora.startAnimation(animation2);
-                finish();
-                startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                String userName = sharedPrefs.getUserName();
+                if (userName.equals("0")) {
+                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                    finish();
+
+                } else {
+                    startActivity(new Intent(SplashScreen.this, HomeActivity.class));
+                    finish();
+
+
+                }
             }
 
             @Override

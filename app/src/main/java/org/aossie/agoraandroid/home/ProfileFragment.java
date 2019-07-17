@@ -33,8 +33,6 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
-    private Context context;
-    private Application application;
     private TextInputLayout mNewPAss, mConfirmPass;
 
     @Override
