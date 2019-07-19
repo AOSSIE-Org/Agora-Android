@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/white_background"
-    tools:context=".SplashScreen">
+    tools:context=".SplashScreenActivity">
 
     <ImageView
         android:id="@+id/image_agora"

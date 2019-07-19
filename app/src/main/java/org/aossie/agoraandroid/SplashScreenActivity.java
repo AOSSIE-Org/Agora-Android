@@ -12,21 +12,21 @@ import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.main.MainActivity;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        final SharedPrefs sharedPrefs = new SharedPrefs(SplashScreen.this);
+        final SharedPrefs sharedPrefs = new SharedPrefs(SplashScreenActivity.this);
         // Rotation And Fade Out Animation
 
         final ImageView rotatingAgora = findViewById(R.id.image_agora);
-        final Animation animation1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
-        final Animation animation2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);
+        final Animation rotateAnimation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
+        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);
 
-        rotatingAgora.startAnimation(animation1);
-        animation1.setAnimationListener(new Animation.AnimationListener() {
+        rotatingAgora.startAnimation(rotateAnimation);
+        rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -34,14 +34,14 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                rotatingAgora.startAnimation(animation2);
+                rotatingAgora.startAnimation(fadeOutAnimation);
                 String userName = sharedPrefs.getUserName();
-                if (userName.equals("0")) {
-                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                if (userName == null) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                     finish();
 
                 } else {
-                    startActivity(new Intent(SplashScreen.this, HomeActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
                     finish();
 
 
