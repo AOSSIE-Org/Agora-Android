@@ -8,6 +8,7 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,14 +17,19 @@ import com.google.android.material.navigation.NavigationView;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
+
 public class HomeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
+    private HomeViewModel homeViewModel;
+    private SharedPrefs sharedPrefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        SharedPrefs sharedPrefs = new SharedPrefs(getApplicationContext());
+        homeViewModel = new HomeViewModel(getApplication(), this);
+        sharedPrefs = new SharedPrefs(getApplicationContext());
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navView = findViewById(R.id.nav_view);
 
@@ -59,6 +65,16 @@ public class HomeActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        if (item.getItemId() == R.id.action_logout) {
+            homeViewModel.doLogout(sharedPrefs.getToken());
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

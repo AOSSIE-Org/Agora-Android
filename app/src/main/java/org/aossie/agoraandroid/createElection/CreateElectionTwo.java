@@ -23,7 +23,7 @@ import java.util.ArrayList;
 @SuppressWarnings("ConstantConditions")
 public class CreateElectionTwo extends AppCompatActivity {
     private TinyDB tinydb;
-    private ArrayList<String> mCandidates = new ArrayList<>();
+    private final ArrayList<String> mCandidates = new ArrayList<>();
     private CandidateRecyclerAdapter candidateRecyclerAdapter;
     private TextInputLayout mAddCandidateTextInput;
 

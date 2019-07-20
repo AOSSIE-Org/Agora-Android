@@ -9,7 +9,6 @@ import android.widget.Button;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.aossie.agoraandroid.R;
-
 public class ForgotPasswordSend extends AppCompatActivity {
 
     private ForgotPasswordViewModel forgotPasswordViewModel;
