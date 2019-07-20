@@ -4,6 +4,7 @@ package org.aossie.agoraandroid.remote;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -52,6 +53,15 @@ public interface APIService {
     //POST Request ToSend Link Of Forgot Password
     @POST("auth/forgotPassword/send/{userName}")
     Call<String> sendForgotPassword(@Path("userName") String userName);
+
+
+    //POST Request To Perform Logout
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @GET("user/logout")
+    Call<String> logout(@Header("X-Auth-Token") String authToken);
 
 
 

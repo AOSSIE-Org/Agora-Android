@@ -29,10 +29,10 @@ import retrofit2.Response;
 
 
 class CreateElectionViewModel extends AndroidViewModel {
-    private Context context;
-    private ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
-    private SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
-    private TinyDB tinydb = new TinyDB(getApplication());
+    private final Context context;
+    private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
+    private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
+    private final TinyDB tinydb = new TinyDB(getApplication());
 
 
     CreateElectionViewModel(@NonNull Application application, Context context) {
