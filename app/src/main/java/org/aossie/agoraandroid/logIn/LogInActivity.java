@@ -40,8 +40,8 @@ public class LogInActivity extends AppCompatActivity {
         mFinalLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String userName = mLoginUserName.getEditText().getText().toString();
-                final String userPass = mLoginPassword.getEditText().getText().toString();
+                final String userName = mLoginUserName.getEditText().getText().toString().trim();
+                final String userPass = mLoginPassword.getEditText().getText().toString().trim();
 
                 if (userName.isEmpty())
                     mLoginUserName.setError("Please enter User Name");
