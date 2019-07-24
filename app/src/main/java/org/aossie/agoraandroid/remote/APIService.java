@@ -55,13 +55,22 @@ public interface APIService {
     Call<String> sendForgotPassword(@Path("userName") String userName);
 
 
-    //POST Request To Perform Logout
+    //GET Request To Perform Logout
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json"
     })
     @GET("user/logout")
     Call<String> logout(@Header("X-Auth-Token") String authToken);
+
+
+    //GET Request To Get Data of All Elections
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @GET("election")
+    Call<String> getAllElections(@Header("X-Auth-Token") String authToken);
 
 
 

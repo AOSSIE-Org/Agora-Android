@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".displayElections.FinishedElectionsActivity"></activity>
+        <activity android:name=".displayElections.ActiveElectionsActivity" />
+        <activity android:name=".displayElections.PendingElectionsActivity" />
+        <activity android:name=".displayElections.TotalElectionsActivity" />
         <activity android:name=".forgotPassword.ForgotPasswordSend" />
         <activity android:name=".createElection.CreateElectionTwo" />
         <activity android:name=".createElection.CreateElectionFour" />
@@ -29,7 +33,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>

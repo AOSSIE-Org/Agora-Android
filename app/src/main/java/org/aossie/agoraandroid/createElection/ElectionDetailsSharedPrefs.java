@@ -15,6 +15,7 @@ public class ElectionDetailsSharedPrefs {
     private static final String DescriptionKey = "electionDescription";
     private static final String VotingAlgoKey = "votingAlgorithm";
     private static final String BallotVisibilityKey = "ballotVisibility";
+    private static final String ElectionDetailsKey = "electionDetails";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
 
@@ -121,6 +122,16 @@ public class ElectionDetailsSharedPrefs {
 
     public String getBallotVisibility() {
         return sharedPreferences.getString(BallotVisibilityKey, null);
+    }
+
+    public void saveElectionDetails(String electionDetails) {
+        editor.putString(ElectionDetailsKey, electionDetails);
+        editor.commit();
+
+    }
+
+    public String getElectionDetails() {
+        return sharedPreferences.getString(ElectionDetailsKey, null);
     }
     public void clearElectionData() {
         editor.putString(NameKey, null);
