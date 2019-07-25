@@ -37,7 +37,7 @@ public class CreateElectionTwo extends AppCompatActivity {
         mAddCandidateTextInput = findViewById(R.id.text_input_candidate);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view_names);
 
-        candidateRecyclerAdapter = new CandidateRecyclerAdapter(mCandidates, this);
+        candidateRecyclerAdapter = new CandidateRecyclerAdapter(mCandidates);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
         mRecyclerView.setAdapter(candidateRecyclerAdapter);
