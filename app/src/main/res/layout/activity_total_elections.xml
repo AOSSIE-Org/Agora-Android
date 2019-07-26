@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="#FE9D18"
                 android:gravity="center"
-                android:text="Total Elections"
+                android:text="@string/total_elections"
                 android:textColor="@color/whiteColor"
                 android:textSize="40sp"
                 android:textStyle="bold" />

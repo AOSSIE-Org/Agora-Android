@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="#E53A36"
                 android:gravity="center"
-                android:text="Active Elections"
+                android:text="@string/active_elections"
                 android:textColor="@color/whiteColor"
                 android:textSize="40sp"
                 android:textStyle="bold" />
