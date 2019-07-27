@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.createElection.CreateElectionOne;
@@ -45,10 +48,11 @@ public class HomeFragment extends Fragment {
     private TextView mActiveCountTextView, mPendingCountTextView, mTotalCountTextView, mFinishedCountTextView;
     private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
     private int mActiveCount = 0, mFinishedCount = 0, mPendingCount = 0, flag = 0;
+    private ShimmerFrameLayout mShimmerViewContainer;
+    private ConstraintLayout constraintLayout;
 
     public HomeFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +60,10 @@ public class HomeFragment extends Fragment {
         electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getActivity());
         SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_home, null);
+
+        mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
+
 
         CardView mTotalElectionsCardView = view.findViewById(R.id.card_view_total_elections);
         CardView mPendingElectionsCardView = view.findViewById(R.id.card_view_pending_elections);
@@ -68,7 +76,7 @@ public class HomeFragment extends Fragment {
         mFinishedCountTextView = view.findViewById(R.id.text_view_finished_count);
 
         Button createElection = view.findViewById(R.id.button_create_election);
-            getElectionData(sharedPrefs.getToken());
+        getElectionData(sharedPrefs.getToken());
         mActiveElectionsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +114,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle
             savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
 
@@ -117,6 +124,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.message().equals("OK")) {
+
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+                    constraintLayout.setVisibility(View.VISIBLE);
+
                     electionDetailsSharedPrefs.saveElectionDetails(response.body());
                     try {
                         JSONObject jsonObject = new JSONObject(response.body());
@@ -144,12 +156,14 @@ public class HomeFragment extends Fragment {
                                     mFinishedCount++;
                                 }
                             }
-                        }flag++;
+                        }
+                        flag++;
 
                         mTotalCountTextView.setText(String.valueOf(jsonArray.length()));
                         mPendingCountTextView.setText(String.valueOf(mPendingCount));
                         mActiveCountTextView.setText(String.valueOf(mActiveCount));
                         mFinishedCountTextView.setText(String.valueOf(mFinishedCount));
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -165,5 +179,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmer();
+        super.onPause();
     }
 }

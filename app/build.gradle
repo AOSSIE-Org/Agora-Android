@@ -52,6 +52,9 @@ dependencies {
     implementation "androidx.navigation:navigation-ui:$nav_version"
     //Recycler View
     implementation "com.android.support:recyclerview-v7:28.0.0"
+    //Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.4.0'
+
 
 
 }
