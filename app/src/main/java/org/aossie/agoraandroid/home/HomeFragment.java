@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +51,8 @@ public class HomeFragment extends Fragment {
     private int mActiveCount = 0, mFinishedCount = 0, mPendingCount = 0, flag = 0;
     private ShimmerFrameLayout mShimmerViewContainer;
     private ConstraintLayout constraintLayout;
+    private SharedPrefs sharedPrefs;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public HomeFragment() {
     }
@@ -58,13 +61,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getActivity());
-        SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
+        sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_home, null);
 
         mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
         constraintLayout = view.findViewById(R.id.constraintLayout);
 
-
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         CardView mTotalElectionsCardView = view.findViewById(R.id.card_view_total_elections);
         CardView mPendingElectionsCardView = view.findViewById(R.id.card_view_pending_elections);
         CardView mActiveElectionsCardView = view.findViewById(R.id.card_view_active_elections);
@@ -107,6 +110,14 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getActivity(), CreateElectionOne.class));
             }
         });
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        doYourUpdate();
+                    }
+                }
+        );
         return view;
     }
 
@@ -142,14 +153,12 @@ public class HomeFragment extends Fragment {
                             Date formattedStartingDate = formatter.parse(startingDate);
                             Date formattedEndingDate = formatter.parse(endingDate);
                             Date currentDate = Calendar.getInstance().getTime();
-                            Log.d("TAG", "onResponse: " + currentDate);
 
                             // Separating into Active, Finished or Pending Elections
                             if (flag == 0) {
 
                                 if (currentDate.before(formattedStartingDate)) {
                                     mPendingCount++;
-                                    Log.d("TAG", "onResponse: " + mPendingCount);
                                 } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
                                     mActiveCount++;
                                 } else if (currentDate.after(formattedEndingDate)) {
@@ -164,7 +173,6 @@ public class HomeFragment extends Fragment {
                         mActiveCountTextView.setText(String.valueOf(mActiveCount));
                         mFinishedCountTextView.setText(String.valueOf(mFinishedCount));
 
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (ParseException e) {
@@ -175,7 +183,10 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getActivity(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
+                constraintLayout.setVisibility(View.VISIBLE);
+                Toast.makeText(getActivity(), "Something went wrong please refresh", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -191,5 +202,11 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         mShimmerViewContainer.stopShimmer();
         super.onPause();
+    }
+
+    private void doYourUpdate() {
+        getElectionData(sharedPrefs.getToken());//try to fetch data again
+        mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
+
     }
 }
