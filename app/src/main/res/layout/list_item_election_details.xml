@@ -35,6 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/colorPrimary">
@@ -46,7 +47,7 @@
                         android:gravity="center"
                         android:text="@string/election_name_"
                         android:textColor="@color/whiteColor"
-                        android:textSize="35sp"
+                        android:textSize="30sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -58,31 +59,21 @@
 
             </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:contentDescription="@string/agora_vote"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView4"
-                app:srcCompat="@drawable/ic_message_24dp" />
-
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/description"
-                android:textColor="#FCD116"
-                android:textSize="30sp"
+                android:textColor="#000"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView8"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
             <TextView
@@ -101,44 +92,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-            <!--<View-->
-            <!--android:id="@+id/view"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginLeft="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginRight="8dp"-->
-            <!--android:background="#808080"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/text_view_election_description" />-->
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:contentDescription="@string/agora_vote"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_election_description"
-                app:srcCompat="@drawable/ic_people_24dp" />
-
             <TextView
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/candidates"
-                android:textColor="#FCD116"
-                android:textSize="30sp"
+                android:textColor="#000"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_election_description" />
 
             <TextView
@@ -164,8 +133,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/start"
-                android:textColor="#FCD116"
-                android:textSize="20sp"
+                android:textColor="#000"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_candidate_list" />
@@ -194,8 +163,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="@string/status"
-                android:textColor="#FCD116"
-                android:textSize="20sp"
+                android:textColor="#000"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_end_date" />
@@ -222,20 +191,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="20dp"
                 android:text="@string/end"
-                android:textColor="#FCD116"
-                android:textSize="20sp"
+                android:textColor="#000"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_start_date" />
 
             <TextView
                 android:id="@+id/text_view_end_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="45dp"
-                android:layout_marginLeft="45dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/ending_date"
@@ -246,57 +214,14 @@
                 app:layout_constraintStart_toEndOf="@+id/textView21"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_start_date" />
 
-            <ImageButton
-                android:id="@+id/image_button_edit_election"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="88dp"
-                android:layout_marginLeft="88dp"
-                android:background="#fff"
-                android:contentDescription="@string/image_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/image_button_delete_election"
-                app:srcCompat="@drawable/ic_settings_24dp" />
-
-            <ImageButton
-                android:id="@+id/image_button_view_election"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="56dp"
-                android:layout_marginLeft="56dp"
-                android:background="#fff"
-                android:contentDescription="@string/image_button"
-                app:layout_constraintStart_toEndOf="@+id/image_button_edit_election"
-                app:layout_constraintTop_toTopOf="@+id/image_button_delete_election"
-                app:srcCompat="@drawable/ic_remove_eye_24dp" />
-
-
-            <ImageButton
-                android:id="@+id/image_button_delete_election"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="#fff"
-                android:contentDescription="@string/image_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.078"
-                app:layout_constraintStart_toEndOf="@+id/image_button_view_election"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_status"
-                app:srcCompat="@drawable/ic_delete_24dp" />
-
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_button_edit_election" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_status" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

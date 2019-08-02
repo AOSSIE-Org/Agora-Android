@@ -70,7 +70,7 @@ public class PendingElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList);
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "pending");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
     }
 }

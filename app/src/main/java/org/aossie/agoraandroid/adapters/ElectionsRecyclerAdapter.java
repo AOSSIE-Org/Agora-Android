@@ -1,12 +1,15 @@
 package org.aossie.agoraandroid.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.aossie.agoraandroid.R;
@@ -16,17 +19,17 @@ import java.util.ArrayList;
 
 public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecyclerAdapter.ElectionsViewHolder> {
 
-    private final ArrayList<String> electionNameList,electionDescriptionList, startDateList, endDateList, statusList, candidateList;
+    private final ArrayList<String> electionNameList, electionDescriptionList, startDateList, endDateList, statusList, candidateList;
+    private final String electionType;
 
-    public ElectionsRecyclerAdapter(ArrayList<String> electionNameList,ArrayList<String> electionDescriptionList, ArrayList<String> startDateList, ArrayList<String> endDateList, ArrayList<String> statusList,ArrayList<String> candidateList) {
+    public ElectionsRecyclerAdapter(ArrayList<String> electionNameList, ArrayList<String> electionDescriptionList, ArrayList<String> startDateList, ArrayList<String> endDateList, ArrayList<String> statusList, ArrayList<String> candidateList, String type) {
         this.electionNameList = electionNameList;
-        this.electionDescriptionList=electionDescriptionList;
+        this.electionDescriptionList = electionDescriptionList;
         this.startDateList = startDateList;
         this.endDateList = endDateList;
         this.statusList = statusList;
         this.candidateList = candidateList;
-
-
+        this.electionType = type;
     }
 
     @NonNull
@@ -47,7 +50,20 @@ public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecy
         holder.mStartDate.setText(startDateList.get(position));
         holder.mStatus.setText(statusList.get(position));
         holder.mCandidateList.setText(candidateList.get(position));
-
+        switch (electionType) {
+            case "active":
+                holder.constraintLayout.setBackgroundColor(Color.rgb(226, 11, 11));
+                break;
+            case "finished":
+                holder.constraintLayout.setBackgroundColor(Color.rgb(5, 176, 197));
+                break;
+            case "pending":
+                holder.constraintLayout.setBackgroundColor(Color.rgb(75, 166, 79));
+                break;
+            case "total":
+                holder.constraintLayout.setBackgroundColor(Color.rgb(254, 157, 24));
+                break;
+        }
 
     }
 
@@ -57,16 +73,18 @@ public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecy
     }
 
     class ElectionsViewHolder extends RecyclerView.ViewHolder {
-        final TextView mElectionName, mElectionDescription, mStartDate, mEndDate,mStatus,mCandidateList;
+        final TextView mElectionName, mElectionDescription, mStartDate, mEndDate, mStatus, mCandidateList;
+        final ConstraintLayout constraintLayout;
 
         public ElectionsViewHolder(@NonNull View itemView) {
             super(itemView);
             mElectionName = itemView.findViewById(R.id.text_view_election_name);
             mElectionDescription = itemView.findViewById(R.id.text_view_election_description);
-            mStartDate=itemView.findViewById(R.id.text_view_start_date);
-            mEndDate=itemView.findViewById(R.id.text_view_end_date);
-            mStatus=itemView.findViewById(R.id.text_view_status);
-            mCandidateList=itemView.findViewById(R.id.text_view_candidate_list);
+            mStartDate = itemView.findViewById(R.id.text_view_start_date);
+            mEndDate = itemView.findViewById(R.id.text_view_end_date);
+            mStatus = itemView.findViewById(R.id.text_view_status);
+            mCandidateList = itemView.findViewById(R.id.text_view_candidate_list);
+            constraintLayout = itemView.findViewById(R.id.constraintLayout);
         }
     }
 }

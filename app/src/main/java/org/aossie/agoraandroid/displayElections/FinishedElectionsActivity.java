@@ -71,7 +71,7 @@ public class FinishedElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList);
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "finished");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
     }
 }
