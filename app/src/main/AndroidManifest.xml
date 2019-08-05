@@ -11,17 +11,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".forgotPassword.ForgotPasswordSend" />
-        <activity android:name=".createElection.CreateElectionTwo" />
-        <activity android:name=".createElection.CreateElectionFour" />
-        <activity android:name=".createElection.CreateElectionThree" />
-        <activity android:name=".createElection.CreateElectionOne" />
+        <activity android:name=".displayElections.FinishedElectionsActivity" />
+        <activity android:name=".displayElections.ActiveElectionsActivity" />
+        <activity android:name=".displayElections.PendingElectionsActivity" />
+        <activity android:name=".displayElections.TotalElectionsActivity" />
+        <activity
+            android:name=".forgotPassword.ForgotPasswordSend"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".createElection.CreateElectionTwo"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".createElection.CreateElectionOne" />
+        <activity
+            android:name=".createElection.CreateElectionFour"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".createElection.CreateElectionThree" />
+        <activity
+            android:name=".createElection.CreateElectionThree"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".createElection.CreateElectionTwo" />
+        <activity
+            android:name=".createElection.CreateElectionOne"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".home.HomeActivity" />
         <activity android:name=".home.HomeActivity" />
         <activity
             android:name=".signUp.SignUpActivity"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".logIn.LogInActivity"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".main.MainActivity" />
         <activity android:name=".main.MainActivity">
             <intent-filter>
@@ -29,7 +49,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>

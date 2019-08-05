@@ -86,6 +86,22 @@
     <string name="send_link">Send Link</string>
     <string name="developed_with_by_aossie">Developed with ❤️ by AOSSIE</string>
     <string name="enter_user_name_reset_pass_link">Please enter user name to receive password reset link</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor</string>
+    <string name="candidates">Candidates</string>
+    <string name="candidate_list_hardcoded">First Name  Second Name   Third Name  Fourth Name</string>
+    <string name="start">START:</string>
+    <string name="starting_date">Starting Date</string>
+    <string name="status">STATUS:</string>
+    <string name="election_status">Election Status</string>
+    <string name="end">END:</string>
+    <string name="ending_date">Ending Date</string>
+    <string name="image_button">Image Button</string>
+    <string name="description">Description</string>
+    <string name="active_elections">Active Elections</string>
+    <string name="finished_elections">Finished Elections</string>
+    <string name="pending_elections">Pending Elections</string>
+    <string name="total_elections">Total Elections</string>
+    <string name="election_name_">Election Name</string>
 
 
 </resources>

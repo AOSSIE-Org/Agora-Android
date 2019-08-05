@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class CandidateRecyclerAdapter extends RecyclerView.Adapter<CandidateRecyclerAdapter.CandidateViewHolder> {
     private final ArrayList<String> candidates;
 
-    public CandidateRecyclerAdapter(ArrayList<String> candidates, Context context) {
+    public CandidateRecyclerAdapter(ArrayList<String> candidates) {
         this.candidates = candidates;
     }
 

@@ -50,8 +50,6 @@ public class HomeActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, Navigation.findNavController(this, R.id.fragment),
                 drawerLayout);
-
-
     }
 
     @Override
@@ -76,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 
 }
