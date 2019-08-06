@@ -102,6 +102,7 @@
     <string name="pending_elections">Pending Elections</string>
     <string name="total_elections">Total Elections</string>
     <string name="election_name_">Election Name</string>
-
+    <string name="facebook_app_id">209457566270746</string>
+    <string name="fb_login_protocol_scheme">fb209457566270746</string>
 
 </resources>

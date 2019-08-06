@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/white_background"
     tools:context=".main.MainActivity">
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="146dp"
@@ -34,6 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
     <Button
         android:id="@+id/signup"
         android:layout_width="0dp"
@@ -48,19 +50,19 @@
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/facebook"
+        app:layout_constraintBottom_toTopOf="@+id/button_facebook_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/facebook"
+        android:id="@+id/button_facebook_login"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="#3B5998"
@@ -71,8 +73,7 @@
         app:layout_constraintBottom_toTopOf="@+id/signin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/signin"
@@ -91,6 +92,5 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
