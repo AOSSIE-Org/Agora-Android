@@ -34,7 +34,9 @@
             android:name=".createElection.CreateElectionOne"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".home.HomeActivity" />
-        <activity android:name=".home.HomeActivity" />
+        <activity
+            android:name=".home.HomeActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".signUp.SignUpActivity"
             android:configChanges="orientation|screenSize"

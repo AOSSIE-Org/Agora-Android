@@ -11,6 +11,8 @@ public class SharedPrefs {
     private static final String EmailKey = "emailId";
     private static final String FullNameKey = "fullName";
     private static final String TokenKey = "token";
+    private static final String PassKey = "userPass";
+    private static final String ExpiresOnKey = "expiresOn";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
 
@@ -63,6 +65,23 @@ public class SharedPrefs {
         return sharedPreferences.getString(TokenKey, null);
     }
 
+    public void savePass(String password) {
+        editor.putString(PassKey, password);
+        editor.commit();
+    }
+
+    public String getPass() {
+        return sharedPreferences.getString(PassKey, null);
+    }
+
+    public void saveTokenExpiresOn(String ExpiresOn) {
+        editor.putString(ExpiresOnKey, ExpiresOn);
+        editor.commit();
+    }
+
+    public String getTokenExpiresOn() {
+        return sharedPreferences.getString(ExpiresOnKey, null);
+    }
 
     public void clearLogin() {
         editor.putString(UserNameKey, null);

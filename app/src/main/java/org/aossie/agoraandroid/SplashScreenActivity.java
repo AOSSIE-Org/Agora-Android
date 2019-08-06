@@ -43,8 +43,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 } else {
                     startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
                     finish();
-
-
                 }
             }
 
@@ -53,6 +51,5 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }

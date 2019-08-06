@@ -16,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-class LoginViewModel extends AndroidViewModel {
+public class LoginViewModel extends AndroidViewModel {
     private final Context context;
     private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
 
@@ -26,7 +26,7 @@ class LoginViewModel extends AndroidViewModel {
         this.context = context;
     }
 
-    public void logInRequest(final String userName, String userPassword) {
+    public void logInRequest(final String userName, final String userPassword) {
         final JSONObject jsonObject = new JSONObject();
         try {
 
@@ -46,7 +46,7 @@ class LoginViewModel extends AndroidViewModel {
                         JSONObject jsonObjects = new JSONObject(response.body());
 
                         JSONObject token = jsonObjects.getJSONObject("token");
-
+                        String expiresOn=token.getString("expiresOn");
                         String key = token.getString("token");
                         String sUserName = jsonObjects.getString("username");
                         String email = jsonObjects.getString("email");
@@ -57,6 +57,8 @@ class LoginViewModel extends AndroidViewModel {
                         sharedPrefs.saveEmail(email);
                         sharedPrefs.saveFullName(firstName, lastName);
                         sharedPrefs.saveToken(key);
+                        sharedPrefs.savePass(userPassword);
+                        sharedPrefs.saveTokenExpiresOn(expiresOn);
                         context.startActivity(new Intent(context, HomeActivity.class));
 
 
