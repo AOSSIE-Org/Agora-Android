@@ -105,5 +105,10 @@
     <string name="facebook_app_id">209457566270746</string>
     <string name="fb_login_protocol_scheme">fb209457566270746</string>
     <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
+    <string name="delete_election">delete election</string>
+    <string name="invite_voter">Invite Voters</string>
+    <string name="voters">Voters</string>
+    <string name="ballot">Ballot</string>
+    <string name="result">Result</string>
 
 </resources>
