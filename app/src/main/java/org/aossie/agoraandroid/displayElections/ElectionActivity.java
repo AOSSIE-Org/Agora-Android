@@ -40,6 +40,12 @@ public class ElectionActivity extends AppCompatActivity {
         Button mVoters = findViewById(R.id.button_voters);
         Button mBallot = findViewById(R.id.button_ballot);
         Button mResult = findViewById(R.id.button_result);
+        mBallot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayElectionViewModel.getBallot(token, id);
+            }
+        });
 
         mDeleteElection.setOnClickListener(new View.OnClickListener() {
             @Override

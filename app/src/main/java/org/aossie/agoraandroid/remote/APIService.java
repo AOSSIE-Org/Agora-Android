@@ -96,6 +96,14 @@ public interface APIService {
     @DELETE("election/{id}")
     Call<String> deleteElection(@Header("X-Auth-Token") String authToken,@Path("id") String id);
 
+    //GET Ballots for election with specified id
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @GET("election/{id}/ballots")
+    Call<String> getBallot(@Header("X-Auth-Token") String authToken,@Path("id") String id);
+
 
 
 }
