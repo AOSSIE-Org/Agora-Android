@@ -26,6 +26,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
     private final ArrayList<String> mElectionEndDateList = new ArrayList<>();
     private final ArrayList<String> mElectionStatusList = new ArrayList<>();
     private final ArrayList<String> mCandidatesList = new ArrayList<>();
+    private final ArrayList<String> mIDList = new ArrayList<>();
 
 
     @Override
@@ -45,6 +46,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
                 StringBuilder mCandidateName = new StringBuilder();
                 JSONObject singleElectionJsonObject = electionsJsonArray.getJSONObject(i);
                 mElectionNameList.add(singleElectionJsonObject.getString("name"));
+                mIDList.add(singleElectionJsonObject.getString("_id"));
                 mElectionDescriptionList.add(singleElectionJsonObject.getString("description"));
 
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -74,7 +76,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "total");
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "total");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
 
 

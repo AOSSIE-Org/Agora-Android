@@ -26,6 +26,7 @@ public class ActiveElectionsActivity extends AppCompatActivity {
     private final ArrayList<String> mElectionEndDateList = new ArrayList<>();
     private final ArrayList<String> mElectionStatusList = new ArrayList<>();
     private final ArrayList<String> mCandidatesList = new ArrayList<>();
+    private final ArrayList<String> mIDList = new ArrayList<>();
 
 
     @Override
@@ -56,6 +57,7 @@ public class ActiveElectionsActivity extends AppCompatActivity {
                     mElectionStartDateList.add(formattedStartingDate.toString());
                     mElectionEndDateList.add(formattedEndingDate.toString());
                     mElectionNameList.add(singleElectionJsonObject.getString("name"));
+                    mIDList.add(singleElectionJsonObject.getString("_id"));
                     mElectionDescriptionList.add(singleElectionJsonObject.getString("description"));
                 }
                 JSONArray candidatesJsonArray = singleElectionJsonObject.getJSONArray("candidates");
@@ -70,7 +72,7 @@ public class ActiveElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList,"active");
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList,"active");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
     }
 }
