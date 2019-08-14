@@ -1,9 +1,9 @@
 package org.aossie.agoraandroid.remote;
 
 
-
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -28,7 +28,6 @@ public interface APIService {
 
     @POST("auth/login")
     Call<String> logIn(@Body String body);
-
 
 
     //POST request to change password
@@ -72,6 +71,30 @@ public interface APIService {
     @GET("election")
     Call<String> getAllElections(@Header("X-Auth-Token") String authToken);
 
+    //GET request to log in via facebook Access Token
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @GET("auth/authenticate/facebook")
+    Call<String> facebookLogin(@Header("Access-Token") String accessToken);
+
+
+    //GET request to get user's data
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @GET("user")
+    Call<String> getUserData(@Header("X-Auth-Token") String authToken);
+
+    //DELETE election with specified id
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @DELETE("election/{id}")
+    Call<String> deleteElection(@Header("X-Auth-Token") String authToken,@Path("id") String id);
 
 
 

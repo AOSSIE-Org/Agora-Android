@@ -26,10 +26,10 @@
         android:label="Contact Us"
         tools:layout="@layout/fragment_contact_us" />
     <fragment
-        android:id="@+id/fragment_my_invitations"
-        android:name="org.aossie.agoraandroid.home.MyInvitationFragment"
-        android:label="My Invitations"
-        tools:layout="@layout/fragment_my_invitation" />
+        android:id="@+id/fragment_share_with_others"
+        android:name="org.aossie.agoraandroid.home.ShareWithOthersFragment"
+        android:label="Share With Others"
+        tools:layout="@layout/fragment_share_with_others" />
     <fragment
         android:id="@+id/fragment_report_bug"
         android:name="org.aossie.agoraandroid.home.ReportBugFragment"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/white_background"
-    tools:context=".home.ReportBugFragment">
+    tools:context=".home.ShareWithOthersFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:text="@string/raise_issue"
+            android:text="@string/share_with_others_to_make_open_source_a_more_beautiful_place"
             android:textColor="@color/colorPrimary"
             android:textSize="25sp"
             android:textStyle="bold"
@@ -56,7 +56,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="@string/report_a_bug"
+            android:text="@string/share_with_others"
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
         <Button
-            android:id="@+id/button_report_bug"
+            android:id="@+id/button_share_now"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
@@ -72,10 +72,10 @@
             android:layout_marginTop="80dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="150dp"
+            android:layout_marginBottom="190dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="#FCD116"
-            android:text="@string/report_a_bug"
+            android:text="@string/share_with_others"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -86,6 +86,5 @@
             app:layout_constraintTop_toBottomOf="@+id/textView9"
             app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </ScrollView>

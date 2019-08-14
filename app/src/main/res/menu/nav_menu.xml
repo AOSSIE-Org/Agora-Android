@@ -11,16 +11,10 @@
             android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/profile" />
 
-
         <item
             android:id="@+id/fragment_about"
             android:icon="@drawable/ic_code_black_24dp"
             android:title="@string/about_agora" />
-
-        <item
-            android:id="@+id/fragment_my_invitations"
-            android:icon="@drawable/ic_call_received_black_24dp"
-            android:title="@string/my_invitations" />
 
     </group>
 
@@ -31,7 +25,7 @@
                 android:icon="@drawable/ic_bug_report_black_24dp"
                 android:title="@string/report_a_bug" />
             <item
-                android:id="@+id/fragment_share"
+                android:id="@+id/fragment_share_with_others"
                 android:icon="@drawable/ic_share_black_24dp"
                 android:title="@string/share_with_others" />
             <item

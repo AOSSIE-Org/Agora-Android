@@ -4,19 +4,22 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-class LoginViewModel extends AndroidViewModel {
+public class LoginViewModel extends AndroidViewModel {
     private final Context context;
     private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
 
@@ -26,7 +29,7 @@ class LoginViewModel extends AndroidViewModel {
         this.context = context;
     }
 
-    public void logInRequest(final String userName, String userPassword) {
+    public void logInRequest(final String userName, final String userPassword) {
         final JSONObject jsonObject = new JSONObject();
         try {
 
@@ -46,7 +49,7 @@ class LoginViewModel extends AndroidViewModel {
                         JSONObject jsonObjects = new JSONObject(response.body());
 
                         JSONObject token = jsonObjects.getJSONObject("token");
-
+                        String expiresOn = token.getString("expiresOn");
                         String key = token.getString("token");
                         String sUserName = jsonObjects.getString("username");
                         String email = jsonObjects.getString("email");
@@ -57,6 +60,8 @@ class LoginViewModel extends AndroidViewModel {
                         sharedPrefs.saveEmail(email);
                         sharedPrefs.saveFullName(firstName, lastName);
                         sharedPrefs.saveToken(key);
+                        sharedPrefs.savePass(userPassword);
+                        sharedPrefs.saveTokenExpiresOn(expiresOn);
                         context.startActivity(new Intent(context, HomeActivity.class));
 
 
@@ -67,8 +72,74 @@ class LoginViewModel extends AndroidViewModel {
                 } else {
                     Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
                 }
+            }
 
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+    }
+
+    public void facebookLogInRequest(String accessToken) {
+        APIService apiService = RetrofitClient.getAPIService();
+        Call<String> facebookLogInResponse = apiService.facebookLogin(accessToken);
+        facebookLogInResponse.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.message().equals("OK")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        String expiresOn = jsonObject.getString("expiresOn");
+                        String authToken = jsonObject.getString("token");
+                        sharedPrefs.saveToken(authToken);
+                        sharedPrefs.saveTokenExpiresOn(expiresOn);
+                        getUserData(authToken);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getUserData(String authToken) {
+        APIService apiService = RetrofitClient.getAPIService();
+        Call<String> getDataResponse = apiService.getUserData(authToken);
+        getDataResponse.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.message().equals("OK")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+
+                        String UserName = jsonObject.getString("username");
+                        String email = jsonObject.getString("email");
+                        String firstName = jsonObject.getString("firstName");
+                        String lastName = jsonObject.getString("lastName");
+
+                        sharedPrefs.saveUserName(UserName);
+                        sharedPrefs.saveEmail(email);
+                        sharedPrefs.saveFullName(firstName, lastName);
+                        context.startActivity(new Intent(context, HomeActivity.class));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
