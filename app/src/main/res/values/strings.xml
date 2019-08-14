@@ -111,7 +111,9 @@
     <string name="ballot">Ballot</string>
     <string name="result">Result</string>
     <string name="ballots">Ballots</string>
-    <string name="voter_email">Voter Email</string>
     <string name="vote_ballot">Vote Ballot</string>
+    <string name="voter_name">Voter Name</string>
+    <string name="voter_email">Voter Email</string>
+
 
 </resources>

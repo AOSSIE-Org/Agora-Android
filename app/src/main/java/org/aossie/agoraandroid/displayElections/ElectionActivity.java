@@ -46,6 +46,12 @@ public class ElectionActivity extends AppCompatActivity {
                 displayElectionViewModel.getBallot(token, id);
             }
         });
+        mVoters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayElectionViewModel.getVoter(token, id);
+            }
+        });
 
         mDeleteElection.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".displayElections.BallotActivity"></activity>
+        <activity android:name=".displayElections.VotersActivity"></activity>
+        <activity android:name=".displayElections.BallotActivity" />
         <activity android:name=".displayElections.ElectionActivity" />
         <activity android:name=".displayElections.FinishedElectionsActivity" />
         <activity android:name=".displayElections.ActiveElectionsActivity" />

@@ -46,6 +46,28 @@ class DisplayElectionViewModel extends AndroidViewModel {
 
     }
 
+    void getVoter(String token, String id) {
+        APIService apiService = RetrofitClient.getAPIService();
+        Call<String> getVotersResponse = apiService.getVoters(token, id);
+        getVotersResponse.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.message().equals("OK")) {
+                    Intent intent = new Intent(context, VotersActivity.class);
+                    intent.putExtra("voters_response", response.body());
+                    context.startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplication(), "Something Went Wrong Please Try Again Later", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
     void deleteElection(String token, String id) {
         APIService apiService = RetrofitClient.getAPIService();
         Call<String> deleteElectionResponse = apiService.deleteElection(token, id);
