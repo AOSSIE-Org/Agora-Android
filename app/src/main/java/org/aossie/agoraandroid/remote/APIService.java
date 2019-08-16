@@ -94,7 +94,7 @@ public interface APIService {
             "Content-Type: application/json"
     })
     @DELETE("election/{id}")
-    Call<String> deleteElection(@Header("X-Auth-Token") String authToken,@Path("id") String id);
+    Call<String> deleteElection(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
     //GET Ballots for election with specified id
     @Headers({
@@ -102,7 +102,7 @@ public interface APIService {
             "Content-Type: application/json"
     })
     @GET("election/{id}/ballots")
-    Call<String> getBallot(@Header("X-Auth-Token") String authToken,@Path("id") String id);
+    Call<String> getBallot(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
     //GET Voters for election with specified id
     @Headers({
@@ -110,8 +110,15 @@ public interface APIService {
             "Content-Type: application/json"
     })
     @GET("election/{id}/voters")
-    Call<String> getVoters(@Header("X-Auth-Token") String authToken,@Path("id") String id);
+    Call<String> getVoters(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
+    //POST the list of voters to election
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @POST("election/{id}/voters")
+    Call<String> sendVoters(@Header("X-Auth-Token") String authToken, @Path("id") String id, @Body String body);
 
 
 }

@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.displayElections;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.inviteVoters.InviteVotersActivity;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
 public class ElectionActivity extends AppCompatActivity {
@@ -50,6 +52,19 @@ public class ElectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 displayElectionViewModel.getVoter(token, id);
+            }
+        });
+        mInviteVoters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (status.equals("Finished"))
+                    Toast.makeText(ElectionActivity.this, "Election is Finished", Toast.LENGTH_SHORT).show();
+                else {
+                    Intent intent = new Intent(getApplicationContext(), InviteVotersActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("token", token);
+                    startActivity(intent);
+                }
             }
         });
 

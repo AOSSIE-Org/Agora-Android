@@ -114,6 +114,12 @@
     <string name="vote_ballot">Vote Ballot</string>
     <string name="voter_name">Voter Name</string>
     <string name="voter_email">Voter Email</string>
+    <string name="email_of_voter">Email of the Voter</string>
+    <string name="name_of_the_voter">Name of the Voter</string>
+    <string name="add_voter">Add Voter</string>
+    <string name="swipe_to_delete_voter">Swipe to delete Voter</string>
+    <string name="swipe_to_delete_candidate_s_name">Swipe to delete Candidate\'s Name</string>
+    <string name="enter_details_of_voters">Enter Details of Voters</string>
 
 
 </resources>
