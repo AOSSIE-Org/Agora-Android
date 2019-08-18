@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.inviteVoters.InviteVotersActivity;
+import org.aossie.agoraandroid.result.ResultActivity;
+import org.aossie.agoraandroid.result.ResultViewModel;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
 public class ElectionActivity extends AppCompatActivity {
@@ -20,6 +22,7 @@ public class ElectionActivity extends AppCompatActivity {
     private String id, status, token;
     private ConstraintLayout constraintLayout;
     private DisplayElectionViewModel displayElectionViewModel;
+    private ResultViewModel resultViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class ElectionActivity extends AppCompatActivity {
 
         SharedPrefs sharedPrefs = new SharedPrefs(getApplicationContext());
         displayElectionViewModel = new DisplayElectionViewModel(getApplication(), this);
+        resultViewModel=new ResultViewModel(getApplication(),this);
         token = sharedPrefs.getToken();
         mElectionName = findViewById(R.id.tv_election_name);
         mElectionDescription = findViewById(R.id.tv_description);
@@ -64,6 +68,16 @@ public class ElectionActivity extends AppCompatActivity {
                     intent.putExtra("id", id);
                     intent.putExtra("token", token);
                     startActivity(intent);
+                }
+            }
+        });
+        mResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (status.equals("Pending"))
+                    Toast.makeText(ElectionActivity.this, "Election is not started yet", Toast.LENGTH_SHORT).show();
+                else {
+                   resultViewModel.getResult(token,id);
                 }
             }
         });

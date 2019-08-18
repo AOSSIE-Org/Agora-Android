@@ -120,5 +120,14 @@ public interface APIService {
     @POST("election/{id}/voters")
     Call<String> sendVoters(@Header("X-Auth-Token") String authToken, @Path("id") String id, @Body String body);
 
+    //GET Result for election with specified id
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json"
+    })
+    @GET("result/{id}")
+    Call<String> getResult(@Header("X-Auth-Token") String authToken, @Path("id") String id);
+
+
 
 }

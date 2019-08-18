@@ -120,6 +120,7 @@
     <string name="swipe_to_delete_voter">Swipe to delete Voter</string>
     <string name="swipe_to_delete_candidate_s_name">Swipe to delete Candidate\'s Name</string>
     <string name="enter_details_of_voters">Enter Details of Voters</string>
+    <string name="winner_name">Winner Name</string>
 
 
 </resources>

@@ -56,6 +56,9 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     //Facebook Login
     implementation 'com.facebook.android:facebook-login:5.2.0'
+    //Pie Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 
 
 }
