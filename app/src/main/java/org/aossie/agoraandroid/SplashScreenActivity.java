@@ -36,7 +36,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 rotatingAgora.startAnimation(fadeOutAnimation);
                 String userName = sharedPrefs.getUserName();
-                if (userName == null) {
+                String password=sharedPrefs.getPass();
+                if (userName == null || password==null) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                     finish();
 

@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/image_agora"
-        android:layout_width="230dp"
-        android:layout_height="230dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="80dp"
@@ -51,7 +51,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/agora_vote"
         android:textColor="@color/colorPrimary"
-        android:textSize="50sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
