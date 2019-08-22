@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.inviteVoters.InviteVotersActivity;
-import org.aossie.agoraandroid.result.ResultActivity;
 import org.aossie.agoraandroid.result.ResultViewModel;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 

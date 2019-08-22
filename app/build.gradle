@@ -58,6 +58,9 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:5.2.0'
     //Pie Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //Load Toast
+    implementation 'net.steamcrafted:load-toast:1.0.12'
+
 
 
 

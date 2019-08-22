@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
+import net.steamcrafted.loadtoast.LoadToast;
+
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -24,6 +26,7 @@ import retrofit2.Response;
 
 class InviteVotersViewModel extends AndroidViewModel {
     private final Context context;
+    private LoadToast loadToast;
 
     public InviteVotersViewModel(@NonNull Application application, Context context) {
         super(application);
@@ -31,6 +34,9 @@ class InviteVotersViewModel extends AndroidViewModel {
     }
 
     public void inviteVoters(ArrayList<String> mVoterNames, ArrayList<String> mVoterEmails, String id, String token) throws JSONException {
+        loadToast = new LoadToast(context);
+        loadToast.setText("Inviting Voters");
+        loadToast.show();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < mVoterEmails.size(); i++) {
             JSONObject jsonObject = new JSONObject();
@@ -49,6 +55,7 @@ class InviteVotersViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.message().equals("OK")) {
+                    loadToast.success();
                     Toast.makeText(context, "Voters Added Successfully", Toast.LENGTH_SHORT).show();
                     context.startActivity(new Intent(context, HomeActivity.class));
                 }
@@ -56,6 +63,7 @@ class InviteVotersViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                loadToast.error();
                 Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
             }
         });

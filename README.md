@@ -66,10 +66,16 @@ Always `git pull` and get the latest from master. [Google](https://www.google.co
 
 ## Further Reading / Useful Links
 
-* [Retrofit](https://square.github.io/retrofit/)-A type-safe HTTP client for Android and Java
+* [Retrofit](https://square.github.io/retrofit/)-A type-safe HTTP client for Android and Java.
 * [Material Design For Android](https://developer.android.com/guide/topics/ui/look-and-feel)-Material design is a comprehensive guide for visual, motion, and interaction design across platforms and devices.
 * [Shimmer For Android](https://facebook.github.io/shimmer-android/)-Shimmer is an Android library that provides an easy way to add a shimmer effect to any view in your Android app.
-* [gson](https://github.com/google/gson)-A Java serialization/deserialization library to convert Java Objects into JSON and back
-
+* [gson](https://github.com/google/gson)-A Java serialization/deserialization library to convert Java Objects into JSON and back.
+* [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started)-  Android Jetpack's Navigation component helps you implement navigation, from simple button clicks to more complex patterns, such as app bars and the navigation drawer.
+* [Recycler View](https://developer.android.com/guide/topics/ui/layout/recyclerview)- To display a scrolling list of elements based on large data sets (or data that frequently changes).
+* [Card View](https://developer.android.com/guide/topics/ui/layout/cardview)- To create card views.
+* [Design support](https://developer.android.com/topic/libraries/support-library/packages)- The Android Support Library contains several library packages that can be included in your application. Each of these libraries supports a specific range of Android platform versions and set of features.
+* [Pie Chart](https://github.com/PhilJay/MPAndroidChart)- A powerful & easy to use chart library for Android.
+* [Facebook Login](https://developers.facebook.com/docs/facebook-login/)- To implement User login using social media account.
+* [Load Toast](https://github.com/code-mc/loadtoast)-Pretty material design toasts with feedback animations.
 
 

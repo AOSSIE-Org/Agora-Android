@@ -45,6 +45,7 @@ Libraries used in this project are listed below:
 * [Design support](https://developer.android.com/topic/libraries/support-library/packages)- The Android Support Library contains several library packages that can be included in your application. Each of these libraries supports a specific range of Android platform versions and set of features.
 * [Pie Chart](https://github.com/PhilJay/MPAndroidChart)- A powerful & easy to use chart library for Android.
 * [Facebook Login](https://developers.facebook.com/docs/facebook-login/)- To implement User login using social media account.
+* [Load Toast](https://github.com/code-mc/loadtoast)-Pretty material design toasts with feedback animations.
 
 We started working on the project on time but I was a bit uncomfortable with the Agora Web API and this make me behind my timeline. We decided to go feature by feature and the first features that we implemented were login and signup with email baed accounts. We left the implementation of splash screen because it will slow down the process of debugging the application on real device.
 
