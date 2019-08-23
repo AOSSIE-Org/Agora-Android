@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import net.steamcrafted.loadtoast.LoadToast;
+
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.remote.APIService;
@@ -32,6 +34,7 @@ import retrofit2.Response;
  */
 public class ProfileFragment extends Fragment {
     private TextInputLayout mNewPAss, mConfirmPass;
+    private LoadToast loadToast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +77,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void doChangePasswordRequest(String password, String token) {
+        loadToast = new LoadToast(getActivity());
+        loadToast.setText("Changing Password");
+        loadToast.show();
         final JSONObject jsonObject = new JSONObject();
         try {
 
@@ -88,19 +94,20 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.message().equals("OK")) {
+                    loadToast.success();
                     Toast.makeText(getActivity(), "Password Changed Successfully", Toast.LENGTH_SHORT).show();
 
 
                 } else {
                     Log.d("TAG", "onResponse:" + response.body());
-
+                    loadToast.error();
                     Toast.makeText(getActivity(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.d("TAG", "onResponse:" + t);
+                loadToast.error();
                 Toast.makeText(getActivity(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
 
             }
