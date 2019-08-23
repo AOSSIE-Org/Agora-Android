@@ -59,6 +59,10 @@ class InviteVotersViewModel extends AndroidViewModel {
                     Toast.makeText(context, "Voters Added Successfully", Toast.LENGTH_SHORT).show();
                     context.startActivity(new Intent(context, HomeActivity.class));
                 }
+                else if(response.message().equals("Internal Server Error")){
+                    loadToast.error();
+                    Toast.makeText(context, "Internal server error", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
