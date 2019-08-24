@@ -38,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -119,13 +120,16 @@ public class HomeFragment extends Fragment {
 
         String userName = sharedPrefs.getUserName();
         String userPassword = sharedPrefs.getPass();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         Date currentDate = Calendar.getInstance().getTime();
         try {
-            Date expiresOn = formatter.parse(sharedPrefs.getTokenExpiresOn());
-            //If the token is expired, get a new one to continue login session of user
-            if (currentDate.after(expiresOn)) {
-                updateToken(userName, userPassword);
+            String expireOn = sharedPrefs.getTokenExpiresOn();
+            if (expireOn != null) {
+                Date expiresOn = formatter.parse(expireOn);
+                //If the token is expired, get a new one to continue login session of user
+                if (currentDate.after(expiresOn)) {
+                    updateToken(userName, userPassword);
+                }
             }
         } catch (ParseException e) {
             e.printStackTrace();

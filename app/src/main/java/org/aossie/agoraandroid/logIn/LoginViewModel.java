@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
+import net.steamcrafted.loadtoast.LoadToast;
+
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
@@ -21,6 +23,7 @@ import retrofit2.Response;
 
 public class LoginViewModel extends AndroidViewModel {
     private final Context context;
+    private LoadToast loadToast;
     private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
 
 
@@ -30,6 +33,10 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void logInRequest(final String userName, final String userPassword) {
+
+        loadToast = new LoadToast(context);
+        loadToast.setText("Logging in");
+        loadToast.show();
         final JSONObject jsonObject = new JSONObject();
         try {
 
@@ -62,6 +69,8 @@ public class LoginViewModel extends AndroidViewModel {
                         sharedPrefs.saveToken(key);
                         sharedPrefs.savePass(userPassword);
                         sharedPrefs.saveTokenExpiresOn(expiresOn);
+                        loadToast.success();
+
                         context.startActivity(new Intent(context, HomeActivity.class));
 
 
@@ -70,12 +79,14 @@ public class LoginViewModel extends AndroidViewModel {
                     }
 
                 } else {
+                    loadToast.error();
                     Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                loadToast.error();
                 Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
             }
         });

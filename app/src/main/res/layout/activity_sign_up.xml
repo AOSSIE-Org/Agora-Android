@@ -217,7 +217,7 @@
                     android:layout_marginRight="8dp"
                     android:text="@string/user_sign_up"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="36sp"
+                    android:textSize="32sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
