@@ -18,7 +18,7 @@ public class ForgotPasswordSend extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_send);
-        forgotPasswordViewModel = new ForgotPasswordViewModel(getApplication());
+        forgotPasswordViewModel = new ForgotPasswordViewModel(getApplication(),this);
         Button sendLinkButton = findViewById(R.id.button_send_link);
         mUserNameEditText = findViewById(R.id.edit_text_user_name);
         sendLinkButton.setOnClickListener(new View.OnClickListener() {

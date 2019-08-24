@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 
+import net.steamcrafted.loadtoast.LoadToast;
+
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -33,6 +35,7 @@ class CreateElectionViewModel extends AndroidViewModel {
     private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
     private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
     private final TinyDB tinydb = new TinyDB(getApplication());
+    private LoadToast loadToast;
 
 
     CreateElectionViewModel(@NonNull Application application, Context context) {
@@ -43,6 +46,9 @@ class CreateElectionViewModel extends AndroidViewModel {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createElection() {
+        loadToast = new LoadToast(context);
+        loadToast.setText("Creating Election");
+        loadToast.show();
         ArrayList<String> candidates = tinydb.getListString("Candidates");
         JSONArray jsArray = new JSONArray(candidates);
         String token = sharedPrefs.getToken();
@@ -74,16 +80,19 @@ class CreateElectionViewModel extends AndroidViewModel {
             public void onResponse(Call<String> call, Response<String> response) {
 
                 if (response.message().equals("OK")) {
+                    loadToast.success();
                     Toast.makeText(getApplication(), "Created Successfully", Toast.LENGTH_SHORT).show();
                     electionDetailsSharedPrefs.clearElectionData();
                     context.startActivity(new Intent(context, HomeActivity.class));
                 } else {
+                    loadToast.error();
                     Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                loadToast.error();
                 Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
             }
         });

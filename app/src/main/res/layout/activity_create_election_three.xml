@@ -68,7 +68,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/oklahoma"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:checked="true"/>
 
                     <RadioButton
@@ -78,7 +78,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/rangevoting"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
 
                     <RadioButton
@@ -88,7 +88,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/rankedpairs"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_sav"
@@ -97,7 +97,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/satisfaction_approval_voting"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
 
                     <RadioButton
@@ -116,7 +116,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/sequential_proportional_approval_voting"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
 
                     <RadioButton
@@ -126,7 +126,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/approval"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_exhaustive_ballot_with_dropoff"
@@ -135,7 +135,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/exhaustive_ballot_with_dropoff"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
 
                     <RadioButton
@@ -145,7 +145,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/copeland"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_uncovered_set"
@@ -154,7 +154,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/uncovered_set"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
 
                     <RadioButton
@@ -164,7 +164,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/borda"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_minimax_condorcet"
@@ -173,7 +173,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/minimax_condorcet"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_nanson"
@@ -182,7 +182,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/nanson"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_kemeny_young"
@@ -191,7 +191,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/kemeny_young"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
 
                     <RadioButton
@@ -201,7 +201,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/random_ballot"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_contingent_method"
@@ -210,7 +210,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/contingent_method"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
 
                     <RadioButton
@@ -220,7 +220,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/instant_runoff_2_round"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_baldwin"
@@ -229,7 +229,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/baldwin"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <RadioButton
                         android:id="@+id/radio_button_exhaustive_ballot"
@@ -238,7 +238,7 @@
                         android:buttonTint="#FCD116"
                         android:text="@string/exhaustive_ballot"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
                 </RadioGroup>
 
                 <Button

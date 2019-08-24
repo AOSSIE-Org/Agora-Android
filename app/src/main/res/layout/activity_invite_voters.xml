@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/white_background"
-    tools:context=".createElection.CreateElectionTwo">
+    tools:context=".inviteVoters.InviteVotersActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,10 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="@string/enter_candidate_s_name"
+            android:text="@string/enter_details_of_voters"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -30,16 +30,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_candidate"
+            android:id="@+id/text_input_voter_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:hint="@string/name_of_candidate"
+            android:hint="@string/name_of_the_voter"
             app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -51,27 +51,49 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/button_add_candidate"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_voter_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="@string/email_of_voter"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_voter_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button_add_voter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="#FCD116"
-            android:text="@string/add_candidate"
+            android:text="@string/add_voter"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_candidate" />
+            app:layout_constraintTop_toBottomOf="@+id/text_input_voter_email" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_names"
+            android:id="@+id/recycler_view_voters"
             android:layout_width="383dp"
             android:layout_height="380dp"
             android:layout_marginStart="8dp"
@@ -81,11 +103,11 @@
             android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_add_candidate"
-            tools:item_layout="@layout/list_item_candidate_name" />
+            app:layout_constraintTop_toBottomOf="@+id/button_add_voter"
+            tools:item_layout="@layout/list_item_voter_details" />
 
         <Button
-            android:id="@+id/button_next_two"
+            android:id="@+id/button_invite_voter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -96,7 +118,7 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="#FCD116"
-            android:text="@string/next"
+            android:text="@string/invite_voter"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -114,10 +136,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:gravity="center"
-            android:text="@string/swipe_to_delete_candidate_s_name"
+            android:text="@string/swipe_to_delete_voter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view_names" />
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view_voters" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
