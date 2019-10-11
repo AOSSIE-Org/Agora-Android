@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+apply plugin: "androidx.navigation.safeargs"
+
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+        applicationId "org.aossie.agoraandroid"
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
+    //Design Support Library
+    implementation "com.google.android.material:material:1.0.0-rc01"
+    //Library for CardView
+    implementation "androidx.cardview:cardview:1.0.0"
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    //GSON and GSON converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    //Navigation Architecture Dependencies
+    def nav_version = "2.1.0-beta02"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+    //Recycler View
+    implementation "com.android.support:recyclerview-v7:28.0.0"
+    //Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    //Facebook Login
+    implementation 'com.facebook.android:facebook-login:5.2.0'
+    //Pie Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //Load Toast
+    implementation 'net.steamcrafted:load-toast:1.0.12'
+
+
+
+
+}
