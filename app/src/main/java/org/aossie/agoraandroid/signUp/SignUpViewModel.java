@@ -4,6 +4,7 @@ package org.aossie.agoraandroid.signUp;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 
