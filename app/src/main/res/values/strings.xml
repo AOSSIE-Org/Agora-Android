@@ -121,6 +121,17 @@
     <string name="swipe_to_delete_candidate_s_name">Swipe to delete Candidate\'s Name</string>
     <string name="enter_details_of_voters">Enter Details of Voters</string>
     <string name="winner_name">Winner Name</string>
-
-
+    <string name="security_question_answer">Please Write Your Answer Here</string>
+    <string name="security_dropdown">Security Question</string>
+    
+    //string-array for security questions
+    <string-array name="security_questions">
+        <item>What is your Mother\'s maiden name?</item>
+        <item>What is name of your first pet?</item>
+        <item>What was your first car?</item>
+        <item>What elementary school did you attend?</item>
+        <item>What is name of the town where you born?</item>
+    </string-array>
+    
 </resources>
+

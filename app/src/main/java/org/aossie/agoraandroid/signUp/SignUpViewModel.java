@@ -32,8 +32,9 @@ class SignUpViewModel extends AndroidViewModel {
     }
 
 
-    public void signUpRequest(final String userName, String userPassword, String userEmail, String firstName, String lastName) {
+    public void signUpRequest(final String userName, String userPassword, String userEmail, String firstName, String lastName, String securityQuestion, String securityAnswer) {
         JSONObject jsonObject = new JSONObject();
+        JSONObject securityJsonObject = new JSONObject();
         loadToast = new LoadToast(context);
         loadToast.setText("Signing in");
         loadToast.show();
@@ -44,6 +45,9 @@ class SignUpViewModel extends AndroidViewModel {
             jsonObject.put("email", userEmail);
             jsonObject.put("firstName", firstName);
             jsonObject.put("lastName", lastName);
+            securityJsonObject.put("question", securityQuestion);
+            securityJsonObject.put("answer", securityAnswer);
+            jsonObject.put("securityQuestion",securityJsonObject);
 
         } catch (JSONException e) {
             e.printStackTrace();
