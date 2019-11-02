@@ -182,6 +182,7 @@
                     app:boxStrokeColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/security_drop_down">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -203,6 +204,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/security_answer" />
+
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
