@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
 
 
-
 android {
     compileSdkVersion 28
     defaultConfig {
