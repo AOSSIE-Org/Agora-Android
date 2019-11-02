@@ -157,7 +157,7 @@
                 <RelativeLayout
                     android:layout_width="334dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/securityDropDown"
+                    android:id="@+id/security_drop_down"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/signUpPassword"
                     android:layout_marginTop="16dp"
@@ -165,13 +165,13 @@
                     android:layout_marginLeft="8dp"
                     android:background="@drawable/spinner_background">
                     <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/signUpSecurityQuestion"
+                        android:id="@+id/sign_up_security_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/securityAnswer"
+                    android:id="@+id/security_answer"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="334dp"
                     android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                     android:hint="@string/security_question_answer"
                     app:boxStrokeColor="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/securityDropDown">
+                    app:layout_constraintTop_toBottomOf="@+id/security_drop_down">
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
