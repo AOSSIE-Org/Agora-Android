@@ -272,6 +272,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void doYourUpdate() {
+        constraintLayout.setVisibility(View.GONE);
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.startShimmer();
         getElectionData(sharedPrefs.getToken());//try to fetch data again
     }
 }
