@@ -44,13 +44,13 @@ public class SignUpActivity extends AppCompatActivity {
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String userName = mUserNameEditText.getEditText().getText().toString();
-                final String firstName = mFirstNameEditText.getEditText().getText().toString();
-                final String lastName = mLastNameEditText.getEditText().getText().toString();
-                final String userEmail = mEmailEditText.getEditText().getText().toString();
-                final String userPass = mPasswordEditText.getEditText().getText().toString();
-                final String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
-                final String securityQuestion = securityQuestionOfSignUp;
+                 String userName = mUserNameEditText.getEditText().getText().toString();
+                 String firstName = mFirstNameEditText.getEditText().getText().toString();
+                 String lastName = mLastNameEditText.getEditText().getText().toString();
+                 String userEmail = mEmailEditText.getEditText().getText().toString();
+                 String userPass = mPasswordEditText.getEditText().getText().toString();
+                 String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
+                 String securityQuestion = securityQuestionOfSignUp;
 
                 if (userName.isEmpty())
                     mUserNameEditText.setError("Please enter User Name");
