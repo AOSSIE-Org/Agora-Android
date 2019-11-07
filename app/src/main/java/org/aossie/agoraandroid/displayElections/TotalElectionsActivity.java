@@ -1,10 +1,13 @@
 package org.aossie.agoraandroid.displayElections;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toolbar;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.ElectionsRecyclerAdapter;
@@ -27,7 +30,6 @@ public class TotalElectionsActivity extends AppCompatActivity {
     private final ArrayList<String> mElectionStatusList = new ArrayList<>();
     private final ArrayList<String> mCandidatesList = new ArrayList<>();
     private final ArrayList<String> mIDList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,9 @@ public class TotalElectionsActivity extends AppCompatActivity {
         ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "total");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
 
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

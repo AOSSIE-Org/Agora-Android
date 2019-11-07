@@ -26,16 +26,20 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".displayElections.FinishedElectionsActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".home.HomeActivity"/>
         <activity
             android:name=".displayElections.ActiveElectionsActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".home.HomeActivity"/>
         <activity
             android:name=".displayElections.PendingElectionsActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".home.HomeActivity"/>
         <activity
             android:name=".displayElections.TotalElectionsActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".home.HomeActivity"/>
         <activity
             android:name=".forgotPassword.ForgotPasswordSend"
             android:configChanges="orientation|screenSize" />
