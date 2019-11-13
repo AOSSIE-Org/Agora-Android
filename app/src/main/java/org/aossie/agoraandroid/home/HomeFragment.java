@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
         constraintLayout = view.findViewById(R.id.constraintLayout);
 
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.logo_yellow, R.color.logo_green);
         CardView mTotalElectionsCardView = view.findViewById(R.id.card_view_total_elections);
         CardView mPendingElectionsCardView = view.findViewById(R.id.card_view_pending_elections);
         CardView mActiveElectionsCardView = view.findViewById(R.id.card_view_active_elections);
