@@ -5,10 +5,6 @@
     <color name="colorPrimaryDark">#FF01643D</color>
     <color name="colorAccent">#FCD116</color>
     <color name="whiteColor">#FFFFFF</color>
-
-
-    //added by antailbaxt3r
-
     //logo colors
     <color name="logo_green">#008751</color>
     <color name="logo_yellow">#fcd116</color>

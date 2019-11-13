@@ -29,13 +29,10 @@ public class ActiveElectionsActivity extends AppCompatActivity {
     private final ArrayList<String> mElectionStatusList = new ArrayList<>();
     private final ArrayList<String> mCandidatesList = new ArrayList<>();
     private final ArrayList<String> mIDList = new ArrayList<>();
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_elections);
-
         //added back button to Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,8 +47,6 @@ public class ActiveElectionsActivity extends AppCompatActivity {
                         }
                     });
         }
-
-
         ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplicationContext());
         RecyclerView rvElectionDetails = findViewById(R.id.rv_active_elections);
 

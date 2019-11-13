@@ -35,7 +35,6 @@ public class TotalElectionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_total_elections);
-
         //added back button to Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,10 +49,8 @@ public class TotalElectionsActivity extends AppCompatActivity {
                         }
                     });
         }
-
         ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplicationContext());
         RecyclerView rvElectionDetails = findViewById(R.id.rv_total_elections);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvElectionDetails.setLayoutManager(mLayoutManager);
         try {
