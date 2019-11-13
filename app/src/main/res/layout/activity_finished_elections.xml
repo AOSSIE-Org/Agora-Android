@@ -12,18 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white"
+        app:title="@string/finished_elections"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/finished_elections"
-            android:textColor="@color/whiteColor"
-            android:textSize="35sp"
-            android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
 

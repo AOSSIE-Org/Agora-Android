@@ -45,7 +45,6 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(this.getResources().getColor(R.color.white));
 
         Navigation.findNavController(this, R.id.fragment);// navController
 
