@@ -5,6 +5,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(this.getResources().getColor(R.color.white));
 
         Navigation.findNavController(this, R.id.fragment);// navController
 
