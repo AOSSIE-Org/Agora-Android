@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#FF01643D</color>
     <color name="colorAccent">#FCD116</color>
     <color name="whiteColor">#FFFFFF</color>
+
     //logo colors
     <color name="logo_green">#008751</color>
     <color name="logo_yellow">#fcd116</color>
@@ -37,12 +38,10 @@
     <color name="seventyBlack">#32000000</color>
     <color name="black_transparent">#48000000</color>
     <color name="dark_black_transparent">#68000000</color>
-
     <color name="lightgreen800">#558b2f</color>
     <color name="indigo800">#283593</color>
     <color name="lightblue600">#039be5</color>
     <color name="red400">#ef5350</color>
-
     <color name="yellow200">#fff59d</color>
     <color name="yellow700">#fbc02d</color>
     <color name="red700">#d32f2f</color>
@@ -52,7 +51,6 @@
     <color name="dark_theme_surface">#121212</color>
     <color name="dark_theme_chat_layout">#212121</color>
     <color name="dark_theme_chat_bubble">#424242</color>
-
     <color name="placeholder_bg">#B3AFAF</color>
     <color name="darkgreyforavatarbg">#989898</color>
     <color name="gray_holo_dark">#ff000000</color>
