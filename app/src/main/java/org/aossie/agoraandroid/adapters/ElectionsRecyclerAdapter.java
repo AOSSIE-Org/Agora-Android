@@ -57,16 +57,16 @@ public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecy
         holder.mCandidateList.setText(candidateList.get(position));
         switch (electionType) {
             case "active":
-                holder.constraintLayout.setBackgroundColor(Color.rgb(226, 11, 11));
+                holder.constraintLayout.setBackgroundColor(mContext.getResources().getColor(R.color.red_active_elections));
                 break;
             case "finished":
-                holder.constraintLayout.setBackgroundColor(Color.rgb(5, 176, 197));
+                holder.constraintLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue_finished_elections));
                 break;
             case "pending":
-                holder.constraintLayout.setBackgroundColor(Color.rgb(75, 166, 79));
+                holder.constraintLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green_pending_elections));
                 break;
             case "total":
-                holder.constraintLayout.setBackgroundColor(Color.rgb(254, 157, 24));
+                holder.constraintLayout.setBackgroundColor(mContext.getResources().getColor(R.color.orange_total_elections));
                 break;
         }
         holder.electionLayout.setOnClickListener(new View.OnClickListener() {
