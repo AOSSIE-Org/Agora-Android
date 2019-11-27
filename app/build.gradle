@@ -61,6 +61,10 @@ dependencies {
     //Load Toast
     implementation 'net.steamcrafted:load-toast:1.0.12'
 
+    //Mockito For Unit Testing
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.json:json:20140107'
+
 
 
 
