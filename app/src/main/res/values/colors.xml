@@ -1,7 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+<!--<color name="colorPrimary">#008577</color>-->
+    <color name="colorPrimary">#008751</color>
+    <color name="colorPrimaryDark">#FF01643D</color>
     <color name="colorAccent">#FCD116</color>
     <color name="whiteColor">#FFFFFF</color>
+
+    //logo colors
+    <color name="logo_green">#008751</color>
+    <color name="logo_yellow">#fcd116</color>
+
+    //election colors for reference
+    <color name="red_active_elections">#e20b0b</color>
+    <color name="blue_finished_elections">#05b0c5</color>
+    <color name="orange_total_elections">#fe9d18</color>
+    <color name="green_pending_elections">#4ba64f</color>
+
+    //random colors that might be helpful later
+    <color name="hint">#f2f2f2</color>
+    <color name="white">#ffffff</color>
+    <color name="teal100">#B2DFDB</color>
+    <color name="teal400">#26A69A</color>
+    <color name="teal600">#00897B</color>
+    <color name="teal500">#009688</color>
+    <color name="teal700">#00796B</color>
+    <color name="teal900">#004D40</color>
+    <color name="black">#000000</color>
+    <color name="red500">#f44336</color>
+    <color name="deepPurple500">#673AB7</color>
+    <color name="blue500">#2196F3</color>
+    <color name="green500">#4CAF50</color>
+    <color name="deeporange500">#FF5722</color>
+    <color name="grey300">#E0E0E0</color>
+    <color name="grey500">#9E9E9E</color>
+    <color name="grey700">#616161</color>
+    <color name="black_background">#f0000000</color>
+    <color name="seventyBlack">#32000000</color>
+    <color name="black_transparent">#48000000</color>
+    <color name="dark_black_transparent">#68000000</color>
+    <color name="lightgreen800">#558b2f</color>
+    <color name="indigo800">#283593</color>
+    <color name="lightblue600">#039be5</color>
+    <color name="red400">#ef5350</color>
+    <color name="yellow200">#fff59d</color>
+    <color name="yellow700">#fbc02d</color>
+    <color name="red700">#d32f2f</color>
+    <color name="deeppurple700">#512da8</color>
+    <color name="deeppurple100">#D1C4E9</color>
+    <color name="green700">#388e3c</color>
+    <color name="dark_theme_surface">#121212</color>
+    <color name="dark_theme_chat_layout">#212121</color>
+    <color name="dark_theme_chat_bubble">#424242</color>
+    <color name="placeholder_bg">#B3AFAF</color>
+    <color name="darkgreyforavatarbg">#989898</color>
+    <color name="gray_holo_dark">#ff000000</color>
+    <color name="gray_holo_light">#fff3f3f3</color>
 </resources>

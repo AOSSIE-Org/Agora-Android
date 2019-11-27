@@ -2,9 +2,11 @@ package org.aossie.agoraandroid.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private HomeViewModel homeViewModel;
     private SharedPrefs sharedPrefs;
+    private NavController navController;
 
 
     @Override
@@ -45,17 +48,17 @@ public class HomeActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        Navigation.findNavController(this, R.id.fragment);// navController
+        navController = Navigation.findNavController(this, R.id.fragment);// navController
 
-        NavigationUI.setupWithNavController(navView, Navigation.findNavController(this, R.id.fragment));
+        NavigationUI.setupWithNavController(navView, navController);
 
-        NavigationUI.setupActionBarWithNavController(this, Navigation.findNavController(this, R.id.fragment),
+        NavigationUI.setupActionBarWithNavController(this, navController,
                 drawerLayout);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(Navigation.findNavController(this, R.id.fragment),
+        return NavigationUI.navigateUp(navController,
                 drawerLayout);
     }
 
