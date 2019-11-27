@@ -1,19 +1,14 @@
 package org.aossie.agoraandroid;
 
-import android.os.Build;
 
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
-import org.hamcrest.MatcherAssert;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
 import java.io.IOException;
 
 import retrofit2.Call;
