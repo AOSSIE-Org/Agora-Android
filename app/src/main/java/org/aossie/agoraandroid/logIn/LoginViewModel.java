@@ -93,6 +93,12 @@ public class LoginViewModel extends AndroidViewModel {
 
     }
 
+    // Login Validate Function For Unit Testing
+
+
+
+
+
     public void facebookLogInRequest(String accessToken) {
         APIService apiService = RetrofitClient.getAPIService();
         Call<String> facebookLogInResponse = apiService.facebookLogin(accessToken);
