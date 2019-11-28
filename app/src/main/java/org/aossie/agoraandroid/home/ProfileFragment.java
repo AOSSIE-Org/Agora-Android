@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
         final SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, null);
         TextView userName = view.findViewById(R.id.text_user_name);
-        final TextView emailId = view.findViewById(R.id.text_email_id);
+        TextView emailId = view.findViewById(R.id.text_email_id);
         TextView fullName = view.findViewById(R.id.text_full_name);
         final String token = sharedPrefs.getToken();
         Button mChangePassButton = view.findViewById(R.id.button_change_password);
@@ -71,7 +71,6 @@ public class ProfileFragment extends Fragment {
         String username = sharedPrefs.getUserName();
         String email = sharedPrefs.getEmail();
         String userFullName = sharedPrefs.getfullName();
-        Log.e("passsword",sharedPrefs.getPass()+" and");
 
         userName.setText(username);
         emailId.setText(email);
