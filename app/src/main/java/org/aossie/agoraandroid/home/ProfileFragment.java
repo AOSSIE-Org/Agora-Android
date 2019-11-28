@@ -39,7 +39,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
+        final SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, null);
         TextView userName = view.findViewById(R.id.text_user_name);
         TextView emailId = view.findViewById(R.id.text_email_id);
@@ -53,9 +53,19 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 String newPass = mNewPAss.getEditText().getText().toString().trim();
                 String confirmPass = mConfirmPass.getEditText().getText().toString().trim();
-                if (newPass.equals(confirmPass))
+                if (newPass.equals(confirmPass)){
+                    if(newPass.equals(sharedPrefs.getPass())){
+                        mNewPAss.setError("New Password should not be same as old one");
+                        mConfirmPass.getEditText().setText("");
+                        mConfirmPass.setErrorEnabled(false);
+                    }
+                    else
                     doChangePasswordRequest(confirmPass, token);
-                else mConfirmPass.setError("Password Does Not Matches");
+                }
+                else {
+                    mConfirmPass.setError("Password Does Not Matches");
+                    mNewPAss.setErrorEnabled(false);
+                }
             }
         });
         String username = sharedPrefs.getUserName();
