@@ -43,7 +43,9 @@ class HomeViewModel extends AndroidViewModel {
                     loadToast.success();
                     Toast.makeText(getApplication(), "Logged Out Successfully", Toast.LENGTH_SHORT).show();
                     sharedPrefs.clearLogin();
-                    context.startActivity(new Intent(getApplication(), MainActivity.class));
+                    Intent intent = new Intent(getApplication(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(intent);
                 }
             }
 
