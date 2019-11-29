@@ -33,29 +33,38 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
-    private TextInputLayout mNewPAss, mConfirmPass;
+    private TextInputLayout mNewPass, mConfirmPass;
     private LoadToast loadToast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
+        final SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, null);
         TextView userName = view.findViewById(R.id.text_user_name);
         TextView emailId = view.findViewById(R.id.text_email_id);
         TextView fullName = view.findViewById(R.id.text_full_name);
         final String token = sharedPrefs.getToken();
         Button mChangePassButton = view.findViewById(R.id.button_change_password);
-        mNewPAss = view.findViewById(R.id.textInputLayout_new_password);
+        mNewPass = view.findViewById(R.id.textInputLayout_new_password);
         mConfirmPass = view.findViewById(R.id.textInputLayout_confirm_password);
         mChangePassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newPass = mNewPAss.getEditText().getText().toString().trim();
+                String newPass = mNewPass.getEditText().getText().toString().trim();
                 String confirmPass = mConfirmPass.getEditText().getText().toString().trim();
-                if (newPass.equals(confirmPass))
-                    doChangePasswordRequest(confirmPass, token);
-                else mConfirmPass.setError("Password Does Not Matches");
+                if (newPass.equals(confirmPass)) {
+                    if (newPass.equals(sharedPrefs.getPass())) {
+                        mNewPass.setError("New Password should not be same as old one");
+                        mConfirmPass.getEditText().setText("");
+                        mConfirmPass.setErrorEnabled(false);
+                    } else
+                        doChangePasswordRequest(confirmPass, token);
+                }
+                else {
+                    mConfirmPass.setError("Password Does Not Matches");
+                    mNewPass.setErrorEnabled(false);
+                }
             }
         });
         String username = sharedPrefs.getUserName();
