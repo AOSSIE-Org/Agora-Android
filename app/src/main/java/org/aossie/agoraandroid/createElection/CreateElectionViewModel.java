@@ -56,7 +56,7 @@ class CreateElectionViewModel extends AndroidViewModel {
         try {
             Map<String, String> map = new HashMap<>();
             map.put("voteBallot", "");
-            map.put("voterEmail", "");
+            map.put("hash", "");
             JSONArray ballot = new JSONArray(new Map[]{map});
             jsonObject.put("ballot", ballot);  //Append the other JSONObject to the parent one
             jsonObject.put("name", electionDetailsSharedPrefs.getElectionName());
@@ -70,6 +70,7 @@ class CreateElectionViewModel extends AndroidViewModel {
             jsonObject.put("votingAlgo", electionDetailsSharedPrefs.getVotingAlgo());
             jsonObject.put("candidates", jsArray);
             jsonObject.put("noVacancies", 1);
+            jsonObject.put("electionType", "Election");
         } catch (JSONException e) {
             e.printStackTrace();
         }
