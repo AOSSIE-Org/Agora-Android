@@ -71,8 +71,10 @@ public class LoginViewModel extends AndroidViewModel {
                         sharedPrefs.saveTokenExpiresOn(expiresOn);
                         loadToast.success();
 
-                        context.startActivity(new Intent(context, HomeActivity.class));
-
+                        Intent intent = new Intent(context, HomeActivity.class);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
