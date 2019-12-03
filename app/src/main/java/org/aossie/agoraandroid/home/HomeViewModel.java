@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.main.MainActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -33,6 +34,7 @@ class HomeViewModel extends AndroidViewModel {
     void doLogout(String token) {
         loadToast = new LoadToast(context);
         loadToast.setText("Logging out");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         APIService apiService = RetrofitClient.getAPIService();
         Call<String> logoutResponse = apiService.logout(token);

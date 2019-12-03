@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -30,6 +31,7 @@ class DisplayElectionViewModel extends AndroidViewModel {
     void getBallot(String token, String id) {
         loadToast = new LoadToast(context);
         loadToast.setText("Getting Details");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         APIService apiService = RetrofitClient.getAPIService();
         Call<String> getBallotResponse = apiService.getBallot(token, id);
@@ -57,6 +59,7 @@ class DisplayElectionViewModel extends AndroidViewModel {
     void getVoter(String token, String id) {
         loadToast = new LoadToast(context);
         loadToast.setText("Getting Voters");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         APIService apiService = RetrofitClient.getAPIService();
         Call<String> getVotersResponse = apiService.getVoters(token, id);
@@ -84,6 +87,7 @@ class DisplayElectionViewModel extends AndroidViewModel {
     void deleteElection(String token, String id) {
         loadToast = new LoadToast(context);
         loadToast.setText("Deleting Election");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         APIService apiService = RetrofitClient.getAPIService();
         Call<String> deleteElectionResponse = apiService.deleteElection(token, id);

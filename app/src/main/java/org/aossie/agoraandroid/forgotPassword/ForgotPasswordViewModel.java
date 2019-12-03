@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 
@@ -28,6 +29,7 @@ private Context context;
     void sendForgotPassLink(String userName) {
         loadToast = new LoadToast(context);
         loadToast.setText("Processing");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
 
         APIService apiService = RetrofitClient.getAPIService();

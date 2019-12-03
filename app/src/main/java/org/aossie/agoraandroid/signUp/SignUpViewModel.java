@@ -12,6 +12,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.logIn.LogInActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -37,6 +38,7 @@ class SignUpViewModel extends AndroidViewModel {
         JSONObject securityJsonObject = new JSONObject();
         loadToast = new LoadToast(context);
         loadToast.setText("Signing in");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         try {
 

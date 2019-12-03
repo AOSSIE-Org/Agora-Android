@@ -88,6 +88,7 @@ public class ProfileFragment extends Fragment {
     private void doChangePasswordRequest(String password, String token) {
         loadToast = new LoadToast(getActivity());
         loadToast.setText("Changing Password");
+        loadToast.setTranslationY(Integer.valueOf(getActivity().getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         final JSONObject jsonObject = new JSONObject();
         try {
