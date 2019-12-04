@@ -60,7 +60,7 @@ public class SignUpTest {
         //Response Body
         JSONObject responseBack = new JSONObject();
         responseBack.put("token","Some token string");
-        responseBack.put("expiresOn","Some date time or timestamp");
+        responseBack.put("expirydate","Some date time or timestamp");
         MockResponse mockResponse = new MockResponse().setResponseCode(200).setBody(responseBack.toString());
         mockWebServer.enqueue(mockResponse);
         Response responseFromRequest = apiService.createUser(jsonObject.toString()).execute();
