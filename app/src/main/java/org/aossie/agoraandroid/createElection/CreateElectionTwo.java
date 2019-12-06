@@ -55,7 +55,7 @@ public class CreateElectionTwo extends AppCompatActivity {
         mAddCandidateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String name = mAddCandidateTextInput.getEditText().getText().toString();
+                final String name = mAddCandidateTextInput.getEditText().getText().toString().trim();
                 addCandidate(name);
             }
         });
