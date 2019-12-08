@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -36,6 +37,7 @@ class InviteVotersViewModel extends AndroidViewModel {
     public void inviteVoters(ArrayList<String> mVoterNames, ArrayList<String> mVoterEmails, String id, String token) throws JSONException {
         loadToast = new LoadToast(context);
         loadToast.setText("Inviting Voters");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < mVoterEmails.size(); i++) {

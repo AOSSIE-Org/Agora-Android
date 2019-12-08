@@ -12,6 +12,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -48,6 +49,7 @@ class CreateElectionViewModel extends AndroidViewModel {
     public void createElection() {
         loadToast = new LoadToast(context);
         loadToast.setText("Creating Election");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         ArrayList<String> candidates = tinydb.getListString("Candidates");
         JSONArray jsArray = new JSONArray(candidates);

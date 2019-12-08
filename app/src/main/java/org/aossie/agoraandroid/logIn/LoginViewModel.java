@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
@@ -36,6 +37,7 @@ public class LoginViewModel extends AndroidViewModel {
 
         loadToast = new LoadToast(context);
         loadToast.setText("Logging in");
+        loadToast.setTranslationY(Integer.valueOf(context.getString(R.string.loadToast_pixelValue)));
         loadToast.show();
         final JSONObject jsonObject = new JSONObject();
         try {
