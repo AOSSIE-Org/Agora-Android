@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:srcCompat="@drawable/agora" />
+        app:srcCompat="@drawable/agora" />
 
     <TextView
         android:id="@+id/textView28"
