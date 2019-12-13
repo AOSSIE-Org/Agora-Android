@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_background"
     tools:context=".SplashScreenActivity">
 
     <ImageView
@@ -21,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/agora" />
+        android:srcCompat="@drawable/agora" />
 
     <TextView
         android:id="@+id/textView28"
