@@ -52,8 +52,6 @@ dependencies {
     //Navigation Architecture Dependencies
     implementation "androidx.navigation:navigation-fragment:$navFragmentVersion"
     implementation "androidx.navigation:navigation-ui:$navUiVersion"
-    //Recycler View
-    implementation "com.android.support:recyclerview-v7:28.0.0"
     //Shimmer
     implementation "com.facebook.shimmer:shimmer:$facebookShimmerVersion"
     //Facebook Login
