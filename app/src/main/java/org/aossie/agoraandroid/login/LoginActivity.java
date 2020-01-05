@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.logIn;
+package org.aossie.agoraandroid.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +14,7 @@ import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.forgotPassword.ForgotPasswordSend;
 
 @SuppressWarnings("ConstantConditions")
-public class LogInActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private TextInputLayout mLoginUserName, mLoginPassword;
     private LoginViewModel loginViewModel;
 
@@ -22,18 +22,18 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_login);
         loginViewModel = new LoginViewModel(getApplication(), this);
 
 
-        mLoginPassword = findViewById(R.id.logInPassword);
-        mLoginUserName = findViewById(R.id.logInUserName);
-        Button mFinalLoginButton = findViewById(R.id.finalLogInButton);
-        TextView mForgotPassword = findViewById(R.id.text_view_forgot_password);
+        mLoginPassword = findViewById(R.id.login_password_til);
+        mLoginUserName = findViewById(R.id.login_user_name_til);
+        Button mFinalLoginButton = findViewById(R.id.login_btn);
+        TextView mForgotPassword = findViewById(R.id.forgot_password_tv);
         mForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LogInActivity.this, ForgotPasswordSend.class));
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordSend.class));
             }
         });
 

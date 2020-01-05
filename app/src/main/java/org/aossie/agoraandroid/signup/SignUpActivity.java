@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.signUp;
+package org.aossie.agoraandroid.signup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.logIn.LogInActivity;
+import org.aossie.agoraandroid.login.LoginActivity;
 
 @SuppressWarnings("ConstantConditions")
 public class SignUpActivity extends AppCompatActivity {
@@ -23,24 +23,18 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_signup);
 
         signUpViewModel = new SignUpViewModel(getApplication(),this);
-        mUserNameEditText = findViewById(R.id.signUpUserName);
-        mFirstNameEditText = findViewById(R.id.signUpFirstName);
-        mLastNameEditText = findViewById(R.id.signUpLastName);
-        mEmailEditText = findViewById(R.id.signUpEmail);
-        mPasswordEditText = findViewById(R.id.signUpPassword);
+        mUserNameEditText = findViewById(R.id.signup_user_name);
+        mFirstNameEditText = findViewById(R.id.signup_first_name);
+        mLastNameEditText = findViewById(R.id.signup_last_name);
+        mEmailEditText = findViewById(R.id.signup_email);
+        mPasswordEditText = findViewById(R.id.signup_password);
         appCompatSpinner = findViewById(R.id.sign_up_security_question);
         mSecurityAnswer = findViewById(R.id.security_answer);
-        TextView signIn=findViewById(R.id.signIn);
-        Button mSignUpButton = findViewById(R.id.signUpButton);
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this,LogInActivity.class));
-            }
-        });
+        Button mSignUpButton = findViewById(R.id.signup_btn);
+
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
