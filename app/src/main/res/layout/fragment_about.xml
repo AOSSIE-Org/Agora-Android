@@ -20,7 +20,7 @@
             android:layout_marginTop="68dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:contentDescription="@string/agora_vote"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/agora"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
