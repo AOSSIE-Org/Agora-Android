@@ -110,7 +110,7 @@
 
 
         <ImageView
-            android:id="@+id/image_agora"
+            android:id="@+id/main_logo_iv"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerHorizontal="true"
