@@ -28,6 +28,7 @@ import org.aossie.agoraandroid.logIn.LogInActivity;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+
     private CallbackManager callbackManager;
     private LoginViewModel loginViewModel;
 
@@ -35,13 +36,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button signIn = findViewById(R.id.signin);
-        Button signUp = findViewById(R.id.signup);
+        Button signIn = findViewById(R.id.signin_btn);
+        Button signUp = findViewById(R.id.signup_btn);
         loginViewModel = new LoginViewModel(getApplication(), this);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();
-        Button facebookLogin = findViewById(R.id.button_facebook_login);
+        Button facebookLogin = findViewById(R.id.fb_login_btn);
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {

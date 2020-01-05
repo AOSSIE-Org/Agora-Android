@@ -16,6 +16,12 @@
     <color name="orange_total_elections">#fe9d18</color>
     <color name="green_pending_elections">#4ba64f</color>
 
+
+    //main screen tint colors
+    <color name="greenTint">#FF01643D</color>
+    <color name="blueTint">#3B5998</color>
+    <color name="yellowTint">#FCD116</color>
+
     //random colors that might be helpful later
     <color name="hint">#f2f2f2</color>
     <color name="white">#ffffff</color>
