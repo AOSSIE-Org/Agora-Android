@@ -12,16 +12,16 @@ import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.main.MainActivity;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-        final SharedPrefs sharedPrefs = new SharedPrefs(SplashScreenActivity.this);
+        setContentView(R.layout.activity_splash);
+        final SharedPrefs sharedPrefs = new SharedPrefs(SplashActivity.this);
         // Rotation And Fade Out Animation
 
-        final ImageView rotatingAgora = findViewById(R.id.image_agora);
+        final ImageView rotatingAgora = findViewById(R.id.main_logo_iv);
         final Animation rotateAnimation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
         final Animation fadeOutAnimation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);
 
@@ -38,11 +38,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 String userName = sharedPrefs.getUserName();
                 String password=sharedPrefs.getPass();
                 if (userName == null || password==null) {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();
 
                 } else {
-                    startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                     finish();
                 }
             }
