@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.signUp;
+package org.aossie.agoraandroid.signup;
 
 
 import android.app.Application;
@@ -12,7 +12,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
-import org.aossie.agoraandroid.logIn.LogInActivity;
+import org.aossie.agoraandroid.login.LoginActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.json.JSONException;
@@ -65,7 +65,7 @@ class SignUpViewModel extends AndroidViewModel {
                 if (response.code() == 200) {
                     loadToast.success();
                     Toast.makeText(getApplication(), "An activation link has been sent to your email. Follow it to activate your account.", Toast.LENGTH_LONG).show();
-                    context.startActivity(new Intent(context, LogInActivity.class));
+                    context.startActivity(new Intent(context, LoginActivity.class));
                 } else if (response.code() == 409) {
                     loadToast.error();
                     Toast.makeText(getApplication(), "User With Same UserName already Exists", Toast.LENGTH_LONG).show();
