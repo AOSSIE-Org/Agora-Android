@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Agora Vote</string>
-    <string name="agora_vote">Agora Vote</string>
     <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
     <string name="log_in">LOG IN</string>
     <string name="sign_up">SIGN UP</string>
