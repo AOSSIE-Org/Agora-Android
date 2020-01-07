@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.logIn;
+package org.aossie.agoraandroid.login;
 
 import android.app.Application;
 import android.content.Context;

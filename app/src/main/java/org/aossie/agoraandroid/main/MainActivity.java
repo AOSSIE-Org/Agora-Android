@@ -21,9 +21,9 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.logIn.LoginViewModel;
-import org.aossie.agoraandroid.signUp.SignUpActivity;
-import org.aossie.agoraandroid.logIn.LogInActivity;
+import org.aossie.agoraandroid.login.LoginViewModel;
+import org.aossie.agoraandroid.signup.SignUpActivity;
+import org.aossie.agoraandroid.login.LoginActivity;
 
 import java.util.Arrays;
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent logInIntent = new Intent(MainActivity.this, LogInActivity.class);
+                Intent logInIntent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(logInIntent);
             }
         });
