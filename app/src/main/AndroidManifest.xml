@@ -59,11 +59,11 @@
             android:name=".home.HomeActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".signUp.SignUpActivity"
+            android:name=".signup.SignUpActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name=".logIn.LogInActivity"
+            android:name=".login.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".main.MainActivity" />
         <activity android:name=".main.MainActivity">
