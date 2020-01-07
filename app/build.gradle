@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 apply plugin: "androidx.navigation.safeargs"
 
@@ -67,7 +69,12 @@ dependencies {
     // Mockito
     testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
     testImplementation 'org.json:json:20140107'
+    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
-
+}
+repositories {
+    mavenCentral()
 }
