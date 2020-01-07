@@ -36,12 +36,12 @@ public class CreateElectionOne extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_election_one);
         electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
-        mNameTextLayout = findViewById(R.id.text_layout_election_name);
-        mDescriptionTextLayout = findViewById(R.id.text_layout_election_description);
-        mStartDateTextLayout = findViewById(R.id.text_layout_start_date);
-        mEndDateTextLayout = findViewById(R.id.text_layout_end_date);
-        ImageButton mStartDateImageButton = findViewById(R.id.imageButton_start_date);
-        ImageButton mEndDateImageButton = findViewById(R.id.imageButton_end_date);
+        mNameTextLayout = findViewById(R.id.election_name_til);
+        mDescriptionTextLayout = findViewById(R.id.election_description_til);
+        mStartDateTextLayout = findViewById(R.id.start_date_til);
+        mEndDateTextLayout = findViewById(R.id.end_date_til);
+        ImageButton mStartDateImageButton = findViewById(R.id.start_date_ibtn);
+        ImageButton mEndDateImageButton = findViewById(R.id.end_date_ibtn);
         Button mNextButton = findViewById(R.id.submit_details_btn);
         mStartDateImageButton.setOnClickListener(new View.OnClickListener() {
             @Override

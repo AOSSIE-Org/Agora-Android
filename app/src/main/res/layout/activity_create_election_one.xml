@@ -26,7 +26,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_layout_election_name"
+                android:id="@+id/election_name_til"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_layout_election_description"
+                android:id="@+id/election_description_til"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 app:boxStrokeColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_layout_election_name">
+                app:layout_constraintTop_toBottomOf="@+id/election_name_til">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -62,17 +62,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_layout_start_date"
+                android:id="@+id/start_date_til"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:hint="@string/start_date_format"
                 app:boxStrokeColor="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton_start_date"
+                app:layout_constraintEnd_toStartOf="@+id/start_date_ibtn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_layout_election_description">
+                app:layout_constraintTop_toBottomOf="@+id/election_description_til">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -80,7 +80,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
-                android:id="@+id/imageButton_start_date"
+                android:id="@+id/start_date_ibtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -88,23 +88,23 @@
                 android:contentDescription="@string/datePicker"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/text_layout_start_date"
-                app:layout_constraintTop_toBottomOf="@+id/text_layout_election_description"
+                app:layout_constraintStart_toEndOf="@+id/start_date_til"
+                app:layout_constraintTop_toBottomOf="@+id/election_description_til"
                 app:srcCompat="@drawable/ic_date_range_50dp" />
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_layout_end_date"
+                android:id="@+id/end_date_til"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:hint="@string/end_date_format"
                 app:boxStrokeColor="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton_end_date"
+                app:layout_constraintEnd_toStartOf="@+id/end_date_ibtn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_layout_start_date">
+                app:layout_constraintTop_toBottomOf="@+id/start_date_til">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -113,7 +113,7 @@
 
 
             <ImageButton
-                android:id="@+id/imageButton_end_date"
+                android:id="@+id/end_date_ibtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -121,8 +121,8 @@
                 android:contentDescription="@string/datePicker"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/text_layout_end_date"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton_start_date"
+                app:layout_constraintStart_toEndOf="@+id/end_date_til"
+                app:layout_constraintTop_toBottomOf="@+id/start_date_ibtn"
                 app:srcCompat="@drawable/ic_date_range_50dp" />
 
             <Button
@@ -133,7 +133,7 @@
                 app:backgroundTint="@color/yellowTint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_layout_end_date" />
+                app:layout_constraintTop_toBottomOf="@+id/end_date_til" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
