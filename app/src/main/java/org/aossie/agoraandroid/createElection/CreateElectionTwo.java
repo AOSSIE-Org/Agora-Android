@@ -31,11 +31,11 @@ public class CreateElectionTwo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_election_two);
-        Button mAddCandidateButton = findViewById(R.id.button_add_candidate);
+        Button mAddCandidateButton = findViewById(R.id.add_candidate_btn);
         tinydb= new TinyDB(getApplication());
-        Button mNextButton = findViewById(R.id.button_next_two);
-        mAddCandidateTextInput = findViewById(R.id.text_input_candidate);
-        RecyclerView mRecyclerView = findViewById(R.id.recycler_view_names);
+        Button mNextButton = findViewById(R.id.submit_details_btn);
+        mAddCandidateTextInput = findViewById(R.id.candidate_til);
+        RecyclerView mRecyclerView = findViewById(R.id.names_rv);
 
         candidateRecyclerAdapter = new CandidateRecyclerAdapter(mCandidates);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
