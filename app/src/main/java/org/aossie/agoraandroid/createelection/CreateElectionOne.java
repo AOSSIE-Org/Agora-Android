@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.createElection;
+package org.aossie.agoraandroid.createelection;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,7 +42,7 @@ public class CreateElectionOne extends AppCompatActivity {
         mEndDateTextLayout = findViewById(R.id.text_layout_end_date);
         ImageButton mStartDateImageButton = findViewById(R.id.imageButton_start_date);
         ImageButton mEndDateImageButton = findViewById(R.id.imageButton_end_date);
-        Button mNextButton = findViewById(R.id.button_next_one);
+        Button mNextButton = findViewById(R.id.submit_details_btn);
         mStartDateImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

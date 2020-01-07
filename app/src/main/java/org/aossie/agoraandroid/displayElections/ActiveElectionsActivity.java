@@ -10,7 +10,7 @@ import android.view.View;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.ElectionsRecyclerAdapter;
-import org.aossie.agoraandroid.createElection.ElectionDetailsSharedPrefs;
+import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

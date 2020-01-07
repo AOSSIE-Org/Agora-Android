@@ -21,8 +21,8 @@ import android.widget.Toast;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.createElection.CreateElectionOne;
-import org.aossie.agoraandroid.createElection.ElectionDetailsSharedPrefs;
+import org.aossie.agoraandroid.createelection.CreateElectionOne;
+import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
 import org.aossie.agoraandroid.displayElections.ActiveElectionsActivity;
 import org.aossie.agoraandroid.displayElections.FinishedElectionsActivity;
 import org.aossie.agoraandroid.displayElections.PendingElectionsActivity;
