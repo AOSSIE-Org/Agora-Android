@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.createElection;
+package org.aossie.agoraandroid.createelection;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;

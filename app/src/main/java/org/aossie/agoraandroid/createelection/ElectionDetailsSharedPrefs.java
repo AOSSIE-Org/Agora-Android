@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.createElection;
+package org.aossie.agoraandroid.createelection;
 
 import android.content.Context;
 import android.content.SharedPreferences;

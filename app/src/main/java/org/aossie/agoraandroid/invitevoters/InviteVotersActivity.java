@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.inviteVoters;
+package org.aossie.agoraandroid.invitevoters;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

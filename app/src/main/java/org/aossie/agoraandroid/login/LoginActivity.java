@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.forgotPassword.ForgotPasswordSend;
+import org.aossie.agoraandroid.forgotpassword.ForgotPasswordSend;
 
 @SuppressWarnings("ConstantConditions")
 public class LoginActivity extends AppCompatActivity {

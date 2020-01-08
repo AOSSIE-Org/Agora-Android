@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayElections;
+package org.aossie.agoraandroid.displayelections;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,7 +10,7 @@ import android.view.View;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.ElectionsRecyclerAdapter;
-import org.aossie.agoraandroid.createElection.ElectionDetailsSharedPrefs;
+import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TotalElectionsActivity extends AppCompatActivity {
+public class FinishedElectionsActivity extends AppCompatActivity {
+
     private final ArrayList<String> mElectionNameList = new ArrayList<>();
     private final ArrayList<String> mElectionDescriptionList = new ArrayList<>();
     private final ArrayList<String> mElectionStartDateList = new ArrayList<>();
@@ -34,7 +35,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_total_elections);
+        setContentView(R.layout.activity_finished_elections);
         //added back button to Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,7 +51,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
                     });
         }
         ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplicationContext());
-        RecyclerView rvElectionDetails = findViewById(R.id.rv_total_elections);
+        RecyclerView rvElectionDetails = findViewById(R.id.rv_finished_elections);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvElectionDetails.setLayoutManager(mLayoutManager);
         try {
@@ -60,30 +61,25 @@ public class TotalElectionsActivity extends AppCompatActivity {
             for (int i = 0; i < electionsJsonArray.length(); i++) {
                 StringBuilder mCandidateName = new StringBuilder();
                 JSONObject singleElectionJsonObject = electionsJsonArray.getJSONObject(i);
-                mElectionNameList.add(singleElectionJsonObject.getString("name"));
-                mIDList.add(singleElectionJsonObject.getString("_id"));
-                mElectionDescriptionList.add(singleElectionJsonObject.getString("description"));
 
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 Date formattedStartingDate = formatter.parse(singleElectionJsonObject.getString("start"));
                 Date formattedEndingDate = formatter.parse(singleElectionJsonObject.getString("end"));
-                mElectionStartDateList.add(formattedStartingDate.toString());
-                mElectionEndDateList.add(formattedEndingDate.toString());
                 Date currentDate = Calendar.getInstance().getTime();
-                if (currentDate.before(formattedStartingDate)) {
-                    mElectionStatusList.add("Pending");
-                } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
-                    mElectionStatusList.add("Active");
-                } else if (currentDate.after(formattedEndingDate)) {
+
+                if (currentDate.after(formattedEndingDate)) {
                     mElectionStatusList.add("Finished");
+                    mElectionStartDateList.add(formattedStartingDate.toString());
+                    mElectionEndDateList.add(formattedEndingDate.toString());
+                    mElectionNameList.add(singleElectionJsonObject.getString("name"));
+                    mIDList.add(singleElectionJsonObject.getString("_id"));
+                    mElectionDescriptionList.add(singleElectionJsonObject.getString("description"));
                 }
                 JSONArray candidatesJsonArray = singleElectionJsonObject.getJSONArray("candidates");
                 for (int j = 0; j < candidatesJsonArray.length(); j++) {
                     mCandidateName.append(candidatesJsonArray.getString(j)).append("\n");
                 }
                 mCandidatesList.add(mCandidateName.toString().trim());
-
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -91,10 +87,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "total");
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "finished");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
-
-
     }
-
 }
