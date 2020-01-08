@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayElections;
+package org.aossie.agoraandroid.displayelections;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

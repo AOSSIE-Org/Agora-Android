@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.createElection;
+package org.aossie.agoraandroid.createelection;
 
 import android.app.Application;
 import android.content.Context;
