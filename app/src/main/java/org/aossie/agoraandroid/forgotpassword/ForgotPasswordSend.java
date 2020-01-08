@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.forgotPassword;
+package org.aossie.agoraandroid.forgotpassword;
 
 import androidx.appcompat.app.AppCompatActivity;
 

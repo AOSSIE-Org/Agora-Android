@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.inviteVoters;
+package org.aossie.agoraandroid.invitevoters;
 
 import android.app.Application;
 import android.content.Context;
