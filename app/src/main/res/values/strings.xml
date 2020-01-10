@@ -122,7 +122,8 @@
     <string name="winner_name">Winner Name</string>
     <string name="security_question_answer">Please Write Your Answer Here</string>
     <string name="security_dropdown">Security Question</string>
-    
+    <string name="welcome">Welcome, %1$s!</string>
+
     //string-array for security questions
     <string-array name="security_questions">
         <item>What is your Mother\'s maiden name?</item>
