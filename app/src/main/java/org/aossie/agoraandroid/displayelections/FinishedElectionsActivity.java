@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayElections;
+package org.aossie.agoraandroid.displayelections;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ActiveElectionsActivity extends AppCompatActivity {
+public class FinishedElectionsActivity extends AppCompatActivity {
+
     private final ArrayList<String> mElectionNameList = new ArrayList<>();
     private final ArrayList<String> mElectionDescriptionList = new ArrayList<>();
     private final ArrayList<String> mElectionStartDateList = new ArrayList<>();
@@ -29,10 +30,12 @@ public class ActiveElectionsActivity extends AppCompatActivity {
     private final ArrayList<String> mElectionStatusList = new ArrayList<>();
     private final ArrayList<String> mCandidatesList = new ArrayList<>();
     private final ArrayList<String> mIDList = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_active_elections);
+        setContentView(R.layout.activity_finished_elections);
         //added back button to Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,9 +51,7 @@ public class ActiveElectionsActivity extends AppCompatActivity {
                     });
         }
         ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplicationContext());
-        RecyclerView rvElectionDetails = findViewById(R.id.rv_active_elections);
-
-
+        RecyclerView rvElectionDetails = findViewById(R.id.rv_finished_elections);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvElectionDetails.setLayoutManager(mLayoutManager);
         try {
@@ -66,8 +67,8 @@ public class ActiveElectionsActivity extends AppCompatActivity {
                 Date formattedEndingDate = formatter.parse(singleElectionJsonObject.getString("end"));
                 Date currentDate = Calendar.getInstance().getTime();
 
-                if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
-                    mElectionStatusList.add("Active");
+                if (currentDate.after(formattedEndingDate)) {
+                    mElectionStatusList.add("Finished");
                     mElectionStartDateList.add(formattedStartingDate.toString());
                     mElectionEndDateList.add(formattedEndingDate.toString());
                     mElectionNameList.add(singleElectionJsonObject.getString("name"));
@@ -86,7 +87,7 @@ public class ActiveElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList,"active");
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "finished");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
     }
 }

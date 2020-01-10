@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayElections;
+package org.aossie.agoraandroid.displayelections;
 
 import android.app.Application;
 import android.content.Context;

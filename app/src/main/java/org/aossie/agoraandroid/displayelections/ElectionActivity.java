@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayElections;
+package org.aossie.agoraandroid.displayelections;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.inviteVoters.InviteVotersActivity;
+import org.aossie.agoraandroid.invitevoters.InviteVotersActivity;
 import org.aossie.agoraandroid.result.ResultViewModel;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 

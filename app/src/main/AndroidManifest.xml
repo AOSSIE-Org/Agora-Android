@@ -13,31 +13,31 @@
         android:theme="@style/AppTheme">
         <activity android:name=".result.ResultActivity"></activity>
         <activity
-            android:name=".inviteVoters.InviteVotersActivity"
+            android:name=".invitevoters.InviteVotersActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.VotersActivity"
+            android:name=".displayelections.VotersActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.BallotActivity"
+            android:name=".displayelections.BallotActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.ElectionActivity"
+            android:name=".displayelections.ElectionActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.FinishedElectionsActivity"
+            android:name=".displayelections.FinishedElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.ActiveElectionsActivity"
+            android:name=".displayelections.ActiveElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.PendingElectionsActivity"
+            android:name=".displayelections.PendingElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.TotalElectionsActivity"
+            android:name=".displayelections.TotalElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".forgotPassword.ForgotPasswordSend"
+            android:name=".forgotpassword.ForgotPasswordSend"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".createelection.CreateElectionTwo"
