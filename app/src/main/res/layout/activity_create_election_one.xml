@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".createelection.CreateelectionOne">
+    tools:context=".createelection.CreateElectionOne">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:hint="@string/election_description"
+                android:clickable="false"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +77,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
@@ -108,7 +110,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 

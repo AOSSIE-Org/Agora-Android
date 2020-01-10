@@ -32,7 +32,6 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/invite_voters"
                 android:textSize="18sp"
-                app:buttonTint="@color/yellowTint"
                 app:layout_constraintBottom_toTopOf="@+id/real_time_results_check"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +44,6 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/get_real_time_results"
                 android:textSize="18sp"
-                app:buttonTint="@color/yellowTint"
                 app:layout_constraintBottom_toTopOf="@+id/secret_ballots_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,17 +77,15 @@
                     android:layout_marginTop="8dp"
                     android:checked="true"
                     android:text="@string/ballots_are_completely_secret"
-                    android:textSize="18sp"
-                    app:buttonTint="@color/yellowTint" />
+                    android:textSize="18sp" />
 
                 <RadioButton
                     android:id="@+id/ballot_visibility_only_me_radio_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/ballots_visible_only_to_me"
-                    android:textSize="18sp"
                     android:layout_marginTop="8dp"
-                    app:buttonTint="@color/yellowTint" />
+                    android:text="@string/ballots_visible_only_to_me"
+                    android:textSize="18sp" />
 
                 <RadioButton
                     android:id="@+id/ballot_visibility_everyone_radio_btn"
@@ -98,7 +94,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/ballots_visible_to_everyone"
                     android:textSize="18sp"
-                    app:buttonTint="@color/yellowTint" />
+                     />
             </RadioGroup>
 
             <TextView
@@ -130,7 +126,7 @@
                     android:text="@string/only_me"
                     android:textSize="18sp"
                     android:layout_marginTop="8dp"
-                    app:buttonTint="@color/yellowTint" />
+                     />
 
                 <RadioButton
                     android:id="@+id/access_everyone_radio_btn"
@@ -139,7 +135,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/everyone_with_access_to_election"
                     android:textSize="18sp"
-                    app:buttonTint="@color/yellowTint" />
+                     />
             </RadioGroup>
 
             <Button
@@ -147,7 +143,7 @@
                 style="@style/MainButtonStyle"
                 android:layout_marginTop="32dp"
                 android:text="@string/Create_Election"
-                app:backgroundTint="@color/yellowTint"
+                app:backgroundTint="@color/greenTint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />

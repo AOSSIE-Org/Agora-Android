@@ -24,7 +24,6 @@ import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.createelection.CreateElectionOne;
 import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
 import org.aossie.agoraandroid.displayelections.ActiveElectionsActivity;
-
 import org.aossie.agoraandroid.displayelections.FinishedElectionsActivity;
 import org.aossie.agoraandroid.displayelections.PendingElectionsActivity;
 import org.aossie.agoraandroid.displayelections.TotalElectionsActivity;
