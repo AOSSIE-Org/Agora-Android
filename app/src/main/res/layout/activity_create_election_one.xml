@@ -71,7 +71,6 @@
                 android:hint="@string/start_date_format"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:layout_constraintEnd_toStartOf="@+id/start_date_ibtn"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/election_description_til">
 
@@ -85,6 +84,8 @@
                 android:id="@+id/start_date_ibtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:background="@color/whiteColor"
                 android:contentDescription="@string/datePicker"
@@ -119,6 +120,8 @@
                 android:id="@+id/end_date_ibtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="32dp"
                 android:background="@color/whiteColor"
                 android:contentDescription="@string/datePicker"
