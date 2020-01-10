@@ -22,7 +22,7 @@ public class CreateElectionThree extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_election_three);
         electionDetailsSharedPrefs =new ElectionDetailsSharedPrefs(getApplication());
-        Button mFinalStepButton = findViewById(R.id.button_to_final_step);
+        Button mFinalStepButton = findViewById(R.id.submit_details_btn);
         radioGroup = findViewById(R.id.radioGroup);
         mFinalStepButton.setOnClickListener(new View.OnClickListener() {
             @Override
