@@ -32,9 +32,9 @@ public class CreateElectionFour extends AppCompatActivity {
         electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
         createElectionViewModel = new CreateElectionViewModel(getApplication(), this);
         setContentView(R.layout.activity_create_election_four);
-        Button mSubmitButton = findViewById(R.id.button_submit_details);
-        isInvite = findViewById(R.id.check_invite_voters);
-        isRealTime = findViewById(R.id.check_real_time_results);
+        Button mSubmitButton = findViewById(R.id.submit_details_btn);
+        isInvite = findViewById(R.id.invite_voters_check);
+        isRealTime = findViewById(R.id.real_time_results_check);
         radioGroupListVoters = findViewById(R.id.radioGroup2);
         radioGroupBallots = findViewById(R.id.radioGroup);
 
