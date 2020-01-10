@@ -128,7 +128,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/end_date_til"
-                app:layout_constraintTop_toBottomOf="@+id/start_date_ibtn"
+                app:layout_constraintTop_toBottomOf="@+id/start_date_til"
                 app:srcCompat="@drawable/ic_date_range_50dp" />
 
             <Button
