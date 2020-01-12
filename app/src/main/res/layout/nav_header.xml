@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/agora_logo_iv"
-        tools:text="welcome user.name" />
+        tools:text="welcome, prudhvi!" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
