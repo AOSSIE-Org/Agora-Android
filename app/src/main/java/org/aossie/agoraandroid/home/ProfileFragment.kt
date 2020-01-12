@@ -1,9 +1,11 @@
 package org.aossie.agoraandroid.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,16 +17,9 @@ import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
 
-  private val mFirstNameTextInputLayout: TextInputLayout? = null
-  private val mLastNameTextInputLayout: TextInputLayout? = null
-  private val mUserNameTextInputLayout: TextInputLayout? = null
-  private val mEmailIdTextInputLayout: TextInputLayout? = null
-  private val mNewPass: TextInputLayout? = null
-  private val mConfirmPass: TextInputLayout? = null
-  private val loadToast: LoadToast? = null
-
   lateinit var binding: FragmentProfileBinding
   lateinit var viewModel: ProfileViewModel
+  lateinit var loadToast: LoadToast
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                             savedInstanceState: Bundle?): View? {
@@ -32,52 +27,62 @@ class ProfileFragment : Fragment() {
     viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
+    loadToast = LoadToast(activity)
     binding.viewModel = viewModel
 
     binding.changePasswordBtn.setOnClickListener {
+      loadToast.show()
       viewModel.changePassword(
           binding.newPasswordTil.editText!!.text.toString(),
           binding.confirmPasswordTil.editText!!.text.toString()
       )
     }
 
-    //        TextView userName = view.findViewById(R.id.use);
-//        TextView emailId = view.findViewById(R.id.email_id_tv);
-//        final String token = sharedPrefs.getToken();
-//        Button mChangePassButton = view.findViewById(R.id.button_change_password);
-//        mNewPass = view.findViewById(R.id.textInputLayout_new_password);
-//        mConfirmPass = view.findViewById(R.id.textInputLayout_confirm_password);
-//        mChangePassButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String newPass = mNewPass.getEditText().getText().toString().trim();
-//                String confirmPass = mConfirmPass.getEditText().getText().toString().trim();
-//                if (newPass.equals(confirmPass)) {
-//                    if (newPass.equals(sharedPrefs.getPass())) {
-//                        mNewPass.setError("New Password should not be same as old one");
-//                        mConfirmPass.getEditText().setText("");
-//                        mConfirmPass.setErrorEnabled(false);
-//                    } else
-//                        doChangePasswordRequest(confirmPass, token);
-//                }
-//                else {
-//                    mConfirmPass.setError("Password Does Not Matches");
-//                    mNewPass.setErrorEnabled(false);
-//                }
-//            }
-//        });
-//        String username = sharedPrefs.getUserName();
-//        String email = sharedPrefs.getEmail();
-//
-//        userName.setText(username);
-//        emailId.setText(email);
+    binding.updateProfileBtn.setOnClickListener({
+      //TODO implment update feature
+      Toast.makeText(activity,"feature not available yet",Toast.LENGTH_SHORT).show()
+    })
 
-    viewModel.error.observe(this, Observer {
-      when(it){
-        1-> binding.firstNameTil.error = "not valid"
-      }
+    viewModel.passwordRequestCode.observe(this, Observer {
+      handlePassword(it)
     })
     return binding.getRoot()
+  }
+
+  private fun handlePassword(it: Int?) {
+    when(it){
+      1 -> {
+        loadToast.error()
+        binding.newPasswordTil.error = getString(R.string.password_empty_warn)
+      }
+      2 -> {
+        loadToast.error()
+        binding.confirmPasswordTil.error = getString(R.string.password_empty_warn)
+      }
+      3 -> {
+        loadToast.error()
+        binding.newPasswordTil.error = getString(R.string.password_not_match_warn)
+        binding.confirmPasswordTil.error = getString(R.string.password_not_match_warn)
+      }
+      4 -> {
+        loadToast.error()
+        binding.newPasswordTil.error = getString(R.string.password_same_oldpassword_warn)
+        binding.confirmPasswordTil.error = getString(R.string.password_same_oldpassword_warn)
+      }
+      200 -> {
+        loadToast.success()
+        Toast.makeText(activity,getString(R.string.password_change_success),Toast.LENGTH_SHORT).show()
+      }
+      201 -> {
+        loadToast.error()
+        Toast.makeText(activity,getString(R.string.token_expired),Toast.LENGTH_SHORT).show()
+      }
+      500 -> {
+        loadToast.error()
+        Toast.makeText(activity,"something wrong! please try later",Toast.LENGTH_SHORT).show()
+      }
+
+    }
   }
 
 

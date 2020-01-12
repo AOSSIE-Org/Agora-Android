@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.login;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;

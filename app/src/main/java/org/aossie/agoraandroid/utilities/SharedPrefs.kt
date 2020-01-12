@@ -49,7 +49,7 @@ class SharedPrefs(context: Context) {
     get() = sharedPreferences.getString(firstNameKey, null)
 
   fun saveLastName(lastName: String?) {
-    editor.putString(firstNameKey, lastName)
+    editor.putString(lastNameKey, lastName)
     editor.commit()
   }
 

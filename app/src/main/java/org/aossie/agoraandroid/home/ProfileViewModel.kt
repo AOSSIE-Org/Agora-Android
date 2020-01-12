@@ -35,22 +35,20 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
   val pass: String?
     get() = sharedPrefs.pass
 
-  private val _requestCode = MutableLiveData<Int>()
+  private val _passwordRequestCode = MutableLiveData<Int>()
 
-  val error: LiveData<Int>
-    get() = _requestCode
+  val passwordRequestCode: LiveData<Int>
+    get() = _passwordRequestCode
 
   fun changePassword(newPass: String, confirmNewPass: String) {
-    if (newPass.isBlank() && confirmNewPass.isBlank())
-      _requestCode.value = 1
-    else if (newPass.isBlank())
-      _requestCode.value = 2
+    if (newPass.isBlank())
+      _passwordRequestCode.value = 1
     else if (confirmNewPass.isBlank())
-      _requestCode.value = 3
+      _passwordRequestCode.value = 2
     else if (!newPass.equals(confirmNewPass))
-      _requestCode.value = 4
+      _passwordRequestCode.value = 3
     else if (newPass.equals(pass))
-      _requestCode.value = 5
+      _passwordRequestCode.value = 4
     else {
       doChangePasswordRequest(newPass, token!!);
     }
@@ -69,15 +67,15 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     changePassResponse.enqueue(object : Callback<String> {
       override fun onResponse(call: Call<String>, response: Response<String>) {
         if (response.message() == "OK") {
-          _requestCode.value = 200
+          _passwordRequestCode.value = 200
         } else {
           Log.d("TAG", "onResponse:" + response.body())
-          _requestCode.value = 201
+          _passwordRequestCode.value = 201
         }
       }
 
       override fun onFailure(call: Call<String>, t: Throwable) {
-        _requestCode.value = 500
+        _passwordRequestCode.value = 500
       }
     })
   }
