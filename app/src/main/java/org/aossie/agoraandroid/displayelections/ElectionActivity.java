@@ -16,7 +16,6 @@ import org.aossie.agoraandroid.invitevoters.InviteVotersActivity;
 import org.aossie.agoraandroid.result.ResultViewModel;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
-
 public class ElectionActivity extends AppCompatActivity {
     private TextView mElectionName, mElectionDescription, mStartDate, mEndDate, mCandidateName, mStatus;
     private String id, status, token;

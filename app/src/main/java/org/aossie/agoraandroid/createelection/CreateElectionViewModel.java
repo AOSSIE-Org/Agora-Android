@@ -15,7 +15,6 @@ import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
-
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.utilities.TinyDB;
 import org.json.JSONArray;

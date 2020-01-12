@@ -12,7 +12,6 @@ import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.main.MainActivity;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
-
 public class SplashActivity extends AppCompatActivity {
 
     @Override
