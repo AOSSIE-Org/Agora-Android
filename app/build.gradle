@@ -1,15 +1,17 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion compileSdk
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "org.aossie.agoraandroid"
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -63,11 +65,16 @@ dependencies {
     //MockWebServer and Roboelectric
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockWebServerVersion"
-
     // Mockito
     testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
     testImplementation 'org.json:json:20140107'
+    //kotlin deps
+    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
 
-
+}
+repositories {
+    mavenCentral()
 }
