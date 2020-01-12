@@ -41,9 +41,9 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         final SharedPrefs sharedPrefs = new SharedPrefs(getActivity());
         View view = inflater.inflate(R.layout.fragment_profile, null);
-        TextView userName = view.findViewById(R.id.text_user_name);
+        TextView userName = view.findViewById(R.id.user_name_tv);
         TextView emailId = view.findViewById(R.id.text_email_id);
-        TextView fullName = view.findViewById(R.id.text_full_name);
+        TextView fullName = view.findViewById(R.id.full_name_tv);
         final String token = sharedPrefs.getToken();
         Button mChangePassButton = view.findViewById(R.id.button_change_password);
         mNewPass = view.findViewById(R.id.textInputLayout_new_password);
