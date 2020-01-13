@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.login;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -10,10 +11,10 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
-import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,7 +66,8 @@ public class LoginViewModel extends AndroidViewModel {
 
                         sharedPrefs.saveUserName(sUserName);
                         sharedPrefs.saveEmail(email);
-                        sharedPrefs.saveFullName(firstName, lastName);
+                        sharedPrefs.saveFirstName(firstName);
+                        sharedPrefs.saveLastName(lastName);
                         sharedPrefs.saveToken(key);
                         sharedPrefs.savePass(userPassword);
                         sharedPrefs.saveTokenExpiresOn(expiresOn);
@@ -143,7 +145,8 @@ public class LoginViewModel extends AndroidViewModel {
 
                         sharedPrefs.saveUserName(UserName);
                         sharedPrefs.saveEmail(email);
-                        sharedPrefs.saveFullName(firstName, lastName);
+                        sharedPrefs.saveFirstName(firstName);
+                        sharedPrefs.saveLastName(lastName);
                         context.startActivity(new Intent(context, HomeActivity.class));
 
                     } catch (JSONException e) {
