@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.login;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -77,6 +78,7 @@ public class LoginViewModel extends AndroidViewModel {
                         intent.addCategory(Intent.CATEGORY_HOME);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
+                        ((Activity)context).finish();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
