@@ -32,7 +32,9 @@ public class LoginViewModel extends AndroidViewModel {
         this.context = context;
     }
 
-    public void logInRequest(final String userName, final String userPassword) {
+    public String logInRequest(final String userName, final String userPassword) {
+
+        final String[] message = {""};
 
         loadToast = new LoadToast(context);
         loadToast.setText("Logging in");
@@ -51,6 +53,7 @@ public class LoginViewModel extends AndroidViewModel {
         logInResponse.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+                message[0] = response.message();
                 if (response.message().equals("OK")) {
                     try {
                         JSONObject jsonObjects = new JSONObject(response.body());
@@ -92,7 +95,7 @@ public class LoginViewModel extends AndroidViewModel {
                 Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
             }
         });
-
+        return message[0];
     }
 
     public void facebookLogInRequest(String accessToken) {

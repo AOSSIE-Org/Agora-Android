@@ -51,7 +51,9 @@ public class LoginActivity extends AppCompatActivity {
                     mLoginPassword.setError("Please enter password");
                 } else {
                     mLoginPassword.setError(null);
-                    loginViewModel.logInRequest(userName, userPass);
+                    String message = loginViewModel.logInRequest(userName, userPass);
+                    if(message.equals("OK"))
+                        finish();
                 }
             }
 
