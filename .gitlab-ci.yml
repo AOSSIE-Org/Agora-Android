@@ -34,11 +34,20 @@ assembleDebug:
   stage: build
   script:
     - ./gradlew assembleDebug
+    - 'touch req.json && echo {\"url\":\"$CI_JOB_URL/artifacts/raw/app/build/outputs/apk/debug/app-debug.apk\",\"platform\": \"android\" } > req.json'
   artifacts:
     paths:
       - app/build/outputs/
+      - req.json
 
 debugTests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
+    
+deploy:
+    stage: deploy
+    dependencies: assembleDebug
+    script:
+    - 'curl -s -X POST -H "Content-Type: application/json" -d @req.json https://$APPETIZE_API@api.appetize.io/v1/apps/$APPETIZE_KEY > response.json'
+    
