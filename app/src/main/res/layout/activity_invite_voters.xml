@@ -140,7 +140,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recycler_view_voters" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

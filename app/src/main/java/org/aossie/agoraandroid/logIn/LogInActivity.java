@@ -24,8 +24,6 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         loginViewModel = new LoginViewModel(getApplication(), this);
-
-
         mLoginPassword = findViewById(R.id.logInPassword);
         mLoginUserName = findViewById(R.id.logInUserName);
         Button mFinalLoginButton = findViewById(R.id.finalLogInButton);
@@ -49,7 +47,8 @@ public class LogInActivity extends AppCompatActivity {
 
                 if (userPass.isEmpty()) {
                     mLoginPassword.setError("Please enter password");
-                } else {
+                }
+                else {
                     mLoginPassword.setError(null);
                     loginViewModel.logInRequest(userName, userPass);
                 }
