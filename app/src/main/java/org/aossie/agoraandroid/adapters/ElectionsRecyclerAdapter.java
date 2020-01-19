@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.displayelections.ElectionActivity;
+import org.aossie.agoraandroid.displayelections.*;
 
 
 import java.util.ArrayList;
