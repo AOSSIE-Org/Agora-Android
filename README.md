@@ -16,6 +16,7 @@ To run the development environment for this frontend, you need [Git](https://git
     - [Installation](#installation)
     - [Running the application](#running-the-application)
     - [Troubleshooting your local environment](#troubleshooting-your-local-environment)
+    - [Setting up appetize.io](#setting-up-appetize.io)
     - [Best Practices](#best-practices)
     - [Some Don'ts](#some-donts)
     - [Further Reading / Useful Links](#further-reading-useful-links)
@@ -44,6 +45,21 @@ To use Facebook login you will need to change "XXXXXXXXXXXXXXX" with your app id
 
 Always `git pull` and get the latest from master. [Google](https://www.google.com) and [Stackoverflow](https://stackoverflow.com/) are your friends. You can find answers for most technical problems there. If you run into problems you can't resolve, feel free to open an issue.
 
+## Setting up appetize.io
+
+Follow these steps to deploy your app to appetize.io:-
+
+1. Get an API token from here: https://appetize.io/docs#request-api-token.   
+2. Create a CI/CD variable for api token named "APPETIZE_API".     
+    Follow this guide to learn how to add CI/CD variables to your gitlab repository: https://docs.gitlab.com/ee/ci/variables/#creating-a-custom-environment-variable  
+3. Run the following command once to upload the app.    
+    ```curl https://APITOKEN@api.appetize.io/v1/apps -F "file=@file_to_upload.apk" -F "platform=android"```    
+    Replace API_TOKEN with the api token you got in step 1.  
+    Replace file_to_upload.apk with your apk file.   
+4. Command in step 3 will return a response. Note the public key from your response and add  a CI/CD varible named "APPETIZE_KEY" and enter this public key as value.  
+    Make sure to make both the varibales protected and make your branch protected too. Follow this guide: https://docs.gitlab.com/ee/user/project/protected_branches.html#configuring-protected-branches  
+    
+    This is a one time setup, subsequent changes you make in your repository will be reflected in your link you got in the response automatically.  
 
 ## Best practices
 
