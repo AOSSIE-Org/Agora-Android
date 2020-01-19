@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.createelection;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class ElectionDetailsSharedPrefs {
     private static final String myPrefs = "myPrefs";
     private static final String NameKey = "electionName";
