@@ -49,6 +49,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
                         }
                     });
         }
+
         ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplicationContext());
         RecyclerView rvElectionDetails = findViewById(R.id.rv_total_elections);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -67,6 +68,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 Date formattedStartingDate = formatter.parse(singleElectionJsonObject.getString("start"));
                 Date formattedEndingDate = formatter.parse(singleElectionJsonObject.getString("end"));
+
                 mElectionStartDateList.add(formattedStartingDate.toString());
                 mElectionEndDateList.add(formattedEndingDate.toString());
                 Date currentDate = Calendar.getInstance().getTime();

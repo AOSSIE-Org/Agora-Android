@@ -38,10 +38,10 @@ class ProfileFragment : Fragment() {
       )
     }
 
-    binding.updateProfileBtn.setOnClickListener({
+    binding.updateProfileBtn.setOnClickListener {
       //TODO implment update feature
       Toast.makeText(activity,"feature not available yet",Toast.LENGTH_SHORT).show()
-    })
+    }
 
     viewModel.passwordRequestCode.observe(this, Observer {
       handlePassword(it)

@@ -20,7 +20,7 @@ public class ElectionActivity extends AppCompatActivity {
     private TextView mElectionName, mElectionDescription, mStartDate, mEndDate, mCandidateName, mStatus;
     private String id, status, token;
     private ConstraintLayout constraintLayout;
-    private DisplayElectionViewModel displayElectionViewModel;
+    private org.aossie.agoraandroid.displayelections.DisplayElectionViewModel displayElectionViewModel;
     private ResultViewModel resultViewModel;
 
     @Override
@@ -29,7 +29,7 @@ public class ElectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_election);
 
         SharedPrefs sharedPrefs = new SharedPrefs(getApplicationContext());
-        displayElectionViewModel = new DisplayElectionViewModel(getApplication(), this);
+        displayElectionViewModel = new org.aossie.agoraandroid.displayelections.DisplayElectionViewModel(getApplication(), this);
         resultViewModel=new ResultViewModel(getApplication(),this);
         token = sharedPrefs.getToken();
         mElectionName = findViewById(R.id.tv_election_name);

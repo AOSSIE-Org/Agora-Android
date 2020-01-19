@@ -17,10 +17,12 @@ public interface APIService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
+
     @POST("auth/signup")
     Call<String> createUser(@Body String body);
 
     //POST request for LogIn
+
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json"
@@ -45,6 +47,7 @@ public interface APIService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
+
     @POST("election")
     Call<String> createElection(@Body String body, @Header("X-Auth-Token") String authToken);
 
@@ -76,6 +79,7 @@ public interface APIService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
+
     @GET("auth/authenticate/facebook")
     Call<String> facebookLogin(@Header("Access-Token") String accessToken);
 
@@ -85,6 +89,7 @@ public interface APIService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
+
     @GET("user")
     Call<String> getUserData(@Header("X-Auth-Token") String authToken);
 
@@ -93,6 +98,7 @@ public interface APIService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
+
     @DELETE("election/{id}")
     Call<String> deleteElection(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
@@ -117,6 +123,7 @@ public interface APIService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
+
     @POST("election/{id}/voters")
     Call<String> sendVoters(@Header("X-Auth-Token") String authToken, @Path("id") String id, @Body String body);
 
@@ -125,6 +132,7 @@ public interface APIService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
+
     @GET("result/{id}")
     Call<String> getResult(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
