@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Agora Vote</string>
-    <string name="agora_vote">Agora Vote</string>
     <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
     <string name="log_in">LOG IN</string>
     <string name="sign_up">SIGN UP</string>
@@ -81,7 +80,6 @@
     <string name="logout">Logout</string>
     <string name="testemail">testemail</string>
     <string name="zero">0</string>
-    <string name="full_name">Full Name</string>
     <string name="user_email_id">user email id</string>
     <string name="send_link">Send Link</string>
     <string name="developed_with_by_aossie">Developed with ❤️ by AOSSIE</string>
@@ -123,7 +121,9 @@
     <string name="winner_name">Winner Name</string>
     <string name="security_question_answer">Please Write Your Answer Here</string>
     <string name="security_dropdown">Security Question</string>
-    
+    <string name="welcome">Welcome, %1$s!</string>
+
+
     //string-array for security questions
     <string-array name="security_questions">
         <item>What is your Mother\'s maiden name?</item>
@@ -132,6 +132,19 @@
         <item>What elementary school did you attend?</item>
         <item>What is name of the town where you born?</item>
     </string-array>
-    
+
+    //profile fragment labels
+    <string name="email_id_label">Email :</string>
+    <string name="user_name_label">UserName :</string>
+    <string name="first_name_label">First Name :</string>
+    <string name="last_name_label">Last Name :</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="password_empty_warn">Password Cannot Be Empty</string>
+    <string name="password_not_match_warn">Passwords Not Matching</string>
+    <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
+    <string name="password_change_success">password changed successfully</string>
+    <string name="token_expired">Token expired, please login again!</string>
+
+
 </resources>
 

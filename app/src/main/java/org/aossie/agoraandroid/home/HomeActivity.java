@@ -6,8 +6,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,12 +36,8 @@ public class HomeActivity extends AppCompatActivity {
         NavigationView navView = findViewById(R.id.nav_view);
 
         View hView = navView.getHeaderView(0);
-        TextView nav_user_name = hView.findViewById(R.id.header_user_name);
-        TextView nav_user_email = hView.findViewById(R.id.header_email);
-        nav_user_name.setText(sharedPrefs.getUserName());
-        nav_user_email.setText(sharedPrefs.getEmail());
-
-
+        TextView nav_user_name = hView.findViewById(R.id.header_name_tv);
+        nav_user_name.setText(getString(R.string.welcome,sharedPrefs.getFirstName()));
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
