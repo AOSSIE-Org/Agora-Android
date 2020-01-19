@@ -31,18 +31,21 @@ public class MainActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private LoginViewModel loginViewModel;
+    private Button signIn,signUp, facebookLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button signIn = findViewById(R.id.signin_btn);
-        Button signUp = findViewById(R.id.signup_btn);
+
+        signIn = (Button) findViewById(R.id.signin_btn);
+        signUp = (Button) findViewById(R.id.signup_btn);
+
         loginViewModel = new LoginViewModel(getApplication(), this);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();
-        Button facebookLogin = findViewById(R.id.fb_login_btn);
+        facebookLogin = findViewById(R.id.fb_login_btn);
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -68,13 +71,19 @@ public class MainActivity extends AppCompatActivity {
                 LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("public_profile", "user_friends"));
             }
         });
+
+       // signIn.setOnClickListener();
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent logInIntent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(logInIntent);
+//            Toast.makeText(MainActivity.this, "Button Clicked" , Toast.LENGTH_SHORT).show();
             }
+
         });
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
