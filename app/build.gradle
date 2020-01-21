@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
     //Design Support Library
     implementation "com.google.android.material:material:$materialDesignVersion"
     //Library for CardView

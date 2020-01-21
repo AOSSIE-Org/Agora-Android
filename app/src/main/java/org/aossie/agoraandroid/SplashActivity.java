@@ -7,25 +7,28 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
+import org.aossie.agoraandroid.databinding.ActivitySplashBinding;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.main.MainActivity;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private ActivitySplashBinding activitySplashBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        activitySplashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
         final SharedPrefs sharedPrefs = new SharedPrefs(SplashActivity.this);
         // Rotation And Fade Out Animation
 
-        final ImageView rotatingAgora = findViewById(R.id.main_logo_iv);
         final Animation rotateAnimation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
         final Animation fadeOutAnimation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);
 
-        rotatingAgora.startAnimation(rotateAnimation);
+        activitySplashBinding.mainLogoIv.startAnimation(rotateAnimation);
         rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -34,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                rotatingAgora.startAnimation(fadeOutAnimation);
+                activitySplashBinding.mainLogoIv.startAnimation(fadeOutAnimation);
                 String userName = sharedPrefs.getUserName();
                 String password=sharedPrefs.getPass();
                 if (userName == null || password==null) {
