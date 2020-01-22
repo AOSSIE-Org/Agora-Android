@@ -21,12 +21,12 @@ import android.widget.Toast;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.createElection.CreateElectionOne;
-import org.aossie.agoraandroid.createElection.ElectionDetailsSharedPrefs;
-import org.aossie.agoraandroid.displayElections.ActiveElectionsActivity;
-import org.aossie.agoraandroid.displayElections.FinishedElectionsActivity;
-import org.aossie.agoraandroid.displayElections.PendingElectionsActivity;
-import org.aossie.agoraandroid.displayElections.TotalElectionsActivity;
+import org.aossie.agoraandroid.createelection.CreateElectionOne;
+import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
+import org.aossie.agoraandroid.displayelections.ActiveElectionsActivity;
+import org.aossie.agoraandroid.displayelections.FinishedElectionsActivity;
+import org.aossie.agoraandroid.displayelections.PendingElectionsActivity;
+import org.aossie.agoraandroid.displayelections.TotalElectionsActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.aossie.agoraandroid.utilities.SharedPrefs;

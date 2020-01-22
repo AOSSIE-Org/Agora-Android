@@ -14,57 +14,57 @@
         android:theme="@style/AppTheme">
         <activity android:name=".result.ResultActivity"></activity>
         <activity
-            android:name=".inviteVoters.InviteVotersActivity"
+            android:name=".invitevoters.InviteVotersActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.VotersActivity"
+            android:name=".displayelections.VotersActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.BallotActivity"
+            android:name=".displayelections.BallotActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.ElectionActivity"
+            android:name=".displayelections.ElectionActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.FinishedElectionsActivity"
+            android:name=".displayelections.FinishedElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.ActiveElectionsActivity"
+            android:name=".displayelections.ActiveElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.PendingElectionsActivity"
+            android:name=".displayelections.PendingElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".displayElections.TotalElectionsActivity"
+            android:name=".displayelections.TotalElectionsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".forgotPassword.ForgotPasswordSend"
+            android:name=".forgotpassword.ForgotPasswordSend"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".createElection.CreateElectionTwo"
+            android:name=".createelection.CreateElectionTwo"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".createElection.CreateElectionOne" />
+            android:parentActivityName=".createelection.CreateElectionOne" />
         <activity
-            android:name=".createElection.CreateElectionFour"
+            android:name=".createelection.CreateElectionFour"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".createElection.CreateElectionThree" />
+            android:parentActivityName=".createelection.CreateElectionThree" />
         <activity
-            android:name=".createElection.CreateElectionThree"
+            android:name=".createelection.CreateElectionThree"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".createElection.CreateElectionTwo" />
+            android:parentActivityName=".createelection.CreateElectionTwo" />
         <activity
-            android:name=".createElection.CreateElectionOne"
+            android:name=".createelection.CreateElectionOne"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".home.HomeActivity" />
         <activity
             android:name=".home.HomeActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".signUp.SignUpActivity"
+            android:name=".signup.SignUpActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name=".logIn.LogInActivity"
+            android:name=".login.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".main.MainActivity" />
         <activity android:name=".main.MainActivity">
@@ -74,7 +74,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
