@@ -9,6 +9,8 @@ import android.widget.Button;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.forgotPassword.ForgotPasswordViewModel;
+
 public class ForgotPasswordSend extends AppCompatActivity {
 
     private ForgotPasswordViewModel forgotPasswordViewModel;
@@ -18,7 +20,7 @@ public class ForgotPasswordSend extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_send);
-        forgotPasswordViewModel = new ForgotPasswordViewModel(getApplication(),this);
+        //forgotPasswordViewModel = new ForgotPasswordViewModel(getApplication(),this);
         Button sendLinkButton = findViewById(R.id.button_send_link);
         mUserNameEditText = findViewById(R.id.edit_text_user_name);
         sendLinkButton.setOnClickListener(new View.OnClickListener() {
@@ -28,7 +30,7 @@ public class ForgotPasswordSend extends AppCompatActivity {
                 if (userName.isEmpty()) {
                     mUserNameEditText.setError("Please Enter User Name");
                 } else {
-                    forgotPasswordViewModel.sendForgotPassLink(userName);
+          //          forgotPasswordViewModel.sendForgotPassLink(userName);
                 }
             }
         });

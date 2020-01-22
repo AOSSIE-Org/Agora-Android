@@ -1,7 +1,8 @@
-package org.aossie.agoraandroid.forgotpassword;
+package org.aossie.agoraandroid.forgotPassword;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Network;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import net.steamcrafted.loadtoast.LoadToast;
 
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.utilities.CheckNetwork;
 
 
 import retrofit2.Call;
