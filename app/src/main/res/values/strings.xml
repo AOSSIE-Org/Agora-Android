@@ -123,7 +123,7 @@
     <string name="winner_name">Winner Name</string>
     <string name="security_question_answer">Please Write Your Answer Here</string>
     <string name="security_dropdown">Security Question</string>
-    
+
     //string-array for security questions
     <string-array name="security_questions">
         <item>What is your Mother\'s maiden name?</item>
@@ -132,6 +132,9 @@
         <item>What elementary school did you attend?</item>
         <item>What is name of the town where you born?</item>
     </string-array>
-    
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
 

@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_forgot_password.view.*
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.utilities.CheckNetwork
 
-class ForgotPasswordSend : Fragment() {
+class ForgotPasswordFragment : Fragment() {
     private lateinit var viewModel: ForgotPasswordViewModel
     private lateinit var rootView: View
     private var usernameEditText: TextInputLayout? = null
