@@ -76,11 +76,15 @@ public class SignUpActivity extends AppCompatActivity {
                     mPasswordEditText.setError("Please enter password");
                 } else {
                     mPasswordEditText.setError(null);
-                    signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName, securityQuestion, securityQuestionAnswer);
+                    //signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName, securityQuestion, securityQuestionAnswer);
                 }
+
+                if(!(userName.isEmpty()) && !(firstName.isEmpty()) && !(lastName.isEmpty()) && !(userEmail.isEmpty()) && !(securityQuestionAnswer.isEmpty()) && !(userPass.isEmpty()))
+                    signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName, securityQuestion, securityQuestionAnswer);
 
             }
         });
+
         final ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.security_questions,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         appCompatSpinner.setAdapter(adapter);

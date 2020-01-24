@@ -4,11 +4,14 @@ package org.aossie.agoraandroid.signUp;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
@@ -25,6 +28,7 @@ import retrofit2.Response;
 class SignUpViewModel extends AndroidViewModel {
     private final Context context;
     private LoadToast loadToast;
+    private TextInputLayout mUserNameEditText;
 
     public SignUpViewModel(@NonNull Application application, Context context) {
         super(application);
@@ -68,7 +72,7 @@ class SignUpViewModel extends AndroidViewModel {
                     context.startActivity(new Intent(context, LogInActivity.class));
                 } else if (response.code() == 409) {
                     loadToast.error();
-                    Toast.makeText(getApplication(), "User With Same UserName already Exists", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(), "User with same Email or Username already exists", Toast.LENGTH_LONG).show();
                 } else {
                     loadToast.error();
                     Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_LONG).show();
