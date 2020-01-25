@@ -101,7 +101,7 @@ public class CreateElectionOne extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mStartDate = year + "-" + month + "-" + dayOfMonth;
+                mStartDate  = String.format("%d-%02d-%d",year,(month+1),dayOfMonth);
                 sDay = dayOfMonth;
                 sMonth = month;
                 sYear = year;
@@ -111,7 +111,8 @@ public class CreateElectionOne extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                mStartDate = mStartDate + "," + hourOfDay + ":" + minute;
+                String timeString = String.format("%02d:%02d",hourOfDay,minute);
+                mStartDate = mStartDate + "," +timeString;
                 mStartDateTextLayout.getEditText().setText(mStartDate);
 
 
@@ -144,7 +145,7 @@ public class CreateElectionOne extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mEndDate = year + "-" + month + "-" + dayOfMonth;
+                mEndDate =String.format("%d-%02d-%d",year,(month+1),dayOfMonth);
                 eYear = year;
                 eMonth = month;
                 eDay = dayOfMonth;
@@ -154,7 +155,8 @@ public class CreateElectionOne extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                mEndDate = mEndDate + "," + hourOfDay + ":" + minute;
+                String timeString = String.format("%02d:%02d",hourOfDay,minute);
+                mEndDate = mEndDate + "," + timeString;
                 mEndDateTextLayout.getEditText().setText(mEndDate);
 
 
