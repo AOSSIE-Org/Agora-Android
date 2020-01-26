@@ -127,10 +127,10 @@
     //string-array for security questions
     <string-array name="security_questions">
         <item>What is your Mother\'s maiden name?</item>
-        <item>What is name of your first pet?</item>
-        <item>What was your first car?</item>
-        <item>What elementary school did you attend?</item>
-        <item>What is name of the town where you born?</item>
+        <item>What is the name of your first pet?</item>
+        <item>What is your nickname?</item>
+        <item>Which elementary school did you attend?</item>
+        <item>What is your hometown?</item>
     </string-array>
 
     //profile fragment labels
