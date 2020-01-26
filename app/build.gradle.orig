@@ -1,17 +1,15 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+
 apply plugin: "androidx.navigation.safeargs"
 
 
 android {
-    compileSdkVersion compileSdk
+    compileSdkVersion 28
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "org.aossie.agoraandroid"
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
+        minSdkVersion 15
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -40,7 +38,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
-    kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
     //Design Support Library
     implementation "com.google.android.material:material:$materialDesignVersion"
     //Library for CardView
@@ -52,6 +50,27 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
     //Navigation Architecture Dependencies
+<<<<<<< HEAD
+    def nav_version = "2.1.0-beta02"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    //Recycler View
+    implementation "com.android.support:recyclerview-v7:28.0.0"
+
+    //Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //Facebook Login
+    implementation 'com.facebook.android:facebook-login:5.2.0'
+
+    //Pie Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //Load Toast
+    implementation 'net.steamcrafted:load-toast:1.0.12'
+
+=======
     implementation "androidx.navigation:navigation-fragment:$navFragmentVersion"
     implementation "androidx.navigation:navigation-ui:$navUiVersion"
     //Shimmer
@@ -62,19 +81,13 @@ dependencies {
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
     //Load Toast
     implementation "net.steamcrafted:load-toast:$loadToastVersion"
+>>>>>>> f90471a2a1cbc3b9d53dcdc997f8d4dfd88f6b6f
     //MockWebServer and Roboelectric
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockWebServerVersion"
+
     // Mockito
     testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
     testImplementation 'org.json:json:20140107'
-    //kotlin deps
-    implementation "androidx.core:core-ktx:+"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
-
-}
-repositories {
-    mavenCentral()
 }

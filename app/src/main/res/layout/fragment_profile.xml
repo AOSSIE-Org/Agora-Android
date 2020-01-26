@@ -16,7 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/profile_iv"
@@ -124,7 +124,7 @@
             <Button
                 android:id="@+id/update_profile_btn"
                 style="@style/MainButtonStyle"
-                android:layout_marginTop="32dp"
+                android:layout_margin="20dp"
                 android:text="@string/update_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -176,7 +176,7 @@
                 android:id="@+id/change_password_btn"
                 style="@style/MainButtonStyle"
                 app:backgroundTint="@color/yellowTint"
-                android:layout_marginTop="32dp"
+                android:layout_margin="20dp"
                 android:text="@string/change_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

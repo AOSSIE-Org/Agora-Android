@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.displayelections;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,33 +13,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.databinding.ActivityElectionBinding;
 import org.aossie.agoraandroid.invitevoters.InviteVotersActivity;
 import org.aossie.agoraandroid.result.ResultViewModel;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
 public class ElectionActivity extends AppCompatActivity {
-    private TextView mElectionName, mElectionDescription, mStartDate, mEndDate, mCandidateName, mStatus;
+
     private String id, status, token;
     private ConstraintLayout constraintLayout;
     private DisplayElectionViewModel displayElectionViewModel;
     private ResultViewModel resultViewModel;
+    private ActivityElectionBinding activityElectionBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_election);
-
+        activityElectionBinding = DataBindingUtil.setContentView(this , R.layout.activity_election);
         SharedPrefs sharedPrefs = new SharedPrefs(getApplicationContext());
         displayElectionViewModel = new DisplayElectionViewModel(getApplication(), this);
         resultViewModel=new ResultViewModel(getApplication(),this);
         token = sharedPrefs.getToken();
-        mElectionName = findViewById(R.id.tv_election_name);
-        mElectionDescription = findViewById(R.id.tv_description);
-        mStartDate = findViewById(R.id.tv_start_date);
-        mEndDate = findViewById(R.id.tv_end_date);
-        mCandidateName = findViewById(R.id.tv_candidate_list);
-        mStatus = findViewById(R.id.tv_status);
-        constraintLayout = findViewById(R.id.constraint_layout);
 
         Button mDeleteElection = findViewById(R.id.button_delete);
         Button mInviteVoters = findViewById(R.id.button_invite_voters);
@@ -126,12 +121,12 @@ public class ElectionActivity extends AppCompatActivity {
                     constraintLayout.setBackgroundColor(Color.rgb(75, 166, 79));
                     break;
             }
-            mElectionName.setText(electionName);
-            mElectionDescription.setText(electionDescription);
-            mStartDate.setText(startDate);
-            mEndDate.setText(endDate);
-            mCandidateName.setText(candidateName);
-            mStatus.setText(status);
+            activityElectionBinding.tvElectionName.setText(electionName);
+            activityElectionBinding.tvDescription.setText(electionDescription);
+            activityElectionBinding.tvStartDate.setText(startDate);
+            activityElectionBinding.tvEndDate.setText(endDate);
+            activityElectionBinding.tvCandidateList.setText(candidateName);
+            activityElectionBinding.tvStatus.setText(status);
 
         }
     }

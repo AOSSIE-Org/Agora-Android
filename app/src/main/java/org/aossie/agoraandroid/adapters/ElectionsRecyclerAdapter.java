@@ -42,7 +42,6 @@ public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecy
         LayoutInflater layoutInflater = (LayoutInflater) parent.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = layoutInflater.inflate(R.layout.list_item_election_details, parent, false);
-
         return new ElectionsViewHolder(itemView);
     }
 

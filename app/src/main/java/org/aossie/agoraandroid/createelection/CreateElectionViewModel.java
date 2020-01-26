@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 class CreateElectionViewModel extends AndroidViewModel {
     private final Context context;
-    private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
+    private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs(getApplication());
     private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
     private final TinyDB tinydb = new TinyDB(getApplication());
     private LoadToast loadToast;

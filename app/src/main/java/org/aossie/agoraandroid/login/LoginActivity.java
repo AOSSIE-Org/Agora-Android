@@ -16,16 +16,14 @@ import org.aossie.agoraandroid.forgotpassword.ForgotPasswordSend;
 @SuppressWarnings("ConstantConditions")
 public class LoginActivity extends AppCompatActivity {
     private TextInputLayout mLoginUserName, mLoginPassword;
-    private LoginViewModel loginViewModel;
+    private org.aossie.agoraandroid.login.LoginViewModel loginViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = new LoginViewModel(getApplication(), this);
-
-
+        loginViewModel = new org.aossie.agoraandroid.login.LoginViewModel(getApplication(), this);
         mLoginPassword = findViewById(R.id.login_password_til);
         mLoginUserName = findViewById(R.id.login_user_name_til);
         Button mFinalLoginButton = findViewById(R.id.login_btn);
@@ -49,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (userPass.isEmpty()) {
                     mLoginPassword.setError("Please enter password");
-                } else {
+                }
+                else {
                     mLoginPassword.setError(null);
                     loginViewModel.logInRequest(userName, userPass);
                 }
