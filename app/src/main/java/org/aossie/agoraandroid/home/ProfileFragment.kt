@@ -50,6 +50,8 @@ class ProfileFragment : Fragment() {
   }
 
   private fun handlePassword(it: Int?) {
+    binding.newPasswordTil.error = null
+    binding.confirmPasswordTil.error = null
     when(it){
       1 -> {
         loadToast.error()
