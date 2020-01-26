@@ -1,5 +1,5 @@
 package org.aossie.agoraandroid.signup;
-
+import java.lang.String.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import android.content.Intent;
@@ -48,15 +48,55 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (userName.isEmpty())
                     mUserNameEditText.setError("Please enter User Name");
-                else mUserNameEditText.setError(null);
-
-                if (firstName.isEmpty()) {
+                else{
+                    int inc=0,flag=0;
+                    while(inc<userName.length()){
+                        if(userName.charAt(inc)==' ') {
+                            mUserNameEditText.setError("Whitespaces are not allowed");
+                            flag=1;
+                            break;
+                        }
+                        inc++;
+                    }
+                    if(flag==0){
+                        mUserNameEditText.setError(null);
+                    }
+                    flag=0;
+                }
+                if (firstName.isEmpty())
                     mFirstNameEditText.setError("Please enter First Name");
-                } else mFirstNameEditText.setError(null);
-
-                if (lastName.isEmpty()) {
+                else{
+                    int inc=0,flag=0;
+                    while(inc<firstName.length()){
+                        if(firstName.charAt(inc)==' ') {
+                            mFirstNameEditText.setError("Whitespaces are not allowed");
+                            flag=1;
+                            break;
+                        }
+                        inc++;
+                    }
+                    if(flag==0){
+                        mFirstNameEditText.setError(null);
+                    }
+                    flag=0;
+                }
+                if (lastName.isEmpty())
                     mLastNameEditText.setError("Please enter Last Name");
-                } else mLastNameEditText.setError(null);
+                else{
+                    int inc=0,flag=0;
+                    while(inc<lastName.length()){
+                        if(lastName.charAt(inc)==' ') {
+                            mLastNameEditText.setError("Whitespaces are not allowed");
+                            flag=1;
+                            break;
+                        }
+                        inc++;
+                    }
+                    if(flag==0){
+                        mLastNameEditText.setError(null);
+                    }
+                    flag=0;
+                }
 
                 if (userEmail.isEmpty()) {
                     mEmailEditText.setError("Please enter Email Address");
@@ -90,9 +130,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    }
+}
 
 
 
