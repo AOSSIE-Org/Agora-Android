@@ -1,10 +1,12 @@
 package org.aossie.agoraandroid.displayelections;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.VotersRecyclerAdapter;
@@ -27,6 +29,19 @@ public class VotersActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvVotersDetails.setLayoutManager(mLayoutManager);
 
+        Toolbar toolbar = findViewById(R.id.toolbar_voter_list);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onBackPressed();
+                        }
+                    });
+        }
 
         if (getIntent().hasExtra("voters_response")) {
             voterResponse = getIntent().getStringExtra("voters_response");
