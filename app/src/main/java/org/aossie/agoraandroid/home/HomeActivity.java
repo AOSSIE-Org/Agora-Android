@@ -37,7 +37,15 @@ public class HomeActivity extends AppCompatActivity {
 
         View hView = navView.getHeaderView(0);
         TextView nav_user_name = hView.findViewById(R.id.header_name_tv);
-        nav_user_name.setText(getString(R.string.welcome,sharedPrefs.getFirstName()));
+        if(sharedPrefs.getFirstName()!=null)
+        {
+            nav_user_name.setText(getString(R.string.welcome,sharedPrefs.getFirstName()));
+        }
+        else
+        {
+            nav_user_name.setText(getString(R.string.welcome,getResources().getString(R.string.userSanpleText)));
+        }
+
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);

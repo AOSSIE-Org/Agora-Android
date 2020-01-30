@@ -144,6 +144,7 @@
     <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
     <string name="password_change_success">password changed successfully</string>
     <string name="token_expired">Token expired, please login again!</string>
+    <string name="userSanpleText">user</string>
 
 
 </resources>
