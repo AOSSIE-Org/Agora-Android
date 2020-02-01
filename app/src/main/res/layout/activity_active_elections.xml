@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:title="Active Elections"
+        app:title="@string/active_elections"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
         app:layout_constraintStart_toStartOf="parent"
