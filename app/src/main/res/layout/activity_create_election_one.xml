@@ -78,7 +78,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_dark"
                     android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,7 +115,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_dark"
                     android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
