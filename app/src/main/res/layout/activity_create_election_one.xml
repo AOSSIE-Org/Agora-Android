@@ -72,12 +72,14 @@
                 app:boxStrokeColor="@color/colorPrimary"
                 app:layout_constraintEnd_toStartOf="@+id/start_date_ibtn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/election_description_til">
+                app:layout_constraintTop_toBottomOf="@+id/election_description_til"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:textColor="@color/dark_grey"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
@@ -107,12 +109,14 @@
                 app:layout_constraintEnd_toStartOf="@+id/end_date_ibtn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/start_date_til">
+                app:layout_constraintTop_toBottomOf="@+id/start_date_til"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:textColor="@color/dark_grey"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
