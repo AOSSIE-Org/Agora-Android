@@ -47,6 +47,7 @@ public class CreateElectionOne extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 handleStartDateTime();
+
             }
         });
         mEndDateImageButton.setOnClickListener(new View.OnClickListener() {
