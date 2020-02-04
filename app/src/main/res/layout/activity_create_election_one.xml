@@ -78,8 +78,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:textColor="@color/dark_grey"/>
+                    android:textColor="@color/grey_dark"
+                    android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
@@ -115,8 +115,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:textColor="@color/dark_grey"/>
+                    android:textColor="@color/grey_dark"
+                    android:enabled="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
