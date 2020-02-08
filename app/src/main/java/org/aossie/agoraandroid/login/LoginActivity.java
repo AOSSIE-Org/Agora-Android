@@ -2,11 +2,9 @@ package org.aossie.agoraandroid.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -42,14 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         mFinalLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //To hide SoftInput(Keyboard)
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                View view = getCurrentFocus();
-                if (view == null) {
-                    view = new View(LoginActivity.this);
-                }
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
                 final String userName = mLoginUserName.getEditText().getText().toString().trim();
                 final String userPass = mLoginPassword.getEditText().getText().toString().trim();
 
