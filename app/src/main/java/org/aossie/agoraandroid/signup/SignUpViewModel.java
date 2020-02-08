@@ -65,9 +65,7 @@ class SignUpViewModel extends AndroidViewModel {
                 if (response.code() == 200) {
                     loadToast.success();
                     Toast.makeText(getApplication(), "An activation link has been sent to your email. Follow it to activate your account.", Toast.LENGTH_LONG).show();
-                    Intent goToLoginActivity = new Intent(context, LoginActivity.class);
-                    goToLoginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(goToLoginActivity);
+                    context.startActivity(new Intent(context, LoginActivity.class));
                 } else if (response.code() == 409) {
                     loadToast.error();
                     Toast.makeText(getApplication(), "User with same UserName/Email already exists. Try with a different one", Toast.LENGTH_LONG).show();
