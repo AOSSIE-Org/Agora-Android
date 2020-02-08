@@ -1,9 +1,11 @@
 package org.aossie.agoraandroid.login;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -75,12 +78,14 @@ public class LoginViewModel extends AndroidViewModel {
                         intent.addCategory(Intent.CATEGORY_HOME);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
+                        ((Activity)context).findViewById(R.id.login_btn).setVisibility(View.VISIBLE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 } else {
                     loadToast.error();
+                    ((Activity)context).findViewById(R.id.login_btn).setVisibility(View.VISIBLE);
                     Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -88,6 +93,7 @@ public class LoginViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 loadToast.error();
+                ((Activity)context).findViewById(R.id.login_btn).setVisibility(View.VISIBLE);
                 Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
             }
         });
