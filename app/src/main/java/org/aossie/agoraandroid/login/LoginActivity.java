@@ -2,9 +2,11 @@ package org.aossie.agoraandroid.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginPassword = findViewById(R.id.login_password_til);
         mLoginUserName = findViewById(R.id.login_user_name_til);
-        Button mFinalLoginButton = findViewById(R.id.login_btn);
+        final Button mFinalLoginButton = findViewById(R.id.login_btn);
         TextView mForgotPassword = findViewById(R.id.forgot_password_tv);
         mForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (userPass.isEmpty()) {
                     mLoginPassword.setError("Please enter password");
                 } else {
+                    mFinalLoginButton.setVisibility(View.INVISIBLE);
                     mLoginPassword.setError(null);
                     loginViewModel.logInRequest(userName, userPass);
                 }
