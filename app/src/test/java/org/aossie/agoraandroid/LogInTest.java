@@ -1,40 +1,63 @@
 package org.aossie.agoraandroid;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.aossie.agoraandroid.remote.APIService;
-import org.aossie.agoraandroid.remote.RetrofitClient;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.aossie.agoraandroid.testserver.Requests;
+import org.aossie.agoraandroid.testserver.Responses;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
 import java.io.IOException;
 
-import retrofit2.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogInTest {
 
+    private MockWebServer mockWebServer;
+    private APIService apiService;
+
+    @Before
+    public void setup() throws IOException {
+
+        mockWebServer = new MockWebServer();
+        mockWebServer.start();
+
+        Gson gson = new GsonBuilder().setLenient().create();
+        apiService = new Retrofit.Builder().baseUrl(mockWebServer.url("/"))
+            .client(new OkHttpClient())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(APIService.class);
+    }
+
     @Test
     public void LogInUnitTesting() throws IOException {
 
+        mockWebServer.enqueue(new MockResponse().setBody(Responses.AUTH_LOGIN));
 
-        final JSONObject jsonObject = new JSONObject();
-        try {
+        Response response = apiService.logIn(Requests.AUTH_LOGIN).execute();
 
-            jsonObject.put("identifier", "iamfake");
-            jsonObject.put("password","Fakepassword");
+        Assert.assertEquals(response.message(), "OK");
+    }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        APIService apiService = RetrofitClient.getAPIService();
-        Call<String> logInResponse = apiService.logIn(jsonObject.toString());
-
-        String Response = logInResponse.execute().message();
-
-        Assert.assertEquals(Response,"OK");
+    @After
+    public void teardown() throws IOException {
+        mockWebServer.shutdown();
     }
 
 }
