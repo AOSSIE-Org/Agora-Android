@@ -18,11 +18,11 @@ public class RetrofitClient {
         Gson gson = new GsonBuilder().setLenient().create();
 
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory
+            .baseUrl(BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory
                 .create(gson))
-                .build();
+            .build();
 
     }
 
@@ -30,9 +30,6 @@ public class RetrofitClient {
     public static APIService getAPIService() {
         return getRetrofitInstance().create(APIService.class);
     }
-
-
-
 
 
 }

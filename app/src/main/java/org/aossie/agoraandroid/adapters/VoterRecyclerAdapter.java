@@ -13,7 +13,7 @@ import org.aossie.agoraandroid.R;
 
 import java.util.ArrayList;
 
-public class VoterRecyclerAdapter extends RecyclerView.Adapter<VoterRecyclerAdapter.VoterViewHolder>  {
+public class VoterRecyclerAdapter extends RecyclerView.Adapter<VoterRecyclerAdapter.VoterViewHolder> {
     private final ArrayList<String> mVoterNameList;
     private final ArrayList<String> mVoterEmailList;
 
@@ -26,7 +26,7 @@ public class VoterRecyclerAdapter extends RecyclerView.Adapter<VoterRecyclerAdap
     @Override
     public VoterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater li = (LayoutInflater) parent.getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View voterView = li.inflate(R.layout.list_item_voter_details, parent, false);
         return new VoterRecyclerAdapter.VoterViewHolder(voterView);
     }
@@ -46,7 +46,7 @@ public class VoterRecyclerAdapter extends RecyclerView.Adapter<VoterRecyclerAdap
 
 
     static class VoterViewHolder extends RecyclerView.ViewHolder {
-        final TextView voterName,voterEmail;
+        final TextView voterName, voterEmail;
         final View itemView;
 
         public VoterViewHolder(@NonNull View itemView) {

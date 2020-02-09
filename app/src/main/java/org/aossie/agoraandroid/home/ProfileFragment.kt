@@ -38,7 +38,7 @@ class ProfileFragment : Fragment() {
 
     binding.updateProfileBtn.setOnClickListener({
       //TODO implment update feature
-      Toast.makeText(activity,"feature not available yet",Toast.LENGTH_SHORT).show()
+      Toast.makeText(activity, "feature not available yet", Toast.LENGTH_SHORT).show()
     })
 
     viewModel.passwordRequestCode.observe(this, Observer {
@@ -50,7 +50,7 @@ class ProfileFragment : Fragment() {
   private fun handlePassword(it: Int?) {
     binding.newPasswordTil.error = null
     binding.confirmPasswordTil.error = null
-    when(it){
+    when (it) {
       1 -> {
         loadToast.error()
         binding.newPasswordTil.error = getString(R.string.password_empty_warn)
@@ -71,15 +71,15 @@ class ProfileFragment : Fragment() {
       }
       200 -> {
         loadToast.success()
-        Toast.makeText(activity,getString(R.string.password_change_success),Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(R.string.password_change_success), Toast.LENGTH_SHORT).show()
       }
       201 -> {
         loadToast.error()
-        Toast.makeText(activity,getString(R.string.token_expired),Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(R.string.token_expired), Toast.LENGTH_SHORT).show()
       }
       500 -> {
         loadToast.error()
-        Toast.makeText(activity,"something wrong! please try later",Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT).show()
       }
 
     }

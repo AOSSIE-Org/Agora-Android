@@ -30,7 +30,7 @@ public class ElectionActivity extends AppCompatActivity {
 
         SharedPrefs sharedPrefs = new SharedPrefs(getApplicationContext());
         displayElectionViewModel = new DisplayElectionViewModel(getApplication(), this);
-        resultViewModel=new ResultViewModel(getApplication(),this);
+        resultViewModel = new ResultViewModel(getApplication(), this);
         token = sharedPrefs.getToken();
         mElectionName = findViewById(R.id.tv_election_name);
         mElectionDescription = findViewById(R.id.tv_description);
@@ -76,7 +76,7 @@ public class ElectionActivity extends AppCompatActivity {
                 if (status.equals("Pending"))
                     Toast.makeText(ElectionActivity.this, "Election is not started yet", Toast.LENGTH_SHORT).show();
                 else {
-                   resultViewModel.getResult(token,id);
+                    resultViewModel.getResult(token, id);
                 }
             }
         });
@@ -104,8 +104,8 @@ public class ElectionActivity extends AppCompatActivity {
     private void getIncomingIntent() {
 
         if (getIntent().hasExtra("election_name") && getIntent().hasExtra("election_description")
-                && getIntent().hasExtra("start_date") && getIntent().hasExtra("end_date")
-                && getIntent().hasExtra("candidates") && getIntent().hasExtra("status")) {
+            && getIntent().hasExtra("start_date") && getIntent().hasExtra("end_date")
+            && getIntent().hasExtra("candidates") && getIntent().hasExtra("status")) {
 
             String electionName = getIntent().getStringExtra("election_name");
             String electionDescription = getIntent().getStringExtra("election_description");

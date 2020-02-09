@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
 
         View hView = navView.getHeaderView(0);
         TextView nav_user_name = hView.findViewById(R.id.header_name_tv);
-        nav_user_name.setText(getString(R.string.welcome,sharedPrefs.getFirstName()));
+        nav_user_name.setText(getString(R.string.welcome, sharedPrefs.getFirstName()));
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
@@ -47,13 +47,13 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         NavigationUI.setupActionBarWithNavController(this, navController,
-                drawerLayout);
+            drawerLayout);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController,
-                drawerLayout);
+            drawerLayout);
     }
 
     @Override

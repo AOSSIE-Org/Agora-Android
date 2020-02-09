@@ -42,12 +42,12 @@ public class TotalElectionsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            onBackPressed();
-                        }
-                    });
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onBackPressed();
+                    }
+                });
         }
         ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplicationContext());
         RecyclerView rvElectionDetails = findViewById(R.id.rv_total_elections);
@@ -91,7 +91,7 @@ public class TotalElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "total");
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList, this, mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "total");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
 
 

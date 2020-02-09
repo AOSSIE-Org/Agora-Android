@@ -110,12 +110,12 @@ public class HomeFragment extends Fragment {
             }
         });
         mSwipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        doYourUpdate();
-                    }
+            new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    doYourUpdate();
                 }
+            }
         );
 
         String userName = sharedPrefs.getUserName();
@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle
-            savedInstanceState) {
+        savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 

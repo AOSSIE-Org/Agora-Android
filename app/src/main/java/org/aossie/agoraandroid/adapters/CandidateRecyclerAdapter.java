@@ -24,7 +24,7 @@ public class CandidateRecyclerAdapter extends RecyclerView.Adapter<CandidateRecy
     @Override
     public CandidateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater li = (LayoutInflater) parent.getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View candidateView = li.inflate(R.layout.list_item_candidate_name, parent, false);
         return new CandidateViewHolder(candidateView);
     }

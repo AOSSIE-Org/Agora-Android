@@ -46,7 +46,7 @@ class SignUpViewModel extends AndroidViewModel {
             jsonObject.put("lastName", lastName);
             securityJsonObject.put("question", securityQuestion);
             securityJsonObject.put("answer", securityAnswer);
-            jsonObject.put("securityQuestion",securityJsonObject);
+            jsonObject.put("securityQuestion", securityJsonObject);
 
         } catch (JSONException e) {
             e.printStackTrace();

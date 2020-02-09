@@ -45,7 +45,7 @@ public class ShareWithOthersFragment extends Fragment {
                 // This is the sharing part
                 shareIntent.setType("text/link");
                 String shareBody = "Hey! Download Agora Vote application for Free and create Elections right now" +
-                        "\n" + "" + strAppLink;
+                    "\n" + "" + strAppLink;
                 String shareSub = "APP NAME/TITLE";
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);

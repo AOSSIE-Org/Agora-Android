@@ -19,12 +19,12 @@ import java.util.ArrayList;
 
 public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecyclerAdapter.ElectionsViewHolder> {
 
-    private final ArrayList<String> electionNameList, electionDescriptionList, startDateList, endDateList, statusList, candidateList,mIDList;
+    private final ArrayList<String> electionNameList, electionDescriptionList, startDateList, endDateList, statusList, candidateList, mIDList;
     private final String electionType;
     private Context mContext;
 
-    public ElectionsRecyclerAdapter(ArrayList<String> mIDList,Context context, ArrayList<String> electionNameList, ArrayList<String> electionDescriptionList, ArrayList<String> startDateList, ArrayList<String> endDateList, ArrayList<String> statusList, ArrayList<String> candidateList, String type) {
-        this.mIDList=mIDList;
+    public ElectionsRecyclerAdapter(ArrayList<String> mIDList, Context context, ArrayList<String> electionNameList, ArrayList<String> electionDescriptionList, ArrayList<String> startDateList, ArrayList<String> endDateList, ArrayList<String> statusList, ArrayList<String> candidateList, String type) {
+        this.mIDList = mIDList;
         mContext = context;
         this.electionNameList = electionNameList;
         this.electionDescriptionList = electionDescriptionList;
@@ -39,7 +39,7 @@ public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecy
     @Override
     public ElectionsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater) parent.getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = layoutInflater.inflate(R.layout.list_item_election_details, parent, false);
 
         return new ElectionsViewHolder(itemView);
@@ -77,7 +77,7 @@ public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecy
                 intent.putExtra("end_date", endDateList.get(position));
                 intent.putExtra("candidates", candidateList.get(position));
                 intent.putExtra("status", statusList.get(position));
-                intent.putExtra("id",mIDList.get(position));
+                intent.putExtra("id", mIDList.get(position));
                 mContext.startActivity(intent);
             }
         });

@@ -29,6 +29,7 @@ public class ActiveElectionsActivity extends AppCompatActivity {
     private final ArrayList<String> mElectionStatusList = new ArrayList<>();
     private final ArrayList<String> mCandidatesList = new ArrayList<>();
     private final ArrayList<String> mIDList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +41,12 @@ public class ActiveElectionsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            onBackPressed();
-                        }
-                    });
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onBackPressed();
+                    }
+                });
         }
         ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplicationContext());
         RecyclerView rvElectionDetails = findViewById(R.id.rv_active_elections);
@@ -86,7 +87,7 @@ public class ActiveElectionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList,this,mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList,"active");
+        ElectionsRecyclerAdapter electionsRecyclerAdapter = new ElectionsRecyclerAdapter(mIDList, this, mElectionNameList, mElectionDescriptionList, mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList, "active");
         rvElectionDetails.setAdapter(electionsRecyclerAdapter);
     }
 }

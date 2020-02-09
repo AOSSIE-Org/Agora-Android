@@ -17,11 +17,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ForgotPasswordViewModel extends AndroidViewModel {
-private LoadToast loadToast;
-private Context context;
+    private LoadToast loadToast;
+    private Context context;
+
     ForgotPasswordViewModel(@NonNull Application application, Context context) {
         super(application);
-        this.context=context;
+        this.context = context;
     }
 
     void sendForgotPassLink(String userName) {
