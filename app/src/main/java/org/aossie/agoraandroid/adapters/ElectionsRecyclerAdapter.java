@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.displayelections.ElectionActivity;
 
-
 import java.util.ArrayList;
 
 public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecyclerAdapter.ElectionsViewHolder> {

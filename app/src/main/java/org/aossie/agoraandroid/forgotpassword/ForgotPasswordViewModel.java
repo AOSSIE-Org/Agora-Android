@@ -12,7 +12,6 @@ import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

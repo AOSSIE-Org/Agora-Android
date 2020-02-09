@@ -1,18 +1,17 @@
 package org.aossie.agoraandroid.signup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.google.android.material.textfield.TextInputLayout;
+
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.login.LoginActivity;
 
 @SuppressWarnings("ConstantConditions")
 public class SignUpActivity extends AppCompatActivity {

@@ -1,8 +1,5 @@
 package org.aossie.agoraandroid.main;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,20 +7,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.login.LoginActivity;
 import org.aossie.agoraandroid.login.LoginViewModel;
 import org.aossie.agoraandroid.signup.SignUpActivity;
-import org.aossie.agoraandroid.login.LoginActivity;
 
 import java.util.Arrays;
 
