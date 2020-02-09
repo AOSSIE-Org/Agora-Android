@@ -73,7 +73,7 @@ public class LoginViewModel extends AndroidViewModel {
                         loadToast.success();
                         Intent intent = new Intent(context, HomeActivity.class);
                         intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
                     } catch (JSONException e) {
                         e.printStackTrace();
