@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import org.aossie.agoraandroid.R;
+
 import java.util.ArrayList;
 
 public class CandidateRecyclerAdapter extends RecyclerView.Adapter<CandidateRecyclerAdapter.CandidateViewHolder> {
@@ -21,7 +24,7 @@ public class CandidateRecyclerAdapter extends RecyclerView.Adapter<CandidateRecy
     @Override
     public CandidateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater li = (LayoutInflater) parent.getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View candidateView = li.inflate(R.layout.list_item_candidate_name, parent, false);
         return new CandidateViewHolder(candidateView);
     }

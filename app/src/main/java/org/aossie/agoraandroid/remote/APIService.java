@@ -14,16 +14,16 @@ import retrofit2.http.Path;
 public interface APIService {
     //POST Request For SignUp
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @POST("auth/signup")
     Call<String> createUser(@Body String body);
 
     //POST request for LogIn
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
 
     @POST("auth/login")
@@ -32,8 +32,8 @@ public interface APIService {
 
     //POST request to change password
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
 
     @POST("user/changePassword")
@@ -42,8 +42,8 @@ public interface APIService {
 
     //POST request to create a new election
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @POST("election")
     Call<String> createElection(@Body String body, @Header("X-Auth-Token") String authToken);
@@ -56,8 +56,8 @@ public interface APIService {
 
     //GET Request To Perform Logout
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @GET("user/logout")
     Call<String> logout(@Header("X-Auth-Token") String authToken);
@@ -65,16 +65,16 @@ public interface APIService {
 
     //GET Request To Get Data of All Elections
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @GET("election")
     Call<String> getAllElections(@Header("X-Auth-Token") String authToken);
 
     //GET request to log in via facebook Access Token
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @GET("auth/authenticate/facebook")
     Call<String> facebookLogin(@Header("Access-Token") String accessToken);
@@ -82,52 +82,51 @@ public interface APIService {
 
     //GET request to get user's data
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @GET("user")
     Call<String> getUserData(@Header("X-Auth-Token") String authToken);
 
     //DELETE election with specified id
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @DELETE("election/{id}")
     Call<String> deleteElection(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
     //GET Ballots for election with specified id
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @GET("election/{id}/ballots")
     Call<String> getBallot(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
     //GET Voters for election with specified id
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @GET("election/{id}/voters")
     Call<String> getVoters(@Header("X-Auth-Token") String authToken, @Path("id") String id);
 
     //POST the list of voters to election
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @POST("election/{id}/voters")
     Call<String> sendVoters(@Header("X-Auth-Token") String authToken, @Path("id") String id, @Body String body);
 
     //GET Result for election with specified id
     @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json"
+        "Accept: application/json",
+        "Content-Type: application/json"
     })
     @GET("result/{id}")
     Call<String> getResult(@Header("X-Auth-Token") String authToken, @Path("id") String id);
-
 
 
 }

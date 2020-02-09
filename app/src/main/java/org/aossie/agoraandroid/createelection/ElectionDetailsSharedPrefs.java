@@ -98,6 +98,7 @@ public class ElectionDetailsSharedPrefs {
         editor.commit();
 
     }
+
     public Boolean getIsInvite() {
         return sharedPreferences.getBoolean(IsInvitedKey, false);
     }
@@ -133,6 +134,7 @@ public class ElectionDetailsSharedPrefs {
     public String getElectionDetails() {
         return sharedPreferences.getString(ElectionDetailsKey, null);
     }
+
     public void clearElectionData() {
         editor.putString(NameKey, null);
         editor.putString(StartTimeKey, null);
