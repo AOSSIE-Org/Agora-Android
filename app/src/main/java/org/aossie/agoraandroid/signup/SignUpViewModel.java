@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
@@ -47,7 +46,7 @@ class SignUpViewModel extends AndroidViewModel {
             jsonObject.put("lastName", lastName);
             securityJsonObject.put("question", securityQuestion);
             securityJsonObject.put("answer", securityAnswer);
-            jsonObject.put("securityQuestion",securityJsonObject);
+            jsonObject.put("securityQuestion", securityJsonObject);
 
         } catch (JSONException e) {
             e.printStackTrace();

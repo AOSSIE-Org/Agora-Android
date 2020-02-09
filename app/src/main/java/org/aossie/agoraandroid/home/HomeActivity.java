@@ -1,17 +1,17 @@
 package org.aossie.agoraandroid.home;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
 
         View hView = navView.getHeaderView(0);
         TextView nav_user_name = hView.findViewById(R.id.header_name_tv);
-        nav_user_name.setText(getString(R.string.welcome,sharedPrefs.getFirstName()));
+        nav_user_name.setText(getString(R.string.welcome, sharedPrefs.getFirstName()));
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
@@ -47,13 +47,13 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         NavigationUI.setupActionBarWithNavController(this, navController,
-                drawerLayout);
+            drawerLayout);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController,
-                drawerLayout);
+            drawerLayout);
     }
 
     @Override

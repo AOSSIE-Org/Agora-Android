@@ -1,16 +1,16 @@
 package org.aossie.agoraandroid.createelection;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -32,7 +32,7 @@ public class CreateElectionTwo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_election_two);
         Button mAddCandidateButton = findViewById(R.id.add_candidate_btn);
-        tinydb= new TinyDB(getApplication());
+        tinydb = new TinyDB(getApplication());
         Button mNextButton = findViewById(R.id.submit_details_btn);
         mAddCandidateTextInput = findViewById(R.id.candidate_til);
         RecyclerView mRecyclerView = findViewById(R.id.names_rv);
@@ -44,8 +44,8 @@ public class CreateElectionTwo extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCandidates.size()!=0) {
-                    tinydb.putListString("Candidates",mCandidates);
+                if (mCandidates.size() != 0) {
+                    tinydb.putListString("Candidates", mCandidates);
                     startActivity(new Intent(CreateElectionTwo.this, CreateElectionThree.class));
                 } else {
                     Toast.makeText(CreateElectionTwo.this, "Please Add At least One Candidate", Toast.LENGTH_SHORT).show();

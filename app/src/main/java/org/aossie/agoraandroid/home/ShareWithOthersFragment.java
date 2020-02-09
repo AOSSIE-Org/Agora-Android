@@ -3,13 +3,12 @@ package org.aossie.agoraandroid.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
 
 import org.aossie.agoraandroid.R;
 
@@ -46,7 +45,7 @@ public class ShareWithOthersFragment extends Fragment {
                 // This is the sharing part
                 shareIntent.setType("text/link");
                 String shareBody = "Hey! Download Agora Vote application for Free and create Elections right now" +
-                        "\n" + "" + strAppLink;
+                    "\n" + "" + strAppLink;
                 String shareSub = "APP NAME/TITLE";
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
