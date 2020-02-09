@@ -101,7 +101,7 @@
   <string name="total_elections">Total Elections</string>
   <string name="election_name_">Election Name</string>
   <string name="facebook_app_id">TODO</string>
-  <string name="fb_login_protocol_scheme">TODO</string>
+  <string name="fb_login_protocol_scheme">todo</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
   <string name="delete_election">delete election</string>
   <string name="invite_voter">Invite Voters</string>

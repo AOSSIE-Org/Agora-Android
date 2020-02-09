@@ -2,16 +2,30 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".login.LoginActivity">
+    tools:context=".login.LoginActivity"
+    >
 
   <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        >
+
+      <Button
+          android:id="@+id/login_btn"
+          style="@style/MainButtonStyle"
+          android:layout_marginTop="24dp"
+          android:text="@string/login"
+          app:backgroundTint="@color/yellowTint"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/login_password_til"
+          />
 
       <ImageView
           android:id="@+id/app_logo_iv"
@@ -22,7 +36,8 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
-          app:srcCompat="@drawable/agora" />
+          app:srcCompat="@drawable/agora"
+          />
 
       <TextView
           android:id="@+id/user_login_label_tv"
@@ -34,7 +49,22 @@
           android:textAppearance="@style/TextAppearance.AppCompat.Headline"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/app_logo_iv" />
+          app:layout_constraintTop_toBottomOf="@+id/app_logo_iv"
+          />
+
+      <TextView
+          android:id="@+id/forgot_password_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="24dp"
+          android:layout_marginEnd="8dp"
+          android:layout_marginRight="8dp"
+          android:text="@string/forgot_password"
+          android:textAppearance="@style/TextAppearance.AppCompat.Small"
+          android:textColor="@color/greenTint"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/login_btn"
+          />
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/login_user_name_til"
@@ -47,11 +77,13 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="0.0"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/user_login_label_tv">
+          app:layout_constraintTop_toBottomOf="@+id/user_login_label_tv"
+          >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
@@ -65,36 +97,15 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/login_user_name_til"
-          app:passwordToggleEnabled="true">
+          app:passwordToggleEnabled="true"
+          >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            />
       </com.google.android.material.textfield.TextInputLayout>
-
-      <Button
-          android:id="@+id/login_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginTop="24dp"
-          android:text="@string/login"
-          app:backgroundTint="@color/yellowTint"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/login_password_til" />
-
-      <TextView
-          android:id="@+id/forgot_password_tv"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="24dp"
-          android:layout_marginEnd="8dp"
-          android:layout_marginRight="8dp"
-          android:text="@string/forgot_password"
-          android:textAppearance="@style/TextAppearance.AppCompat.Small"
-          android:textColor="@color/greenTint"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/login_btn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>

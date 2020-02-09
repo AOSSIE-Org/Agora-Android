@@ -2,40 +2,30 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".createelection.CreateElectionFour">
+    tools:context=".createelection.CreateElectionFour"
+    >
 
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:padding="16dp">
+      android:padding="16dp"
+      >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
-      <TextView
-          android:id="@+id/some_more_options_label_tv"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:gravity="center"
-          android:text="@string/some_more_options"
-          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+      <Button
+          android:id="@+id/submit_details_btn"
+          style="@style/MainButtonStyle"
+          android:layout_marginTop="32dp"
+          android:text="@string/Create_Election"
+          app:backgroundTint="@color/greenTint"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
-      <CheckBox
-          android:id="@+id/invite_voters_check"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:text="@string/invite_voters"
-          android:textSize="18sp"
-          app:layout_constraintBottom_toTopOf="@+id/real_time_results_check"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/some_more_options_label_tv" />
+          app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
+          />
 
       <CheckBox
           android:id="@+id/real_time_results_check"
@@ -47,19 +37,51 @@
           app:layout_constraintBottom_toTopOf="@+id/secret_ballots_tv"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/invite_voters_check" />
+          app:layout_constraintTop_toBottomOf="@+id/invite_voters_check"
+          />
 
-      <TextView
-          android:id="@+id/secret_ballots_tv"
+      <CheckBox
+          android:id="@+id/invite_voters_check"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
-          android:gravity="center"
-          android:text="@string/how_secret_are_ballots"
-          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+          android:text="@string/invite_voters"
+          android:textSize="18sp"
+          app:layout_constraintBottom_toTopOf="@+id/real_time_results_check"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/real_time_results_check" />
+          app:layout_constraintTop_toBottomOf="@+id/some_more_options_label_tv"
+          />
+
+      <RadioGroup
+          android:id="@+id/radioGroup2"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/list_of_voters_tv"
+          >
+
+        <RadioButton
+            android:id="@+id/access_only_me_radio_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:checked="true"
+            android:text="@string/only_me"
+            android:textSize="18sp"
+            />
+
+        <RadioButton
+            android:id="@+id/access_everyone_radio_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/everyone_with_access_to_election"
+            android:textSize="18sp"
+            />
+      </RadioGroup>
 
       <RadioGroup
           android:id="@+id/radioGroup"
@@ -68,7 +90,8 @@
           android:layout_marginTop="16dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/secret_ballots_tv">
+          app:layout_constraintTop_toBottomOf="@+id/secret_ballots_tv"
+          >
 
         <RadioButton
             android:id="@+id/ballot_visibility_secret_radio_btn"
@@ -77,7 +100,8 @@
             android:layout_marginTop="8dp"
             android:checked="true"
             android:text="@string/ballots_are_completely_secret"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            />
 
         <RadioButton
             android:id="@+id/ballot_visibility_only_me_radio_btn"
@@ -85,7 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/ballots_visible_only_to_me"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            />
 
         <RadioButton
             android:id="@+id/ballot_visibility_everyone_radio_btn"
@@ -93,7 +118,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/ballots_visible_to_everyone"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            />
       </RadioGroup>
 
       <TextView
@@ -106,44 +132,34 @@
           android:textAppearance="@style/TextAppearance.AppCompat.Headline"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+          app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+          />
 
-      <RadioGroup
-          android:id="@+id/radioGroup2"
+      <TextView
+          android:id="@+id/secret_ballots_tv"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
+          android:gravity="center"
+          android:text="@string/how_secret_are_ballots"
+          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/list_of_voters_tv">
+          app:layout_constraintTop_toBottomOf="@+id/real_time_results_check"
+          />
 
-        <RadioButton
-            android:id="@+id/access_only_me_radio_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:checked="true"
-            android:text="@string/only_me"
-            android:textSize="18sp" />
-
-        <RadioButton
-            android:id="@+id/access_everyone_radio_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/everyone_with_access_to_election"
-            android:textSize="18sp" />
-      </RadioGroup>
-
-      <Button
-          android:id="@+id/submit_details_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginTop="32dp"
-          android:text="@string/Create_Election"
-          app:backgroundTint="@color/greenTint"
+      <TextView
+          android:id="@+id/some_more_options_label_tv"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:gravity="center"
+          android:text="@string/some_more_options"
+          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
+          app:layout_constraintTop_toTopOf="parent"
+          />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>

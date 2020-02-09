@@ -2,23 +2,40 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".home.ProfileFragment">
-
-  <data>
-
-    <variable
-        name="viewModel"
-        type="org.aossie.agoraandroid.home.ProfileViewModel" />
-  </data>
+    tools:context=".home.ProfileFragment"
+    >
 
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:padding="16dp">
+      android:padding="16dp"
+      >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
+
+      <Button
+          android:id="@+id/update_profile_btn"
+          style="@style/MainButtonStyle"
+          android:layout_marginTop="32dp"
+          android:text="@string/update_profile"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/email_id_til"
+          />
+
+      <Button
+          android:id="@+id/change_password_btn"
+          style="@style/MainButtonStyle"
+          android:layout_marginTop="32dp"
+          android:text="@string/change_password"
+          app:backgroundTint="@color/yellowTint"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/confirm_password_til"
+          />
 
       <ImageView
           android:id="@+id/profile_iv"
@@ -31,54 +48,8 @@
           app:elevation="2dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/first_name_til"
-          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:layout_marginEnd="4dp"
-          android:layout_marginRight="4dp"
-          android:hint="@string/first_name_label"
-          app:boxStrokeColor="@color/colorPrimary"
-          app:layout_constraintEnd_toStartOf="@+id/last_name_til"
-          app:layout_constraintHorizontal_bias="0.5"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/profile_iv">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.firstName}"
-            tools:text="@string/first_name"
-
-            />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/last_name_til"
-          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:layout_marginLeft="4dp"
-          android:layout_marginTop="16dp"
-          android:hint="@string/last_name_label"
-          app:boxStrokeColor="@color/colorPrimary"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.5"
-          app:layout_constraintStart_toEndOf="@+id/first_name_til"
-          app:layout_constraintTop_toBottomOf="@+id/profile_iv">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.lastName}"
-            tools:text="@string/last_name" />
-
-      </com.google.android.material.textfield.TextInputLayout>
+          app:layout_constraintTop_toTopOf="parent"
+          />
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/user_name_til"
@@ -90,7 +61,8 @@
           app:boxStrokeColor="@color/colorPrimary"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/first_name_til">
+          app:layout_constraintTop_toBottomOf="@+id/first_name_til"
+          >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -111,7 +83,8 @@
           app:boxStrokeColor="@color/colorPrimary"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/user_name_til">
+          app:layout_constraintTop_toBottomOf="@+id/user_name_til"
+          >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -123,14 +96,30 @@
       </com.google.android.material.textfield.TextInputLayout>
 
 
-      <Button
-          android:id="@+id/update_profile_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginTop="32dp"
-          android:text="@string/update_profile"
-          app:layout_constraintEnd_toEndOf="parent"
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/first_name_til"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:layout_marginEnd="4dp"
+          android:layout_marginRight="4dp"
+          android:hint="@string/first_name_label"
+          app:boxStrokeColor="@color/colorPrimary"
+          app:layout_constraintEnd_toStartOf="@+id/last_name_til"
+          app:layout_constraintHorizontal_bias="0.5"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/email_id_til" />
+          app:layout_constraintTop_toBottomOf="@+id/profile_iv"
+          >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.firstName}"
+            tools:text="@string/first_name"
+
+            />
+      </com.google.android.material.textfield.TextInputLayout>
 
 
       <com.google.android.material.textfield.TextInputLayout
@@ -144,7 +133,8 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/update_profile_btn"
-          app:passwordToggleEnabled="true">
+          app:passwordToggleEnabled="true"
+          >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -165,24 +155,49 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/new_password_til"
-          app:passwordToggleEnabled="true">
+          app:passwordToggleEnabled="true"
+          >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            />
       </com.google.android.material.textfield.TextInputLayout>
 
 
-      <Button
-          android:id="@+id/change_password_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginTop="32dp"
-          android:text="@string/change_password"
-          app:backgroundTint="@color/yellowTint"
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/last_name_til"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="4dp"
+          android:layout_marginLeft="4dp"
+          android:layout_marginTop="16dp"
+          android:hint="@string/last_name_label"
+          app:boxStrokeColor="@color/colorPrimary"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/confirm_password_til" />
+          app:layout_constraintHorizontal_bias="0.5"
+          app:layout_constraintStart_toEndOf="@+id/first_name_til"
+          app:layout_constraintTop_toBottomOf="@+id/profile_iv"
+          >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.lastName}"
+            tools:text="@string/last_name"
+            />
+
+      </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>
+
+  <data>
+
+    <variable
+        name="viewModel"
+        type="org.aossie.agoraandroid.home.ProfileViewModel"
+        />
+  </data>
 </layout>

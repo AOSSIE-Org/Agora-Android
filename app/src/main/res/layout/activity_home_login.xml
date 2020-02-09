@@ -2,12 +2,47 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".homelogin.HomeLoginActivity">
+    tools:context=".homelogin.HomeLoginActivity"
+    >
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:padding="16dp">
+      android:padding="16dp"
+      >
+
+    <Button
+        android:id="@+id/signup_btn"
+        style="@style/MainButtonStyle"
+        android:layout_marginBottom="16dp"
+        android:text="@string/sign_up"
+        app:backgroundTint="@color/greenTint"
+        app:layout_constraintBottom_toTopOf="@+id/fb_login_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/fb_login_btn"
+        style="@style/MainButtonStyle"
+        android:layout_marginBottom="16dp"
+        android:text="@string/continue_with_facebook"
+        app:backgroundTint="@color/blueTint"
+        app:layout_constraintBottom_toTopOf="@+id/signin_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/signin_btn"
+        style="@style/MainButtonStyle"
+        android:layout_marginBottom="32dp"
+        android:text="@string/log_in"
+        app:backgroundTint="@color/yellowTint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <ImageView
         android:id="@+id/main_logo_iv"
@@ -18,7 +53,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/agora" />
+        app:srcCompat="@drawable/agora"
+        />
 
     <TextView
         android:id="@+id/agora_label_tv"
@@ -31,36 +67,7 @@
         app:fontFamily="cursive"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_logo_iv" />
-
-    <Button
-        android:id="@+id/signup_btn"
-        style="@style/MainButtonStyle"
-        android:layout_marginBottom="16dp"
-        android:text="@string/sign_up"
-        app:backgroundTint="@color/greenTint"
-        app:layout_constraintBottom_toTopOf="@+id/fb_login_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/fb_login_btn"
-        style="@style/MainButtonStyle"
-        android:layout_marginBottom="16dp"
-        android:text="@string/continue_with_facebook"
-        app:backgroundTint="@color/blueTint"
-        app:layout_constraintBottom_toTopOf="@+id/signin_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/signin_btn"
-        style="@style/MainButtonStyle"
-        android:layout_marginBottom="32dp"
-        android:text="@string/log_in"
-        app:backgroundTint="@color/yellowTint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/main_logo_iv"
+        />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

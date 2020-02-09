@@ -16,7 +16,8 @@ class LogInTest : BaseTest() {
   @Throws(IOException::class)
   fun LogInUnitTesting() {
     mockWebServer.enqueue(MockResponse().setBody(Responses.AUTH_LOGIN))
-    val response: Response<*> = apiService.logIn(Requests.AUTH_LOGIN).execute()
+    val response: Response<*> = apiService.logIn(Requests.AUTH_LOGIN)
+        .execute()
     Assert.assertEquals(response.body(), Responses.AUTH_LOGIN)
   }
 

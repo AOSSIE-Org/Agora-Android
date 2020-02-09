@@ -5,12 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.HomeActivity">
+    tools:context=".home.HomeActivity"
+    >
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:orientation="vertical"
+      >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,7 +20,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:title="@string/dashboard"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white"
+        />
 
     <fragment
         android:id="@+id/fragment"
@@ -26,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/nav_graph"
+        />
 
 
   </LinearLayout>
@@ -37,5 +41,6 @@
       android:layout_height="match_parent"
       android:layout_gravity="start"
       app:headerLayout="@layout/nav_header"
-      app:menu="@menu/nav_menu" />
+      app:menu="@menu/nav_menu"
+      />
 </androidx.drawerlayout.widget.DrawerLayout>

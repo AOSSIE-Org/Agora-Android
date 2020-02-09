@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".displayelections.VotersActivity">
+    tools:context=".displayelections.VotersActivity"
+    >
 
   <androidx.appcompat.widget.Toolbar
       android:id="@+id/toolbar"
@@ -13,7 +14,8 @@
       android:background="@color/colorPrimary"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+      app:layout_constraintTop_toTopOf="parent"
+      >
 
     <TextView
         android:layout_width="match_parent"
@@ -22,7 +24,8 @@
         android:text="@string/voters"
         android:textColor="@color/whiteColor"
         android:textSize="35sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        />
 
   </androidx.appcompat.widget.Toolbar>
 
@@ -34,6 +37,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/toolbar"
-      tools:item_layout="@layout/list_item_voter_details" />
+      tools:item_layout="@layout/list_item_voter_details"
+      />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

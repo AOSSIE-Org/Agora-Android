@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".displayelections.ElectionActivity">
+    tools:context=".displayelections.ElectionActivity"
+    >
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="20dp">
+      android:layout_marginBottom="20dp"
+      >
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -22,11 +24,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
       <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          >
 
         <Button
             android:id="@+id/button_delete"
@@ -44,7 +48,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_status"
+            />
 
         <Button
             android:id="@+id/button_invite_voters"
@@ -62,7 +67,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_delete" />
+            app:layout_constraintTop_toBottomOf="@+id/button_delete"
+            />
 
         <Button
             android:id="@+id/button_voters"
@@ -80,7 +86,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_invite_voters" />
+            app:layout_constraintTop_toBottomOf="@+id/button_invite_voters"
+            />
 
         <Button
             android:id="@+id/button_ballot"
@@ -98,7 +105,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_voters" />
+            app:layout_constraintTop_toBottomOf="@+id/button_voters"
+            />
 
         <Button
             android:id="@+id/button_result"
@@ -119,7 +127,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_ballot" />
+            app:layout_constraintTop_toBottomOf="@+id/button_ballot"
+            />
 
         <TextView
             android:id="@+id/tv_description"
@@ -134,7 +143,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+            app:layout_constraintTop_toBottomOf="@+id/textView15"
+            />
 
         <TextView
             android:id="@+id/textView17"
@@ -152,7 +162,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_description"
+            />
 
         <TextView
             android:id="@+id/tv_candidate_list"
@@ -167,7 +178,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/textView17"
+            />
 
         <TextView
             android:id="@+id/textView19"
@@ -181,7 +193,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_candidate_list" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_candidate_list"
+            />
 
         <TextView
             android:id="@+id/tv_start_date"
@@ -197,7 +210,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.148"
             app:layout_constraintStart_toEndOf="@+id/textView19"
-            app:layout_constraintTop_toBottomOf="@+id/tv_candidate_list" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_candidate_list"
+            />
 
 
         <TextView
@@ -211,7 +225,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_end_date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_end_date"
+            />
 
         <TextView
             android:id="@+id/tv_status"
@@ -227,7 +242,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView20"
-            app:layout_constraintTop_toBottomOf="@+id/tv_end_date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_end_date"
+            />
 
         <TextView
             android:id="@+id/textView21"
@@ -240,7 +256,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_start_date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_start_date"
+            />
 
         <TextView
             android:id="@+id/tv_end_date"
@@ -256,49 +273,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/tv_start_date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_start_date"
+            />
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-          <androidx.constraintlayout.widget.ConstraintLayout
-              android:id="@+id/constraint_layout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorPrimary">
-
-            <TextView
-                android:id="@+id/tv_election_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/election_name_"
-                android:textColor="@color/whiteColor"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.32"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-          </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/textView15"
@@ -316,7 +293,52 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView4"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/constraint_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorPrimary"
+              >
+
+            <TextView
+                android:id="@+id/tv_election_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/election_name_"
+                android:textColor="@color/whiteColor"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.32"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
       </androidx.constraintlayout.widget.ConstraintLayout>
 
