@@ -2,9 +2,9 @@ package org.aossie.agoraandroid.remote;
 
 import retrofit2.Retrofit;
 
-public class RetrofitClient {
+import static org.aossie.agoraandroid.utilities.AppConstants.BASE_URL;
 
-    private static final String BASE_URL = "https://agora-rest-api.herokuapp.com/api/v1/";
+public class RetrofitClient {
 
     private static Retrofit getRetrofitInstance() {
 
