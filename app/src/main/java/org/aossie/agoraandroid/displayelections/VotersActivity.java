@@ -1,10 +1,10 @@
 package org.aossie.agoraandroid.displayelections;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
 
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.VotersRecyclerAdapter;

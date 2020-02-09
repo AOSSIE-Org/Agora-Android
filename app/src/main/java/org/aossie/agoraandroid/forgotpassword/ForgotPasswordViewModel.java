@@ -12,17 +12,17 @@ import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ForgotPasswordViewModel extends AndroidViewModel {
-private LoadToast loadToast;
-private Context context;
+    private LoadToast loadToast;
+    private Context context;
+
     ForgotPasswordViewModel(@NonNull Application application, Context context) {
         super(application);
-        this.context=context;
+        this.context = context;
     }
 
     void sendForgotPassLink(String userName) {
