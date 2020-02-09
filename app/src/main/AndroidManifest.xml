@@ -61,19 +61,19 @@
         <activity
             android:name=".signup.SignUpActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".main.MainActivity" />
+            android:parentActivityName=".homelogin.HomeLoginActivity" />
         <activity
             android:name=".login.LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".main.MainActivity" />
-        <activity android:name=".main.MainActivity">
+            android:parentActivityName=".homelogin.HomeLoginActivity" />
+        <activity android:name=".homelogin.HomeLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

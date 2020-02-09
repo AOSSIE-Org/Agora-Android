@@ -15,7 +15,8 @@ class SignUpTest : BaseTest() {
   @Throws(IOException::class)
   fun signUpTest() {
     mockWebServer.enqueue(MockResponse().setBody(Responses.AUTH_SIGNUP))
-    val responseFromRequest: Response<*> = apiService.createUser(Requests.AUTH_SIGNUP).execute()
+    val responseFromRequest: Response<*> = apiService.createUser(Requests.AUTH_SIGNUP)
+        .execute()
     Assert.assertEquals(responseFromRequest.body(), Responses.AUTH_SIGNUP)
   }
 }

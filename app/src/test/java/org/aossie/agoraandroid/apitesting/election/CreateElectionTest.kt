@@ -14,7 +14,9 @@ class CreateElectionTest : BaseTest() {
   @Throws(IOException::class)
   fun createElectionTest() {
     mockWebServer.enqueue(MockResponse().setBody(Responses.ELECTION_CREATE))
-    val responseFromRequest: Response<*> = apiService.createElection(Requests.ELECTION_CREATE, "authtoken").execute()
+    val responseFromRequest: Response<*> =
+      apiService.createElection(Requests.ELECTION_CREATE, "authtoken")
+          .execute()
     Assert.assertEquals(responseFromRequest.body(), Responses.ELECTION_CREATE)
   }
 }
