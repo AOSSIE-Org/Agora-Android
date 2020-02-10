@@ -38,7 +38,7 @@ class ProfileFragment : Fragment() {
 
     binding.updateProfileBtn.setOnClickListener({
       //TODO implment update feature
-      Toast.makeText(activity, "feature not available yet", Toast.LENGTH_SHORT).show()
+      Toast.makeText(activity,getString(R.string.feature_not_available), Toast.LENGTH_SHORT).show()
     })
 
     viewModel.passwordRequestCode.observe(this, Observer {
@@ -79,7 +79,7 @@ class ProfileFragment : Fragment() {
       }
       500 -> {
         loadToast.error()
-        Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity,resources.getString(R.string.try_again_text) , Toast.LENGTH_SHORT).show()
       }
 
     }

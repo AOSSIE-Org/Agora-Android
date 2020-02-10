@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.json.JSONArray;
@@ -62,14 +63,14 @@ public class ResultViewModel extends AndroidViewModel {
 
                 } else if (response.message().equals("No Content")) {
                     loadToast.error();
-                    Toast.makeText(getApplication(), "Nothing to show here", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.nothing_to_show), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 loadToast.error();
-                Toast.makeText(getApplication(), "Something Went Wrong Please Try Again Later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
             }
         });
 

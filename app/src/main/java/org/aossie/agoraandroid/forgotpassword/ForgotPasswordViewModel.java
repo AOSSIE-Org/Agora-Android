@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 
@@ -27,7 +28,7 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
 
     void sendForgotPassLink(String userName) {
         loadToast = new LoadToast(context);
-        loadToast.setText("Processing");
+        loadToast.setText(getApplication().getResources().getString(R.string.processing_text));
         loadToast.show();
 
         APIService apiService = RetrofitClient.getAPIService();
@@ -36,13 +37,13 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 loadToast.success();
-                Toast.makeText(getApplication(), "Link Sent, Please Check Your Emails", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.link_sent_text), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 loadToast.error();
-                Toast.makeText(getApplication(), "Something Went Wrong Please Try Again Later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
             }
         });
 

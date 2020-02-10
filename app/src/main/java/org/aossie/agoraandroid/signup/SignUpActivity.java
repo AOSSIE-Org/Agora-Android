@@ -47,27 +47,27 @@ public class SignUpActivity extends AppCompatActivity {
                 String securityQuestion = securityQuestionOfSignUp;
 
                 if (userName.isEmpty())
-                    mUserNameEditText.setError("Please enter User Name");
+                    mUserNameEditText.setError(getResources().getString(R.string.user_name_not_entered_error));
                 else mUserNameEditText.setError(null);
 
                 if (firstName.isEmpty()) {
-                    mFirstNameEditText.setError("Please enter First Name");
+                    mFirstNameEditText.setError(getResources().getString(R.string.please_enter_first_name));
                 } else mFirstNameEditText.setError(null);
 
                 if (lastName.isEmpty()) {
-                    mLastNameEditText.setError("Please enter Last Name");
+                    mLastNameEditText.setError(getResources().getString(R.string.please_enter_last_name));
                 } else mLastNameEditText.setError(null);
 
                 if (userEmail.isEmpty()) {
-                    mEmailEditText.setError("Please enter Email Address");
+                    mEmailEditText.setError(getResources().getString(R.string.please_enter_email_address));
                 } else mEmailEditText.setError(null);
 
                 if (securityQuestionAnswer.isEmpty()) {
-                    mSecurityAnswer.setError("Please enter Security Answer");
+                    mSecurityAnswer.setError(getResources().getString(R.string.please_enter_security_answer));
                 } else mSecurityAnswer.setError(null);
 
                 if (userPass.isEmpty()) {
-                    mPasswordEditText.setError("Please enter password");
+                    mPasswordEditText.setError(getResources().getString(R.string.please_enter_password));
                 } else {
                     mPasswordEditText.setError(null);
                     signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName, securityQuestion, securityQuestionAnswer);

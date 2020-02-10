@@ -65,19 +65,19 @@ public class CreateElectionOne extends AppCompatActivity {
                 mStartDate = mStartDateTextLayout.getEditText().getText().toString();
                 mEndDate = mEndDateTextLayout.getEditText().getText().toString();
                 if (mElectionName.isEmpty())
-                    mNameTextLayout.setError("Please enter Election Name");
+                    mNameTextLayout.setError(getResources().getString(R.string.enter_election_name));
                 else mNameTextLayout.setError(null);
 
                 if (mElectionDescription.isEmpty()) {
-                    mDescriptionTextLayout.setError("Please enter description");
+                    mDescriptionTextLayout.setError(getResources().getString(R.string.enter_description));
                 } else mDescriptionTextLayout.setError(null);
 
                 if (mStartDate.isEmpty()) {
-                    mStartDateTextLayout.setError("Please enter start date");
+                    mStartDateTextLayout.setError(getResources().getString(R.string.enter_start_date));
                 } else mStartDateTextLayout.setError(null);
 
                 if (mEndDate.isEmpty()) {
-                    mEndDateTextLayout.setError("PLease enter end date");
+                    mEndDateTextLayout.setError(getResources().getString(R.string.enter_end_date));
                 } else {
                     mEndDateTextLayout.setError(null);
                     electionDetailsSharedPrefs.saveElectionName(mElectionName);

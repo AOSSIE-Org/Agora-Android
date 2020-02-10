@@ -122,6 +122,45 @@
     <string name="security_question_answer">Please Write Your Answer Here</string>
     <string name="security_dropdown">Security Question</string>
     <string name="welcome">Welcome, %1$s!</string>
+    <string name="try_again_text">Something went wrong please try again</string>
+    <string name="please_refresh_text">Something went wrong please refresh</string>
+    <string name="wrong_username_password">Wrong User Name or Password</string>
+    <string name="election_not_started">Election is not started yet</string>
+    <string name="election_finished">Election is Finished</string>
+    <string name="election_not_deleted">Active Elections Cannot Be Deleted</string>
+    <string name="election_delete_success">Election Deleted Successfully</string>
+    <string name="deleting_election">Deleting Election</string>
+    <string name="user_name_not_entered_error">Please Enter User Name</string>
+    <string name="link_sent_text">Link Sent, Please Check Your Emails</string>
+    <string name="successful_logout">Logged Out Successfully</string>
+    <string name="feature_not_available">feature not available yet</string>
+    <string name="enter_voters_name">Please enter Voters Name</string>
+    <string name="enter_voters_email">Please enter Voters Email</string>
+    <string name="voter_added_success">Voters Added Successfully</string>
+    <string name="server_error_text">Internal server error</string>
+    <string name="inviting_voters">Inviting Voters</string>
+    <string name="enter_password_text">Please enter password</string>
+    <string name="nothing_to_show">Nothing to show here</string>
+    <string name="election_result_percentage">Election Result in percentage</string>
+    <string name="please_enter_first_name">Please enter First Name</string>
+    <string name="please_enter_last_name">Please enter Last Name"</string>
+    <string name="please_enter_email_address">Please enter Email Address</string>
+    <string name="please_enter_security_answer">Please enter Security Answer</string>
+    <string name="please_enter_password">Please enter password</string>
+    <string name="network_error">Network Connection issues please try again</string>
+    <string name="activation_link_send">An activation link has been sent to your email. Follow it to activate your account.</string>
+    <string name="same_username_error">User With Same UserName already Exists</string>
+    <string name="login_cancel_text">Login Cancel</string>
+    <string name="user_logged_out">User Logged Out</string>
+    <string name="processing_text">Processing</string>
+    <string name="enter_election_name">"Please enter Election Name"</string>
+    <string name="enter_description">"Please enter description"</string>
+    <string name="enter_start_date">"Please enter start date"</string>
+    <string name="enter_end_date">"Please enter end date"</string>
+    <string name="created_successfully">Created Successfully</string>
+    <string name="add_candidate_error">"Please Add At least One Candidate"</string>
+
+
 
 
     //string-array for security questions
@@ -144,6 +183,8 @@
     <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
     <string name="password_change_success">password changed successfully</string>
     <string name="token_expired">Token expired, please login again!</string>
+
+
 
 
 </resources>

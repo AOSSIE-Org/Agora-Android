@@ -180,13 +180,13 @@ public class HomeFragment extends Fragment {
                     }
 
                 } else {
-                    Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -253,7 +253,7 @@ public class HomeFragment extends Fragment {
                 mShimmerViewContainer.setVisibility(View.GONE);
                 constraintLayout.setVisibility(View.VISIBLE);
                 mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
-                Toast.makeText(getActivity(), "Something went wrong please refresh", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.please_refresh_text), Toast.LENGTH_SHORT).show();
             }
         });
 

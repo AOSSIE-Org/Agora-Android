@@ -27,7 +27,7 @@ public class ForgotPasswordSend extends AppCompatActivity {
             public void onClick(View v) {
                 String userName = mUserNameEditText.getEditText().getText().toString().trim();
                 if (userName.isEmpty()) {
-                    mUserNameEditText.setError("Please Enter User Name");
+                    mUserNameEditText.setError(getResources().getString(R.string.user_name_not_entered_error));
                 } else {
                     forgotPasswordViewModel.sendForgotPassLink(userName);
                 }

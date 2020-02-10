@@ -38,7 +38,7 @@ public class ResultActivity extends AppCompatActivity {
         pieChart.setUsePercentValues(true);
 
         Description description = new Description();
-        description.setText("Election Result in percentage");
+        description.setText(getApplication().getResources().getString(R.string.election_result_percentage));
         pieChart.setDescription(description);
 
         value.add(new PieEntry(numerator, mWinnerName));

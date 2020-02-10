@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -35,7 +36,7 @@ class InviteVotersViewModel extends AndroidViewModel {
 
     public void inviteVoters(ArrayList<String> mVoterNames, ArrayList<String> mVoterEmails, String id, String token) throws JSONException {
         loadToast = new LoadToast(context);
-        loadToast.setText("Inviting Voters");
+        loadToast.setText(getApplication().getResources().getString(R.string.inviting_voters));
         loadToast.show();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < mVoterEmails.size(); i++) {
@@ -56,18 +57,18 @@ class InviteVotersViewModel extends AndroidViewModel {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.message().equals("OK")) {
                     loadToast.success();
-                    Toast.makeText(context, "Voters Added Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getApplication().getResources().getString(R.string.voter_added_success), Toast.LENGTH_SHORT).show();
                     context.startActivity(new Intent(context, HomeActivity.class));
                 } else if (response.message().equals("Internal Server Error")) {
                     loadToast.error();
-                    Toast.makeText(context, "Internal server error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getApplication().getResources().getString(R.string.server_error_text), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 loadToast.error();
-                Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
             }
         });
 

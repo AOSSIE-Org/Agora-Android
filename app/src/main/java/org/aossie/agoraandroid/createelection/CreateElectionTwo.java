@@ -48,7 +48,7 @@ public class CreateElectionTwo extends AppCompatActivity {
                     tinydb.putListString("Candidates", mCandidates);
                     startActivity(new Intent(CreateElectionTwo.this, CreateElectionThree.class));
                 } else {
-                    Toast.makeText(CreateElectionTwo.this, "Please Add At least One Candidate", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateElectionTwo.this, getApplication().getResources().getString(R.string.add_candidate_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });

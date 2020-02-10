@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.login.LoginActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -59,18 +60,18 @@ class SignUpViewModel extends AndroidViewModel {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.message().equals("timeout")) {
                     loadToast.error();
-                    Toast.makeText(getApplication(), "Network Connection issues please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(),getApplication().getResources().getString(R.string.network_error), Toast.LENGTH_LONG).show();
                 }
                 if (response.code() == 200) {
                     loadToast.success();
-                    Toast.makeText(getApplication(), "An activation link has been sent to your email. Follow it to activate your account.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.activation_link_send), Toast.LENGTH_LONG).show();
                     context.startActivity(new Intent(context, LoginActivity.class));
                 } else if (response.code() == 409) {
                     loadToast.error();
-                    Toast.makeText(getApplication(), "User With Same UserName already Exists", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.same_username_error), Toast.LENGTH_LONG).show();
                 } else {
                     loadToast.error();
-                    Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_LONG).show();
                 }
             }
 

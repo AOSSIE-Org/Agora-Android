@@ -61,7 +61,7 @@ public class ElectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (status.equals("Finished"))
-                    Toast.makeText(ElectionActivity.this, "Election is Finished", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ElectionActivity.this, getApplication().getResources().getString(R.string.finished_elections) ,Toast.LENGTH_SHORT).show();
                 else {
                     Intent intent = new Intent(getApplicationContext(), InviteVotersActivity.class);
                     intent.putExtra("id", id);
@@ -74,7 +74,7 @@ public class ElectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (status.equals("Pending"))
-                    Toast.makeText(ElectionActivity.this, "Election is not started yet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ElectionActivity.this, getApplication().getResources().getString(R.string.election_not_started), Toast.LENGTH_SHORT).show();
                 else {
                     resultViewModel.getResult(token, id);
                 }
@@ -86,7 +86,7 @@ public class ElectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch (status) {
                     case "Active":
-                        Toast.makeText(ElectionActivity.this, "Active Elections Cannot Be Deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ElectionActivity.this, getApplication().getResources().getString(R.string.election_not_deleted), Toast.LENGTH_SHORT).show();
                         break;
                     case "Finished":
                         displayElectionViewModel.deleteElection(token, id);

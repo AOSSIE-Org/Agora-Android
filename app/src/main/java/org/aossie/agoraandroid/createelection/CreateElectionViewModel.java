@@ -12,6 +12,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -82,19 +83,19 @@ class CreateElectionViewModel extends AndroidViewModel {
 
                 if (response.message().equals("OK")) {
                     loadToast.success();
-                    Toast.makeText(getApplication(), "Created Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.created_successfully), Toast.LENGTH_SHORT).show();
                     electionDetailsSharedPrefs.clearElectionData();
                     context.startActivity(new Intent(context, HomeActivity.class));
                 } else {
                     loadToast.error();
-                    Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 loadToast.error();
-                Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
             }
         });
 

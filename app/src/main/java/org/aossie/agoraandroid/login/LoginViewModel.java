@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -80,14 +81,14 @@ public class LoginViewModel extends AndroidViewModel {
 
                 } else {
                     loadToast.error();
-                    Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.wrong_username_password), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 loadToast.error();
-                Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -113,13 +114,13 @@ public class LoginViewModel extends AndroidViewModel {
                     }
 
                 } else {
-                    Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.wrong_username_password), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -150,13 +151,13 @@ public class LoginViewModel extends AndroidViewModel {
                     }
 
                 } else {
-                    Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.wrong_username_password) ,Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), getApplication().getResources().getString(R.string.try_again_text), Toast.LENGTH_SHORT).show();
 
             }
         });

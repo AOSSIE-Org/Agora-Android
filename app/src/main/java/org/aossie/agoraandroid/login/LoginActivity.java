@@ -44,11 +44,11 @@ public class LoginActivity extends AppCompatActivity {
                 final String userPass = mLoginPassword.getEditText().getText().toString().trim();
 
                 if (userName.isEmpty())
-                    mLoginUserName.setError("Please enter User Name");
+                    mLoginUserName.setError(getResources().getString(R.string.user_name_not_entered_error));
                 else mLoginUserName.setError(null);
 
                 if (userPass.isEmpty()) {
-                    mLoginPassword.setError("Please enter password");
+                    mLoginPassword.setError(getResources().getString(R.string.please_enter_password));
                 } else {
                     mLoginPassword.setError(null);
                     loginViewModel.logInRequest(userName, userPass);

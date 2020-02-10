@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancel() {
-                    Toast.makeText(MainActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.login_cancel_text), Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
             if (currentAccessToken == null) {
-                Toast.makeText(MainActivity.this, "User Logged Out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.user_logged_out), Toast.LENGTH_SHORT).show();
             } else {
                 String facebookAccessToken = currentAccessToken.getToken();
                 loginViewModel.facebookLogInRequest(facebookAccessToken);
