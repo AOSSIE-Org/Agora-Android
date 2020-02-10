@@ -40,7 +40,10 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
   val passwordRequestCode: LiveData<Int>
     get() = _passwordRequestCode
 
-  fun changePassword(newPass: String, confirmNewPass: String) {
+  fun changePassword(
+    newPass: String,
+    confirmNewPass: String
+  ) {
     if (newPass.isBlank())
       _passwordRequestCode.value = 1
     else if (confirmNewPass.isBlank())
@@ -55,7 +58,10 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
   }
 
-  private fun doChangePasswordRequest(password: String, token: String) {
+  private fun doChangePasswordRequest(
+    password: String,
+    token: String
+  ) {
     val jsonObject = JSONObject()
     try {
       jsonObject.put("password", password)
@@ -65,7 +71,10 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     val apiService = RetrofitClient.getAPIService()
     val changePassResponse = apiService.changePassword(jsonObject.toString(), token)
     changePassResponse.enqueue(object : Callback<String> {
-      override fun onResponse(call: Call<String>, response: Response<String>) {
+      override fun onResponse(
+        call: Call<String>,
+        response: Response<String>
+      ) {
         if (response.message() == "OK") {
           _passwordRequestCode.value = 200
         } else {
@@ -74,7 +83,10 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         }
       }
 
-      override fun onFailure(call: Call<String>, t: Throwable) {
+      override fun onFailure(
+        call: Call<String>,
+        t: Throwable
+      ) {
         _passwordRequestCode.value = 500
       }
     })

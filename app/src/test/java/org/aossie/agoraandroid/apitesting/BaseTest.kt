@@ -21,7 +21,8 @@ open class BaseTest {
   fun setup() {
     mockWebServer = MockWebServer()
     mockWebServer.start()
-    val gson = GsonBuilder().setLenient().create()
+    val gson = GsonBuilder().setLenient()
+        .create()
     apiService = Retrofit.Builder()
         .baseUrl(mockWebServer.url("/"))
         .client(OkHttpClient())
