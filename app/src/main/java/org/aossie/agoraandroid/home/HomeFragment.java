@@ -121,7 +121,8 @@ public class HomeFragment extends Fragment {
 
         String userName = sharedPrefs.getUserName();
         String userPassword = sharedPrefs.getPass();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         Date currentDate = Calendar.getInstance().getTime();
         try {
             String expireOn = sharedPrefs.getTokenExpiresOn();
@@ -130,13 +131,14 @@ public class HomeFragment extends Fragment {
                 //If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
                     updateToken(userName, userPassword);
+                }else{
+                    getElectionData(sharedPrefs.getToken());
                 }
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        getElectionData(sharedPrefs.getToken());
         return view;
     }
 
@@ -173,9 +175,9 @@ public class HomeFragment extends Fragment {
                         JSONObject token = jsonObjects.getJSONObject("token");
                         String expiresOn = token.getString("expiresOn");
                         String key = token.getString("token");
-
                         sharedPrefs.saveToken(key);
                         sharedPrefs.saveTokenExpiresOn(expiresOn);
+                        getElectionData(key);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
