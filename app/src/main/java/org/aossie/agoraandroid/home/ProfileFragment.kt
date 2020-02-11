@@ -1,7 +1,6 @@
 package org.aossie.agoraandroid.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.textfield.TextInputLayout
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
@@ -21,10 +19,14 @@ class ProfileFragment : Fragment() {
   lateinit var viewModel: ProfileViewModel
   lateinit var loadToast: LoadToast
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
 
-    viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
+    viewModel = ViewModelProviders.of(this)
+        .get(ProfileViewModel::class.java)
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
     loadToast = LoadToast(activity)
@@ -40,7 +42,8 @@ class ProfileFragment : Fragment() {
 
     binding.updateProfileBtn.setOnClickListener({
       //TODO implment update feature
-      Toast.makeText(activity,"feature not available yet",Toast.LENGTH_SHORT).show()
+      Toast.makeText(activity, "feature not available yet", Toast.LENGTH_SHORT)
+          .show()
     })
 
     viewModel.passwordRequestCode.observe(this, Observer {
@@ -50,7 +53,9 @@ class ProfileFragment : Fragment() {
   }
 
   private fun handlePassword(it: Int?) {
-    when(it){
+    binding.newPasswordTil.error = null
+    binding.confirmPasswordTil.error = null
+    when (it) {
       1 -> {
         loadToast.error()
         binding.newPasswordTil.error = getString(R.string.password_empty_warn)
@@ -71,19 +76,21 @@ class ProfileFragment : Fragment() {
       }
       200 -> {
         loadToast.success()
-        Toast.makeText(activity,getString(R.string.password_change_success),Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(R.string.password_change_success), Toast.LENGTH_SHORT)
+            .show()
       }
       201 -> {
         loadToast.error()
-        Toast.makeText(activity,getString(R.string.token_expired),Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(R.string.token_expired), Toast.LENGTH_SHORT)
+            .show()
       }
       500 -> {
         loadToast.error()
-        Toast.makeText(activity,"something wrong! please try later",Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT)
+            .show()
       }
 
     }
   }
-
 
 }

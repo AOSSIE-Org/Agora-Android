@@ -85,5 +85,4 @@ class SharedPrefs(context: Context) {
     editor.commit()
   }
 
-
 }

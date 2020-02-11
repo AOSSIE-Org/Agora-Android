@@ -4,77 +4,74 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
-
 android {
-    compileSdkVersion compileSdk
-    defaultConfig {
-        vectorDrawables.useSupportLibrary = true
-        applicationId "org.aossie.agoraandroid"
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  compileSdkVersion compileSdk
+  defaultConfig {
+    vectorDrawables.useSupportLibrary = true
+    applicationId "org.aossie.agoraandroid"
+    minSdkVersion minSdk
+    targetSdkVersion targetSdk
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    dataBinding {
-        enabled = true
-    }
-    defaultConfig {
-        vectorDrawables.useSupportLibrary = true
-    }
+  }
+  dataBinding {
+    enabled = true
+  }
+  defaultConfig {
+    vectorDrawables.useSupportLibrary = true
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$appCompatVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
-    testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
-    // Lifecycle components
-    implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
-    //Design Support Library
-    implementation "com.google.android.material:material:$materialDesignVersion"
-    //Library for CardView
-    implementation "androidx.cardview:cardview:$cardViewVersion"
-    //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-scalars:$retrofitConverterScalarsVersion"
-    //GSON and GSON converter
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
-    implementation "com.google.code.gson:gson:$gsonVersion"
-    //Navigation Architecture Dependencies
-    implementation "androidx.navigation:navigation-fragment:$navFragmentVersion"
-    implementation "androidx.navigation:navigation-ui:$navUiVersion"
-    //Shimmer
-    implementation "com.facebook.shimmer:shimmer:$facebookShimmerVersion"
-    //Facebook Login
-    implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
-    //Pie Chart
-    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
-    //Load Toast
-    implementation "net.steamcrafted:load-toast:$loadToastVersion"
-    //MockWebServer and Roboelectric
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "com.squareup.okhttp3:mockwebserver:$mockWebServerVersion"
-    // Mockito
-    testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
-    testImplementation 'org.json:json:20140107'
-    //kotlin deps
-    implementation "androidx.core:core-ktx:+"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-
-
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation "androidx.appcompat:appcompat:$appCompatVersion"
+  implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+  implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
+  testImplementation "junit:junit:$junitVersion"
+  androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+  androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
+  // Lifecycle components
+  implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
+  annotationProcessor "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
+  //Design Support Library
+  implementation "com.google.android.material:material:$materialDesignVersion"
+  //Library for CardView
+  implementation "androidx.cardview:cardview:$cardViewVersion"
+  //Retrofit
+  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  implementation "com.squareup.retrofit2:converter-scalars:$retrofitConverterScalarsVersion"
+  //GSON and GSON converter
+  implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
+  implementation "com.google.code.gson:gson:$gsonVersion"
+  //Navigation Architecture Dependencies
+  implementation "androidx.navigation:navigation-fragment:$navFragmentVersion"
+  implementation "androidx.navigation:navigation-ui:$navUiVersion"
+  //Shimmer
+  implementation "com.facebook.shimmer:shimmer:$facebookShimmerVersion"
+  //Facebook Login
+  implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
+  //Pie Chart
+  implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
+  //Load Toast
+  implementation "net.steamcrafted:load-toast:$loadToastVersion"
+  //MockWebServer and Roboelectric
+  testImplementation "org.robolectric:robolectric:$robolectricVersion"
+  testImplementation "com.squareup.okhttp3:mockwebserver:$mockWebServerVersion"
+  // Mockito
+  testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
+  testImplementation 'org.json:json:20140107'
+  //kotlin deps
+  implementation "androidx.core:core-ktx:+"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 }
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
