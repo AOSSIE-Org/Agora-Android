@@ -1,25 +1,25 @@
 package org.aossie.agoraandroid.home;
 
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.facebook.shimmer.ShimmerFrameLayout;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.createelection.CreateElectionOne;
 import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
@@ -33,17 +33,9 @@ import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 public class HomeFragment extends Fragment {
     private TextView mActiveCountTextView, mPendingCountTextView, mTotalCountTextView, mFinishedCountTextView;
@@ -148,17 +140,50 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    getElectionData(sharedPrefs.getToken());
+    return view;
+  }
 
-    private void updateToken(String userName, String userPassword) {
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle
+      savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+  }
 
-        final JSONObject jsonObject = new JSONObject();
-        try {
+  private void updateToken(String userName, String userPassword) {
 
-            jsonObject.put("identifier", userName);
-            jsonObject.put("password", userPassword);
+    final JSONObject jsonObject = new JSONObject();
+    try {
 
-        } catch (JSONException e) {
+      jsonObject.put("identifier", userName);
+      jsonObject.put("password", userPassword);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    APIService apiService = RetrofitClient.getAPIService();
+    Call<String> logInResponse = apiService.logIn(jsonObject.toString());
+    logInResponse.enqueue(new Callback<String>() {
+      @Override
+      public void onResponse(Call<String> call, Response<String> response) {
+        if (response.message().equals("OK")) {
+          mShimmerViewContainer.stopShimmer();
+          mShimmerViewContainer.setVisibility(View.GONE);
+          constraintLayout.setVisibility(View.VISIBLE);
+          try {
+            JSONObject jsonObjects = new JSONObject(response.body());
+
+            JSONObject token = jsonObjects.getJSONObject("token");
+            String expiresOn = token.getString("expiresOn");
+            String key = token.getString("token");
+
+            sharedPrefs.saveToken(key);
+            sharedPrefs.saveTokenExpiresOn(expiresOn);
+          } catch (JSONException e) {
             e.printStackTrace();
+          }
+        } else {
+          Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
+              .show();
         }
         APIService apiService = RetrofitClient.getAPIService();
         Call<String> logInResponse = apiService.logIn(jsonObject.toString());
@@ -185,99 +210,51 @@ public class HomeFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
                 }
+              }
             }
+            flag++;
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+            mTotalCountTextView.setText(String.valueOf(jsonArray.length()));
+            mPendingCountTextView.setText(String.valueOf(mPendingCount));
+            mActiveCountTextView.setText(String.valueOf(mActiveCount));
+            mFinishedCountTextView.setText(String.valueOf(mFinishedCount));
+            mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
+          } catch (JSONException e) {
+            e.printStackTrace();
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+        }
+      }
 
-            }
-        });
-
-    }
-
-    private void getElectionData(String token) {
-        APIService apiService = RetrofitClient.getAPIService();
-        Call<String> electionDataResponse = apiService.getAllElections(token);
-        electionDataResponse.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.message().equals("OK")) {
-
-                    mShimmerViewContainer.stopShimmer();
-                    mShimmerViewContainer.setVisibility(View.GONE);
-                    constraintLayout.setVisibility(View.VISIBLE);
-
-                    electionDetailsSharedPrefs.saveElectionDetails(response.body());
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body());
-                        JSONArray jsonArray = jsonObject.getJSONArray("elections");
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            String startingDate = jsonObject1.getString("start");
-                            String endingDate = jsonObject1.getString("end");
-                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                            Date formattedStartingDate = formatter.parse(startingDate);
-                            Date formattedEndingDate = formatter.parse(endingDate);
-                            Date currentDate = Calendar.getInstance().getTime();
-
-                            // Separating into Active, Finished or Pending Elections
-                            if (flag == 0) {
-
-                                if (currentDate.before(formattedStartingDate)) {
-                                    mPendingCount++;
-                                } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
-                                    mActiveCount++;
-                                } else if (currentDate.after(formattedEndingDate)) {
-                                    mFinishedCount++;
-                                }
-                            }
-                        }
-                        flag++;
-
-                        mTotalCountTextView.setText(String.valueOf(jsonArray.length()));
-                        mPendingCountTextView.setText(String.valueOf(mPendingCount));
-                        mActiveCountTextView.setText(String.valueOf(mActiveCount));
-                        mFinishedCountTextView.setText(String.valueOf(mFinishedCount));
-                        mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                mShimmerViewContainer.stopShimmer();
-                mShimmerViewContainer.setVisibility(View.GONE);
-                constraintLayout.setVisibility(View.VISIBLE);
-                mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
-                Toast.makeText(getActivity(), "Something went wrong please refresh", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mShimmerViewContainer.startShimmer();
-    }
-
-    @Override
-    public void onPause() {
+      @Override
+      public void onFailure(Call<String> call, Throwable t) {
         mShimmerViewContainer.stopShimmer();
-        super.onPause();
-    }
+        mShimmerViewContainer.setVisibility(View.GONE);
+        constraintLayout.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
+        Toast.makeText(getActivity(), "Something went wrong please refresh", Toast.LENGTH_SHORT)
+            .show();
+      }
+    });
+  }
 
-    private void doYourUpdate() {
-        constraintLayout.setVisibility(View.GONE);
-        mShimmerViewContainer.setVisibility(View.VISIBLE);
-        mShimmerViewContainer.startShimmer();
-        getElectionData(sharedPrefs.getToken());//try to fetch data again
-    }
+  @Override
+  public void onResume() {
+    super.onResume();
+    mShimmerViewContainer.startShimmer();
+  }
+
+  @Override
+  public void onPause() {
+    mShimmerViewContainer.stopShimmer();
+    super.onPause();
+  }
+
+  private void doYourUpdate() {
+    constraintLayout.setVisibility(View.GONE);
+    mShimmerViewContainer.setVisibility(View.VISIBLE);
+    mShimmerViewContainer.startShimmer();
+    getElectionData(sharedPrefs.getToken());//try to fetch data again
+  }
 }

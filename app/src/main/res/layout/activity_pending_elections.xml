@@ -4,30 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".displayelections.TotalElectionsActivity">
+    tools:context=".displayelections.TotalElectionsActivity"
+    >
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        app:title="Pending Elections"
-        app:titleTextColor="@color/white"
-        app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/colorPrimary"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+      app:title="@string/pending_elections"
+      app:titleTextColor="@color/white"
+      >
 
 
-    </androidx.appcompat.widget.Toolbar>
+  </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_pending_elections"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:item_layout="@layout/list_item_election_details" />
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_pending_elections"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      tools:item_layout="@layout/list_item_election_details"
+      />
 </androidx.constraintlayout.widget.ConstraintLayout>
