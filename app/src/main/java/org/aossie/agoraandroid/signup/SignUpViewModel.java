@@ -56,28 +56,37 @@ class SignUpViewModel extends AndroidViewModel {
           Toast.makeText(getApplication(), "Network Connection issues please try again",
               Toast.LENGTH_LONG).show();
         }
-        if (response.code() == 200) {
-          loadToast.success();
-          Toast.makeText(getApplication(),
-              "An activation link has been sent to your email. Follow it to activate your account.",
-              Toast.LENGTH_LONG).show();
-          context.startActivity(new Intent(context, LoginActivity.class));
-        } else if (response.code() == 409) {
-          loadToast.error();
-          Toast.makeText(getApplication(), "User With Same UserName already Exists",
-              Toast.LENGTH_LONG).show();
-        } else {
-          loadToast.error();
-          Toast.makeText(getApplication(), "Something went wrong please try again",
-              Toast.LENGTH_LONG).show();
-        }
-      }
 
-      @Override
-      public void onFailure(Call<String> call, Throwable t) {
-        loadToast.error();
-        Toast.makeText(getApplication(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-      }
-    });
-  }
+        APIService apiService = RetrofitClient.getAPIService();
+        Call<String> signUpResponse = apiService.createUser(jsonObject.toString());
+        signUpResponse.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.message().equals("timeout")) {
+                    loadToast.error();
+                    Toast.makeText(getApplication(), "Network Connection issues please try again", Toast.LENGTH_LONG).show();
+                }
+                if (response.code() == 200) {
+                    loadToast.success();
+                    Toast.makeText(getApplication(), "An activation link has been sent to your email. Follow it to activate your account.", Toast.LENGTH_LONG).show();
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                } else if (response.code() == 409) {
+                    loadToast.error();
+                    Toast.makeText(getApplication(), "User with same UserName/Email already exists. Try with a different one", Toast.LENGTH_LONG).show();
+                } else {
+                    loadToast.error();
+                    Toast.makeText(getApplication(), "Something went wrong please try again", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                loadToast.error();
+                Toast.makeText(getApplication(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
 }
