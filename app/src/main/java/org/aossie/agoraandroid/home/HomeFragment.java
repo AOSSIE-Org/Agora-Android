@@ -38,96 +38,106 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
-  private TextView mActiveCountTextView, mPendingCountTextView, mTotalCountTextView,
-      mFinishedCountTextView;
-  private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
-  private int mActiveCount = 0, mFinishedCount = 0, mPendingCount = 0, flag = 0;
-  private ShimmerFrameLayout mShimmerViewContainer;
-  private ConstraintLayout constraintLayout;
-  private SharedPrefs sharedPrefs;
-  private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView mActiveCountTextView, mPendingCountTextView, mTotalCountTextView, mFinishedCountTextView;
+    private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
+    private int mActiveCount = 0, mFinishedCount = 0, mPendingCount = 0, flag = 0;
+    private ShimmerFrameLayout mShimmerViewContainer;
+    private ConstraintLayout constraintLayout;
+    private SharedPrefs sharedPrefs;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-  public HomeFragment() {
-  }
+    public HomeFragment() {
+    }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getActivity());
-    sharedPrefs = new SharedPrefs(getActivity());
-    View view = inflater.inflate(R.layout.fragment_home, null);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getActivity());
+        sharedPrefs = new SharedPrefs(getActivity());
+        View view = inflater.inflate(R.layout.fragment_home, null);
 
-    mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
-    constraintLayout = view.findViewById(R.id.constraintLayout);
+        mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
 
-    mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
-    mSwipeRefreshLayout.setColorSchemeResources(R.color.logo_yellow, R.color.logo_green);
-    CardView mTotalElectionsCardView = view.findViewById(R.id.card_view_total_elections);
-    CardView mPendingElectionsCardView = view.findViewById(R.id.card_view_pending_elections);
-    CardView mActiveElectionsCardView = view.findViewById(R.id.card_view_active_elections);
-    CardView mFinishedElectionsCardView = view.findViewById(R.id.card_view_finished_elections);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.logo_yellow, R.color.logo_green);
+        CardView mTotalElectionsCardView = view.findViewById(R.id.card_view_total_elections);
+        CardView mPendingElectionsCardView = view.findViewById(R.id.card_view_pending_elections);
+        CardView mActiveElectionsCardView = view.findViewById(R.id.card_view_active_elections);
+        CardView mFinishedElectionsCardView = view.findViewById(R.id.card_view_finished_elections);
 
-    mActiveCountTextView = view.findViewById(R.id.text_view_active_count);
-    mPendingCountTextView = view.findViewById(R.id.text_view_pending_count);
-    mTotalCountTextView = view.findViewById(R.id.text_view_total_count);
-    mFinishedCountTextView = view.findViewById(R.id.text_view_finished_count);
+        mActiveCountTextView = view.findViewById(R.id.text_view_active_count);
+        mPendingCountTextView = view.findViewById(R.id.text_view_pending_count);
+        mTotalCountTextView = view.findViewById(R.id.text_view_total_count);
+        mFinishedCountTextView = view.findViewById(R.id.text_view_finished_count);
 
-    Button createElection = view.findViewById(R.id.button_create_election);
-    mActiveElectionsCardView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startActivity(new Intent(getActivity(), ActiveElectionsActivity.class));
-      }
-    });
-    mPendingElectionsCardView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startActivity(new Intent(getActivity(), PendingElectionsActivity.class));
-      }
-    });
-    mFinishedElectionsCardView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startActivity(new Intent(getActivity(), FinishedElectionsActivity.class));
-      }
-    });
-    mTotalElectionsCardView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startActivity(new Intent(getActivity(), TotalElectionsActivity.class));
-      }
-    });
-    createElection.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startActivity(new Intent(getActivity(), CreateElectionOne.class));
-      }
-    });
-    mSwipeRefreshLayout.setOnRefreshListener(
-        new SwipeRefreshLayout.OnRefreshListener() {
-          @Override
-          public void onRefresh() {
-            doYourUpdate();
-          }
+        Button createElection = view.findViewById(R.id.button_create_election);
+        mActiveElectionsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ActiveElectionsActivity.class));
+            }
+        });
+        mPendingElectionsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), PendingElectionsActivity.class));
+            }
+        });
+        mFinishedElectionsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), FinishedElectionsActivity.class));
+            }
+        });
+        mTotalElectionsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), TotalElectionsActivity.class));
+            }
+        });
+        createElection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CreateElectionOne.class));
+            }
+        });
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        doYourUpdate();
+                    }
+                }
+        );
+
+        String userName = sharedPrefs.getUserName();
+        String userPassword = sharedPrefs.getPass();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        Date currentDate = Calendar.getInstance().getTime();
+        try {
+            String expireOn = sharedPrefs.getTokenExpiresOn();
+            if (expireOn != null) {
+                Date expiresOn = formatter.parse(expireOn);
+                //If the token is expired, get a new one to continue login session of user
+                if (currentDate.after(expiresOn)) {
+                    updateToken(userName, userPassword);
+                }else{
+                    getElectionData(sharedPrefs.getToken());
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-    );
 
-    String userName = sharedPrefs.getUserName();
-    String userPassword = sharedPrefs.getPass();
-    SimpleDateFormat formatter =
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-    Date currentDate = Calendar.getInstance().getTime();
-    try {
-      String expireOn = sharedPrefs.getTokenExpiresOn();
-      if (expireOn != null) {
-        Date expiresOn = formatter.parse(expireOn);
-        //If the token is expired, get a new one to continue login session of user
-        if (currentDate.after(expiresOn)) {
-          updateToken(userName, userPassword);
-        }
-      }
-    } catch (ParseException e) {
-      e.printStackTrace();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle
+            savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     getElectionData(sharedPrefs.getToken());
@@ -175,52 +185,30 @@ public class HomeFragment extends Fragment {
           Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
               .show();
         }
-      }
+        APIService apiService = RetrofitClient.getAPIService();
+        Call<String> logInResponse = apiService.logIn(jsonObject.toString());
+        logInResponse.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.message().equals("OK")) {
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+                    constraintLayout.setVisibility(View.VISIBLE);
+                    try {
+                        JSONObject jsonObjects = new JSONObject(response.body());
 
-      @Override
-      public void onFailure(Call<String> call, Throwable t) {
-        Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
-            .show();
-      }
-    });
-  }
+                        JSONObject token = jsonObjects.getJSONObject("token");
+                        String expiresOn = token.getString("expiresOn");
+                        String key = token.getString("token");
+                        sharedPrefs.saveToken(key);
+                        sharedPrefs.saveTokenExpiresOn(expiresOn);
+                        getElectionData(key);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-  private void getElectionData(String token) {
-    APIService apiService = RetrofitClient.getAPIService();
-    Call<String> electionDataResponse = apiService.getAllElections(token);
-    electionDataResponse.enqueue(new Callback<String>() {
-      @Override
-      public void onResponse(Call<String> call, Response<String> response) {
-        if (response.message().equals("OK")) {
-
-          mShimmerViewContainer.stopShimmer();
-          mShimmerViewContainer.setVisibility(View.GONE);
-          constraintLayout.setVisibility(View.VISIBLE);
-
-          electionDetailsSharedPrefs.saveElectionDetails(response.body());
-          try {
-            JSONObject jsonObject = new JSONObject(response.body());
-            JSONArray jsonArray = jsonObject.getJSONArray("elections");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-              JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-              String startingDate = jsonObject1.getString("start");
-              String endingDate = jsonObject1.getString("end");
-              SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-              Date formattedStartingDate = formatter.parse(startingDate);
-              Date formattedEndingDate = formatter.parse(endingDate);
-              Date currentDate = Calendar.getInstance().getTime();
-
-              // Separating into Active, Finished or Pending Elections
-              if (flag == 0) {
-
-                if (currentDate.before(formattedStartingDate)) {
-                  mPendingCount++;
-                } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-                    formattedEndingDate)) {
-                  mActiveCount++;
-                } else if (currentDate.after(formattedEndingDate)) {
-                  mFinishedCount++;
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
                 }
               }
             }
