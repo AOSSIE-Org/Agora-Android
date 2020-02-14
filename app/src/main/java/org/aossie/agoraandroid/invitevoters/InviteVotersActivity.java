@@ -73,16 +73,21 @@ public class InviteVotersActivity extends AppCompatActivity {
       public void onClick(View v) {
         final String name = mVoterNameTextInput.getEditText().getText().toString();
         final String email = mVoterEmailTextInput.getEditText().getText().toString();
-        if (name.isEmpty()) {
-          mVoterNameTextInput.setError("Please enter Voter's Name");
-        } else {
-          mVoterNameTextInput.setError(null);
-        }
+        if(name.isEmpty() || email.isEmpty()) {
+          if (name.isEmpty()) {
+            mVoterNameTextInput.setError("Please enter Voter's Name");
+          } else {
+            mVoterNameTextInput.setError(null);
+          }
 
-        if (email.isEmpty()) {
-          mVoterEmailTextInput.setError("Please enter Voter's Email");
-        } else {
-          mVoterEmailTextInput.setError(null);
+          if (email.isEmpty()) {
+            mVoterEmailTextInput.setError("Please enter Voter's Email");
+          } else {
+            mVoterEmailTextInput.setError(null);
+          }
+        }
+        else
+        {
           addCandidate(name, email);
         }
       }
