@@ -45,4 +45,11 @@ object Requests {
       "}"
 
   const val ELECTION_DISPLAY = ""
+
+  const val INVITE_VOTERS = "[\n" +
+      "  {\n" +
+      "    \"name\": \"string\",\n" +
+      "    \"hash\": \"string\"\n" +
+      "  }\n" +
+      "]"
 }

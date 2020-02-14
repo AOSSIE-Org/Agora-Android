@@ -24,4 +24,8 @@ object Responses {
   const val ELECTION_CREATE = "{\n" +
       "  \"message\": \"string\"\n" +
       "}"
+
+  const val INVITE_VOTERS = "{\n" +
+      "  \"message\": \"string\"\n" +
+      "}"
 }
