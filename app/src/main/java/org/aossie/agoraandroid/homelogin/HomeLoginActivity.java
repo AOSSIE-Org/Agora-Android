@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import java.util.Arrays;
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.infoabout.AboutActivity;
 import org.aossie.agoraandroid.login.LoginActivity;
 import org.aossie.agoraandroid.login.LoginViewModel;
 import org.aossie.agoraandroid.signup.SignUpActivity;
@@ -45,6 +47,7 @@ public class HomeLoginActivity extends AppCompatActivity {
     setContentView(R.layout.activity_home_login);
     Button signIn = findViewById(R.id.signin_btn);
     Button signUp = findViewById(R.id.signup_btn);
+    ImageView infoButton = findViewById(R.id.info_button);
     loginViewModel = new LoginViewModel(getApplication(), this);
     FacebookSdk.sdkInitialize(this.getApplicationContext());
 
@@ -90,6 +93,13 @@ public class HomeLoginActivity extends AppCompatActivity {
       public void onClick(View v) {
         Intent signUpIntent = new Intent(HomeLoginActivity.this, SignUpActivity.class);
         startActivity(signUpIntent);
+      }
+    });
+    infoButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent infoIntent = new Intent(HomeLoginActivity.this, AboutActivity.class);
+        startActivity(infoIntent);
       }
     });
   }
