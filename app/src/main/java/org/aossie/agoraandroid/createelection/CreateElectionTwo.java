@@ -67,7 +67,11 @@ public class CreateElectionTwo extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         final String name = mAddCandidateTextInput.getEditText().getText().toString().trim();
-        addCandidate(name);
+        if(!name.equals(""))
+          addCandidate(name);
+        else
+          Toast.makeText(CreateElectionTwo.this, "Candidate's name cannot be empty",
+                  Toast.LENGTH_SHORT).show();
       }
     });
   }
