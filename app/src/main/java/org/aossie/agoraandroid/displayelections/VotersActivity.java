@@ -33,7 +33,7 @@ public class VotersActivity extends AppCompatActivity {
       for (int i = 0; i < ballotJsonArray.length(); i++) {
         JSONObject ballotJsonObject = ballotJsonArray.getJSONObject(i);
 
-        mVoterEmailList.add(ballotJsonObject.getString("email"));
+        mVoterEmailList.add(ballotJsonObject.getString("hash"));
         mVoterNameList.add(ballotJsonObject.getString("name"));
       }
     } catch (JSONException e) {

@@ -37,11 +37,13 @@ class InviteVotersViewModel extends AndroidViewModel {
     for (int i = 0; i < mVoterEmails.size(); i++) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("name", mVoterNames.get(i));
-      jsonObject.put("email", mVoterEmails.get(i));
+      jsonObject.put("hash", mVoterEmails.get(i));
       jsonArray.put(jsonObject);
       Log.d("TAG", "inviteVoters: " + jsonArray);
-      sendVoters(id, token, jsonArray);
     }
+    sendVoters(id, token, jsonArray);
+
+
   }
 
   private void sendVoters(String id, String token, JSONArray jsonArray) {
@@ -57,6 +59,10 @@ class InviteVotersViewModel extends AndroidViewModel {
         } else if (response.message().equals("Internal Server Error")) {
           loadToast.error();
           Toast.makeText(context, "Internal server error", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+          Toast.makeText(context, ""+response.message(), Toast.LENGTH_SHORT).show();
         }
       }
 
