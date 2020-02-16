@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
+import java.util.HashSet;
+
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter;
 import org.aossie.agoraandroid.utilities.TinyDB;
@@ -19,6 +21,7 @@ import org.aossie.agoraandroid.utilities.TinyDB;
 @SuppressWarnings("ConstantConditions")
 public class CreateElectionTwo extends AppCompatActivity {
   private final ArrayList<String> mCandidates = new ArrayList<>();
+  private HashSet<String> mCandidatesSet = new HashSet<>();
   private TinyDB tinydb;
   private CandidateRecyclerAdapter candidateRecyclerAdapter;
   private final ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
@@ -73,8 +76,17 @@ public class CreateElectionTwo extends AppCompatActivity {
   }
 
   private void addCandidate(String cName) {
-    mCandidates.add(cName);
-    candidateRecyclerAdapter.notifyDataSetChanged();
-    mAddCandidateTextInput.getEditText().setText("");
+    if(!mCandidatesSet.contains(cName.toLowerCase()))
+    {
+      mCandidates.add(cName);
+      mCandidatesSet.add(cName.toLowerCase());
+      candidateRecyclerAdapter.notifyDataSetChanged();
+      mAddCandidateTextInput.getEditText().setText("");
+    }
+    else
+    {
+      Toast.makeText(this, "Candidate with that name is already present.", Toast.LENGTH_SHORT).show();
+    }
+
   }
 }
