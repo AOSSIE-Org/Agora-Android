@@ -70,12 +70,13 @@ public class PendingElectionsActivity extends AppCompatActivity {
           mElectionNameList.add(singleElectionJsonObject.getString("name"));
           mIDList.add(singleElectionJsonObject.getString("_id"));
           mElectionDescriptionList.add(singleElectionJsonObject.getString("description"));
+          JSONArray candidatesJsonArray = singleElectionJsonObject.getJSONArray("candidates");
+          for (int j = 0; j < candidatesJsonArray.length(); j++) {
+            mCandidateName.append(candidatesJsonArray.getString(j)).append("\n");
+          }
+          mCandidatesList.add(mCandidateName.toString().trim());
         }
-        JSONArray candidatesJsonArray = singleElectionJsonObject.getJSONArray("candidates");
-        for (int j = 0; j < candidatesJsonArray.length(); j++) {
-          mCandidateName.append(candidatesJsonArray.getString(j)).append("\n");
-        }
-        mCandidatesList.add(mCandidateName.toString().trim());
+
       }
     } catch (JSONException e) {
       e.printStackTrace();
