@@ -53,4 +53,10 @@ public class LoginActivity extends AppCompatActivity {
       }
     });
   }
+
+  @Override
+  public void onBackPressed() {
+    if (!(loginViewModel.isLoggingIn()))
+    super.onBackPressed();
+  }
 }

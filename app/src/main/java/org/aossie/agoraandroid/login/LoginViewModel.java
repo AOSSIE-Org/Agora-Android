@@ -22,6 +22,8 @@ public class LoginViewModel extends AndroidViewModel {
   private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
   private LoadToast loadToast;
 
+  private boolean loggingIn;
+
   public LoginViewModel(@NonNull Application application, Context context) {
     super(application);
     this.context = context;
@@ -29,6 +31,7 @@ public class LoginViewModel extends AndroidViewModel {
 
   public void logInRequest(final String userName, final String userPassword) {
 
+    loggingIn = true;
     loadToast = new LoadToast(context);
     loadToast.setText("Logging in");
     loadToast.show();
@@ -45,6 +48,7 @@ public class LoginViewModel extends AndroidViewModel {
     logInResponse.enqueue(new Callback<String>() {
       @Override
       public void onResponse(Call<String> call, Response<String> response) {
+        loggingIn = false;
         if (response.message().equals("OK")) {
           try {
             JSONObject jsonObjects = new JSONObject(response.body());
@@ -80,11 +84,16 @@ public class LoginViewModel extends AndroidViewModel {
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
+        loggingIn = false;
         loadToast.error();
         Toast.makeText(getApplication(), "Something went wrong please try again",
             Toast.LENGTH_SHORT).show();
       }
     });
+  }
+
+  public boolean isLoggingIn() {
+    return loggingIn;
   }
 
   public void facebookLogInRequest(String accessToken) {
