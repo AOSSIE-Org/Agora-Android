@@ -3,6 +3,8 @@ package org.aossie.agoraandroid.invitevoters;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -60,7 +62,10 @@ public class InviteVotersActivity extends AppCompatActivity {
           if (getIntent().hasExtra("id") && getIntent().hasExtra("token")) {
             String id = getIntent().getStringExtra("id");
             String token = getIntent().getStringExtra("token");
+            if(mVoterEmails.size()>0)
             inviteVotersViewModel.inviteVoters(mVoterNames, mVoterEmails, id, token);
+            else
+              Toast.makeText(InviteVotersActivity.this, "Please add a voter first before inviting them", Toast.LENGTH_SHORT).show();
           }
         } catch (JSONException e) {
           e.printStackTrace();
@@ -73,18 +78,18 @@ public class InviteVotersActivity extends AppCompatActivity {
       public void onClick(View v) {
         final String name = mVoterNameTextInput.getEditText().getText().toString();
         final String email = mVoterEmailTextInput.getEditText().getText().toString();
+        mVoterNameTextInput.setError(null);
+        mVoterEmailTextInput.setError(null);
         if (name.isEmpty()) {
           mVoterNameTextInput.setError("Please enter Voter's Name");
-        } else {
-          mVoterNameTextInput.setError(null);
-        }
-
-        if (email.isEmpty()) {
+        } else if(email.isEmpty()) {
           mVoterEmailTextInput.setError("Please enter Voter's Email");
-        } else {
-          mVoterEmailTextInput.setError(null);
+        }
+        else
+        {
           addCandidate(name, email);
         }
+
       }
     });
   }
