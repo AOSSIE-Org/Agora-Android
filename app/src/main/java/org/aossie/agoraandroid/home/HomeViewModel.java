@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.work.WorkManager;
+
 import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.homelogin.HomeLoginActivity;
 import org.aossie.agoraandroid.remote.APIService;
@@ -39,6 +41,7 @@ class HomeViewModel extends AndroidViewModel {
                     Toast.makeText(getApplication(), "Logged Out Successfully", Toast.LENGTH_SHORT)
                         .show();
                     sharedPrefs.clearLogin();
+                    WorkManager.getInstance(context).cancelUniqueWork("JobTag");
                     Intent intent = new Intent(getApplication(), HomeLoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(intent);

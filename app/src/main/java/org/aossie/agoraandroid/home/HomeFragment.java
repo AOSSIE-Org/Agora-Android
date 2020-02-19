@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
   private ConstraintLayout constraintLayout;
   private SharedPrefs sharedPrefs;
   private SwipeRefreshLayout mSwipeRefreshLayout;
+  public static final String TAG = "HomeFragment";
 
   public HomeFragment() {
   }
@@ -112,23 +114,6 @@ public class HomeFragment extends Fragment {
         }
     );
 
-    String userName = sharedPrefs.getUserName();
-    String userPassword = sharedPrefs.getPass();
-    SimpleDateFormat formatter =
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-    Date currentDate = Calendar.getInstance().getTime();
-    try {
-      String expireOn = sharedPrefs.getTokenExpiresOn();
-      if (expireOn != null) {
-        Date expiresOn = formatter.parse(expireOn);
-        //If the token is expired, get a new one to continue login session of user
-        if (currentDate.after(expiresOn)) {
-          updateToken(userName, userPassword);
-        }
-      }
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
 
     getElectionData(sharedPrefs.getToken());
     return view;
@@ -140,50 +125,6 @@ public class HomeFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
   }
 
-  private void updateToken(String userName, String userPassword) {
-
-    final JSONObject jsonObject = new JSONObject();
-    try {
-
-      jsonObject.put("identifier", userName);
-      jsonObject.put("password", userPassword);
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-    APIService apiService = RetrofitClient.getAPIService();
-    Call<String> logInResponse = apiService.logIn(jsonObject.toString());
-    logInResponse.enqueue(new Callback<String>() {
-      @Override
-      public void onResponse(Call<String> call, Response<String> response) {
-        if (response.message().equals("OK")) {
-          mShimmerViewContainer.stopShimmer();
-          mShimmerViewContainer.setVisibility(View.GONE);
-          constraintLayout.setVisibility(View.VISIBLE);
-          try {
-            JSONObject jsonObjects = new JSONObject(response.body());
-
-            JSONObject token = jsonObjects.getJSONObject("token");
-            String expiresOn = token.getString("expiresOn");
-            String key = token.getString("token");
-
-            sharedPrefs.saveToken(key);
-            sharedPrefs.saveTokenExpiresOn(expiresOn);
-          } catch (JSONException e) {
-            e.printStackTrace();
-          }
-        } else {
-          Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
-              .show();
-        }
-      }
-
-      @Override
-      public void onFailure(Call<String> call, Throwable t) {
-        Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
-            .show();
-      }
-    });
-  }
 
   private void getElectionData(String token) {
     APIService apiService = RetrofitClient.getAPIService();
@@ -193,9 +134,7 @@ public class HomeFragment extends Fragment {
       public void onResponse(Call<String> call, Response<String> response) {
         if (response.message().equals("OK")) {
 
-          mShimmerViewContainer.stopShimmer();
-          mShimmerViewContainer.setVisibility(View.GONE);
-          constraintLayout.setVisibility(View.VISIBLE);
+         stopLoading();
 
           electionDetailsSharedPrefs.saveElectionDetails(response.body());
           try {
@@ -241,10 +180,9 @@ public class HomeFragment extends Fragment {
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
-        mShimmerViewContainer.stopShimmer();
-        mShimmerViewContainer.setVisibility(View.GONE);
-        constraintLayout.setVisibility(View.VISIBLE);
+        stopLoading();
         mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
+          Log.d(TAG,t.getMessage());
         Toast.makeText(getActivity(), "Something went wrong please refresh", Toast.LENGTH_SHORT)
             .show();
       }
@@ -268,5 +206,11 @@ public class HomeFragment extends Fragment {
     mShimmerViewContainer.setVisibility(View.VISIBLE);
     mShimmerViewContainer.startShimmer();
     getElectionData(sharedPrefs.getToken());//try to fetch data again
+  }
+  private void stopLoading()
+  {
+    mShimmerViewContainer.stopShimmer();
+    mShimmerViewContainer.setVisibility(View.GONE);
+    constraintLayout.setVisibility(View.VISIBLE);
   }
 }

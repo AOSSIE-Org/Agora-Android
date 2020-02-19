@@ -71,6 +71,9 @@ dependencies {
   implementation "androidx.core:core-ktx:+"
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  //Work manager
+  implementation "androidx.work:work-runtime:$workVersion"
+
 }
 repositories {
   mavenCentral()

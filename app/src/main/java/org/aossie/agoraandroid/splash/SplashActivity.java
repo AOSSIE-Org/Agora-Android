@@ -6,18 +6,45 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.homelogin.HomeLoginActivity;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
+import org.aossie.agoraandroid.utilities.TokenUpdateWorker;
+
+import java.util.concurrent.TimeUnit;
 
 public class SplashActivity extends AppCompatActivity {
-
+  private String userName,password;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash);
     final SharedPrefs sharedPrefs = new SharedPrefs(SplashActivity.this);
+    userName = sharedPrefs.getUserName();
+    password = sharedPrefs.getPass();
+
+    //WorkManager
+
+    Constraints constraints = new Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED) // you can add as many constraints as you want
+            .build();
+
+    final PeriodicWorkRequest workRequest =
+            new PeriodicWorkRequest.Builder(TokenUpdateWorker.class,1, TimeUnit.HOURS)
+                    .addTag("JobTag")
+                    .setConstraints(constraints)
+                    .build();
+    if(userName != null&&password != null)
+    WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("JobTag",ExistingPeriodicWorkPolicy.REPLACE,workRequest);
+
     // Rotation And Fade Out Animation
 
     final ImageView rotatingAgora = findViewById(R.id.main_logo_iv);

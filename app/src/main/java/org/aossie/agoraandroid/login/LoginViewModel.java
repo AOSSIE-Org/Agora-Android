@@ -6,13 +6,23 @@ import android.content.Intent;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
+import org.aossie.agoraandroid.utilities.TokenUpdateWorker;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,6 +66,8 @@ public class LoginViewModel extends AndroidViewModel {
             String firstName = jsonObjects.getString("firstName");
             String lastName = jsonObjects.getString("lastName");
 
+            startWorkManager();
+
             sharedPrefs.saveUserName(sUserName);
             sharedPrefs.saveEmail(email);
             sharedPrefs.saveFirstName(firstName);
@@ -85,6 +97,21 @@ public class LoginViewModel extends AndroidViewModel {
             Toast.LENGTH_SHORT).show();
       }
     });
+  }
+
+  private void startWorkManager() {
+    Constraints constraints = new Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED) // you can add as many constraints as you want
+            .build();
+
+    final PeriodicWorkRequest workRequest =
+            new PeriodicWorkRequest.Builder(TokenUpdateWorker.class,1, TimeUnit.HOURS)
+                    .addTag("JobTag")
+                    .setConstraints(constraints)
+                    .build();
+
+      WorkManager.getInstance(context).enqueueUniquePeriodicWork("JobTag", ExistingPeriodicWorkPolicy.REPLACE,workRequest);
+
   }
 
   public void facebookLogInRequest(String accessToken) {
