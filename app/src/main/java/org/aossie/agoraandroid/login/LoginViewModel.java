@@ -164,6 +164,7 @@ public class LoginViewModel extends AndroidViewModel {
             sharedPrefs.saveEmail(email);
             sharedPrefs.saveFirstName(firstName);
             sharedPrefs.saveLastName(lastName);
+            startWorkManager();
             context.startActivity(new Intent(context, HomeActivity.class));
           } catch (JSONException e) {
             e.printStackTrace();
