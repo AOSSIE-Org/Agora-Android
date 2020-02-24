@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.WebContent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +29,13 @@ public class ReportBugFragment extends Fragment {
     openConsole.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(Intent.ACTION_VIEW,
-            Uri.parse("https://gitlab.com/aossie/agora-android/issues/new")));
+        startActivity(new Intent(getContext(), WebContent.class).putExtra("url","https://gitlab.com/aossie/agora-android/issues/new"));
+
+        //  old method - redirecting to browser
+        //
+        //        startActivity(new Intent(Intent.ACTION_VIEW,
+        //            Uri.parse("https://gitlab.com/aossie/agora-android/issues/new")));
+
       }
     });
     return view;

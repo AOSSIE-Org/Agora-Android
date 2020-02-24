@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.WebContent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,13 +31,20 @@ public class ContactUsFragment extends Fragment {
     gitterBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitter.im/aossie/home")));
-      }
+        startActivity(new Intent(getContext(), WebContent.class).putExtra("url","https://gitter.im/aossie/home"));
+//  old method - redirecting to browser
+//
+//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitter.im/aossie/home")));
+
+          }
     });
     gitlabBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitlab.com/aossie")));
+        startActivity(new Intent(getContext(), WebContent.class).putExtra("url","https://gitlab.com/aossie"));
+//  old method - redirecting to browser
+//
+//        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitlab.com/aossie")));
       }
     });
 
