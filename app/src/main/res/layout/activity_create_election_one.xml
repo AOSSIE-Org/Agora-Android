@@ -5,6 +5,15 @@
     tools:context=".createelection.CreateElectionOne"
     >
 
+  <data>
+
+    <variable
+        name="electiononeviewmodel"
+        type="org.aossie.agoraandroid.createelection.CreateElectionOneViewModel"
+        />
+
+  </data>
+
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -17,6 +26,7 @@
         >
 
       <Button
+          android:onClick="@{electiononeviewmodel::onNextButtonClick}"
           android:id="@+id/submit_details_btn"
           style="@style/MainButtonStyle"
           android:layout_marginTop="64dp"
@@ -26,7 +36,6 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/end_date_til"
           />
-
 
       <ImageButton
           android:id="@+id/end_date_ibtn"
@@ -42,6 +51,7 @@
           app:layout_constraintStart_toEndOf="@+id/end_date_til"
           app:layout_constraintTop_toBottomOf="@+id/start_date_til"
           app:srcCompat="@drawable/ic_date_range_50dp"
+          android:onClick="@{electiononeviewmodel::handleEndDateTime}"
           />
 
       <ImageButton
@@ -58,6 +68,7 @@
           app:layout_constraintStart_toEndOf="@+id/start_date_til"
           app:layout_constraintTop_toBottomOf="@+id/election_description_til"
           app:srcCompat="@drawable/ic_date_range_50dp"
+          android:onClick="@{electiononeviewmodel::handleStartDateTime}"
           />
 
       <TextView
@@ -86,6 +97,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:text="@={electiononeviewmodel.mElectionName}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -107,6 +119,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:text="@={electiononeviewmodel.mEndDate}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
@@ -129,6 +142,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:text="@={electiononeviewmodel.mElectionDescription}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
@@ -150,6 +164,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:text="@={electiononeviewmodel.mStartDate}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"

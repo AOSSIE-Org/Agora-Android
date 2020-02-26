@@ -71,6 +71,11 @@ dependencies {
   implementation "androidx.core:core-ktx:+"
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+  implementation "androidx.preference:preference-ktx:1.1.0"
+  kapt 'androidx.databinding:databinding-compiler:3.5.3'
+
+
 }
 repositories {
   mavenCentral()
