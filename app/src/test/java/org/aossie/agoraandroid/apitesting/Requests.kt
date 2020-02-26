@@ -2,6 +2,8 @@ package org.aossie.agoraandroid.apitesting
 
 object Requests {
 
+  const val AUTH_FORGOT_PASSWORD = "iamfake"
+
   const val AUTH_LOGIN = "{\n" +
       "  \"identifier\": \"string\",\n" +
       "  \"password\": \"string\",\n" +
