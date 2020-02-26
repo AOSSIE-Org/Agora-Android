@@ -32,4 +32,10 @@ object Responses {
   const val INVITE_VOTERS = "{\n" +
       "  \"message\": \"string\"\n" +
       "}"
+
+  const val ELECTION_DELETE = "{\n" +
+          "  \"message\": \"string\"\n" +
+          "}"
+
+
 }
