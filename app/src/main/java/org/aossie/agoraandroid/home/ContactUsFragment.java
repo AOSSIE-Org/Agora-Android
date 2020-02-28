@@ -1,5 +1,7 @@
 package org.aossie.agoraandroid.home;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.thefinestartist.finestwebview.FinestWebView;
+
 import org.aossie.agoraandroid.R;
 
 /**
@@ -17,8 +22,18 @@ import org.aossie.agoraandroid.R;
  */
 @SuppressWarnings("SpellCheckingInspection")
 public class ContactUsFragment extends Fragment {
+  private Activity mActivity;
 
   public ContactUsFragment() {
+  }
+
+  @Override
+  public void onAttach(@NonNull Context context) {
+    super.onAttach(context);
+
+    if (context instanceof Activity){
+      mActivity=(Activity) context;
+    }
   }
 
   @Override
@@ -30,13 +45,13 @@ public class ContactUsFragment extends Fragment {
     gitterBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitter.im/aossie/home")));
+        new FinestWebView.Builder(mActivity).show("https://gitter.im/aossie/home");
       }
     });
     gitlabBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitlab.com/aossie")));
+        new FinestWebView.Builder(mActivity).show("https://gitlab.com/aossie");
       }
     });
 

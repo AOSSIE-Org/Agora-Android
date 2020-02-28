@@ -1,5 +1,7 @@
 package org.aossie.agoraandroid.home;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,14 +12,27 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.thefinestartist.finestwebview.FinestWebView;
+
 import org.aossie.agoraandroid.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ReportBugFragment extends Fragment {
+  private Activity mActivity;
 
   public ReportBugFragment() {
+  }
+
+  @Override
+  public void onAttach(@NonNull Context context) {
+    super.onAttach(context);
+
+    if(context instanceof Activity){
+      mActivity=(Activity) context;
+    }
   }
 
   @Override
@@ -28,8 +43,7 @@ public class ReportBugFragment extends Fragment {
     openConsole.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(Intent.ACTION_VIEW,
-            Uri.parse("https://gitlab.com/aossie/agora-android/issues/new")));
+        new FinestWebView.Builder(mActivity).show("https://gitlab.com/aossie/agora-android/issues/new");
       }
     });
     return view;
