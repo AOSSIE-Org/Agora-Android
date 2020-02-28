@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     });
 
     mFinalLoginButton.setOnClickListener(new View.OnClickListener() {
-      @Override
       public void onClick(View v) {
         final String userName = mLoginUserName.getEditText().getText().toString().trim();
         final String userPass = mLoginPassword.getEditText().getText().toString().trim();

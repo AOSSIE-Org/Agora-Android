@@ -32,6 +32,10 @@ class SignUpViewModel extends AndroidViewModel {
     loadToast = new LoadToast(context);
     loadToast.setText("Signing in");
     loadToast.show();
+    if (userName.isEmpty()) {
+      Toast.makeText(getApplication(), "Please enter user name", Toast.LENGTH_LONG).show();
+      return;
+    }
     try {
 
       jsonObject.put("identifier", userName);
@@ -69,7 +73,7 @@ class SignUpViewModel extends AndroidViewModel {
         } else {
           loadToast.error();
           Toast.makeText(getApplication(), "Something went wrong please try again",
-              Toast.LENGTH_LONG).show();
+                  Toast.LENGTH_LONG).show();
         }
       }
 
