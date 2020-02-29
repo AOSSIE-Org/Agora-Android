@@ -20,6 +20,11 @@ object Responses {
       "  \"trustedDevice\": \"string\"\n" +
       "}"
 
+  const val AUTH_FACEBOOK_LOGIN="{\n" +
+    "  \"token\": \"string\",\n" +
+    "  \"expiresOn\": \"2020-02-28T14:04:49.337Z\"\n" +
+    "}"
+
   const val AUTH_SIGNUP = "{\n" +
       "  \"token\": \"string\",\n" +
       "  \"expiresOn\": \"2020-02-09T07:06:42.197Z\"\n" +
