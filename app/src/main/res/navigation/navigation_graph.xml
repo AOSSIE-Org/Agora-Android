@@ -13,8 +13,7 @@
         <action
             android:id="@+id/action_election1_to_election2"
             app:destination="@id/election2"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit" />
+            app:enterAnim="@anim/fragment_fade_enter" />
     </fragment>
 
 
@@ -39,8 +38,7 @@
         <action
             android:id="@+id/action_election3_to_election4"
             app:destination="@id/election4"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit" />
+            app:enterAnim="@anim/fragment_fade_enter" />
     </fragment>
 
 

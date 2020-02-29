@@ -19,11 +19,8 @@ class CreateElectionThree : Fragment() {
     private var radioButton: RadioButton? = null
     private var radioId: Int? = null
 
-    companion object {
-        fun newInstance() = CreateElectionThree()
-    }
 
-    private lateinit var viewModel: CreateElectionThreeViewModel
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -43,12 +40,5 @@ class CreateElectionThree : Fragment() {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CreateElectionThreeViewModel::class.java)
-        // TODO: Use the ViewModel
-        viewModel.id = radioId
-        viewModel.votingAlgorithm = votingAlgorithm
-    }
 
 }

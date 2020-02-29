@@ -44,7 +44,6 @@ class CreateElectionOne : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        //////// activity?.title = "Favorites"
         viewModel = ViewModelProviders.of(this).get(CreateElectionOneViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.create_election_one_fragment, container, false)
         binding.vm2 = viewModel
@@ -86,20 +85,14 @@ class CreateElectionOne : Fragment() {
             if (mEndDate!!.isEmpty()) {
                 mEndDateTextLayout!!.error = "PLease enter end date"
             }
-//            }else if(mStartDate!!>=mEndDate!!){
-//                mEndDateTextLayout!!.setError("Invalid dates")
-//                mStartDateTextLayout!!.setError("Invalid dates")
-//
-//            }
+
             else {
                 mEndDateTextLayout?.error = null
 
             }
 
 
-//            var parsedDateStart = LocalDate.parse(mStartDate, DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm"))
-//            var parsedDateEnd = LocalDate.parse(mEndDate, DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm"))
-            //&& !(parsedDateStart.isAfter(parsedDateEnd))
+
             if (!mElectionName!!.isEmpty() && !mElectionDescription!!.isEmpty() && !mStartDate!!.isEmpty() && !mEndDate!!.isEmpty()) {
                 electionDetailsSharedPrefs!!.saveElectionName(mElectionName!!)
                 electionDetailsSharedPrefs!!.saveElectionDesc(mElectionDescription!!)

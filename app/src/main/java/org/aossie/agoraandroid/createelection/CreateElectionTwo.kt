@@ -57,10 +57,6 @@ class CreateElectionTwo : Fragment() {
         binding.namesRv.layoutManager = LinearLayoutManager(context)
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.namesRv)
         candidateRecyclerAdapter!!.setCandidates(viewModel.getAllCandidates())
-//        viewModel.getAllCandidatesLive().observe(viewLifecycleOwner, Observer<ArrayList<String>>(){
-//
-//        })
-
         binding.namesRv!!.adapter = candidateRecyclerAdapter
 
 

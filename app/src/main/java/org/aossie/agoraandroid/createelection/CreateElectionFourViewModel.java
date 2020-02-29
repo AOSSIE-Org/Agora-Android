@@ -3,9 +3,11 @@ package org.aossie.agoraandroid.createelection;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 
 import net.steamcrafted.loadtoast.LoadToast;
@@ -27,19 +29,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-class CreateElectionViewModel extends AndroidViewModel {
+class CreateElectionViewFourModel extends AndroidViewModel {
   private final Context context;
   private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
   private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
   private final TinyDB tinydb = new TinyDB(getApplication());
   private LoadToast loadToast;
 
-  public CreateElectionViewModel(@NonNull Application application, Context context) {
+  public CreateElectionViewFourModel(@NonNull Application application, Context context) {
     super(application);
     this.context = context;
   }
 
-  //@RequiresApi(api = Build.VERSION_CODES.KITKAT)
+  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
   public void createElection() {
     loadToast = new LoadToast(context);
     loadToast.setText("Creating Election");

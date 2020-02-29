@@ -4,6 +4,7 @@
   <color name="colorPrimaryDark">#FF01643D</color>
   <color name="colorAccent">#F3B63A</color>
   <color name="whiteColor">#FFFFFF</color>
+    <color name="ic_launcher_background">@color/white</color>
 
   //logo colors
   <color name="logo_green">#008751</color>

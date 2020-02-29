@@ -17,7 +17,7 @@ import org.aossie.agoraandroid.R;
 
 public class CreateElectionFour extends Fragment {
     private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
-    private CreateElectionViewModel createElectionViewModel;
+    private CreateElectionViewFourModel createElectionViewFourModel;
     private CheckBox isInvite;
     private CheckBox isRealTime;
     private Boolean mFinalIsInvite;
@@ -35,7 +35,7 @@ public class CreateElectionFour extends Fragment {
         final View view = inflater.inflate(R.layout.create_election_four_fragment, container, false);
 
         electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getActivity());
-        createElectionViewModel = new CreateElectionViewModel(getActivity().getApplication(), getContext());
+        createElectionViewFourModel = new CreateElectionViewFourModel(getActivity().getApplication(), getContext());
         Button mSubmitButton = view.findViewById(R.id.submit_details_btn);
         isInvite = view.findViewById(R.id.invite_voters_check);
         isRealTime = view.findViewById(R.id.real_time_results_check);
@@ -61,7 +61,7 @@ public class CreateElectionFour extends Fragment {
                 electionDetailsSharedPrefs.saveVoterListVisibility(voterListVisibility);
                 electionDetailsSharedPrefs.saveBallotVisibility(
                         radioButtonBallots.getText().toString().trim());
-                createElectionViewModel.createElection();
+                createElectionViewFourModel.createElection();
             }
         });
 
