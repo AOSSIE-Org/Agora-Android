@@ -19,14 +19,9 @@ class ProfileFragment : Fragment() {
   lateinit var viewModel: ProfileViewModel
   lateinit var loadToast: LoadToast
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-    viewModel = ViewModelProviders.of(this)
-        .get(ProfileViewModel::class.java)
+    viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
     loadToast = LoadToast(activity)
@@ -49,7 +44,7 @@ class ProfileFragment : Fragment() {
     viewModel.passwordRequestCode.observe(this, Observer {
       handlePassword(it)
     })
-    return binding.getRoot()
+    return binding.root
   }
 
   private fun handlePassword(it: Int?) {

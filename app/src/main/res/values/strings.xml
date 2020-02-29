@@ -100,8 +100,8 @@
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
   <string name="election_name_">Election Name</string>
-  <string name="facebook_app_id">TODO</string>
-  <string name="fb_login_protocol_scheme">todo</string>
+    <string name="facebook_app_id">201196734269736</string>
+    <string name="fb_login_protocol_scheme">fb201196734269736</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
   <string name="delete_election">delete election</string>
   <string name="invite_voter">Invite Voters</string>
@@ -144,7 +144,54 @@
   <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
   <string name="password_change_success">password changed successfully</string>
   <string name="token_expired">Token expired, please login again!</string>
+    <string name="title_activity_create_election">CreateElection</string>
+    <string name="action_settings">Settings</string>
 
 
 </resources>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

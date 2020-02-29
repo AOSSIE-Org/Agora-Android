@@ -2,61 +2,69 @@ package org.aossie.agoraandroid.createelection;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import org.aossie.agoraandroid.R;
 
-public class CreateElectionFour extends AppCompatActivity {
-  private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
-  private CreateElectionViewModel createElectionViewModel;
-  private CheckBox isInvite;
-  private CheckBox isRealTime;
-  private Boolean mFinalIsInvite;
-  private Boolean mFinalIsRealTime;
-  private Boolean voterListVisibility;
-  private RadioButton radioButtonListVoters;
-  private RadioButton radioButtonBallots;
-  private RadioGroup radioGroupListVoters;
-  private RadioGroup radioGroupBallots;
+public class CreateElectionFour extends Fragment {
+    private ElectionDetailsSharedPrefs electionDetailsSharedPrefs;
+    private CreateElectionViewModel createElectionViewModel;
+    private CheckBox isInvite;
+    private CheckBox isRealTime;
+    private Boolean mFinalIsInvite;
+    private Boolean mFinalIsRealTime;
+    private Boolean voterListVisibility;
+    private RadioButton radioButtonListVoters;
+    private RadioButton radioButtonBallots;
+    private RadioGroup radioGroupListVoters;
+    private RadioGroup radioGroupBallots;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
-    createElectionViewModel = new CreateElectionViewModel(getApplication(), this);
-    setContentView(R.layout.activity_create_election_four);
-    Button mSubmitButton = findViewById(R.id.submit_details_btn);
-    isInvite = findViewById(R.id.invite_voters_check);
-    isRealTime = findViewById(R.id.real_time_results_check);
-    radioGroupListVoters = findViewById(R.id.radioGroup2);
-    radioGroupBallots = findViewById(R.id.radioGroup);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        final View view = inflater.inflate(R.layout.create_election_four_fragment, container, false);
 
-    mSubmitButton.setOnClickListener(new View.OnClickListener() {
-      @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-      @Override
-      public void onClick(View v) {
-        int radioId = radioGroupListVoters.getCheckedRadioButtonId();
-        radioButtonListVoters = findViewById(radioId);
+        electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getActivity());
+        createElectionViewModel = new CreateElectionViewModel(getActivity().getApplication(), getContext());
+        Button mSubmitButton = view.findViewById(R.id.submit_details_btn);
+        isInvite = view.findViewById(R.id.invite_voters_check);
+        isRealTime = view.findViewById(R.id.real_time_results_check);
+        radioGroupListVoters = view.findViewById(R.id.radioGroup2);
+        radioGroupBallots = view.findViewById(R.id.radioGroup);
 
-        int radioId1 = radioGroupBallots.getCheckedRadioButtonId();
-        radioButtonBallots = findViewById(radioId1);
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                int radioId = radioGroupListVoters.getCheckedRadioButtonId();
+                radioButtonListVoters = view.findViewById(radioId);
 
-        voterListVisibility = !radioButtonListVoters.getText().toString().equals("Only me");
+                int radioId1 = radioGroupBallots.getCheckedRadioButtonId();
+                radioButtonBallots = view.findViewById(radioId1);
 
-        mFinalIsInvite = isInvite.isChecked();
-        mFinalIsRealTime = isRealTime.isChecked();
-        electionDetailsSharedPrefs.saveIsInvite(mFinalIsInvite);
-        electionDetailsSharedPrefs.saveIsRealTime(mFinalIsRealTime);
-        electionDetailsSharedPrefs.saveVoterListVisibility(voterListVisibility);
-        electionDetailsSharedPrefs.saveBallotVisibility(
-            radioButtonBallots.getText().toString().trim());
-        createElectionViewModel.createElection();
-      }
-    });
-  }
+                voterListVisibility = !radioButtonListVoters.getText().toString().equals("Only me");
+
+                mFinalIsInvite = isInvite.isChecked();
+                mFinalIsRealTime = isRealTime.isChecked();
+                electionDetailsSharedPrefs.saveIsInvite(mFinalIsInvite);
+                electionDetailsSharedPrefs.saveIsRealTime(mFinalIsRealTime);
+                electionDetailsSharedPrefs.saveVoterListVisibility(voterListVisibility);
+                electionDetailsSharedPrefs.saveBallotVisibility(
+                        radioButtonBallots.getText().toString().trim());
+                createElectionViewModel.createElection();
+            }
+        });
+
+        return view;
+    }
 }

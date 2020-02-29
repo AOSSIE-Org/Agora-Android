@@ -3,15 +3,13 @@ package org.aossie.agoraandroid.createelection;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 import net.steamcrafted.loadtoast.LoadToast;
+
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -20,24 +18,28 @@ import org.aossie.agoraandroid.utilities.TinyDB;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 class CreateElectionViewModel extends AndroidViewModel {
   private final Context context;
-  private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs =
-      new ElectionDetailsSharedPrefs(getApplication());
+  private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
   private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
   private final TinyDB tinydb = new TinyDB(getApplication());
   private LoadToast loadToast;
 
-  CreateElectionViewModel(@NonNull Application application, Context context) {
+  public CreateElectionViewModel(@NonNull Application application, Context context) {
     super(application);
     this.context = context;
   }
 
-  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+  //@RequiresApi(api = Build.VERSION_CODES.KITKAT)
   public void createElection() {
     loadToast = new LoadToast(context);
     loadToast.setText("Creating Election");
