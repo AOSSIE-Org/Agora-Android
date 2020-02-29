@@ -5,18 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
+
 import org.aossie.agoraandroid.R;
 
-public class CandidateRecyclerAdapter
-    extends RecyclerView.Adapter<CandidateRecyclerAdapter.CandidateViewHolder> {
-  private final ArrayList<String> candidates;
+import java.util.ArrayList;
 
-  public CandidateRecyclerAdapter(ArrayList<String> candidates) {
-    this.candidates = candidates;
-  }
+public class CandidateRecyclerAdapter extends RecyclerView.Adapter<CandidateRecyclerAdapter.CandidateViewHolder> {
+    private ArrayList<String> candidates;
+
+    //  public CandidateRecyclerAdapter(ArrayList<String> candidates) {
+//    this.candidates = candidates;
+//  }
+    public void setCandidates(ArrayList<String> candidates) {
+        this.candidates = candidates;
+        notifyDataSetChanged();
+    }
 
   @NonNull
   @Override
@@ -37,7 +43,8 @@ public class CandidateRecyclerAdapter
     return candidates.size();
   }
 
-  static class CandidateViewHolder extends RecyclerView.ViewHolder {
+
+    static class CandidateViewHolder extends RecyclerView.ViewHolder {
     final TextView candidateName;
     final View itemView;
 

@@ -13,6 +13,11 @@
       android:theme="@style/AppTheme">
     <activity android:name=".result.ResultActivity"></activity>
     <activity
+        android:name=".createelection.CreateElection"
+        android:label="@string/title_activity_create_election"
+        android:theme="@style/AppTheme.NoActionBar"></activity>
+
+    <activity
         android:name=".invitevoters.InviteVotersActivity"
         android:configChanges="orientation|screenSize" />
     <activity
@@ -39,22 +44,6 @@
     <activity
         android:name=".forgotpassword.ForgotPasswordSend"
         android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".createelection.CreateElectionTwo"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionOne" />
-    <activity
-        android:name=".createelection.CreateElectionFour"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionThree" />
-    <activity
-        android:name=".createelection.CreateElectionThree"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionTwo" />
-    <activity
-        android:name=".createelection.CreateElectionOne"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".home.HomeActivity" />
     <activity
         android:name=".home.HomeActivity"
         android:configChanges="orientation|screenSize" />

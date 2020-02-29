@@ -8,20 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.facebook.shimmer.ShimmerFrameLayout;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.createelection.CreateElectionOne;
+import org.aossie.agoraandroid.createelection.CreateElection;
 import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
 import org.aossie.agoraandroid.displayelections.ActiveElectionsActivity;
 import org.aossie.agoraandroid.displayelections.FinishedElectionsActivity;
@@ -33,6 +31,13 @@ import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,7 +105,7 @@ public class HomeFragment extends Fragment {
     createElection.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(getActivity(), CreateElectionOne.class));
+          startActivity(new Intent(getActivity(), CreateElection.class));
       }
     });
     mSwipeRefreshLayout.setOnRefreshListener(
@@ -172,8 +177,8 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
           }
         } else {
-          Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
-              .show();
+            // Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
+            //   .show();
         }
       }
 
