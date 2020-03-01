@@ -2,19 +2,27 @@ package org.aossie.agoraandroid.displayelections;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.adapters.CandidatesDialogAdapter;
 import org.aossie.agoraandroid.invitevoters.InviteVotersActivity;
 import org.aossie.agoraandroid.result.ResultViewModel;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
+
+import java.util.ArrayList;
 
 public class ElectionActivity extends AppCompatActivity {
     private TextView mElectionName, mElectionDescription, mStartDate, mEndDate, mCandidateName, mStatus;
@@ -105,13 +113,13 @@ public class ElectionActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra("election_name") && getIntent().hasExtra("election_description")
                 && getIntent().hasExtra("start_date") && getIntent().hasExtra("end_date")
-                && getIntent().hasExtra("candidates") && getIntent().hasExtra("status")) {
+                && getIntent().hasExtra("status")) {
 
             String electionName = getIntent().getStringExtra("election_name");
             String electionDescription = getIntent().getStringExtra("election_description");
             String startDate = getIntent().getStringExtra("start_date");
             String endDate = getIntent().getStringExtra("end_date");
-            String candidateName = getIntent().getStringExtra("candidates");
+            final ArrayList<String> allCandidates = getIntent().getStringArrayListExtra("all_candidates");
             status = getIntent().getStringExtra("status");
             id = getIntent().getStringExtra("id");
 
@@ -130,10 +138,46 @@ public class ElectionActivity extends AppCompatActivity {
             mElectionDescription.setText(electionDescription);
             mStartDate.setText(startDate);
             mEndDate.setText(endDate);
-            mCandidateName.setText(candidateName);
+            mCandidateName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (allCandidates != null) {
+                        openCandidatesDialog(allCandidates);
+                    }
+                }
+            });
             mStatus.setText(status);
 
         }
+    }
+
+    void openCandidatesDialog(ArrayList<String> allCandidates) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.popup_dailog_candidates, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(false);
+
+        ImageButton btnCloseDialog = dialogView.findViewById(R.id.btn_close_popup);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_view_candidates);
+
+        final AlertDialog dialog = dialogBuilder.create();
+
+        CandidatesDialogAdapter adapter = new CandidatesDialogAdapter(this, allCandidates);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        btnCloseDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 }

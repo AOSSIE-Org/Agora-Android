@@ -17,6 +17,7 @@ import org.aossie.agoraandroid.displayelections.ElectionActivity;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecyclerAdapter.ElectionsViewHolder> {
 
@@ -79,6 +80,12 @@ public class ElectionsRecyclerAdapter extends RecyclerView.Adapter<ElectionsRecy
                 intent.putExtra("candidates", candidateList.get(position));
                 intent.putExtra("status", statusList.get(position));
                 intent.putExtra("id",mIDList.get(position));
+
+                String str = candidateList.get(position);
+                String candidates[] = str.split("\n");
+                ArrayList<String> allCandidates = new ArrayList<>(Arrays.asList(candidates));
+
+                intent.putStringArrayListExtra("all_candidates", allCandidates);
                 mContext.startActivity(intent);
             }
         });
