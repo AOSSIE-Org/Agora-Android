@@ -2,6 +2,10 @@ package org.aossie.agoraandroid.apitesting
 
 object Responses {
 
+  const val AUTH_FORGOT_PASSWORD = "{\n" +
+      "  \"message\": \"string\"\n" +
+      "}"
+
   const val AUTH_LOGIN = "{\n" +
       "  \"username\": \"string\",\n" +
       "  \"email\": \"string\",\n" +
@@ -46,4 +50,9 @@ object Responses {
   const val USER_CHANGE_PASSWORD = "{\n" +
           "  \"message\": \"string\"\n" +
           "}"
+
+  const val INVITE_VOTERS = "{\n" +
+      "  \"message\": \"string\"\n" +
+      "}"
+
 }
