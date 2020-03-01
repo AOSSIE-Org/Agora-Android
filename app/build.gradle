@@ -71,6 +71,10 @@ dependencies {
   implementation "androidx.core:core-ktx:+"
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  //Koin di
+  implementation "org.koin:koin-android:$koin_version"
+  implementation "org.koin:koin-android-scope:$koin_version"
+  implementation "org.koin:koin-android-viewmodel:$koin_version"
 }
 repositories {
   mavenCentral()
