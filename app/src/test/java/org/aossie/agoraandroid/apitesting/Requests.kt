@@ -45,4 +45,8 @@ object Requests {
       "}"
 
   const val ELECTION_DISPLAY = ""
+
+  const val USER_CHANGE_PASSWORD = "{\n" +
+          "  \"password\": \"string\"\n" +
+          "}"
 }

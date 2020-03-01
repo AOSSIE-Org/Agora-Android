@@ -24,4 +24,26 @@ object Responses {
   const val ELECTION_CREATE = "{\n" +
       "  \"message\": \"string\"\n" +
       "}"
+
+  const val USER_LOGOUT = "{\n" +
+          "  \"message\": \"string\"\n" +
+          "}"
+
+  const val USER_GETUSER = "{\n" +
+          "  \"username\": \"string\",\n" +
+          "  \"email\": \"string\",\n" +
+          "  \"firstName\": \"string\",\n" +
+          "  \"lastName\": \"string\",\n" +
+          "  \"avatarURL\": \"string\",\n" +
+          "  \"twoFactorAuthentication\": true,\n" +
+          "  \"token\": {\n" +
+          "    \"token\": \"string\",\n" +
+          "    \"expiresOn\": \"2020-03-01T17:51:39.892Z\"\n" +
+          "  },\n" +
+          "  \"trustedDevice\": \"string\"\n" +
+          "}"
+
+  const val USER_CHANGE_PASSWORD = "{\n" +
+          "  \"message\": \"string\"\n" +
+          "}"
 }
