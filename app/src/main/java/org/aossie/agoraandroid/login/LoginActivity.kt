@@ -6,22 +6,30 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_login.*
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.forgotpassword.ForgotPasswordSend
 import org.aossie.agoraandroid.home.HomeActivity
+import org.aossie.agoraandroid.networking.Networking
+import org.aossie.agoraandroid.remote.RetrofitClient
+import org.aossie.agoraandroid.utilities.CacheManager.Companion.getInstance
+import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.State
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
-    private val loginViewModel: LoginViewModel by viewModel()
-    private lateinit var loadToast : LoadToast
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var loadToast: LoadToast
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val viewModelFactory = LoginViewModelFactory(Networking(RetrofitClient.getAPIService()), getInstance(SharedPrefs(this)))
+
+        loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
 
         loadToast = LoadToast(this)
 

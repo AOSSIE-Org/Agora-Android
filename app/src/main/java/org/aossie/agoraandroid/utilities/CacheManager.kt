@@ -4,6 +4,17 @@ import org.json.JSONObject
 
 class CacheManager(private val sharedPrefs: SharedPrefs) {
 
+    companion object {
+        var cacheManagerInstance: CacheManager? = null
+        @JvmStatic
+        fun getInstance(sharedPrefs: SharedPrefs): CacheManager {
+            if (cacheManagerInstance == null)
+                cacheManagerInstance = CacheManager(sharedPrefs)
+            return cacheManagerInstance!!
+        }
+
+    }
+
     fun cacheUserCredentials(jsonObject: JSONObject, userPassword: String) {
         val token = jsonObject.getJSONObject("token")
         val expiresOn = token.getString("expiresOn")
@@ -28,7 +39,7 @@ class CacheManager(private val sharedPrefs: SharedPrefs) {
         sharedPrefs.saveTokenExpiresOn(expiresOn)
     }
 
-    fun cacheUserData(jsonObject: JSONObject){
+    fun cacheUserData(jsonObject: JSONObject) {
         val userName = jsonObject.getString("username")
         val email = jsonObject.getString("email")
         val firstName = jsonObject.getString("firstName")
