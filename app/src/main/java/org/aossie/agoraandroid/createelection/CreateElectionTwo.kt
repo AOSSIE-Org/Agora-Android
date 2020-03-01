@@ -52,11 +52,11 @@ class CreateElectionTwo : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
             }
         }
-        /*
+
         mAddCandidateButton.setOnClickListener {
-            val name = mAddCandidateTextInput.getEditText()!!.text.toString().trim { it <= ' ' }
+            val name = mAddCandidateTextInput?.getEditText()!!.text.toString().trim { it <= ' ' }
             addCandidate(name)
-        }*/
+        }
     }
 
     private fun addCandidate(cName: String) {
