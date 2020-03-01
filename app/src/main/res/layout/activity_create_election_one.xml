@@ -120,6 +120,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:text="@={electiononeviewmodel.mEndDate}"
+            android:id="@+id/m_end_date_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
@@ -165,6 +166,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:text="@={electiononeviewmodel.mStartDate}"
+            android:id="@+id/m_start_date_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"

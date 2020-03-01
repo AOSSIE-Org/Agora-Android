@@ -3,25 +3,27 @@ package org.aossie.agoraandroid.createelection
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.text.Editable
 import android.text.format.DateFormat
 import android.view.View
 import androidx.lifecycle.ViewModel
+import kotlinx.android.synthetic.main.activity_create_election_one.*
 import java.util.*
+import android.app.Activity as Activity1
 
 class CreateElectionOneViewModel(private val context: Context) : ViewModel(){
 
-     var mElectionName :String?  =null
-     var mElectionDescription :String? = null
-      var mStartDate :String? = null
-    var mEndDate : String? =null
+      var mElectionName :String?  =null
+    var mElectionDescription :String? = null
+    var mStartDate :String? = null
+     var mEndDate : String? =null
     private var sDay =0
     private var sMonth =0
     private var sYear =0
     private var eDay =0
     private var eMonth = 0
     private var eYear = 0
-
-
+    var electionDetailsSharedPrefs: ElectionDetailsSharedPrefs? = null
     var electionListener: ElectionListener?=null
 
     fun validator ():Boolean{
@@ -46,9 +48,10 @@ class CreateElectionOneViewModel(private val context: Context) : ViewModel(){
             ans=false
         }
 
+
         if(mEndDate.isNullOrEmpty())
         {
-            electionListener?.startDateError("Please Select End Date")
+            electionListener?.endDateError("Please Select End Date")
             ans=false
         }
 
@@ -60,6 +63,7 @@ class CreateElectionOneViewModel(private val context: Context) : ViewModel(){
 
     fun handleStartDateTime(view :View)
     {
+        var activity: Activity1 = context as Activity1
 
         val calendar = Calendar.getInstance()
         val YEAR = calendar[Calendar.YEAR]
@@ -84,6 +88,7 @@ class CreateElectionOneViewModel(private val context: Context) : ViewModel(){
             calendar2[Calendar.MONTH] = sMonth
             calendar2[Calendar.DAY_OF_MONTH] = sDay
             val charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2)
+            activity.m_start_date_edit_text.setText(charSequence)
         }, HOUR, MINUTE, true)
         timePickerDialog.show()
         datePickerDialog.show()
@@ -94,6 +99,7 @@ class CreateElectionOneViewModel(private val context: Context) : ViewModel(){
     {
 
         val calendar = Calendar.getInstance()
+        var activity: Activity1 = context as Activity1
         val YEAR = calendar[Calendar.YEAR]
         val MONTH = calendar[Calendar.MONTH]
         val DATE = calendar[Calendar.DATE]
@@ -116,6 +122,8 @@ class CreateElectionOneViewModel(private val context: Context) : ViewModel(){
             calendar3[Calendar.MONTH] = eMonth
             calendar3[Calendar.DAY_OF_MONTH] = eDay
             val charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3)
+                    activity.m_end_date_edit_text.setText(charSequence2)
+
         }, HOUR, MINUTE, true)
         timePickerDialog.show()
         datePickerDialog.show()
@@ -127,9 +135,21 @@ class CreateElectionOneViewModel(private val context: Context) : ViewModel(){
     {
         if(!validator())
         {
+
             electionListener?.onFailure("Fields Not filled Correctly")
             return
         }
+        else
+        {
+            electionDetailsSharedPrefs?.saveElectionName(mElectionName)
+            electionDetailsSharedPrefs?.saveElectionDesc(mElectionDescription)
+            electionDetailsSharedPrefs?.saveStartTime(mStartDate)
+            electionDetailsSharedPrefs?.saveEndTime(mEndDate)
+            electionListener?.onSuccess()
+        }
+
+
+
 
     }
 
