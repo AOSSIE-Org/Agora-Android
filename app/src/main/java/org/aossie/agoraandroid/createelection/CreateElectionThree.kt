@@ -12,7 +12,7 @@ import org.aossie.agoraandroid.createelection.CreateElectionThree
 class CreateElectionThree : AppCompatActivity() {
     private var electionDetailsSharedPrefs: ElectionDetailsSharedPrefs? = null
     private var votingAlgorithm: String? = null
-    private var radioGroup: RadioGroup? = null
+    private var radioGroup: RadioGroup ? = null
     private var radioButton: RadioButton? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +22,12 @@ class CreateElectionThree : AppCompatActivity() {
         radioGroup = findViewById(R.id.radioGroup)
         mFinalStepButton.setOnClickListener {
 
-          /*  val radioId = radioGroup.getCheckedRadioButtonId()
-            radioButton = findViewById(radioId)
-            votingAlgorithm = radioButton.getText().toString()
+          val radioId = radioGroup?.checkedRadioButtonId
+            radioButton = findViewById(radioId!!)
+            votingAlgorithm = radioButton?.getText().toString()
             electionDetailsSharedPrefs!!.saveVotingAlgo(votingAlgorithm)
             startActivity(Intent(this@CreateElectionThree, CreateElectionFour::class.java))
-           */
+
         }
     }
 }
