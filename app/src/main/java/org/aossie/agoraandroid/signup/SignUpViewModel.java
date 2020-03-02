@@ -64,7 +64,7 @@ class SignUpViewModel extends AndroidViewModel {
           context.startActivity(new Intent(context, LoginActivity.class));
         } else if (response.code() == 409) {
           loadToast.error();
-          Toast.makeText(getApplication(), "User With Same UserName already Exists",
+          Toast.makeText(getApplication(), "User With Same UserName or Email already Exists. Try another Username or Email",
               Toast.LENGTH_LONG).show();
         } else {
           loadToast.error();
