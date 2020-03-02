@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.invitevoters.InviteVotersActivity;
@@ -21,6 +22,7 @@ public class ElectionActivity extends AppCompatActivity {
   private ConstraintLayout constraintLayout;
   private DisplayElectionViewModel displayElectionViewModel;
   private ResultViewModel resultViewModel;
+  private Toolbar electionToolbar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,14 @@ public class ElectionActivity extends AppCompatActivity {
     mCandidateName = findViewById(R.id.tv_candidate_list);
     mStatus = findViewById(R.id.tv_status);
     constraintLayout = findViewById(R.id.constraint_layout);
+    electionToolbar = findViewById(R.id.election_toolbar);
+
+    electionToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
+    });
 
     Button mDeleteElection = findViewById(R.id.button_delete);
     Button mInviteVoters = findViewById(R.id.button_invite_voters);
