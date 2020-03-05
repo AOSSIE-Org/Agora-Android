@@ -1,12 +1,14 @@
 package org.aossie.agoraandroid.signup;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
 
@@ -14,6 +16,7 @@ import org.aossie.agoraandroid.R;
 public class SignUpActivity extends AppCompatActivity {
   private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText,
       mPasswordEditText, mSecurityAnswer;
+  private TextInputEditText edtUsername,edtPassword,edtFirst_name,edtLast_name,edtEmail,edtTextPassword,edtQues;
   private SignUpViewModel signUpViewModel;
   private AppCompatSpinner appCompatSpinner;
   private String securityQuestionOfSignUp;
@@ -32,6 +35,55 @@ public class SignUpActivity extends AppCompatActivity {
     appCompatSpinner = findViewById(R.id.sign_up_security_question);
     mSecurityAnswer = findViewById(R.id.security_answer);
     Button mSignUpButton = findViewById(R.id.signup_btn);
+    edtUsername = findViewById(R.id.edt_user_name);
+    edtEmail = findViewById(R.id.edt_email);
+    edtFirst_name = findViewById(R.id.edt_first_name);
+    edtLast_name = findViewById(R.id.edt_last_name);
+    edtTextPassword = findViewById(R.id.edt_password);
+    edtQues = findViewById(R.id.edt_ques);
+
+    edtUsername.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+        mUserNameEditText.setError(null);
+        return false;
+      }
+    });
+
+    edtEmail.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+        mEmailEditText.setError(null);
+        return false;
+      }
+    });
+
+
+    edtFirst_name.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+        mFirstNameEditText.setError(null);
+        return false;
+      }
+    });
+
+    edtLast_name.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+        mLastNameEditText.setError(null);
+        return false;
+      }
+    });
+
+    edtTextPassword.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+        mPasswordEditText.setError(null);
+        return false;
+      }
+    });
+
+    edtQues.setOnTouchListener(new View.OnTouchListener() {
+      @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+        mSecurityAnswer.setError(null);
+        return false;
+      }
+    });
 
     mSignUpButton.setOnClickListener(new View.OnClickListener() {
       @Override
