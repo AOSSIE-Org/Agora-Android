@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.signup;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -58,6 +59,7 @@ class SignUpViewModel extends AndroidViewModel {
         }
         if (response.code() == 200) {
           loadToast.success();
+
           Toast.makeText(getApplication(),
               "An activation link has been sent to your email. Follow it to activate your account.",
               Toast.LENGTH_LONG).show();

@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -37,6 +38,8 @@ public class SplashActivity extends AppCompatActivity {
         rotatingAgora.startAnimation(fadeOutAnimation);
         String userName = sharedPrefs.getUserName();
         String password = sharedPrefs.getPass();
+
+
         if (userName == null || password == null) {
           startActivity(new Intent(SplashActivity.this, HomeLoginActivity.class));
           finish();
