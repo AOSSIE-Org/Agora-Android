@@ -83,7 +83,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/uname"
+            android:id="@+id/user_name_tiet"
             android:imeOptions="actionNext"
             android:focusableInTouchMode="true"
             />
@@ -109,7 +109,7 @@
             android:inputType="textPassword"
             android:imeOptions="actionNext"
             android:focusableInTouchMode="true"
-            android:id="@+id/pass"
+            android:id="@+id/password_tite"
             />
       </com.google.android.material.textfield.TextInputLayout>
 

@@ -16,7 +16,8 @@ import org.aossie.agoraandroid.R;
 public class SignUpActivity extends AppCompatActivity {
   private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText,
       mPasswordEditText, mSecurityAnswer;
-  private TextInputEditText edtUsername,edtPassword,edtFirst_name,edtLast_name,edtEmail,edtTextPassword,edtQues;
+  private TextInputEditText edtUsername, edtPassword, edtFirst_name, edtLast_name, edtEmail,
+      edtTextPassword, edtQues;
   private SignUpViewModel signUpViewModel;
   private AppCompatSpinner appCompatSpinner;
   private String securityQuestionOfSignUp;
@@ -55,7 +56,6 @@ public class SignUpActivity extends AppCompatActivity {
         return false;
       }
     });
-
 
     edtFirst_name.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(View view, MotionEvent motionEvent) {

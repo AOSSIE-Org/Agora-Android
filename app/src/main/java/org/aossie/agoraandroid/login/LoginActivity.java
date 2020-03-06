@@ -2,8 +2,6 @@ package org.aossie.agoraandroid.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +15,7 @@ import org.aossie.agoraandroid.forgotpassword.ForgotPasswordSend;
 @SuppressWarnings("ConstantConditions")
 public class LoginActivity extends AppCompatActivity {
   private TextInputLayout mLoginUserName, mLoginPassword;
-  private TextInputEditText edtUsername,edtPassword;
+  private TextInputEditText edtUsername, edtPassword;
   private LoginViewModel loginViewModel;
 
   @Override
@@ -30,16 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     mLoginUserName = findViewById(R.id.login_user_name_til);
     Button mFinalLoginButton = findViewById(R.id.login_btn);
     TextView mForgotPassword = findViewById(R.id.forgot_password_tv);
-    edtUsername = findViewById(R.id.uname);
-    edtPassword = findViewById(R.id.pass);
+    edtUsername = findViewById(R.id.user_name_tiet);
+    edtPassword = findViewById(R.id.password_tite);
     mForgotPassword.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         startActivity(new Intent(LoginActivity.this, ForgotPasswordSend.class));
       }
     });
-
-
 
     edtUsername.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -48,14 +44,12 @@ public class LoginActivity extends AppCompatActivity {
       }
     });
 
-
     edtPassword.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(View view, MotionEvent motionEvent) {
         mLoginPassword.setError(null);
         return false;
       }
     });
-
 
     mFinalLoginButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -65,14 +59,12 @@ public class LoginActivity extends AppCompatActivity {
 
         if (userName.isEmpty()) {
           mLoginUserName.setError("Please enter User Name");
-
         } else {
           mLoginUserName.setError(null);
         }
 
         if (userPass.isEmpty()) {
           mLoginPassword.setError("Please enter password");
-
         } else {
           mLoginPassword.setError(null);
           loginViewModel.logInRequest(userName, userPass);
