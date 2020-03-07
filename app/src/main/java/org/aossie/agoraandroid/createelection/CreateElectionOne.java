@@ -110,8 +110,10 @@ public class CreateElectionOne extends AppCompatActivity {
         new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
           @Override
           public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            mStartDate = mStartDate + "," + hourOfDay + ":" + minute;
-            mStartDateTextLayout.getEditText().setText(mStartDate);
+            if (mStartDate != null && !(mStartDate.equals(""))) {
+                  mStartDate = mStartDate + "," + hourOfDay + ":" + minute;
+                  mStartDateTextLayout.getEditText().setText(mStartDate);
+              }
 
             //Formatting the starting date in Date-Time format
             Calendar calendar2 = Calendar.getInstance();
@@ -151,8 +153,10 @@ public class CreateElectionOne extends AppCompatActivity {
         new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
           @Override
           public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            mEndDate = mEndDate + "," + hourOfDay + ":" + minute;
-            mEndDateTextLayout.getEditText().setText(mEndDate);
+            if (mEndDate != null && !(mEndDate.equals(""))) {
+                  mEndDate = mEndDate + "," + hourOfDay + ":" + minute;
+                  mEndDateTextLayout.getEditText().setText(mEndDate);
+              }
 
             //Formatting the ending date in Date-Time format
             Calendar calendar3 = Calendar.getInstance();
