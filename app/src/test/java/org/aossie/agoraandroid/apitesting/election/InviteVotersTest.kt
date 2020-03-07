@@ -11,15 +11,16 @@ import java.io.IOException
 
 class InviteVotersTest : BaseTest() {
 
-    @Test
-    @Throws(IOException::class)
-    fun inviteVotersTest() {
-        mockWebServer.enqueue(MockResponse().setBody(Responses.INVITE_VOTERS))
-        val response: Response<*> = apiService.sendVoters(
-                "authToken",
-                "id",
-                Requests.INVITE_VOTERS
-        ).execute()
-        Assert.assertEquals(response.body(), Responses.INVITE_VOTERS)
-    }
+  @Test
+  @Throws(IOException::class)
+  fun inviteVotersTest() {
+    mockWebServer.enqueue(MockResponse().setBody(Responses.INVITE_VOTERS))
+    val response: Response<*> = apiService.sendVoters(
+        "authToken",
+        "id",
+        Requests.INVITE_VOTERS
+    )
+        .execute()
+    Assert.assertEquals(response.body(), Responses.INVITE_VOTERS)
+  }
 }

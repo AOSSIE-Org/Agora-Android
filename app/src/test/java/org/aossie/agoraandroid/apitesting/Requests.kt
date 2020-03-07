@@ -2,7 +2,7 @@ package org.aossie.agoraandroid.apitesting
 
 object Requests {
 
-    const val AUTH_FORGOT_PASSWORD = "iamfake"
+  const val AUTH_FORGOT_PASSWORD = "iamfake"
 
   const val AUTH_LOGIN = "{\n" +
       "  \"identifier\": \"string\",\n" +
@@ -48,10 +48,14 @@ object Requests {
 
   const val ELECTION_DISPLAY = ""
 
-    const val INVITE_VOTERS = "[\n" +
-            "  {\n" +
-            "    \"name\": \"string\",\n" +
-            "    \"hash\": \"string\"\n" +
-            "  }\n" +
-            "]"
+  const val USER_CHANGE_PASSWORD = "{\n" +
+          "  \"password\": \"string\"\n" +
+          "}"
+
+  const val INVITE_VOTERS = "[\n" +
+      "  {\n" +
+      "    \"name\": \"string\",\n" +
+      "    \"hash\": \"string\"\n" +
+      "  }\n" +
+      "]"
 }

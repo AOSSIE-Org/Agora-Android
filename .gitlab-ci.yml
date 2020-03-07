@@ -47,12 +47,12 @@ debugTests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
-    
+
 deploy:
-    interruptible: true
-    stage: deploy
-    dependencies:
+  interruptible: true
+  stage: deploy
+  dependencies:
     - assembleDebug
-    script:
+  script:
     - 'curl -s -X POST -H "Content-Type: application/json" -d @req.json https://$APPETIZE_API@api.appetize.io/v1/apps/$APPETIZE_KEY > response.json'
     

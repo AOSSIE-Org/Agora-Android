@@ -31,7 +31,8 @@ import retrofit2.Response;
 
 class CreateElectionViewFourModel extends AndroidViewModel {
   private final Context context;
-  private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs = new ElectionDetailsSharedPrefs(getApplication());
+  private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs =
+      new ElectionDetailsSharedPrefs(getApplication());
   private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
   private final TinyDB tinydb = new TinyDB(getApplication());
   private LoadToast loadToast;
@@ -81,7 +82,9 @@ class CreateElectionViewFourModel extends AndroidViewModel {
           loadToast.success();
           Toast.makeText(getApplication(), "Created Successfully", Toast.LENGTH_SHORT).show();
           electionDetailsSharedPrefs.clearElectionData();
-          context.startActivity(new Intent(context, HomeActivity.class));
+          Intent intent = new Intent(context, HomeActivity.class);
+          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+          context.startActivity(intent);
         } else {
           loadToast.error();
           Toast.makeText(getApplication(), "Something went wrong please try again",
