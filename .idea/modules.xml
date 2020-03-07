@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GSOC-agora-android.iml" filepath="$PROJECT_DIR$/GSOC-agora-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/agora-android.iml" filepath="$PROJECT_DIR$/agora-android.iml" group="agora-android" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="agora-android/app" />
     </modules>
   </component>
 </project>

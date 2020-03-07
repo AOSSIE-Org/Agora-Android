@@ -2,105 +2,104 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.aossie.agoraandroid">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".home.ContactUsWebview"></activity>
-        <activity android:name=".result.ResultActivity" />
-        <activity
-            android:name=".invitevoters.InviteVotersActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".displayelections.VotersActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".displayelections.BallotActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".displayelections.ElectionActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".displayelections.FinishedElectionsActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".displayelections.ActiveElectionsActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".displayelections.PendingElectionsActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".displayelections.TotalElectionsActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".forgotpassword.ForgotPasswordSend"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".createelection.CreateElectionTwo"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".createelection.CreateElectionOne" />
-        <activity
-            android:name=".createelection.CreateElectionFour"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".createelection.CreateElectionThree" />
-        <activity
-            android:name=".createelection.CreateElectionThree"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".createelection.CreateElectionTwo" />
-        <activity
-            android:name=".createelection.CreateElectionOne"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".home.HomeActivity" />
-        <activity
-            android:name=".home.HomeActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".signup.SignUpActivity"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".homelogin.HomeLoginActivity" />
-        <activity
-            android:name=".login.LoginActivity"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".homelogin.HomeLoginActivity" />
-        <activity android:name=".homelogin.HomeLoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+  <application
+      android:allowBackup="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme">
+    <activity android:name=".result.ResultActivity"></activity>
+    <activity
+        android:name=".invitevoters.InviteVotersActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".displayelections.VotersActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".displayelections.BallotActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".displayelections.ElectionActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".displayelections.FinishedElectionsActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".displayelections.ActiveElectionsActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".displayelections.PendingElectionsActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".displayelections.TotalElectionsActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".forgotpassword.ForgotPasswordSend"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".createelection.CreateElectionTwo"
+        android:configChanges="orientation|screenSize"
+        android:parentActivityName=".createelection.CreateElectionOne" />
+    <activity
+        android:name=".createelection.CreateElectionFour"
+        android:configChanges="orientation|screenSize"
+        android:parentActivityName=".createelection.CreateElectionThree" />
+    <activity
+        android:name=".createelection.CreateElectionThree"
+        android:configChanges="orientation|screenSize"
+        android:parentActivityName=".createelection.CreateElectionTwo" />
+    <activity
+        android:name=".createelection.CreateElectionOne"
+        android:configChanges="orientation|screenSize"
+        android:parentActivityName=".home.HomeActivity" />
+    <activity
+        android:name=".home.HomeActivity"
+        android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".signup.SignUpActivity"
+        android:configChanges="orientation|screenSize"
+        android:parentActivityName=".homelogin.HomeLoginActivity" />
+    <activity
+        android:name=".login.LoginActivity"
+        android:configChanges="orientation|screenSize"
+        android:parentActivityName=".homelogin.HomeLoginActivity" />
+    <activity android:name=".homelogin.HomeLoginActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".splash.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
+    <activity android:name=".splash.SplashActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity
+        android:name="com.facebook.FacebookActivity"
+        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:label="@string/app_name" />
+    <activity
+        android:name="com.facebook.CustomTabActivity"
+        android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
+        <data android:scheme="@string/fb_login_protocol_scheme" />
+      </intent-filter>
+    </activity>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-    </application>
+    <meta-data
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id" />
+  </application>
 
 </manifest>

@@ -19,7 +19,8 @@ class InviteVotersTest : BaseTest() {
         "authToken",
         "id",
         Requests.INVITE_VOTERS
-    ).execute()
+    )
+        .execute()
     Assert.assertEquals(response.body(), Responses.INVITE_VOTERS)
   }
 }
