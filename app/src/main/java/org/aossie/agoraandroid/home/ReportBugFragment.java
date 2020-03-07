@@ -17,8 +17,6 @@ import org.aossie.agoraandroid.R;
  */
 public class ReportBugFragment extends Fragment {
 
-  public static int opt;
-
   public ReportBugFragment() {
   }
 
@@ -30,10 +28,8 @@ public class ReportBugFragment extends Fragment {
     openConsole.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        opt=3;
-        startActivity(new Intent(getActivity(),
-            ContactUsWebview.class));
-
+        startActivity(new Intent(Intent.ACTION_VIEW,
+            Uri.parse("https://gitlab.com/aossie/agora-android/issues/new")));
       }
     });
     return view;
