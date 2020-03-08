@@ -57,7 +57,19 @@
         android:parentActivityName=".home.HomeActivity" />
     <activity
         android:name=".home.HomeActivity"
-        android:configChanges="orientation|screenSize" />
+        android:configChanges="orientation|screenSize">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+            android:scheme="https"
+            android:host="agora-frontend.herokuapp.com"
+            android:pathPrefix="/activate/" />
+      </intent-filter>
+    </activity>
     <activity
         android:name=".signup.SignUpActivity"
         android:configChanges="orientation|screenSize"
