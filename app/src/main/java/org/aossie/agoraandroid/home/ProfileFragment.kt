@@ -35,6 +35,7 @@ class ProfileFragment : Fragment() {
     binding.changePasswordBtn.setOnClickListener {
       loadToast.show()
       viewModel.changePassword(
+          binding.currentPasswordTil.editText!!.text.toString(),
           binding.newPasswordTil.editText!!.text.toString(),
           binding.confirmPasswordTil.editText!!.text.toString()
       )
@@ -73,6 +74,14 @@ class ProfileFragment : Fragment() {
         loadToast.error()
         binding.newPasswordTil.error = getString(R.string.password_same_oldpassword_warn)
         binding.confirmPasswordTil.error = getString(R.string.password_same_oldpassword_warn)
+      }
+      5 -> {
+        loadToast.error()
+        binding.currentPasswordTil.error = getString(R.string.current_password_empty_warn)
+      }
+      6 -> {
+        loadToast.error()
+        binding.currentPasswordTil.error = getString(R.string.current_password_match_warn)
       }
       200 -> {
         loadToast.success()
