@@ -145,6 +145,7 @@
   <string name="password_change_success">password changed successfully</string>
   <string name="token_expired">Token expired, please login again!</string>
 
+  <string name="voter_same_email">Voter with same Email Id already added</string>
 
 </resources>
 

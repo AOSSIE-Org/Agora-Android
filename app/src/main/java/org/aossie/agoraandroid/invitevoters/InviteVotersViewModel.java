@@ -1,14 +1,20 @@
 package org.aossie.agoraandroid.invitevoters;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import java.util.ArrayList;
 import net.steamcrafted.loadtoast.LoadToast;
+
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -42,6 +48,45 @@ class InviteVotersViewModel extends AndroidViewModel {
       Log.d("TAG", "inviteVoters: " + jsonArray);
       sendVoters(id, token, jsonArray);
     }
+  }
+
+  public boolean inviteValidator(String email,String name , ArrayList<String> mVoterEmails)
+  {
+    boolean isNameValid  = nameValidator(name);
+    boolean isEmailValid = emailValidator(email,mVoterEmails);
+    if(isNameValid&& isEmailValid)
+    {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean emailValidator(String email,ArrayList<String> mVoterEmails)
+  {
+    Activity base = (Activity)context;
+    if(email.isEmpty())
+    {
+      ((TextInputLayout)(base.findViewById(R.id.text_input_voter_email))).setError("Please enter Voter's Email");
+      return false;
+    }
+    else if(mVoterEmails.contains(email))
+    {
+      ((TextInputLayout)(base.findViewById(R.id.text_input_voter_email))).setError(base.getResources().getString(R.string.voter_same_email));
+      return false;
+    }
+    ((TextInputLayout)(base.findViewById(R.id.text_input_voter_email))).setError(null);
+    return true;
+  }
+
+  public boolean nameValidator(String name)
+  {
+    Activity base = (Activity)context;
+    if(name.isEmpty()) {
+      ((TextInputLayout)(base.findViewById(R.id.text_input_voter_name))).setError("Please enter Voter's Name");
+      return false;
+    }
+    ((TextInputLayout)(base.findViewById(R.id.text_input_voter_name))).setError(null);
+    return true;
   }
 
   private void sendVoters(String id, String token, JSONArray jsonArray) {
