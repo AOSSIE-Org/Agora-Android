@@ -5,6 +5,4 @@
 /build
 /captures
 .externalNativeBuild
-/.idea/dictionaries/
-/.idea/libraries/
-/.idea/caches/
+.idea
