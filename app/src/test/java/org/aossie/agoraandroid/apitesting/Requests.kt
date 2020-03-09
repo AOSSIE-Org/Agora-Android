@@ -23,7 +23,7 @@ object Requests {
       "  }\n" +
       "}"
 
-  const val AUTH_FACEBOOK_LOGIN="fakeToken"
+  const val AUTH_FACEBOOK_LOGIN = "fakeToken"
 
   const val ELECTION_CREATE = "{\n" +
       "  \"name\": \"string\",\n" +
@@ -51,9 +51,9 @@ object Requests {
   const val ELECTION_DISPLAY = ""
 
   const val USER_CHANGE_PASSWORD = "{\n" +
-          "  \"password\": \"string\"\n" +
-          "}"
-          
+      "  \"password\": \"string\"\n" +
+      "}"
+
   const val INVITE_VOTERS = "[\n" +
       "  {\n" +
       "    \"name\": \"string\",\n" +
