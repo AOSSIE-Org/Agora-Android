@@ -32,6 +32,7 @@
   <string name="change_password">Change Password</string>
   <string name="new_password">New Password</string>
   <string name="confirm_new_password">Confirm New Password</string>
+  <string name="confirm_old_password">Current Password</string>
   <string name="Create_Election">Create Election</string>
   <string name="active_nelections">Active  \n Elections</string>
   <string name="pending_nelections">Pending  \nElections</string>
@@ -142,6 +143,7 @@
   <string name="password_empty_warn">Password Cannot Be Empty</string>
   <string name="password_not_match_warn">Passwords Not Matching</string>
   <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
+  <string name="oldpassword_not_match_warn">Current password is incorrect</string>
   <string name="password_change_success">password changed successfully</string>
   <string name="token_expired">Token expired, please login again!</string>
 

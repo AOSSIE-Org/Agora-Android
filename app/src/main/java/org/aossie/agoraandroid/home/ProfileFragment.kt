@@ -36,15 +36,16 @@ class ProfileFragment : Fragment() {
       loadToast.show()
       viewModel.changePassword(
           binding.newPasswordTil.editText!!.text.toString(),
-          binding.confirmPasswordTil.editText!!.text.toString()
+          binding.confirmPasswordTil.editText!!.text.toString(),
+          binding.confirmOldPasswordTil.editText!!.text.toString()
       )
     }
 
-    binding.updateProfileBtn.setOnClickListener({
-      //TODO implment update feature
+    binding.updateProfileBtn.setOnClickListener {
+      //TODO implement update feature
       Toast.makeText(activity, "feature not available yet", Toast.LENGTH_SHORT)
           .show()
-    })
+    }
 
     viewModel.passwordRequestCode.observe(this, Observer {
       handlePassword(it)
@@ -73,6 +74,14 @@ class ProfileFragment : Fragment() {
         loadToast.error()
         binding.newPasswordTil.error = getString(R.string.password_same_oldpassword_warn)
         binding.confirmPasswordTil.error = getString(R.string.password_same_oldpassword_warn)
+      }
+      5 -> {
+        loadToast.error()
+        binding.confirmOldPasswordTil.error = getString(R.string.password_empty_warn)
+      }
+      6 -> {
+        loadToast.error()
+        binding.confirmOldPasswordTil.error = getString(R.string.oldpassword_not_match_warn)
       }
       200 -> {
         loadToast.success()

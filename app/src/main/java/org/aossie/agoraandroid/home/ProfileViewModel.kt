@@ -41,19 +41,20 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     get() = _passwordRequestCode
 
   fun changePassword(
-    newPass: String,
-    confirmNewPass: String
+      newPass: String,
+      confirmNewPass: String,
+      currentPass: String
   ) {
-    if (newPass.isBlank())
-      _passwordRequestCode.value = 1
-    else if (confirmNewPass.isBlank())
-      _passwordRequestCode.value = 2
-    else if (!newPass.equals(confirmNewPass))
-      _passwordRequestCode.value = 3
-    else if (newPass.equals(pass))
-      _passwordRequestCode.value = 4
-    else {
-      doChangePasswordRequest(newPass, token!!);
+    when {
+      newPass.isBlank() -> _passwordRequestCode.value = 1
+      confirmNewPass.isBlank() -> _passwordRequestCode.value = 2
+      newPass != confirmNewPass -> _passwordRequestCode.value = 3
+      newPass == pass -> _passwordRequestCode.value = 4
+      currentPass.isBlank() -> _passwordRequestCode.value = 5
+      currentPass != pass -> _passwordRequestCode.value = 6
+      else -> {
+        doChangePasswordRequest(newPass, token!!);
+      }
     }
 
   }
@@ -77,6 +78,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
       ) {
         if (response.message() == "OK") {
           _passwordRequestCode.value = 200
+          sharedPrefs.savePass(password)
         } else {
           Log.d("TAG", "onResponse:" + response.body())
           _passwordRequestCode.value = 201
