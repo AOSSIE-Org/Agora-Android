@@ -12,8 +12,6 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
     <activity android:name=".result.ResultActivity"></activity>
-    <activity android:name=".home.ContactUsWebview"></activity>
-
     <activity
         android:name=".invitevoters.InviteVotersActivity"
         android:configChanges="orientation|screenSize" />
