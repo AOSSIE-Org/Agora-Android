@@ -39,7 +39,7 @@ dependencies {
   androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
   // Lifecycle components
   implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
-  annotationProcessor "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
+  kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
   //Design Support Library
   implementation "com.google.android.material:material:$materialDesignVersion"
   //Library for CardView
@@ -71,6 +71,9 @@ dependencies {
   implementation "androidx.core:core-ktx:+"
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  //dagger
+  implementation "com.google.dagger:dagger:$daggerVersion"
+  kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 }
 repositories {
   mavenCentral()
