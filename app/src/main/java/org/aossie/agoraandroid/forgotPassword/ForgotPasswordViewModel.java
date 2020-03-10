@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.forgotPassword;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,12 @@ private Context context;
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 loadToast.success();
-                Toast.makeText(getApplication(), "Link Sent, Please Check Your Emails", Toast.LENGTH_SHORT).show();
+                Log.i("forgot",response.isSuccessful()+" "+response.body());
+                if(response.isSuccessful())
+                    Toast.makeText(getApplication(), "Link Sent, Please Check Your Emails", Toast.LENGTH_SHORT).show();
+                else{
+                    Toast.makeText(getApplication(),"Please enter correct details",Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
