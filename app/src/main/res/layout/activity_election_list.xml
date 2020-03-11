@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".displayelections.TotalElectionsActivity"
+    tools:context=".displayelections.ElectionListActivity"
     >
 
   <androidx.appcompat.widget.Toolbar
@@ -16,15 +16,12 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-      app:title="@string/finished_elections"
       app:titleTextColor="@color/white"
-      >
-
-  </androidx.appcompat.widget.Toolbar>
+      />
 
 
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_finished_elections"
+      android:id="@+id/rv_active_elections"
       android:layout_width="0dp"
       android:layout_height="0dp"
       app:layout_constraintBottom_toBottomOf="parent"
@@ -33,4 +30,5 @@
       app:layout_constraintTop_toBottomOf="@+id/toolbar"
       tools:item_layout="@layout/list_item_election_details"
       />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

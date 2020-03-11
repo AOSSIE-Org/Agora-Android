@@ -23,10 +23,7 @@ import java.util.Locale;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.createelection.CreateElectionOne;
 import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
-import org.aossie.agoraandroid.displayelections.ActiveElectionsActivity;
-import org.aossie.agoraandroid.displayelections.FinishedElectionsActivity;
-import org.aossie.agoraandroid.displayelections.PendingElectionsActivity;
-import org.aossie.agoraandroid.displayelections.TotalElectionsActivity;
+import org.aossie.agoraandroid.displayelections.ElectionListActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
@@ -46,6 +43,11 @@ public class HomeFragment extends Fragment {
   private ConstraintLayout constraintLayout;
   private SharedPrefs sharedPrefs;
   private SwipeRefreshLayout mSwipeRefreshLayout;
+
+  private static int TYPE_ACTIVE = 0;
+  private static int TYPE_PENDING = 1;
+  private static int TYPE_FINISHED = 2;
+  private static int TYPE_TOTAL = 3;
 
   public HomeFragment() {
   }
@@ -76,25 +78,25 @@ public class HomeFragment extends Fragment {
     mActiveElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(getActivity(), ActiveElectionsActivity.class));
+        startActivity(new Intent(getActivity(), ElectionListActivity.class).putExtra("electionType", TYPE_ACTIVE));
       }
     });
     mPendingElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(getActivity(), PendingElectionsActivity.class));
+        startActivity(new Intent(getActivity(), ElectionListActivity.class).putExtra("electionType", TYPE_PENDING));
       }
     });
     mFinishedElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(getActivity(), FinishedElectionsActivity.class));
+        startActivity(new Intent(getActivity(), ElectionListActivity.class).putExtra("electionType", TYPE_FINISHED));
       }
     });
     mTotalElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(getActivity(), TotalElectionsActivity.class));
+        startActivity(new Intent(getActivity(), ElectionListActivity.class).putExtra("electionType", TYPE_TOTAL));
       }
     });
     createElection.setOnClickListener(new View.OnClickListener() {

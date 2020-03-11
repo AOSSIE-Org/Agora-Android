@@ -11,7 +11,8 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".result.ResultActivity"></activity>
+    <activity android:name=".displayelections.ElectionListActivity"></activity>
+    <activity android:name=".result.ResultActivity" />
     <activity
         android:name=".invitevoters.InviteVotersActivity"
         android:configChanges="orientation|screenSize" />
@@ -23,18 +24,6 @@
         android:configChanges="orientation|screenSize" />
     <activity
         android:name=".displayelections.ElectionActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".displayelections.FinishedElectionsActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".displayelections.ActiveElectionsActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".displayelections.PendingElectionsActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".displayelections.TotalElectionsActivity"
         android:configChanges="orientation|screenSize" />
     <activity
         android:name=".forgotpassword.ForgotPasswordSend"
