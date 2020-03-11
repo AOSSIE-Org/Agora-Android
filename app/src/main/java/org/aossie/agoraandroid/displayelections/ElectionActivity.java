@@ -43,10 +43,10 @@ public class ElectionActivity extends AppCompatActivity {
     electionToolbar = findViewById(R.id.election_toolbar);
 
     electionToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            finish();
-        }
+      @Override
+      public void onClick(View v) {
+        finish();
+      }
     });
 
     Button mDeleteElection = findViewById(R.id.button_delete);
