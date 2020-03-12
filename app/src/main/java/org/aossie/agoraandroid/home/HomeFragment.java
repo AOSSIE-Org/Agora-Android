@@ -76,40 +76,24 @@ public class HomeFragment extends Fragment {
     mActiveElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(mActiveCount==0){
-          Toast.makeText(getActivity(), "There are no active elections!", Toast.LENGTH_SHORT).show();
-        }
-        else
         startActivity(new Intent(getActivity(), ActiveElectionsActivity.class));
       }
     });
     mPendingElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(mPendingCount==0){
-          Toast.makeText(getActivity(), "There are no pending elections!", Toast.LENGTH_SHORT).show();
-        }
-        else
         startActivity(new Intent(getActivity(), PendingElectionsActivity.class));
       }
     });
     mFinishedElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(mFinishedCount==0){
-          Toast.makeText(getActivity(), "There are no finished elections!", Toast.LENGTH_SHORT).show();
-        }
-        else
         startActivity(new Intent(getActivity(), FinishedElectionsActivity.class));
       }
     });
     mTotalElectionsCardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(mPendingCount+mFinishedCount+mActiveCount==0){
-          Toast.makeText(getActivity(), "There are no elections!", Toast.LENGTH_SHORT).show();
-        }
-        else
         startActivity(new Intent(getActivity(), TotalElectionsActivity.class));
       }
     });
