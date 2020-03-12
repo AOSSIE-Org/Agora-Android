@@ -23,6 +23,8 @@ object Requests {
       "  }\n" +
       "}"
 
+  const val AUTH_FACEBOOK_LOGIN="fakeToken"
+
   const val ELECTION_CREATE = "{\n" +
       "  \"name\": \"string\",\n" +
       "  \"description\": \"string\",\n" +

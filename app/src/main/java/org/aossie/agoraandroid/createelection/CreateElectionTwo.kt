@@ -65,7 +65,7 @@ class CreateElectionTwo : Fragment() {
     binding.namesRv.layoutManager = LinearLayoutManager(context)
     ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.namesRv)
     candidateRecyclerAdapter!!.setCandidates(viewModel.getAllCandidates())
-    binding.namesRv!!.adapter = candidateRecyclerAdapter
+    binding.namesRv.adapter = candidateRecyclerAdapter
 
 
     binding.submitDetailsBtn.setOnClickListener({
@@ -85,7 +85,7 @@ class CreateElectionTwo : Fragment() {
 
 
 
-    binding.addCandidateBtn?.setOnClickListener({
+    binding.addCandidateBtn.setOnClickListener({
       name = binding.candidateTil.editText!!.text.toString()
           .trim { it <= ' ' }
       if (!name!!.isEmpty()) {

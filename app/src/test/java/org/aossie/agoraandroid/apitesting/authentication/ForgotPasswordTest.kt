@@ -11,12 +11,12 @@ import java.io.IOException
 
 class ForgotPasswordTest : BaseTest() {
 
-    @Test
-    @Throws(IOException::class)
-    fun ForgotPasswordUnitTesting() {
-        mockWebServer.enqueue(MockResponse().setBody(Responses.AUTH_FORGOT_PASSWORD))
-        val response: Response<*> = apiService.sendForgotPassword(Requests.AUTH_FORGOT_PASSWORD)
-                .execute()
-        Assert.assertEquals(response.body(), Responses.AUTH_FORGOT_PASSWORD)
-    }
+  @Test
+  @Throws(IOException::class)
+  fun ForgotPasswordUnitTesting() {
+    mockWebServer.enqueue(MockResponse().setBody(Responses.AUTH_FORGOT_PASSWORD))
+    val response: Response<*> = apiService.sendForgotPassword(Requests.AUTH_FORGOT_PASSWORD)
+        .execute()
+    Assert.assertEquals(response.body(), Responses.AUTH_FORGOT_PASSWORD)
+  }
 }

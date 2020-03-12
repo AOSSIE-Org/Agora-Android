@@ -61,9 +61,9 @@ class CreateElectionOne : Fragment() {
     val mEndDateImageButton = binding.endDateIbtn
     val mNextButton = binding.submitDetailsBtn
 
-    mStartDateImageButton!!.setOnClickListener(View.OnClickListener { handleStartDateTime() })
-    mEndDateImageButton!!.setOnClickListener(View.OnClickListener { handleEndDateTime() })
-    mNextButton!!.setOnClickListener(View.OnClickListener {
+    mStartDateImageButton.setOnClickListener(View.OnClickListener { handleStartDateTime() })
+    mEndDateImageButton.setOnClickListener(View.OnClickListener { handleEndDateTime() })
+    mNextButton.setOnClickListener(View.OnClickListener {
       mElectionName = mNameTextLayout?.editText!!.text.toString()
       mElectionDescription = mDescriptionTextLayout?.editText!!.text.toString()
       mStartDate = mStartDateTextLayout?.editText!!.text.toString()
