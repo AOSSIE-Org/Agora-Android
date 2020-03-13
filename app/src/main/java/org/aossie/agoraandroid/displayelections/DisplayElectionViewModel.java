@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.displayelections;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -34,9 +35,14 @@ class DisplayElectionViewModel extends AndroidViewModel {
       public void onResponse(Call<String> call, Response<String> response) {
         if (response.message().equals("OK")) {
           loadToast.success();
-          Intent intent = new Intent(context, BallotActivity.class);
-          intent.putExtra("ballot_response", response.body());
-          context.startActivity(intent);
+          if(response.body().isEmpty()){
+            Toast.makeText(context, "No votes yet!", Toast.LENGTH_SHORT).show();
+          }
+          else {
+            Intent intent = new Intent(context, BallotActivity.class);
+            intent.putExtra("ballot_response", response.body());
+            context.startActivity(intent);
+          }
         }
       }
 
@@ -60,9 +66,14 @@ class DisplayElectionViewModel extends AndroidViewModel {
       public void onResponse(Call<String> call, Response<String> response) {
         if (response.message().equals("OK")) {
           loadToast.success();
-          Intent intent = new Intent(context, VotersActivity.class);
-          intent.putExtra("voters_response", response.body());
-          context.startActivity(intent);
+          if(response.body().isEmpty()){
+            Toast.makeText(context, "No voters to show yet!", Toast.LENGTH_SHORT).show();
+          }
+          else {
+            Intent intent = new Intent(context, VotersActivity.class);
+            intent.putExtra("voters_response", response.body());
+            context.startActivity(intent);
+          }
         }
       }
 
