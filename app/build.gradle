@@ -51,8 +51,8 @@ dependencies {
   implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
   implementation "com.google.code.gson:gson:$gsonVersion"
   //Navigation Architecture Dependencies
-  implementation "androidx.navigation:navigation-fragment:$navFragmentVersion"
-  implementation "androidx.navigation:navigation-ui:$navUiVersion"
+  implementation "androidx.navigation:navigation-fragment-ktx:$navFragmentVersion"
+  implementation "androidx.navigation:navigation-ui-ktx:$navUiVersion"
   //Shimmer
   implementation "com.facebook.shimmer:shimmer:$facebookShimmerVersion"
   //Facebook Login
@@ -68,8 +68,8 @@ dependencies {
   testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
   testImplementation 'org.json:json:20140107'
   //kotlin deps
-  implementation "androidx.core:core-ktx:+"
-  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0" //TODO
+  implementation "androidx.core:core-ktx:$coreVersion"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0" //TODO
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
   //dagger
   implementation "com.google.dagger:dagger:$daggerVersion"
