@@ -6,3 +6,5 @@
 /captures
 .externalNativeBuild
 .idea
+/app/lint
+/lint
