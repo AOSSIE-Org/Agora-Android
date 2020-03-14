@@ -1,9 +1,11 @@
 package org.aossie.agoraandroid.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
       }
     });
 
+
+
+
     edtUsername.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(View view, MotionEvent motionEvent) {
         mLoginUserName.setError(null);
@@ -57,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         final String userName = mLoginUserName.getEditText().getText().toString().trim();
         final String userPass = mLoginPassword.getEditText().getText().toString().trim();
 
+        hideKeyboard(LoginActivity.this);
+
         if (userName.isEmpty()) {
           mLoginUserName.setError("Please enter User Name");
         } else {
@@ -71,5 +78,13 @@ public class LoginActivity extends AppCompatActivity {
         }
       }
     });
+  }
+  public static void hideKeyboard(Activity activity) {
+    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+    View view = activity.getCurrentFocus();
+    if (view == null) {
+      view = new View(activity);
+    }
+    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
   }
 }

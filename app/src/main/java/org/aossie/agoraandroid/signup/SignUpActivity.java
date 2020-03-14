@@ -1,8 +1,10 @@
 package org.aossie.agoraandroid.signup;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -96,6 +98,8 @@ public class SignUpActivity extends AppCompatActivity {
         String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
         String securityQuestion = securityQuestionOfSignUp;
 
+        hideKeyboard(SignUpActivity.this);
+
         if (userName.isEmpty()) {
           mUserNameEditText.setError("Please enter User Name");
         } else {
@@ -151,6 +155,15 @@ public class SignUpActivity extends AppCompatActivity {
         securityQuestionOfSignUp = getResources().getStringArray(R.array.security_questions)[0];
       }
     });
+  }
+
+  public static void hideKeyboard(Activity activity) {
+    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+    View view = activity.getCurrentFocus();
+    if (view == null) {
+      view = new View(activity);
+    }
+    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
   }
 }
 
