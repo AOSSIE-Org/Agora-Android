@@ -54,7 +54,7 @@ public class CreateElectionTwo extends AppCompatActivity {
     mNextButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (mCandidates.size() != 0) {
+        if (mCandidates.size() > 1) {
           tinydb.putListString("Candidates", mCandidates);
           startActivity(new Intent(CreateElectionTwo.this, CreateElectionThree.class));
         } else {
