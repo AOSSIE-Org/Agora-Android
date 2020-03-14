@@ -168,7 +168,8 @@
 
     <variable
         name="vm2"
-        type="org.aossie.agoraandroid.createelection.CreateElectionOneViewModel" />
+        type="org.aossie.agoraandroid.createelection.CreateElectionOneViewModel"
+        />
   </data>
 
 </layout>

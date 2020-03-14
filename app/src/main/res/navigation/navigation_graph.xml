@@ -5,49 +5,46 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/election1">
 
-    <fragment
-        android:id="@+id/election1"
-        android:name="org.aossie.agoraandroid.createelection.CreateElectionOne"
-        android:label="fragment_meal_cost"
-        tools:layout="@layout/create_election_one_fragment">
-        <action
-            android:id="@+id/action_election1_to_election2"
-            app:destination="@id/election2"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit" />
-    </fragment>
+  <fragment
+      android:id="@+id/election1"
+      android:name="org.aossie.agoraandroid.createelection.CreateElectionOne"
+      android:label="fragment_meal_cost"
+      tools:layout="@layout/create_election_one_fragment">
+    <action
+        android:id="@+id/action_election1_to_election2"
+        app:destination="@id/election2"
+        app:enterAnim="@anim/nav_default_enter_anim" />
+  </fragment>
 
 
-    <fragment
-        android:id="@+id/election2"
-        android:name="org.aossie.agoraandroid.createelection.CreateElectionTwo"
-        android:label="fragment_tip_percent"
-        tools:layout="@layout/create_election_two_fragment">
-        <action
-            android:id="@+id/action_election2_to_election3"
-            app:destination="@id/election3"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit" />
-    </fragment>
+  <fragment
+      android:id="@+id/election2"
+      android:name="org.aossie.agoraandroid.createelection.CreateElectionTwo"
+      android:label="fragment_tip_percent"
+      tools:layout="@layout/create_election_two_fragment">
+    <action
+        android:id="@+id/action_election2_to_election3"
+        app:destination="@id/election3"
+        app:enterAnim="@anim/nav_default_enter_anim" />
+  </fragment>
 
 
-    <fragment
-        android:id="@+id/election3"
-        android:name="org.aossie.agoraandroid.createelection.CreateElectionThree"
-        android:label="fragment_meal_cost"
-        tools:layout="@layout/create_election_one_fragment">
-        <action
-            android:id="@+id/action_election3_to_election4"
-            app:destination="@id/election4"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit" />
-    </fragment>
+  <fragment
+      android:id="@+id/election3"
+      android:name="org.aossie.agoraandroid.createelection.CreateElectionThree"
+      android:label="fragment_meal_cost"
+      tools:layout="@layout/create_election_one_fragment">
+    <action
+        android:id="@+id/action_election3_to_election4"
+        app:destination="@id/election4"
+        app:enterAnim="@anim/nav_default_enter_anim" />
+  </fragment>
 
 
-    <fragment
-        android:id="@+id/election4"
-        android:name="org.aossie.agoraandroid.createelection.CreateElectionFour"
-        android:label="fragment_meal_cost"
-        tools:layout="@layout/create_election_four_fragment" />
+  <fragment
+      android:id="@+id/election4"
+      android:name="org.aossie.agoraandroid.createelection.CreateElectionFour"
+      android:label="fragment_meal_cost"
+      tools:layout="@layout/create_election_four_fragment" />
 
 </navigation>

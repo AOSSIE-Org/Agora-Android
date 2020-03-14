@@ -41,7 +41,7 @@ class ProfileFragment : Fragment() {
           .show()
     })
 
-    viewModel.passwordRequestCode.observe(this, Observer {
+    viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
       handlePassword(it)
     })
     return binding.root

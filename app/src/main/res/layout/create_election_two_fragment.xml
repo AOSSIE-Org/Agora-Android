@@ -104,7 +104,8 @@
 
     <variable
         name="vm"
-        type="org.aossie.agoraandroid.createelection.CreateElectionTwoViewModel" />
+        type="org.aossie.agoraandroid.createelection.CreateElectionTwoViewModel"
+        />
   </data>
 
 </layout>

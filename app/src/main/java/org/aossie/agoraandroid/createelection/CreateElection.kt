@@ -6,10 +6,10 @@ import org.aossie.agoraandroid.R
 
 class CreateElection : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.demo_create_election)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.demo_create_election)
 
-    }
+  }
 
 }
