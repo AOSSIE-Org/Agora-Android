@@ -73,11 +73,11 @@ public class HomeActivity extends AppCompatActivity {
   }
 
   private void showAlertDialog() {
-    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-    builder1.setMessage(R.string.alert_logout_message);
-    builder1.setCancelable(true);
+    AlertDialog.Builder logoutAlert = new AlertDialog.Builder(this);
+    logoutAlert.setMessage(R.string.alert_logout_message);
+    logoutAlert.setCancelable(true);
 
-    builder1.setPositiveButton(
+    logoutAlert.setPositiveButton(
         "Yes",
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int id) {
@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity {
           }
         });
 
-    builder1.setNegativeButton(
+    logoutAlert.setNegativeButton(
         "No",
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int id) {
@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
           }
         });
 
-    AlertDialog alert11 = builder1.create();
+    AlertDialog alert11 = logoutAlert.create();
     alert11.show();
   }
 }
