@@ -65,31 +65,35 @@ public class HomeActivity extends AppCompatActivity {
     // Handle item selection
     if (item.getItemId() == R.id.action_logout) {
 
-      AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-      builder1.setMessage(R.string.alert_logout_message);
-      builder1.setCancelable(true);
-
-      builder1.setPositiveButton(
-          "Yes",
-          new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-              homeViewModel.doLogout(sharedPrefs.getToken());
-            }
-          });
-
-      builder1.setNegativeButton(
-          "No",
-          new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-              dialog.cancel();
-            }
-          });
-
-      AlertDialog alert11 = builder1.create();
-      alert11.show();
+     showAlertDialog();
 
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  private void showAlertDialog() {
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setMessage(R.string.alert_logout_message);
+    builder1.setCancelable(true);
+
+    builder1.setPositiveButton(
+        "Yes",
+        new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int id) {
+            homeViewModel.doLogout(sharedPrefs.getToken());
+          }
+        });
+
+    builder1.setNegativeButton(
+        "No",
+        new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int id) {
+            dialog.cancel();
+          }
+        });
+
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
   }
 }
