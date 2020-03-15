@@ -149,6 +149,7 @@
   <string name="token_expired">Token expired, please login again!</string>
 
   <string name="voter_same_email">Voter with same Email Id already added</string>
+  <string name="alert_logout_message">Are you sure want to logout ?</string>
 
 </resources>
 

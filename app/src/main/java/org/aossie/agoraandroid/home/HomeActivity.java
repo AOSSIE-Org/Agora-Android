@@ -1,11 +1,13 @@
 package org.aossie.agoraandroid.home;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -62,7 +64,30 @@ public class HomeActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle item selection
     if (item.getItemId() == R.id.action_logout) {
-      homeViewModel.doLogout(sharedPrefs.getToken());
+
+      AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+      builder1.setMessage(R.string.alert_logout_message);
+      builder1.setCancelable(true);
+
+      builder1.setPositiveButton(
+          "Yes",
+          new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              homeViewModel.doLogout(sharedPrefs.getToken());
+            }
+          });
+
+      builder1.setNegativeButton(
+          "No",
+          new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              dialog.cancel();
+            }
+          });
+
+      AlertDialog alert11 = builder1.create();
+      alert11.show();
+
       return true;
     }
     return super.onOptionsItemSelected(item);
