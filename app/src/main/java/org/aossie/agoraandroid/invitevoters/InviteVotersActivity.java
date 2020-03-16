@@ -59,6 +59,7 @@ public class InviteVotersActivity extends AppCompatActivity {
 
     mVoterNameTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
     mVoterEmailTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
+
     mVoterNameTextInput.getEditText().addTextChangedListener(
         new TextWatcher() {
           @Override
@@ -102,6 +103,8 @@ public class InviteVotersActivity extends AppCompatActivity {
     });
 
 >>>>>>> solved
+=======
+>>>>>>> solves
 
     mInviteVotes.setOnClickListener(new View.OnClickListener() {
       @Override
