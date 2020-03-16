@@ -21,8 +21,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.createelection.CreateElectionOne;
 import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs;
+import org.aossie.agoraandroid.createelection.NewElectionActivity;
 import org.aossie.agoraandroid.displayelections.ElectionListActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
     createElection.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(getActivity(), CreateElectionOne.class));
+        startActivity(new Intent(getActivity(), NewElectionActivity.class));
       }
     });
     mSwipeRefreshLayout.setOnRefreshListener(

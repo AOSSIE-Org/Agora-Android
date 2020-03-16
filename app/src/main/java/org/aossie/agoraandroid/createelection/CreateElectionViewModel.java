@@ -26,10 +26,7 @@ import retrofit2.Response;
 
 class CreateElectionViewModel extends AndroidViewModel {
   private final Context context;
-  private final ElectionDetailsSharedPrefs electionDetailsSharedPrefs =
-      new ElectionDetailsSharedPrefs(getApplication());
   private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
-  private final TinyDB tinydb = new TinyDB(getApplication());
   private LoadToast loadToast;
 
   CreateElectionViewModel(@NonNull Application application, Context context) {
@@ -38,12 +35,22 @@ class CreateElectionViewModel extends AndroidViewModel {
   }
 
   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-  public void createElection() {
+  public void createElection(
+      String mElectionName,
+      String mElectionDescription,
+      String mStartDate,
+      String mEndDate,
+      ArrayList<String> mCandidateList,
+      String mSelectedVotingAlgorithm,
+      Boolean mFinalIsInvite,
+      Boolean mFinalIsRealTime,
+      Boolean mVoterListVisibility,
+      String mBallot
+  ) {
     loadToast = new LoadToast(context);
     loadToast.setText("Creating Election");
     loadToast.show();
-    ArrayList<String> candidates = tinydb.getListString("Candidates");
-    JSONArray jsArray = new JSONArray(candidates);
+    JSONArray jsArray = new JSONArray(mCandidateList);
     String token = sharedPrefs.getToken();
     final JSONObject jsonObject = new JSONObject();
     try {
@@ -52,15 +59,15 @@ class CreateElectionViewModel extends AndroidViewModel {
       map.put("hash", "");
       JSONArray ballot = new JSONArray(new Map[] { map });
       jsonObject.put("ballot", ballot);  //Append the other JSONObject to the parent one
-      jsonObject.put("name", electionDetailsSharedPrefs.getElectionName());
-      jsonObject.put("description", electionDetailsSharedPrefs.getElectionDesc());
-      jsonObject.put("voterListVisibility", electionDetailsSharedPrefs.getVoterListVisibility());
-      jsonObject.put("startingDate", electionDetailsSharedPrefs.getStartTime());
-      jsonObject.put("endingDate", electionDetailsSharedPrefs.getEndTime());
-      jsonObject.put("isInvite", electionDetailsSharedPrefs.getIsInvite());
-      jsonObject.put("ballotVisibility", electionDetailsSharedPrefs.getBallotVisibility());
-      jsonObject.put("isRealTime", electionDetailsSharedPrefs.getIsRealTime());
-      jsonObject.put("votingAlgo", electionDetailsSharedPrefs.getVotingAlgo());
+      jsonObject.put("name", mElectionName);
+      jsonObject.put("description", mElectionDescription);
+      jsonObject.put("voterListVisibility", mVoterListVisibility);
+      jsonObject.put("startingDate", mStartDate);
+      jsonObject.put("endingDate", mEndDate);
+      jsonObject.put("isInvite", mFinalIsInvite);
+      jsonObject.put("ballotVisibility", mBallot);
+      jsonObject.put("isRealTime", mFinalIsRealTime);
+      jsonObject.put("votingAlgo", mSelectedVotingAlgorithm);
       jsonObject.put("candidates", jsArray);
       jsonObject.put("noVacancies", 1);
       jsonObject.put("electionType", "Election");
@@ -76,7 +83,6 @@ class CreateElectionViewModel extends AndroidViewModel {
         if (response.message().equals("OK")) {
           loadToast.success();
           Toast.makeText(getApplication(), "Created Successfully", Toast.LENGTH_SHORT).show();
-          electionDetailsSharedPrefs.clearElectionData();
           Intent intent = new Intent(context, HomeActivity.class);
           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
           context.startActivity(intent);
