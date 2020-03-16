@@ -1,6 +1,8 @@
 package org.aossie.agoraandroid.invitevoters;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import androidx.annotation.NonNull;
@@ -45,7 +47,7 @@ public class InviteVotersActivity extends AppCompatActivity {
     mVoterNameTextInput = findViewById(R.id.text_input_voter_name);
     mVoterEmailTextInput = findViewById(R.id.text_input_voter_email);
     Button mAddVoters = findViewById(R.id.button_add_voter);
-    Button mInviteVotes = findViewById(R.id.button_invite_voter);
+    final Button mInviteVotes = findViewById(R.id.button_invite_voter);
     RecyclerView mRecyclerView = findViewById(R.id.recycler_view_voters);
 
     voterRecyclerAdapter = new VoterRecyclerAdapter(mVoterNames, mVoterEmails);
@@ -53,16 +55,45 @@ public class InviteVotersActivity extends AppCompatActivity {
     new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     mRecyclerView.setAdapter(voterRecyclerAdapter);
 
-    mVoterNameTextInput.getEditText().setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        mVoterNameTextInput.setError(null);
+    mVoterNameTextInput.getEditText().addTextChangedListener(
+        new TextWatcher() {
+          @Override
+          public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+          }
+
+          @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            if(charSequence.length()>0)
+            {
+              mVoterNameTextInput.setError(null);
+            }
+
+
+          }
+
+          @Override public void afterTextChanged(Editable editable) {
+
+          }
+        }
+    );
+
+    mVoterEmailTextInput.getEditText().addTextChangedListener(new TextWatcher() {
+      @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
       }
-    });
-    mVoterEmailTextInput.getEditText().setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        mVoterEmailTextInput.setError(null);
+
+      @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        if(charSequence.length()>0)
+        {
+          mVoterEmailTextInput.setError(null);
+        }
+
+      }
+
+      @Override public void afterTextChanged(Editable editable) {
+
       }
     });
 
