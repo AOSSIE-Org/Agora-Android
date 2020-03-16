@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.adapters.TextWatcherAdapter;
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter;
 import org.json.JSONException;
 
@@ -21,6 +22,7 @@ public class InviteVotersActivity extends AppCompatActivity {
   private final ArrayList<String> mVoterEmails = new ArrayList<>();
   private InviteVotersViewModel inviteVotersViewModel;
   private VoterRecyclerAdapter voterRecyclerAdapter;
+  private TextWatcherAdapter textWatcherAdapter;
   private final ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
       new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
@@ -49,54 +51,14 @@ public class InviteVotersActivity extends AppCompatActivity {
     Button mAddVoters = findViewById(R.id.button_add_voter);
     final Button mInviteVotes = findViewById(R.id.button_invite_voter);
     RecyclerView mRecyclerView = findViewById(R.id.recycler_view_voters);
-
+    textWatcherAdapter  = new TextWatcherAdapter(this);
     voterRecyclerAdapter = new VoterRecyclerAdapter(mVoterNames, mVoterEmails);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     mRecyclerView.setAdapter(voterRecyclerAdapter);
 
-    mVoterNameTextInput.getEditText().addTextChangedListener(
-        new TextWatcher() {
-          @Override
-          public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-          }
-
-          @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if(charSequence.length()>0)
-            {
-              mVoterNameTextInput.setError(null);
-            }
-
-
-          }
-
-          @Override public void afterTextChanged(Editable editable) {
-
-          }
-        }
-    );
-
-    mVoterEmailTextInput.getEditText().addTextChangedListener(new TextWatcher() {
-      @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-      }
-
-      @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        if(charSequence.length()>0)
-        {
-          mVoterEmailTextInput.setError(null);
-        }
-
-      }
-
-      @Override public void afterTextChanged(Editable editable) {
-
-      }
-    });
-
+    mVoterNameTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
+    mVoterEmailTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
 
     mInviteVotes.setOnClickListener(new View.OnClickListener() {
       @Override
