@@ -53,6 +53,20 @@ public class InviteVotersActivity extends AppCompatActivity {
     new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     mRecyclerView.setAdapter(voterRecyclerAdapter);
 
+    mVoterNameTextInput.getEditText().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        mVoterNameTextInput.setError(null);
+      }
+    });
+    mVoterEmailTextInput.getEditText().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        mVoterEmailTextInput.setError(null);
+      }
+    });
+
+
     mInviteVotes.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
