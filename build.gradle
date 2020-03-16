@@ -29,7 +29,8 @@ buildscript {
     mockWebServerVersion = '4.3.1'
     mockitoCoreVersion = '1.10.19'
     daggerVersion = '2.25.4'
-    coreVersion="1.2.0"
+    coreVersion = "1.2.0"
+    prefsVersion = "1.1.0"
   }
 
   repositories {

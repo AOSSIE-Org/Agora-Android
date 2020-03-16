@@ -74,6 +74,10 @@ dependencies {
   //dagger
   implementation "com.google.dagger:dagger:$daggerVersion"
   kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+  //Shared Prefs
+  implementation "androidx.preference:preference-ktx:$prefsVersion"
+
+
 }
 repositories {
   mavenCentral()
