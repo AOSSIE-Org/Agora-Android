@@ -59,6 +59,49 @@ public class InviteVotersActivity extends AppCompatActivity {
 
     mVoterNameTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
     mVoterEmailTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
+    mVoterNameTextInput.getEditText().addTextChangedListener(
+        new TextWatcher() {
+          @Override
+          public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+          }
+
+          @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            if(charSequence.length()>0)
+            {
+              mVoterNameTextInput.setError(null);
+            }
+
+
+          }
+
+          @Override public void afterTextChanged(Editable editable) {
+
+          }
+        }
+    );
+
+    mVoterEmailTextInput.getEditText().addTextChangedListener(new TextWatcher() {
+      @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+      }
+
+      @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        if(charSequence.length()>0)
+        {
+          mVoterEmailTextInput.setError(null);
+        }
+
+      }
+
+      @Override public void afterTextChanged(Editable editable) {
+
+      }
+    });
+
+>>>>>>> solved
 
     mInviteVotes.setOnClickListener(new View.OnClickListener() {
       @Override
