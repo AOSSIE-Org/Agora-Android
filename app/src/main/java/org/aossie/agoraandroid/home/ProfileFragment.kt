@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
@@ -25,7 +25,7 @@ class ProfileFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
 
-    viewModel = ViewModelProviders.of(this)
+    viewModel = ViewModelProvider(this)
         .get(ProfileViewModel::class.java)
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
@@ -46,10 +46,10 @@ class ProfileFragment : Fragment() {
           .show()
     })
 
-    viewModel.passwordRequestCode.observe(this, Observer {
+    viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
       handlePassword(it)
     })
-    return binding.getRoot()
+    return binding.root
   }
 
   private fun handlePassword(it: Int?) {
