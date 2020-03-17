@@ -21,14 +21,16 @@ public class LoginViewModel extends AndroidViewModel {
   private final Context context;
   private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
   private LoadToast loadToast;
+  boolean backEnabled;
 
   public LoginViewModel(@NonNull Application application, Context context) {
     super(application);
     this.context = context;
+    backEnabled = true;
   }
 
   public void logInRequest(final String userName, final String userPassword) {
-
+    backEnabled = false;
     loadToast = new LoadToast(context);
     loadToast.setText("Logging in");
     loadToast.show();
@@ -75,6 +77,7 @@ public class LoginViewModel extends AndroidViewModel {
           loadToast.error();
           Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT)
               .show();
+          backEnabled = true;
         }
       }
 

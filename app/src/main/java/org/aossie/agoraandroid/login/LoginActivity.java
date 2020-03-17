@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
@@ -52,5 +53,15 @@ public class LoginActivity extends AppCompatActivity {
         }
       }
     });
+  }
+
+  @Override
+  public void onBackPressed() {
+    if(loginViewModel.backEnabled){
+      super.onBackPressed();
+    }else{
+      Toast.makeText(getApplication(), "You can't go back at when trying to log in", Toast.LENGTH_SHORT)
+          .show();
+    }
   }
 }
