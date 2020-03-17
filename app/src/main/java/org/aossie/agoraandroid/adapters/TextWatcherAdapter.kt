@@ -1,26 +1,18 @@
 package org.aossie.agoraandroid.adapters
 
-import android.app.Activity
-import android.content.Context
+
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.EditText
-import kotlinx.android.synthetic.main.activity_invite_voters.text_input_voter_email
-import kotlinx.android.synthetic.main.activity_invite_voters.text_input_voter_name
+import com.google.android.material.textfield.TextInputLayout
 
-class TextWatcherAdapter(private val context: Context) : TextWatcher{
+
+class TextWatcherAdapter(vararg editTexts:TextInputLayout) : TextWatcher{
 
 
   override fun afterTextChanged(p0: Editable?) {
 
-    val activity:Activity = context as Activity
+    for(editText:)
 
-    if (!activity.text_input_voter_name.editText!!.text.isNullOrEmpty()) {
-      activity.text_input_voter_name.error=null
-    }
-    if (!activity.text_input_voter_email.editText!!.text.isNullOrEmpty()) {
-      activity.text_input_voter_email.error=null
-    }
 
   }
 
