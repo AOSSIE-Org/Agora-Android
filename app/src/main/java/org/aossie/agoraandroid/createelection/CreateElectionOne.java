@@ -54,8 +54,8 @@ public class CreateElectionOne extends AppCompatActivity {
     mNextButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        mElectionName = mNameTextLayout.getEditText().getText().toString();
-        mElectionDescription = mDescriptionTextLayout.getEditText().getText().toString();
+        mElectionName = mNameTextLayout.getEditText().getText().toString().trim();
+        mElectionDescription = mDescriptionTextLayout.getEditText().getText().toString().trim();
         mStartDate = mStartDateTextLayout.getEditText().getText().toString();
         mEndDate = mEndDateTextLayout.getEditText().getText().toString();
         if (mElectionName.isEmpty()) {
