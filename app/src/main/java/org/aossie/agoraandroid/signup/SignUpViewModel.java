@@ -18,6 +18,7 @@ import retrofit2.Response;
 
 class SignUpViewModel extends AndroidViewModel {
   private final Context context;
+  public boolean signupActive;
   private LoadToast loadToast;
 
   public SignUpViewModel(@NonNull Application application, Context context) {
@@ -29,6 +30,7 @@ class SignUpViewModel extends AndroidViewModel {
       String firstName, String lastName, String securityQuestion, String securityAnswer) {
     JSONObject jsonObject = new JSONObject();
     JSONObject securityJsonObject = new JSONObject();
+    signupActive=true;
     loadToast = new LoadToast(context);
     loadToast.setText("Signing in");
     loadToast.show();
@@ -51,6 +53,7 @@ class SignUpViewModel extends AndroidViewModel {
     signUpResponse.enqueue(new Callback<String>() {
       @Override
       public void onResponse(Call<String> call, Response<String> response) {
+        signupActive=false;
         if (response.message().equals("timeout")) {
           loadToast.error();
           Toast.makeText(getApplication(), "Network Connection issues please try again",
@@ -75,6 +78,7 @@ class SignUpViewModel extends AndroidViewModel {
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
+        signupActive=false;
         loadToast.error();
         Toast.makeText(getApplication(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
       }

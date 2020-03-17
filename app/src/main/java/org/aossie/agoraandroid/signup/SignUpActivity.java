@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import com.google.android.material.textfield.TextInputLayout;
@@ -99,6 +100,14 @@ public class SignUpActivity extends AppCompatActivity {
         securityQuestionOfSignUp = getResources().getStringArray(R.array.security_questions)[0];
       }
     });
+  }
+  @Override public void onBackPressed() {
+    if(!(signUpViewModel.signupActive)){
+      super.onBackPressed();
+    }
+    else{
+      Toast.makeText(getApplicationContext(),"Please wait for SignUp process to finish",Toast.LENGTH_SHORT).show();
+    }
   }
 }
 
