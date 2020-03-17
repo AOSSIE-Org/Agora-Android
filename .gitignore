@@ -7,3 +7,4 @@
 .externalNativeBuild
 .idea
 lint/* 
+.idea/codeStyles/codeStyleConfig.xml
