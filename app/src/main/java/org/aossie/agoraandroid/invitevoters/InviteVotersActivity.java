@@ -51,60 +51,13 @@ public class InviteVotersActivity extends AppCompatActivity {
     Button mAddVoters = findViewById(R.id.button_add_voter);
     final Button mInviteVotes = findViewById(R.id.button_invite_voter);
     RecyclerView mRecyclerView = findViewById(R.id.recycler_view_voters);
-    textWatcherAdapter  = new TextWatcherAdapter(this);
+    textWatcherAdapter  = new TextWatcherAdapter(mVoterEmailTextInput,mVoterNameTextInput);
     voterRecyclerAdapter = new VoterRecyclerAdapter(mVoterNames, mVoterEmails);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     mRecyclerView.setAdapter(voterRecyclerAdapter);
-    
     mVoterNameTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
     mVoterEmailTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
-
-    mVoterNameTextInput.getEditText().addTextChangedListener(
-        new TextWatcher() {
-          @Override
-          public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-          }
-
-          @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if(charSequence.length()>0)
-            {
-              mVoterNameTextInput.setError(null);
-            }
-
-
-          }
-
-          @Override public void afterTextChanged(Editable editable) {
-
-          }
-        }
-    );
-
-    mVoterEmailTextInput.getEditText().addTextChangedListener(new TextWatcher() {
-      @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-      }
-
-      @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        if(charSequence.length()>0)
-        {
-          mVoterEmailTextInput.setError(null);
-        }
-
-      }
-
-      @Override public void afterTextChanged(Editable editable) {
-
-      }
-    });
-
->>>>>>> solved
-=======
->>>>>>> solves
 
     mInviteVotes.setOnClickListener(new View.OnClickListener() {
       @Override
