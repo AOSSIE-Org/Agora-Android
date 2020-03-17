@@ -13,7 +13,7 @@ import org.aossie.agoraandroid.R;
 @SuppressWarnings("ConstantConditions")
 public class SignUpActivity extends AppCompatActivity {
   private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText,
-      mPasswordEditText, mSecurityAnswer;
+      mPasswordEditText, mPasswordconfirmEditText, mSecurityAnswer;
   private SignUpViewModel signUpViewModel;
   private AppCompatSpinner appCompatSpinner;
   private String securityQuestionOfSignUp;
@@ -29,6 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
     mLastNameEditText = findViewById(R.id.signup_last_name);
     mEmailEditText = findViewById(R.id.signup_email);
     mPasswordEditText = findViewById(R.id.signup_password);
+    mPasswordconfirmEditText = findViewById(R.id.signup_password_confirm);
     appCompatSpinner = findViewById(R.id.sign_up_security_question);
     mSecurityAnswer = findViewById(R.id.security_answer);
     Button mSignUpButton = findViewById(R.id.signup_btn);
@@ -41,6 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         String lastName = mLastNameEditText.getEditText().getText().toString();
         String userEmail = mEmailEditText.getEditText().getText().toString();
         String userPass = mPasswordEditText.getEditText().getText().toString();
+        String userPass_confirm = mPasswordconfirmEditText.getEditText().getText().toString();
         String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
         String securityQuestion = securityQuestionOfSignUp;
 
@@ -76,6 +78,9 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (userPass.isEmpty()) {
           mPasswordEditText.setError("Please enter password");
+        } if(userPass != userPass_confirm){
+          mPasswordEditText.setError("Password doesn't match");
+          mPasswordconfirmEditText.setError("Password doesn't match");
         } else {
           mPasswordEditText.setError(null);
           signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName,
