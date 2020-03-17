@@ -56,7 +56,7 @@ public class InviteVotersActivity extends AppCompatActivity {
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     mRecyclerView.setAdapter(voterRecyclerAdapter);
-
+    
     mVoterNameTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
     mVoterEmailTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
 
