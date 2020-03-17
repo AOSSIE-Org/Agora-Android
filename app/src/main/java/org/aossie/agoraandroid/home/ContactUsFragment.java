@@ -17,7 +17,6 @@ import org.aossie.agoraandroid.R;
  */
 @SuppressWarnings("SpellCheckingInspection")
 public class ContactUsFragment extends Fragment {
-  public static int opt;
 
   public ContactUsFragment() {
   }
@@ -31,15 +30,13 @@ public class ContactUsFragment extends Fragment {
     gitterBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        opt=1;
-        startActivity(new Intent(getActivity(), webview.class));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitter.im/aossie/home")));
       }
     });
     gitlabBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        opt=2;
-        startActivity(new Intent(getActivity(), webview.class));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://gitlab.com/aossie")));
       }
     });
 
