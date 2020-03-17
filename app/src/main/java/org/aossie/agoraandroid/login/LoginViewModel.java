@@ -20,6 +20,7 @@ import retrofit2.Response;
 public class LoginViewModel extends AndroidViewModel {
   private final Context context;
   private final SharedPrefs sharedPrefs = new SharedPrefs(getApplication());
+  public boolean loginActive=false;
   private LoadToast loadToast;
 
   public LoginViewModel(@NonNull Application application, Context context) {
@@ -28,7 +29,7 @@ public class LoginViewModel extends AndroidViewModel {
   }
 
   public void logInRequest(final String userName, final String userPassword) {
-
+    loginActive=true;
     loadToast = new LoadToast(context);
     loadToast.setText("Logging in");
     loadToast.show();
@@ -76,6 +77,7 @@ public class LoginViewModel extends AndroidViewModel {
           Toast.makeText(getApplication(), "Wrong User Name or Password", Toast.LENGTH_SHORT)
               .show();
         }
+        loginActive=false;
       }
 
       @Override
@@ -83,6 +85,7 @@ public class LoginViewModel extends AndroidViewModel {
         loadToast.error();
         Toast.makeText(getApplication(), "Something went wrong please try again",
             Toast.LENGTH_SHORT).show();
+        loginActive=false;
       }
     });
   }
