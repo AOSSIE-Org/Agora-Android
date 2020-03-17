@@ -77,7 +77,7 @@ public class CreateElectionOne extends AppCompatActivity {
         }
 
         if (mEndDate.isEmpty()) {
-          mEndDateTextLayout.setError("PLease enter end date");
+          mEndDateTextLayout.setError("Please enter end date");
         } else {
           mEndDateTextLayout.setError(null);
           electionDetailsSharedPrefs.saveElectionName(mElectionName);
