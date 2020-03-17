@@ -64,10 +64,8 @@ public class HomeActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle item selection
     if (item.getItemId() == R.id.action_logout) {
-
      showAlertDialog();
-
-      return true;
+     return true;
     }
     return super.onOptionsItemSelected(item);
   }
@@ -76,7 +74,6 @@ public class HomeActivity extends AppCompatActivity {
     AlertDialog.Builder logoutAlert = new AlertDialog.Builder(this);
     logoutAlert.setMessage(R.string.alert_logout_message);
     logoutAlert.setCancelable(true);
-
     logoutAlert.setPositiveButton(
         "Yes",
         new DialogInterface.OnClickListener() {
@@ -84,7 +81,6 @@ public class HomeActivity extends AppCompatActivity {
             homeViewModel.doLogout(sharedPrefs.getToken());
           }
         });
-
     logoutAlert.setNegativeButton(
         "No",
         new DialogInterface.OnClickListener() {
@@ -92,8 +88,7 @@ public class HomeActivity extends AppCompatActivity {
             dialog.cancel();
           }
         });
-
-    AlertDialog alert11 = logoutAlert.create();
-    alert11.show();
+    AlertDialog logoutDialog = logoutAlert.create();
+    logoutDialog.show();
   }
 }
