@@ -41,7 +41,7 @@ public class CreateElectionTwo extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_create_election_two);
-    Button mAddCandidateButton = findViewById(R.id.add_candidate_btn);
+    final Button mAddCandidateButton = findViewById(R.id.add_candidate_btn);
     tinydb = new TinyDB(getApplication());
     Button mNextButton = findViewById(R.id.submit_details_btn);
     mAddCandidateTextInput = findViewById(R.id.candidate_til);
@@ -68,7 +68,7 @@ public class CreateElectionTwo extends AppCompatActivity {
       public void onClick(View v) {
         final String name = mAddCandidateTextInput.getEditText().getText().toString().trim();
         if(name.isEmpty()){
-          Toast.makeText(CreateElectionTwo.this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
+          mAddCandidateTextInput.setError("Name cannot be empty");
         }else {
           addCandidate(name);
         }
