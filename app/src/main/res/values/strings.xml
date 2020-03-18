@@ -6,6 +6,7 @@
   <string name="content_description_for_agora_logo">Agora Logo</string>
   <string name="user_name">User Name</string>
   <string name="password">Password</string>
+  <string name="confirm_password">Confirm Password</string>
   <string name="login">Login</string>
   <string name="user_login">User Login</string>
   <string name="user_sign_up">User Sign Up</string>
