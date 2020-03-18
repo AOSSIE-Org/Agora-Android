@@ -5,34 +5,34 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/fragment_home">
 
-    <fragment
-        android:id="@+id/fragment_home"
-        android:name="org.aossie.agoraandroid.home.HomeFragment"
-        android:label="Dashboard"
-        tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/fragment_profile"
-        android:name="org.aossie.agoraandroid.home.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
-    <fragment
-        android:id="@+id/fragment_about"
-        android:name="org.aossie.agoraandroid.home.AboutFragment"
-        android:label="About Agora"
-        tools:layout="@layout/fragment_about" />
-    <fragment
-        android:id="@+id/fragment_contact_us"
-        android:name="org.aossie.agoraandroid.home.ContactUsFragment"
-        android:label="Contact Us"
-        tools:layout="@layout/fragment_contact_us" />
-    <fragment
-        android:id="@+id/fragment_share_with_others"
-        android:name="org.aossie.agoraandroid.home.ShareWithOthersFragment"
-        android:label="Share With Others"
-        tools:layout="@layout/fragment_share_with_others" />
-    <fragment
-        android:id="@+id/fragment_report_bug"
-        android:name="org.aossie.agoraandroid.home.ReportBugFragment"
-        android:label="Report A Bug"
-        tools:layout="@layout/fragment_report_bug" />
+  <fragment
+      android:id="@+id/fragment_home"
+      android:name="org.aossie.agoraandroid.home.HomeFragment"
+      android:label="Dashboard"
+      tools:layout="@layout/fragment_home" />
+  <fragment
+      android:id="@+id/fragment_profile"
+      android:name="org.aossie.agoraandroid.home.ProfileFragment"
+      android:label="Profile"
+      tools:layout="@layout/fragment_profile" />
+  <fragment
+      android:id="@+id/fragment_about"
+      android:name="org.aossie.agoraandroid.home.AboutFragment"
+      android:label="About Agora"
+      tools:layout="@layout/fragment_about" />
+  <fragment
+      android:id="@+id/fragment_contact_us"
+      android:name="org.aossie.agoraandroid.home.ContactUsFragment"
+      android:label="Contact Us"
+      tools:layout="@layout/fragment_contact_us" />
+  <fragment
+      android:id="@+id/fragment_share_with_others"
+      android:name="org.aossie.agoraandroid.home.ShareWithOthersFragment"
+      android:label="Share With Others"
+      tools:layout="@layout/fragment_share_with_others" />
+  <fragment
+      android:id="@+id/fragment_report_bug"
+      android:name="org.aossie.agoraandroid.home.ReportBugFragment"
+      android:label="Report A Bug"
+      tools:layout="@layout/fragment_report_bug" />
 </navigation>
