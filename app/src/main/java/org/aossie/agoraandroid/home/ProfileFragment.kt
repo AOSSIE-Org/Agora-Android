@@ -26,7 +26,7 @@ class ProfileFragment : Fragment() {
   ): View? {
 
     viewModel = ViewModelProvider(this)
-        .get(ProfileViewModel::class.java)
+      .get(ProfileViewModel::class.java)
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
     loadToast = LoadToast(activity)
@@ -35,19 +35,27 @@ class ProfileFragment : Fragment() {
     binding.changePasswordBtn.setOnClickListener {
       loadToast.show()
       viewModel.changePassword(
-          binding.newPasswordTil.editText!!.text.toString(),
-          binding.confirmPasswordTil.editText!!.text.toString()
+        binding.newPasswordTil.editText!!.text.toString(),
+        binding.confirmPasswordTil.editText!!.text.toString()
       )
     }
 
-    binding.updateProfileBtn.setOnClickListener({
-      //TODO implment update feature
-      Toast.makeText(activity, "feature not available yet", Toast.LENGTH_SHORT)
-          .show()
-    })
+    binding.updateProfileBtn.setOnClickListener {
+      loadToast.show()
+      viewModel.updateUser(
+        binding.firstNameTil.editText!!.text.toString().trim(),
+        binding.lastNameTil.editText!!.text.toString().trim(),
+        binding.emailIdTil.editText!!.text.toString().trim(),
+        binding.userNameTil.editText!!.text.toString().trim()
+      )
+    }
 
     viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
       handlePassword(it)
+    })
+
+    viewModel.updateUserRequestCode.observe(viewLifecycleOwner, Observer {
+      handleUser(it)
     })
     return binding.root
   }
@@ -77,20 +85,59 @@ class ProfileFragment : Fragment() {
       200 -> {
         loadToast.success()
         Toast.makeText(activity, getString(R.string.password_change_success), Toast.LENGTH_SHORT)
-            .show()
+          .show()
       }
       201 -> {
         loadToast.error()
         Toast.makeText(activity, getString(R.string.token_expired), Toast.LENGTH_SHORT)
-            .show()
+          .show()
       }
       500 -> {
         loadToast.error()
         Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT)
-            .show()
+          .show()
       }
 
     }
   }
 
+  private fun handleUser(i: Int?){
+    binding.firstNameTil.error = null
+    binding.lastNameTil.error = null
+    binding.userNameTil.error = null
+    binding.emailIdTil.error = null
+
+    when(i){
+      1 -> {
+        loadToast.error()
+        binding.firstNameTil.error = "First name cannot be empty"
+      }
+      2 -> {
+        loadToast.error()
+        binding.lastNameTil.error = "Last name cannot be empty"
+      }
+      3 -> {
+        loadToast.error()
+        binding.emailIdTil.error = "Email cannot be changed"
+      }
+      4 -> {
+        loadToast.error()
+        binding.userNameTil.error = "Username cannot be changed"
+      }
+      200 -> {
+        loadToast.success()
+        Toast.makeText(activity, "User updated successfully!", Toast.LENGTH_SHORT).show()
+      }
+      201 -> {
+        loadToast.error()
+        Toast.makeText(activity, getString(R.string.token_expired), Toast.LENGTH_SHORT)
+          .show()
+      }
+      500 -> {
+        loadToast.error()
+        Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT)
+          .show()
+      }
+    }
+  }
 }
