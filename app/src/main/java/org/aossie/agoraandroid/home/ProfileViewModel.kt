@@ -43,10 +43,17 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
   val passwordRequestCode: LiveData<Int>
     get() = _passwordRequestCode
 
-  private val _updateUserRequestCode = MutableLiveData<Int>()
+  private val _userUpdateResponse = MutableLiveData<ResponseResults>()
 
-  val updateUserRequestCode: LiveData<Int>
-    get() = _updateUserRequestCode
+  val userUpdateResponse: LiveData<ResponseResults>
+    get() = _userUpdateResponse
+
+  sealed class ResponseResults{
+    class Success : ResponseResults()
+    class Error(errorText : String) : ResponseResults(){
+      val message = errorText
+    }
+  }
 
   fun changePassword(
     newPass: String,
@@ -105,19 +112,24 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     lastName : String,
     email : String,
     username : String
-  ){
-    if(firstName.isEmpty()){
-      _updateUserRequestCode.value = 1
-    }else if(lastName.isEmpty()){
-      _updateUserRequestCode.value = 2
-    }else if(email != this.email){
-      _updateUserRequestCode.value = 3
-    }else if(username != this.userName){
-      _updateUserRequestCode.value = 4
-    }else{
-      doUpdateUserRequest(firstName, lastName, email, username)
+  ) {
+    when {
+      firstName.isEmpty() -> {
+        _userUpdateResponse.value = ResponseResults.Error("First Name cannot be empty")
+      }
+      lastName.isEmpty() -> {
+        _userUpdateResponse.value = ResponseResults.Error("Last Name cannot be empty")
+      }
+      email != this.email -> {
+        _userUpdateResponse.value = ResponseResults.Error("Email cannot be changed")
+      }
+      username != this.userName -> {
+        _userUpdateResponse.value = ResponseResults.Error("Username cannot be changed")
+      }
+      else -> {
+        doUpdateUserRequest(firstName, lastName, email, username)
+      }
     }
-
   }
 
   private fun doUpdateUserRequest(
@@ -149,14 +161,13 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         response: Response<String>
       ) {
         if(response.message() == "OK") {
-          _updateUserRequestCode.value = 200
           sharedPrefs.saveFirstName(firstName)
           sharedPrefs.saveLastName(lastName)
           sharedPrefs.saveEmail(email)
           sharedPrefs.saveUserName(username)
+          _userUpdateResponse.value = ResponseResults.Success()
         }else{
-          _updateUserRequestCode.value = 201
-          Log.i("Response", response.toString())
+          _userUpdateResponse.value = ResponseResults.Error("Token expired! Please login again")
         }
       }
 
@@ -164,7 +175,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         call: Call<String>,
         t: Throwable
       ) {
-        _updateUserRequestCode.value = 500
+        _userUpdateResponse.value = ResponseResults.Error("Something went wrong! Please try later")
       }
     })
   }

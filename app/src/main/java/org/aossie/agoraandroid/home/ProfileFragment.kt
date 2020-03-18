@@ -53,13 +53,21 @@ class ProfileFragment : Fragment() {
     viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
       handlePassword(it)
     })
-
-    viewModel.updateUserRequestCode.observe(viewLifecycleOwner, Observer {
+    viewModel.userUpdateResponse.observe(viewLifecycleOwner, Observer {
       handleUser(it)
     })
     return binding.root
   }
-
+  private fun handleUser(response: ProfileViewModel.ResponseResults) = when(response) {
+    is ProfileViewModel.ResponseResults.Success -> {
+      loadToast.success()
+      Toast.makeText(activity, "User updated successfully!", Toast.LENGTH_SHORT).show()
+    }
+    is ProfileViewModel.ResponseResults.Error -> {
+      loadToast.error()
+      Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+    }
+  }
   private fun handlePassword(it: Int?) {
     binding.newPasswordTil.error = null
     binding.confirmPasswordTil.error = null
@@ -101,43 +109,4 @@ class ProfileFragment : Fragment() {
     }
   }
 
-  private fun handleUser(i: Int?){
-    binding.firstNameTil.error = null
-    binding.lastNameTil.error = null
-    binding.userNameTil.error = null
-    binding.emailIdTil.error = null
-
-    when(i){
-      1 -> {
-        loadToast.error()
-        binding.firstNameTil.error = "First name cannot be empty"
-      }
-      2 -> {
-        loadToast.error()
-        binding.lastNameTil.error = "Last name cannot be empty"
-      }
-      3 -> {
-        loadToast.error()
-        binding.emailIdTil.error = "Email cannot be changed"
-      }
-      4 -> {
-        loadToast.error()
-        binding.userNameTil.error = "Username cannot be changed"
-      }
-      200 -> {
-        loadToast.success()
-        Toast.makeText(activity, "User updated successfully!", Toast.LENGTH_SHORT).show()
-      }
-      201 -> {
-        loadToast.error()
-        Toast.makeText(activity, getString(R.string.token_expired), Toast.LENGTH_SHORT)
-          .show()
-      }
-      500 -> {
-        loadToast.error()
-        Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT)
-          .show()
-      }
-    }
-  }
 }
