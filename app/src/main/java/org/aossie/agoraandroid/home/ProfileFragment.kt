@@ -49,13 +49,14 @@ class ProfileFragment : Fragment() {
 
     binding.updateProfileBtn.setOnClickListener {
       loadToast.show()
-      if(binding.firstNameTil.error != null && binding.lastNameTil.error != null && binding.emailIdTil.error != null && binding.userNameTil.error != null)
+      if(binding.firstNameTil.error == null && binding.lastNameTil.error == null && binding.emailIdTil.error == null && binding.userNameTil.error == null)
         viewModel.updateUser(
             binding.firstNameEt.text.toString().trim(),
             binding.lastNameEt.text.toString().trim(),
             binding.emailEt.text.toString().trim(),
             binding.usernameEt.text.toString().trim()
         )
+      else loadToast.error()
     }
 
     viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
