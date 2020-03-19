@@ -1,6 +1,8 @@
 package org.aossie.agoraandroid.home
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,24 +42,20 @@ class ProfileFragment : Fragment() {
         binding.confirmPasswordEt.text.toString()
       )
     }
+    binding.firstNameEt.addTextChangedListener(getTextWatcher(1))
+    binding.lastNameEt.addTextChangedListener(getTextWatcher(2))
+    binding.emailEt.addTextChangedListener(getTextWatcher(3))
+    binding.usernameEt.addTextChangedListener(getTextWatcher(4))
 
     binding.updateProfileBtn.setOnClickListener {
       loadToast.show()
-      val firstName = binding.firstNameEt.text.toString().trim()
-      val lastName = binding.lastNameEt.text.toString().trim()
-      val email = binding.emailEt.text.toString().trim()
-      val usernameText = binding.usernameEt.text.toString().trim()
-      binding.firstNameTil.error = null
-      binding.lastNameTil.error = null
-      binding.userNameTil.error = null
-      binding.emailIdTil.error = null
-      when {
-        firstName.isEmpty() -> binding.firstNameTil.error = getString(string.first_name_empty)
-        lastName.isEmpty() -> binding.lastNameTil.error = getString(string.last_name_empty)
-        email != viewModel.email -> binding.emailIdTil.error = getString(string.email_changed)
-        usernameText != viewModel.userName -> binding.userNameTil.error = getString(string.username_changed)
-        else -> viewModel.updateUser(firstName, lastName, email, usernameText)
-      }
+      if(binding.firstNameTil.error != null && binding.lastNameTil.error != null && binding.emailIdTil.error != null && binding.userNameTil.error != null)
+        viewModel.updateUser(
+            binding.firstNameEt.text.toString().trim(),
+            binding.lastNameEt.text.toString().trim(),
+            binding.emailEt.text.toString().trim(),
+            binding.usernameEt.text.toString().trim()
+        )
     }
 
     viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
@@ -119,4 +117,30 @@ class ProfileFragment : Fragment() {
     }
   }
 
+  private fun getTextWatcher(code : Int): TextWatcher {
+    return object : TextWatcher{
+      override fun afterTextChanged(s: Editable?) {
+        when(code){
+          1 -> {
+            if(s.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
+
+          }
+          2 -> {
+            if(s.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
+            else binding.lastNameTil.error = null
+          }
+          3 -> {
+            if(s.toString() != viewModel.email) binding.emailIdTil.error = getString(string.email_changed)
+            else binding.emailIdTil.error = null
+          }
+          4 -> {
+            if(s.toString() != viewModel.userName) binding.userNameTil.error = getString(string.username_changed)
+            else binding.userNameTil.error = null
+          }
+        }
+      }
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    }
+  }
 }
