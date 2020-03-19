@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.json.JSONException
@@ -142,7 +143,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
           sharedPrefs.saveUserName(username)
           _userUpdateResponse.value = ResponseResults.Success()
         }else{
-          _userUpdateResponse.value = ResponseResults.Error("Token expired! Please login again")
+          _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
         }
       }
 
@@ -150,7 +151,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         call: Call<String>,
         t: Throwable
       ) {
-        _userUpdateResponse.value = ResponseResults.Error("Something went wrong! Please try later")
+        _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.something_went_wrong_please_try_again_later))
       }
     })
   }
