@@ -113,31 +113,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     email : String,
     username : String
   ) {
-    when {
-      firstName.isEmpty() -> {
-        _userUpdateResponse.value = ResponseResults.Error("First Name cannot be empty")
-      }
-      lastName.isEmpty() -> {
-        _userUpdateResponse.value = ResponseResults.Error("Last Name cannot be empty")
-      }
-      email != this.email -> {
-        _userUpdateResponse.value = ResponseResults.Error("Email cannot be changed")
-      }
-      username != this.userName -> {
-        _userUpdateResponse.value = ResponseResults.Error("Username cannot be changed")
-      }
-      else -> {
-        doUpdateUserRequest(firstName, lastName, email, username)
-      }
-    }
-  }
-
-  private fun doUpdateUserRequest(
-    firstName : String,
-    lastName : String,
-    email : String,
-    username : String
-  ) {
     val jsonObject = JSONObject()
     val tokenObject = JSONObject()
     try{
