@@ -41,10 +41,13 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     get() = _passwordRequestCode
 
   fun changePassword(
+    currentPass: String,
     newPass: String,
     confirmNewPass: String
   ) {
-    if (newPass.isBlank())
+    if (currentPass.isBlank())
+      _passwordRequestCode.value = 5
+    else if (newPass.isBlank())
       _passwordRequestCode.value = 1
     else if (confirmNewPass.isBlank())
       _passwordRequestCode.value = 2
@@ -52,6 +55,8 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
       _passwordRequestCode.value = 3
     else if (newPass.equals(pass))
       _passwordRequestCode.value = 4
+    else if (!currentPass.equals(pass))
+      _passwordRequestCode.value = 6
     else {
       doChangePasswordRequest(newPass, token!!);
     }
