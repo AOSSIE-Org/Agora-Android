@@ -71,8 +71,8 @@ public class InviteVotersActivity extends AppCompatActivity {
     mAddVoters.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        final String name = mVoterNameTextInput.getEditText().getText().toString().trim();
-        final String email = mVoterEmailTextInput.getEditText().getText().toString().trim();
+        final String name = mVoterNameTextInput.getEditText().getText().toString();
+        final String email = mVoterEmailTextInput.getEditText().getText().toString();
 
         if(inviteVotersViewModel.inviteValidator(email,name,mVoterEmails))
         {
