@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import net.steamcrafted.loadtoast.LoadToast;
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
@@ -36,7 +37,7 @@ class DisplayElectionViewModel extends AndroidViewModel {
         if (response.message().equals("OK")) {
           loadToast.success();
           if(response.body().isEmpty()){
-            Toast.makeText(context, "No votes yet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,R.string.no_votes_yet, Toast.LENGTH_SHORT).show();
           }
           else {
             Intent intent = new Intent(context, BallotActivity.class);
@@ -67,7 +68,7 @@ class DisplayElectionViewModel extends AndroidViewModel {
         if (response.message().equals("OK")) {
           loadToast.success();
           if(response.body().isEmpty()){
-            Toast.makeText(context, "No voters to show yet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.no_voters_to_show_yet, Toast.LENGTH_SHORT).show();
           }
           else {
             Intent intent = new Intent(context, VotersActivity.class);

@@ -125,7 +125,9 @@
   <string name="link_sent_please_check_your_email">Link Sent, Please Check Your Emails</string>
   <string name="invalid_username">Invalid Username</string>
   <string name="something_went_wrong_please_try_again_later">Something Went Wrong Please Try Again Later</string>
-
+  <string name="no_votes_yet">"No votes yet!"</string>
+  <string name="no_voters_to_show_yet">"No voters to show yet!"</string>
+  <string name="category_empty">This category is empty!</string>
 
   //string-array for security questions
   <string-array name="security_questions">

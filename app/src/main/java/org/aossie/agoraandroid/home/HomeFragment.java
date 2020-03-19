@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
       @Override
       public void onClick(View v) {
         if(mActiveCount==0){
-          Toast.makeText(getActivity(), "There are no active elections!", Toast.LENGTH_SHORT).show();
+          Toast.makeText(getActivity(), R.string.category_empty, Toast.LENGTH_SHORT).show();
         }
         else
         startActivity(new Intent(getActivity(), ActiveElectionsActivity.class));
@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
       @Override
       public void onClick(View v) {
         if(mPendingCount==0){
-          Toast.makeText(getActivity(), "There are no pending elections!", Toast.LENGTH_SHORT).show();
+          Toast.makeText(getActivity(), R.string.category_empty, Toast.LENGTH_SHORT).show();
         }
         else
         startActivity(new Intent(getActivity(), PendingElectionsActivity.class));
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
       @Override
       public void onClick(View v) {
         if(mFinishedCount==0){
-          Toast.makeText(getActivity(), "There are no finished elections!", Toast.LENGTH_SHORT).show();
+          Toast.makeText(getActivity(), R.string.category_empty, Toast.LENGTH_SHORT).show();
         }
         else
         startActivity(new Intent(getActivity(), FinishedElectionsActivity.class));
@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment {
       @Override
       public void onClick(View v) {
         if(mActiveCount+mFinishedCount+mPendingCount==0){
-        Toast.makeText(getActivity(), "There are no elections!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.category_empty, Toast.LENGTH_SHORT).show();
       }
       else
         startActivity(new Intent(getActivity(), TotalElectionsActivity.class));
