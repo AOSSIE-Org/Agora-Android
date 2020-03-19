@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_profile.user_name_til
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
@@ -56,7 +55,7 @@ class ProfileFragment : Fragment() {
         firstName.isEmpty() -> binding.firstNameTil.error = getString(string.first_name_empty)
         lastName.isEmpty() -> binding.lastNameTil.error = getString(string.last_name_empty)
         email != viewModel.email -> binding.emailIdTil.error = getString(string.email_changed)
-        usernameText != viewModel.userName -> user_name_til.error = getString(string.username_changed)
+        usernameText != viewModel.userName -> binding.userNameTil.error = getString(string.username_changed)
         else -> viewModel.updateUser(firstName, lastName, email, usernameText)
       }
     }
