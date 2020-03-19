@@ -22,7 +22,6 @@ public class InviteVotersActivity extends AppCompatActivity {
   private final ArrayList<String> mVoterEmails = new ArrayList<>();
   private InviteVotersViewModel inviteVotersViewModel;
   private VoterRecyclerAdapter voterRecyclerAdapter;
-  private TextWatcherAdapter textWatcherAdapter;
   private final ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
       new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
@@ -51,13 +50,29 @@ public class InviteVotersActivity extends AppCompatActivity {
     Button mAddVoters = findViewById(R.id.button_add_voter);
     final Button mInviteVotes = findViewById(R.id.button_invite_voter);
     RecyclerView mRecyclerView = findViewById(R.id.recycler_view_voters);
-    textWatcherAdapter  = new TextWatcherAdapter(mVoterEmailTextInput,mVoterNameTextInput);
+
     voterRecyclerAdapter = new VoterRecyclerAdapter(mVoterNames, mVoterEmails);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     mRecyclerView.setAdapter(voterRecyclerAdapter);
-    mVoterNameTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
-    mVoterEmailTextInput.getEditText().addTextChangedListener(textWatcherAdapter);
+    mVoterNameTextInput.getEditText().addTextChangedListener(new TextWatcherAdapter(){
+      @Override public void afterTextChanged(Editable p0) {
+
+        if(!mVoterNameTextInput.getEditText().getText().equals(""))
+        {
+          mVoterNameTextInput.setError(null);
+        }
+      }
+    });
+    mVoterEmailTextInput.getEditText().addTextChangedListener(new TextWatcherAdapter(){
+      @Override public void afterTextChanged(Editable p0) {
+
+        if(!mVoterEmailTextInput.getEditText().getText().equals(""))
+        {
+          mVoterEmailTextInput.setError(null);
+        }
+      }
+    });
 
     mInviteVotes.setOnClickListener(new View.OnClickListener() {
       @Override
