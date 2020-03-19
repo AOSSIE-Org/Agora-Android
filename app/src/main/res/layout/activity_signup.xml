@@ -68,6 +68,7 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/app_logo_iv"
+          android:gravity="center_horizontal"
           />
 
       <com.google.android.material.textfield.TextInputLayout
