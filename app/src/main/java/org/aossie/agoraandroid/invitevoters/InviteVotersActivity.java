@@ -56,7 +56,12 @@ public class InviteVotersActivity extends AppCompatActivity {
     new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     mRecyclerView.setAdapter(voterRecyclerAdapter);
     mVoterNameTextInput.getEditText().addTextChangedListener(new TextWatcherAdapter(){
-      @Override public void afterTextChanged(Editable p0) {
+      @Override public void onTextChanged(
+          CharSequence p0,
+          int p1,
+          int p2,
+          int p3
+      ) {
 
         if(!mVoterNameTextInput.getEditText().getText().equals(""))
         {
@@ -65,7 +70,12 @@ public class InviteVotersActivity extends AppCompatActivity {
       }
     });
     mVoterEmailTextInput.getEditText().addTextChangedListener(new TextWatcherAdapter(){
-      @Override public void afterTextChanged(Editable p0) {
+      @Override public void onTextChanged(
+          CharSequence p0,
+          int p1,
+          int p2,
+          int p3
+      ) {
 
         if(!mVoterEmailTextInput.getEditText().getText().equals(""))
         {
