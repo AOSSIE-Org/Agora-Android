@@ -53,10 +53,10 @@ class ProfileFragment : Fragment() {
       binding.userNameTil.error = null
       binding.emailIdTil.error = null
       when {
-        firstName.isEmpty() -> binding.firstNameTil.error = "First Name cannot be empty"
-        lastName.isEmpty() -> binding.lastNameTil.error = "Last Name cannot be empty"
-        email != viewModel.email -> binding.emailIdTil.error = "Email cannot be changed"
-        usernameText != viewModel.userName -> user_name_til.error = "Userame cannot be changed"
+        firstName.isEmpty() -> binding.firstNameTil.error = getString(string.first_name_empty)
+        lastName.isEmpty() -> binding.lastNameTil.error = getString(string.last_name_empty)
+        email != viewModel.email -> binding.emailIdTil.error = getString(string.email_changed)
+        usernameText != viewModel.userName -> user_name_til.error = getString(string.username_changed)
         else -> viewModel.updateUser(firstName, lastName, email, usernameText)
       }
     }
@@ -113,7 +113,7 @@ class ProfileFragment : Fragment() {
       }
       500 -> {
         loadToast.error()
-        Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT)
+        Toast.makeText(activity, getString(string.something_went_wrong_please_try_again_later), Toast.LENGTH_SHORT)
           .show()
       }
 
