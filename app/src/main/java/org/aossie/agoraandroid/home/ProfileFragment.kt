@@ -44,17 +44,13 @@ class ProfileFragment : Fragment() {
     }
     binding.firstNameEt.addTextChangedListener(getTextWatcher(1))
     binding.lastNameEt.addTextChangedListener(getTextWatcher(2))
-    binding.emailEt.addTextChangedListener(getTextWatcher(3))
-    binding.usernameEt.addTextChangedListener(getTextWatcher(4))
 
     binding.updateProfileBtn.setOnClickListener {
       loadToast.show()
-      if(binding.firstNameTil.error == null && binding.lastNameTil.error == null && binding.emailIdTil.error == null && binding.userNameTil.error == null)
+      if(binding.firstNameTil.error == null && binding.lastNameTil.error == null)
         viewModel.updateUser(
             binding.firstNameEt.text.toString().trim(),
-            binding.lastNameEt.text.toString().trim(),
-            binding.emailEt.text.toString().trim(),
-            binding.usernameEt.text.toString().trim()
+            binding.lastNameEt.text.toString().trim()
         )
       else loadToast.error()
     }
@@ -124,19 +120,11 @@ class ProfileFragment : Fragment() {
         when(code){
           1 -> {
             if(s.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
-
+            else binding.firstNameTil.error = null
           }
           2 -> {
             if(s.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
             else binding.lastNameTil.error = null
-          }
-          3 -> {
-            if(s.toString() != viewModel.email) binding.emailIdTil.error = getString(string.email_changed)
-            else binding.emailIdTil.error = null
-          }
-          4 -> {
-            if(s.toString() != viewModel.userName) binding.userNameTil.error = getString(string.username_changed)
-            else binding.userNameTil.error = null
           }
         }
       }

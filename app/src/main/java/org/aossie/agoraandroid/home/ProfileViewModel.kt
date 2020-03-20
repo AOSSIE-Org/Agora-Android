@@ -110,14 +110,12 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
   fun updateUser(
     firstName : String,
-    lastName : String,
-    email : String,
-    username : String
+    lastName : String
   ) {
     val jsonObject = JSONObject()
     val tokenObject = JSONObject()
     try{
-      jsonObject.put("username", username)
+      jsonObject.put("username", userName)
       jsonObject.put("firstName", firstName)
       jsonObject.put("lastName", lastName)
       jsonObject.put("email", email)
@@ -139,8 +137,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         if(response.message() == "OK") {
           sharedPrefs.saveFirstName(firstName)
           sharedPrefs.saveLastName(lastName)
-          sharedPrefs.saveEmail(email)
-          sharedPrefs.saveUserName(username)
           _userUpdateResponse.value = ResponseResults.Success()
         }else{
           _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
