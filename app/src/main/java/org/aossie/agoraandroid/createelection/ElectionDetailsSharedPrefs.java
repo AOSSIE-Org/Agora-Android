@@ -131,7 +131,6 @@ public class ElectionDetailsSharedPrefs {
     editor.putString(DescriptionKey, null);
     editor.putString(VotingAlgoKey, null);
     editor.putString(BallotVisibilityKey, null);
-
     editor.commit();
   }
 }

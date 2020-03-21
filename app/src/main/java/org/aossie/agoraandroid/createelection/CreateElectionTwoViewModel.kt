@@ -17,8 +17,6 @@ class CreateElectionTwoViewModel(candidateArrayList: ArrayList<String>) : ViewMo
     return CandidateArrayList
   }
 
-
-
   fun addCandidate(cName: String) {
     CandidateArrayList!!.add(cName)
 

@@ -9,15 +9,14 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
-class ChangePasswordTest : BaseTest()
-{
-    @Test
-    @Throws(IOException::class)
-    fun changePasswordTest() {
-        mockWebServer.enqueue(MockResponse().setBody(Responses.USER_CHANGE_PASSWORD))
-        val response: Response<*> =
-                apiService.changePassword(Requests.USER_CHANGE_PASSWORD,"authtoken")
-                        .execute()
-        Assert.assertEquals(response.body(), Responses.USER_CHANGE_PASSWORD)
-    }
+class ChangePasswordTest : BaseTest() {
+  @Test
+  @Throws(IOException::class)
+  fun changePasswordTest() {
+    mockWebServer.enqueue(MockResponse().setBody(Responses.USER_CHANGE_PASSWORD))
+    val response: Response<*> =
+      apiService.changePassword(Requests.USER_CHANGE_PASSWORD, "authtoken")
+          .execute()
+    Assert.assertEquals(response.body(), Responses.USER_CHANGE_PASSWORD)
+  }
 }

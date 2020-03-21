@@ -13,21 +13,24 @@ buildscript {
     junitVersion = '4.12'
     testRunnerVersion = '1.2.0'
     espressoCoreVersion = '3.2.0'
-    archLifecycleVersion = '2.0.0'
-    materialDesignVersion = '1.0.0-rc01'
+    archLifecycleVersion = '2.2.0'
+    materialDesignVersion = '1.0.0'
     cardViewVersion = '1.0.0'
     retrofitVersion = '2.6.0'
     retrofitConverterScalarsVersion = '2.1.0'
     retrofitConverterGsonVersion = '2.6.0'
     gsonVersion = '2.8.5'
-    navFragmentVersion = '2.1.0-beta02'
-    navUiVersion = '2.1.0-beta02'
+    navFragmentVersion = '2.2.1'
+    navUiVersion = '2.2.1'
     facebookShimmerVersion = '0.5.0'
     facebookLoginVersion = '5.2.0'
     loadToastVersion = '1.0.12'
     robolectricVersion = '4.3'
     mockWebServerVersion = '4.3.1'
     mockitoCoreVersion = '1.10.19'
+    daggerVersion = '2.25.4'
+    coreVersion = "1.2.0"
+    prefsVersion = "1.1.0"
   }
 
   repositories {
@@ -35,8 +38,8 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.5.3'
-    classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.2.0-rc02"
+    classpath 'com.android.tools.build:gradle:3.6.1'
+    classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.2.1"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
 
@@ -50,7 +53,6 @@ allprojects {
     google()
     jcenter()
     maven { url 'https://jitpack.io' }
-    maven { url "http://jcenter.bintray.com"}
   }
 }
 

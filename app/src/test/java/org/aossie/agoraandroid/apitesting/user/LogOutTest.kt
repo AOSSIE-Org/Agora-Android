@@ -8,15 +8,14 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
-class LogOutTest : BaseTest()
-{
-    @Test
-    @Throws(IOException::class)
-    fun logOutTest() {
-        mockWebServer.enqueue(MockResponse().setBody(Responses.USER_LOGOUT))
-        val response: Response<*> =
-                apiService.logout( "authtoken")
-                        .execute()
-        Assert.assertEquals(response.body(), Responses.USER_LOGOUT)
-    }
+class LogOutTest : BaseTest() {
+  @Test
+  @Throws(IOException::class)
+  fun logOutTest() {
+    mockWebServer.enqueue(MockResponse().setBody(Responses.USER_LOGOUT))
+    val response: Response<*> =
+      apiService.logout("authtoken")
+          .execute()
+    Assert.assertEquals(response.body(), Responses.USER_LOGOUT)
+  }
 }

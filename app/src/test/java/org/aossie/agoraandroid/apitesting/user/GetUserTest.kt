@@ -8,15 +8,14 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
-class GetUserTest : BaseTest()
-{
-    @Test
-    @Throws(IOException::class)
-    fun getUserTest() {
-        mockWebServer.enqueue(MockResponse().setBody(Responses.USER_GETUSER))
-        val response: Response<*> =
-                apiService.getUserData( "authtoken")
-                        .execute()
-        Assert.assertEquals(response.body(), Responses.USER_GETUSER)
-    }
+class GetUserTest : BaseTest() {
+  @Test
+  @Throws(IOException::class)
+  fun getUserTest() {
+    mockWebServer.enqueue(MockResponse().setBody(Responses.USER_GETUSER))
+    val response: Response<*> =
+      apiService.getUserData("authtoken")
+          .execute()
+    Assert.assertEquals(response.body(), Responses.USER_GETUSER)
+  }
 }
