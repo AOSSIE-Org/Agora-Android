@@ -23,7 +23,7 @@
           android:text="@string/update_profile"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/email_id_t"
+          app:layout_constraintTop_toBottomOf="@id/email_id_tv"
           />
 
       <Button
@@ -52,7 +52,7 @@
           />
 
       <TextView
-          android:id="@+id/user_name_text"
+          android:id="@+id/user_name_hint_tv"
           android:layout_width="0dp"
           android:text="@string/user_name"
           android:layout_height="wrap_content"
@@ -72,12 +72,12 @@
           app:layout_constraintStart_toStartOf="parent"
           android:textColor="@color/black"
           android:textSize="18sp"
-          app:layout_constraintTop_toBottomOf="@+id/user_name_text"
+          app:layout_constraintTop_toBottomOf="@+id/user_name_hint_tv"
           android:layout_marginLeft="10dp"
           />
 
       <TextView
-          android:id="@+id/email_id_text"
+          android:id="@+id/email_id_hint_tv"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
@@ -88,7 +88,7 @@
           />
 
       <TextView
-          android:id="@+id/email_id_t"
+          android:id="@+id/email_id_tv"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginStart="10dp"
@@ -97,7 +97,7 @@
           android:textSize="18sp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/email_id_text"
+          app:layout_constraintTop_toBottomOf="@+id/email_id_hint_tv"
           android:layout_marginLeft="10dp"
           />
 
