@@ -42,15 +42,15 @@ class ProfileFragment : Fragment() {
         binding.confirmPasswordEt.text.toString()
       )
     }
-    binding.firstNameEt.addTextChangedListener(getTextWatcher(1))
-    binding.lastNameEt.addTextChangedListener(getTextWatcher(2))
+    binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
+    binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
 
     binding.updateProfileBtn.setOnClickListener {
       loadToast.show()
       if(binding.firstNameTil.error == null && binding.lastNameTil.error == null)
         viewModel.updateUser(
-            binding.firstNameEt.text.toString().trim(),
-            binding.lastNameEt.text.toString().trim()
+            binding.firstNameTiet.text.toString().trim(),
+            binding.lastNameTiet.text.toString().trim()
         )
       else loadToast.error()
     }

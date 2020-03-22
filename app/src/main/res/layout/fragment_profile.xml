@@ -119,7 +119,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/first_name_et"
+            android:id="@+id/first_name_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.firstName}"
@@ -192,7 +192,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/last_name_et"
+            android:id="@+id/last_name_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.lastName}"
