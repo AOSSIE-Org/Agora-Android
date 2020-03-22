@@ -1,6 +1,8 @@
 package org.aossie.agoraandroid.home
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -26,7 +29,7 @@ class ProfileFragment : Fragment() {
   ): View? {
 
     viewModel = ViewModelProvider(this)
-        .get(ProfileViewModel::class.java)
+      .get(ProfileViewModel::class.java)
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
     loadToast = LoadToast(activity)
@@ -35,23 +38,41 @@ class ProfileFragment : Fragment() {
     binding.changePasswordBtn.setOnClickListener {
       loadToast.show()
       viewModel.changePassword(
-          binding.newPasswordTil.editText!!.text.toString(),
-          binding.confirmPasswordTil.editText!!.text.toString()
+        binding.newPasswordEt.text.toString(),
+        binding.confirmPasswordEt.text.toString()
       )
     }
+    binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
+    binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
 
-    binding.updateProfileBtn.setOnClickListener({
-      //TODO implment update feature
-      Toast.makeText(activity, "feature not available yet", Toast.LENGTH_SHORT)
-          .show()
-    })
+    binding.updateProfileBtn.setOnClickListener {
+      loadToast.show()
+      if(binding.firstNameTil.error == null && binding.lastNameTil.error == null)
+        viewModel.updateUser(
+            binding.firstNameTiet.text.toString().trim(),
+            binding.lastNameTiet.text.toString().trim()
+        )
+      else loadToast.error()
+    }
 
     viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
       handlePassword(it)
     })
+    viewModel.userUpdateResponse.observe(viewLifecycleOwner, Observer {
+      handleUser(it)
+    })
     return binding.root
   }
-
+  private fun handleUser(response: ProfileViewModel.ResponseResults) = when(response) {
+    is ProfileViewModel.ResponseResults.Success -> {
+      loadToast.success()
+      Toast.makeText(activity, getString(string.user_updated), Toast.LENGTH_SHORT).show()
+    }
+    is ProfileViewModel.ResponseResults.Error -> {
+      loadToast.error()
+      Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+    }
+  }
   private fun handlePassword(it: Int?) {
     binding.newPasswordTil.error = null
     binding.confirmPasswordTil.error = null
@@ -77,20 +98,38 @@ class ProfileFragment : Fragment() {
       200 -> {
         loadToast.success()
         Toast.makeText(activity, getString(R.string.password_change_success), Toast.LENGTH_SHORT)
-            .show()
+          .show()
       }
       201 -> {
         loadToast.error()
         Toast.makeText(activity, getString(R.string.token_expired), Toast.LENGTH_SHORT)
-            .show()
+          .show()
       }
       500 -> {
         loadToast.error()
-        Toast.makeText(activity, "something wrong! please try later", Toast.LENGTH_SHORT)
-            .show()
+        Toast.makeText(activity, getString(string.something_went_wrong_please_try_again_later), Toast.LENGTH_SHORT)
+          .show()
       }
 
     }
   }
 
+  private fun getTextWatcher(code : Int): TextWatcher {
+    return object : TextWatcher{
+      override fun afterTextChanged(s: Editable?) {
+        when(code){
+          1 -> {
+            if(s.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
+            else binding.firstNameTil.error = null
+          }
+          2 -> {
+            if(s.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
+            else binding.lastNameTil.error = null
+          }
+        }
+      }
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    }
+  }
 }

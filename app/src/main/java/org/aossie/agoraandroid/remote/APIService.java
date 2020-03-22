@@ -121,4 +121,12 @@ public interface APIService {
   })
   @GET("result/{id}")
   Call<String> getResult(@Header("X-Auth-Token") String authToken, @Path("id") String id);
+
+  //update user
+  @Headers({
+      "Accept: application/json",
+      "Content-Type: application/json"
+  })
+  @POST("user/update")
+  Call<String> updateUser(@Header("X-Auth-Token") String authToken, @Body String body);
 }
