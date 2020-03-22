@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.json.JSONException
@@ -35,10 +36,25 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
   val pass: String?
     get() = sharedPrefs.pass
 
+  val expiresOn: String?
+    get() = sharedPrefs.tokenExpiresOn
+
   private val _passwordRequestCode = MutableLiveData<Int>()
 
   val passwordRequestCode: LiveData<Int>
     get() = _passwordRequestCode
+
+  private val _userUpdateResponse = MutableLiveData<ResponseResults>()
+
+  val userUpdateResponse: LiveData<ResponseResults>
+    get() = _userUpdateResponse
+
+  sealed class ResponseResults{
+    class Success : ResponseResults()
+    class Error(errorText : String) : ResponseResults(){
+      val message = errorText
+    }
+  }
 
   fun changePassword(
     newPass: String,
@@ -53,7 +69,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     else if (newPass.equals(pass))
       _passwordRequestCode.value = 4
     else {
-      doChangePasswordRequest(newPass, token!!);
+      doChangePasswordRequest(newPass, token!!)
     }
 
   }
@@ -91,6 +107,48 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
       }
     })
   }
+
+  fun updateUser(
+    firstName : String,
+    lastName : String
+  ) {
+    val jsonObject = JSONObject()
+    val tokenObject = JSONObject()
+    try{
+      jsonObject.put("username", userName)
+      jsonObject.put("firstName", firstName)
+      jsonObject.put("lastName", lastName)
+      jsonObject.put("email", email)
+      jsonObject.put("twoFactorAuthentication", false)
+      tokenObject.put("token", token)
+      tokenObject.put("expiresOn", expiresOn)
+      jsonObject.put("token", tokenObject)
+    }catch (e: JSONException){
+      e.printStackTrace()
+    }
+
+    val apiService = RetrofitClient.getAPIService()
+    val updateUserResponse = apiService.updateUser(token, jsonObject.toString())
+    updateUserResponse.enqueue(object : Callback<String> {
+      override fun onResponse(
+        call: Call<String>,
+        response: Response<String>
+      ) {
+        if(response.message() == "OK") {
+          sharedPrefs.saveFirstName(firstName)
+          sharedPrefs.saveLastName(lastName)
+          _userUpdateResponse.value = ResponseResults.Success()
+        }else{
+          _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
+        }
+      }
+
+      override fun onFailure(
+        call: Call<String>,
+        t: Throwable
+      ) {
+        _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.something_went_wrong_please_try_again_later))
+      }
+    })
+  }
 }
-
-
