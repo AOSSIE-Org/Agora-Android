@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.signup;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,53 +37,10 @@ public class SignUpActivity extends AppCompatActivity {
     mSignUpButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        String userName = mUserNameEditText.getEditText().getText().toString();
-        String firstName = mFirstNameEditText.getEditText().getText().toString();
-        String lastName = mLastNameEditText.getEditText().getText().toString();
-        String userEmail = mEmailEditText.getEditText().getText().toString();
-        String userPass = mPasswordEditText.getEditText().getText().toString();
-        String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
-        String securityQuestion = securityQuestionOfSignUp;
-
-        if (userName.isEmpty()) {
-          mUserNameEditText.setError("Please enter User Name");
-        } else {
-          mUserNameEditText.setError(null);
-        }
-
-        if (firstName.isEmpty()) {
-          mFirstNameEditText.setError("Please enter First Name");
-        } else {
-          mFirstNameEditText.setError(null);
-        }
-
-        if (lastName.isEmpty()) {
-          mLastNameEditText.setError("Please enter Last Name");
-        } else {
-          mLastNameEditText.setError(null);
-        }
-
-        if (userEmail.isEmpty()) {
-          mEmailEditText.setError("Please enter Email Address");
-        } else {
-          mEmailEditText.setError(null);
-        }
-
-        if (securityQuestionAnswer.isEmpty()) {
-          mSecurityAnswer.setError("Please enter Security Answer");
-        } else {
-          mSecurityAnswer.setError(null);
-        }
-
-        if (userPass.isEmpty()) {
-          mPasswordEditText.setError("Please enter password");
-        } else {
-          mPasswordEditText.setError(null);
-          signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName,
-              securityQuestion, securityQuestionAnswer);
-        }
+        validateAllFields();
       }
     });
+
     final ArrayAdapter<CharSequence> adapter =
         ArrayAdapter.createFromResource(this, R.array.security_questions,
             android.R.layout.simple_spinner_item);
@@ -99,6 +57,66 @@ public class SignUpActivity extends AppCompatActivity {
         securityQuestionOfSignUp = getResources().getStringArray(R.array.security_questions)[0];
       }
     });
+  }
+
+  private void validateAllFields() {
+    String userName = mUserNameEditText.getEditText().getText().toString();
+    String firstName = mFirstNameEditText.getEditText().getText().toString();
+    String lastName = mLastNameEditText.getEditText().getText().toString();
+    String userEmail = mEmailEditText.getEditText().getText().toString();
+    String userPass = mPasswordEditText.getEditText().getText().toString();
+    String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
+    String securityQuestion = securityQuestionOfSignUp;
+
+    validateUsername(userName);
+
+    if (firstName.isEmpty()) {
+      mFirstNameEditText.setError("Please enter First Name");
+    } else {
+      mFirstNameEditText.setError(null);
+    }
+
+    if (lastName.isEmpty()) {
+      mLastNameEditText.setError("Please enter Last Name");
+    } else {
+      mLastNameEditText.setError(null);
+    }
+
+    if (userEmail.isEmpty()) {
+      mEmailEditText.setError("Please enter Email Address");
+    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+      mEmailEditText.setError("Enter a valid email address!!!");
+    } else {
+      mEmailEditText.setError(null);
+    }
+
+    if (securityQuestionAnswer.isEmpty()) {
+      mSecurityAnswer.setError("Please enter Security Answer");
+    } else {
+      mSecurityAnswer.setError(null);
+    }
+
+    validatePassword(userName, firstName, lastName, userEmail, userPass, securityQuestionAnswer,
+        securityQuestion);
+  }
+
+  private void validatePassword(String userName, String firstName, String lastName,
+      String userEmail, String userPass, String securityQuestionAnswer, String securityQuestion) {
+    if (userPass.isEmpty()) {
+      mPasswordEditText.setError("Please enter password");
+    } else {
+      mPasswordEditText.setError(null);
+      signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName,
+          securityQuestion, securityQuestionAnswer);
+    }
+  }
+
+  private void validateUsername(String userName) {
+    if (userName.isEmpty()) {
+      mUserNameEditText.setError("Please enter User Name");
+    } else {
+      mUserNameEditText.setError(null);
+    }
   }
 }
 
