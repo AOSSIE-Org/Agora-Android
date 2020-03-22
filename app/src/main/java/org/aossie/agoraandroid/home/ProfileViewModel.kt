@@ -39,9 +39,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
   val expiresOn: String?
     get() = sharedPrefs.tokenExpiresOn
 
-  private val _passwordRequestCode = MutableLiveData<Int>()
+  private val _passwordRequestCode = MutableLiveData<ResponseResults>()
 
-  val passwordRequestCode: LiveData<Int>
+  val passwordRequestCode: LiveData<ResponseResults>
     get() = _passwordRequestCode
 
   private val _userUpdateResponse = MutableLiveData<ResponseResults>()
@@ -56,28 +56,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     }
   }
 
-  fun changePassword(
-    newPass: String,
-    confirmNewPass: String
-  ) {
-    if (newPass.isBlank())
-      _passwordRequestCode.value = 1
-    else if (confirmNewPass.isBlank())
-      _passwordRequestCode.value = 2
-    else if (!newPass.equals(confirmNewPass))
-      _passwordRequestCode.value = 3
-    else if (newPass.equals(pass))
-      _passwordRequestCode.value = 4
-    else {
-      doChangePasswordRequest(newPass, token!!)
-    }
-
-  }
-
-  private fun doChangePasswordRequest(
-    password: String,
-    token: String
-  ) {
+  fun changePassword(password: String) {
     val jsonObject = JSONObject()
     try {
       jsonObject.put("password", password)
@@ -92,10 +71,11 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         response: Response<String>
       ) {
         if (response.message() == "OK") {
-          _passwordRequestCode.value = 200
+          sharedPrefs.savePass(password)
+          _passwordRequestCode.value = ResponseResults.Success()
         } else {
           Log.d("TAG", "onResponse:" + response.body())
-          _passwordRequestCode.value = 201
+          _passwordRequestCode.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
         }
       }
 
@@ -103,7 +83,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         call: Call<String>,
         t: Throwable
       ) {
-        _passwordRequestCode.value = 500
+        _passwordRequestCode.value = ResponseResults.Error(getApplication<Application>().getString(string.something_went_wrong_please_try_again_later))
       }
     })
   }
