@@ -144,7 +144,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/new_password_et"
+            android:id="@+id/new_password_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -167,7 +167,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/confirm_password_et"
+            android:id="@+id/confirm_password_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
