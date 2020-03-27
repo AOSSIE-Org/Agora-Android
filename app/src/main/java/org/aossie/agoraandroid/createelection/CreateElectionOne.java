@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
@@ -58,28 +59,32 @@ public class CreateElectionOne extends AppCompatActivity {
         mElectionDescription = mDescriptionTextLayout.getEditText().getText().toString();
         mStartDate = mStartDateTextLayout.getEditText().getText().toString();
         mEndDate = mEndDateTextLayout.getEditText().getText().toString();
-        if (mElectionName.isEmpty()) {
-          mNameTextLayout.setError("Please enter Election Name");
-        } else {
-          mNameTextLayout.setError(null);
-        }
+        if (mElectionName.isEmpty() || mElectionDescription.isEmpty() || mStartDate.isEmpty() || mEndDate.isEmpty()) {
+          if (mElectionName.isEmpty()) {
+            mNameTextLayout.setError("Please enter Election Name");
+          } else {
+            mNameTextLayout.setError(null);
+          }
 
-        if (mElectionDescription.isEmpty()) {
-          mDescriptionTextLayout.setError("Please enter description");
-        } else {
-          mDescriptionTextLayout.setError(null);
-        }
+          if (mElectionDescription.isEmpty()) {
+            mDescriptionTextLayout.setError("Please enter description");
+          } else {
+            mDescriptionTextLayout.setError(null);
+          }
 
-        if (mStartDate.isEmpty()) {
-          mStartDateTextLayout.setError("Please enter start date");
-        } else {
-          mStartDateTextLayout.setError(null);
-        }
+          if (mStartDate.isEmpty()) {
+            mStartDateTextLayout.setError("Please enter start date");
+          } else {
+            mStartDateTextLayout.setError(null);
+          }
 
-        if (mEndDate.isEmpty()) {
-          mEndDateTextLayout.setError("PLease enter end date");
-        } else {
-          mEndDateTextLayout.setError(null);
+          if (mEndDate.isEmpty()) {
+            mEndDateTextLayout.setError("PLease enter end date");
+          } else {
+            mEndDateTextLayout.setError(null);
+          }
+          Toast.makeText(CreateElectionOne.this,getString(R.string.error_create_election),Toast.LENGTH_SHORT).show();
+        }else{
           electionDetailsSharedPrefs.saveElectionName(mElectionName);
           electionDetailsSharedPrefs.saveElectionDesc(mElectionDescription);
           startActivity(new Intent(CreateElectionOne.this, CreateElectionTwo.class));
