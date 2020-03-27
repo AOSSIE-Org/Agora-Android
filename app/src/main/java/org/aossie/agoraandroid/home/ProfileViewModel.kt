@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.json.JSONException
@@ -35,33 +36,27 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
   val pass: String?
     get() = sharedPrefs.pass
 
-  private val _passwordRequestCode = MutableLiveData<Int>()
+  val expiresOn: String?
+    get() = sharedPrefs.tokenExpiresOn
 
-  val passwordRequestCode: LiveData<Int>
+  private val _passwordRequestCode = MutableLiveData<ResponseResults>()
+
+  val passwordRequestCode: LiveData<ResponseResults>
     get() = _passwordRequestCode
 
-  fun changePassword(
-    newPass: String,
-    confirmNewPass: String
-  ) {
-    if (newPass.isBlank())
-      _passwordRequestCode.value = 1
-    else if (confirmNewPass.isBlank())
-      _passwordRequestCode.value = 2
-    else if (!newPass.equals(confirmNewPass))
-      _passwordRequestCode.value = 3
-    else if (newPass.equals(pass))
-      _passwordRequestCode.value = 4
-    else {
-      doChangePasswordRequest(newPass, token!!);
-    }
+  private val _userUpdateResponse = MutableLiveData<ResponseResults>()
 
+  val userUpdateResponse: LiveData<ResponseResults>
+    get() = _userUpdateResponse
+
+  sealed class ResponseResults{
+    class Success : ResponseResults()
+    class Error(errorText : String) : ResponseResults(){
+      val message = errorText
+    }
   }
 
-  private fun doChangePasswordRequest(
-    password: String,
-    token: String
-  ) {
+  fun changePassword(password: String) {
     val jsonObject = JSONObject()
     try {
       jsonObject.put("password", password)
@@ -76,10 +71,11 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         response: Response<String>
       ) {
         if (response.message() == "OK") {
-          _passwordRequestCode.value = 200
+          sharedPrefs.savePass(password)
+          _passwordRequestCode.value = ResponseResults.Success()
         } else {
           Log.d("TAG", "onResponse:" + response.body())
-          _passwordRequestCode.value = 201
+          _passwordRequestCode.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
         }
       }
 
@@ -87,10 +83,52 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         call: Call<String>,
         t: Throwable
       ) {
-        _passwordRequestCode.value = 500
+        _passwordRequestCode.value = ResponseResults.Error(getApplication<Application>().getString(string.something_went_wrong_please_try_again_later))
+      }
+    })
+  }
+
+  fun updateUser(
+    firstName : String,
+    lastName : String
+  ) {
+    val jsonObject = JSONObject()
+    val tokenObject = JSONObject()
+    try{
+      jsonObject.put("username", userName)
+      jsonObject.put("firstName", firstName)
+      jsonObject.put("lastName", lastName)
+      jsonObject.put("email", email)
+      jsonObject.put("twoFactorAuthentication", false)
+      tokenObject.put("token", token)
+      tokenObject.put("expiresOn", expiresOn)
+      jsonObject.put("token", tokenObject)
+    }catch (e: JSONException){
+      e.printStackTrace()
+    }
+
+    val apiService = RetrofitClient.getAPIService()
+    val updateUserResponse = apiService.updateUser(token, jsonObject.toString())
+    updateUserResponse.enqueue(object : Callback<String> {
+      override fun onResponse(
+        call: Call<String>,
+        response: Response<String>
+      ) {
+        if(response.message() == "OK") {
+          sharedPrefs.saveFirstName(firstName)
+          sharedPrefs.saveLastName(lastName)
+          _userUpdateResponse.value = ResponseResults.Success()
+        }else{
+          _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
+        }
+      }
+
+      override fun onFailure(
+        call: Call<String>,
+        t: Throwable
+      ) {
+        _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.something_went_wrong_please_try_again_later))
       }
     })
   }
 }
-
-

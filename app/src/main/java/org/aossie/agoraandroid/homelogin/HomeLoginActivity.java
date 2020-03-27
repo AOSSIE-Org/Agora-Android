@@ -82,6 +82,7 @@ public class HomeLoginActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         Intent logInIntent = new Intent(HomeLoginActivity.this, LoginActivity.class);
+        logInIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(logInIntent);
       }
     });
