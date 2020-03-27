@@ -23,7 +23,7 @@
           android:text="@string/update_profile"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/email_id_til"
+          app:layout_constraintTop_toBottomOf="@id/email_id_tv"
           />
 
       <Button
@@ -51,49 +51,55 @@
           app:layout_constraintTop_toTopOf="parent"
           />
 
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/user_name_til"
-          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      <TextView
+          android:id="@+id/user_name_hint_tv"
           android:layout_width="0dp"
+          android:text="@string/user_name"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
-          android:hint="@string/user_name_label"
-          app:boxStrokeColor="@color/colorPrimary"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/first_name_til"
-          >
+          />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.userName}"
-            tools:text="@string/user_name"
+      <TextView
+          android:id="@+id/user_name_tv"
+          android:layout_width="0dp"
+          android:text="@{viewModel.userName}"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          android:textColor="@color/black"
+          android:textSize="18sp"
+          app:layout_constraintTop_toBottomOf="@+id/user_name_hint_tv"
+          android:layout_marginLeft="10dp"
+          />
 
-            />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/email_id_til"
-          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      <TextView
+          android:id="@+id/email_id_hint_tv"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
-          android:hint="@string/email_id_label"
-          app:boxStrokeColor="@color/colorPrimary"
+          android:text="@string/email_address"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/user_name_til"
-          >
+          app:layout_constraintTop_toBottomOf="@+id/user_name_tv"
+          />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.email}"
-            tools:text="@string/email_address"
-
-            />
-      </com.google.android.material.textfield.TextInputLayout>
+      <TextView
+          android:id="@+id/email_id_tv"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:text="@{viewModel.email}"
+          android:textColor="@color/black"
+          android:textSize="18sp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/email_id_hint_tv"
+          android:layout_marginLeft="10dp"
+          />
 
 
       <com.google.android.material.textfield.TextInputLayout
@@ -113,6 +119,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/first_name_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.firstName}"
@@ -137,6 +144,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/new_password_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -159,6 +167,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confirm_password_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -183,6 +192,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/last_name_tiet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.lastName}"
