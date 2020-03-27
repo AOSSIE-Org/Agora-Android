@@ -6,6 +6,7 @@
   <string name="content_description_for_agora_logo">Agora Logo</string>
   <string name="user_name">User Name</string>
   <string name="password">Password</string>
+  <string name="confirm_password">Confirm Password</string>
   <string name="login">Login</string>
   <string name="user_login">User Login</string>
   <string name="user_sign_up">User Sign Up</string>
@@ -147,6 +148,7 @@
   <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
   <string name="password_change_success">password changed successfully</string>
   <string name="token_expired">Token expired, please login again!</string>
+  <string name="error_create_election">Please fill all fields</string>
 
   <string name="voter_same_email">Voter with same Email Id already added</string>
   <string name="user_updated">User updated successfully!</string>

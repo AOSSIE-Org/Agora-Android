@@ -49,7 +49,7 @@
           android:background="@drawable/spinner_background"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/signup_password"
+          app:layout_constraintTop_toBottomOf="@id/signup_password_confirm"
           >
 
         <androidx.appcompat.widget.AppCompatSpinner
@@ -171,6 +171,28 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/signup_email"
+          app:passwordToggleEnabled="true"
+          >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/signup_password_confirm"
+          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:hint="@string/confirm_password"
+          app:boxStrokeColor="@color/colorPrimary"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/signup_password"
           app:passwordToggleEnabled="true"
           >
 
