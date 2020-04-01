@@ -37,7 +37,7 @@ For creating a merge request, it is very **important** to follow the [best pract
 
 1. Fork the repo
 2. Clone your fork
-3. Sync your fork with 'upstream' by following these [instructions](sync-instructions-local-repository-with-upstream)
+3. Sync your fork with 'upstream' by following these [instructions](#sync-instructions-local-repository-with-upstream)
 4. Create a branch
 5. Push your changes to your fork with `git push`
 6. Create a merge request.
