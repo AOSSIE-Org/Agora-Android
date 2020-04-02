@@ -60,4 +60,8 @@ object Responses {
       "  \"message\": \"string\"\n" +
       "}"
 
+  const val ELECTION_DELETE = "{\n" +
+      "  \"message\": \"string\"\n" +
+      "}"
+
 }
