@@ -60,27 +60,27 @@ public class CreateElectionOne extends AppCompatActivity {
         mStartDate = mStartDateTextLayout.getEditText().getText().toString();
         mEndDate = mEndDateTextLayout.getEditText().getText().toString();
         if (mElectionName.isEmpty() || mElectionDescription.isEmpty() || mStartDate.isEmpty() || mEndDate.isEmpty()) {
-          if (mElectionName.isEmpty()) {
+         if (mElectionName.isEmpty()) {
             mNameTextLayout.setError("Please enter Election Name");
           } else {
             mNameTextLayout.setError(null);
           }
 
-          if (mElectionDescription.isEmpty()) {
+         if (mElectionDescription.isEmpty()) {
             mDescriptionTextLayout.setError("Please enter description");
           } else {
             mDescriptionTextLayout.setError(null);
           }
 
-          if (mStartDate.isEmpty()) {
+         if (mStartDate.isEmpty()) {
             mStartDateTextLayout.setError("Please enter start date");
           } else {
             mStartDateTextLayout.setError(null);
           }
 
-          if (mEndDate.isEmpty()) {
+         if (mEndDate.isEmpty()) {
             mEndDateTextLayout.setError("PLease enter end date");
-          } else {
+         } else {
             mEndDateTextLayout.setError(null);
           }
           Toast.makeText(CreateElectionOne.this,getString(R.string.error_create_election),Toast.LENGTH_SHORT).show();
