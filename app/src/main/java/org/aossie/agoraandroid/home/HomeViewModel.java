@@ -37,10 +37,10 @@ class HomeViewModel extends AndroidViewModel {
         if (response.message().equals("OK")) {
           loadToast.success();
           Toast.makeText(getApplication(), "Logged Out Successfully", Toast.LENGTH_SHORT)
-              .show();
+            .show();
           sharedPrefs.clearLogin();
           Intent intent = new Intent(getApplication(), HomeLoginActivity.class);
-          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
           context.startActivity(intent);
         }
       }
@@ -49,7 +49,7 @@ class HomeViewModel extends AndroidViewModel {
       public void onFailure(Call<String> call, Throwable t) {
         loadToast.error();
         Toast.makeText(getApplication(), "Something Went Wrong Please Try Again Later",
-            Toast.LENGTH_SHORT).show();
+          Toast.LENGTH_SHORT).show();
       }
     });
   }
