@@ -82,32 +82,36 @@ public class SignUpActivity extends AppCompatActivity {
       mLastNameEditText.setError(null);
     }
 
-    if (userEmail.isEmpty()) {
-      mEmailEditText.setError("Please enter Email Address");
-    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-      mEmailEditText.setError("Enter a valid email address!!!");
-    } else {
-      mEmailEditText.setError(null);
-    }
-
     if (securityQuestionAnswer.isEmpty()) {
       mSecurityAnswer.setError("Please enter Security Answer");
     } else {
       mSecurityAnswer.setError(null);
     }
 
-    validatePassword(userName, firstName, lastName, userEmail, userPass, securityQuestionAnswer,
+    validatePassword(userPass);
+
+    validateEmail(userName, firstName, lastName, userEmail, userPass, securityQuestionAnswer,
         securityQuestion);
   }
 
-  private void validatePassword(String userName, String firstName, String lastName,
+  private void validateEmail(String userName, String firstName, String lastName,
       String userEmail, String userPass, String securityQuestionAnswer, String securityQuestion) {
+    if (userEmail.isEmpty()) {
+      mEmailEditText.setError("Please enter Email Address");
+    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+      mEmailEditText.setError("Enter a valid email address!!!");
+    } else {
+      mEmailEditText.setError(null);
+      signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName,
+          securityQuestion, securityQuestionAnswer);
+    }
+  }
+  
+  private void validatePassword(String userPass) {
     if (userPass.isEmpty()) {
       mPasswordEditText.setError("Please enter password");
     } else {
       mPasswordEditText.setError(null);
-      signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName,
-          securityQuestion, securityQuestionAnswer);
     }
   }
 
