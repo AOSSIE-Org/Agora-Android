@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.TextWatcherAdapter;
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter;
+import org.aossie.agoraandroid.utilities.HideKeyboard;
 import org.json.JSONException;
 
 public class InviteVotersActivity extends AppCompatActivity {
@@ -89,6 +90,7 @@ public class InviteVotersActivity extends AppCompatActivity {
       public void onClick(View v) {
         try {
           if (getIntent().hasExtra("id") && getIntent().hasExtra("token")) {
+            HideKeyboard.INSTANCE.hideKeyboardInActivity(InviteVotersActivity.this);
             String id = getIntent().getStringExtra("id");
             String token = getIntent().getStringExtra("token");
             inviteVotersViewModel.inviteVoters(mVoterNames, mVoterEmails, id, token);
