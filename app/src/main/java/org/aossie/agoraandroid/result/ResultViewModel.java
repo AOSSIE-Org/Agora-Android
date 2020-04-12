@@ -3,12 +3,12 @@ package org.aossie.agoraandroid.result;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.utilities.ResourceKt;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,15 +56,14 @@ public class ResultViewModel extends AndroidViewModel {
           }
         } else if (response.message().equals("No Content")) {
           loadToast.error();
-          Toast.makeText(getApplication(), "Nothing to show here", Toast.LENGTH_SHORT).show();
+          ResourceKt.toastShort(getApplication(), "Nothing to show here");
         }
       }
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
         loadToast.error();
-        Toast.makeText(getApplication(), "Something Went Wrong Please Try Again Later",
-            Toast.LENGTH_SHORT).show();
+        ResourceKt.toastShort(getApplication(), "Something Went Wrong Please Try Again Later");
       }
     });
   }

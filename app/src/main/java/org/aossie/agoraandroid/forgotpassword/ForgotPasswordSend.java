@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.forgotpassword;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,7 +46,7 @@ public class ForgotPasswordSend extends AppCompatActivity {
     forgotPasswordViewModel.error.observe(this, new Observer<String>() {
       @Override public void onChanged(String s) {
         loadToast.error();
-        Toast.makeText(ForgotPasswordSend.this, s, Toast.LENGTH_SHORT).show();
+        ResourceKt.toastShort(ForgotPasswordSend.this, s);
       }
     });
   }
@@ -58,10 +57,7 @@ public class ForgotPasswordSend extends AppCompatActivity {
       mUserNameEditText.setError(getApplicationContext().getString(R.string.invalid_username));
     }else {
       mUserNameEditText.setError(null);
-      Toast.makeText(
-          ForgotPasswordSend.this,
-          R.string.link_sent_please_check_your_email,
-          Toast.LENGTH_SHORT).show();
+      ResourceKt.toastShort(ForgotPasswordSend.this, ResourceKt.getString(ForgotPasswordSend.this, R.string.link_sent_please_check_your_email));
     }
   }
 }
