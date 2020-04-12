@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
@@ -15,6 +14,7 @@ import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.utilities.ResourceKt;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.aossie.agoraandroid.utilities.TinyDB;
 import org.json.JSONArray;
@@ -75,23 +75,21 @@ class CreateElectionViewModel extends AndroidViewModel {
 
         if (response.message().equals("OK")) {
           loadToast.success();
-          Toast.makeText(getApplication(), "Created Successfully", Toast.LENGTH_SHORT).show();
+          ResourceKt.toastShort(getApplication(), "Created Successfully");
           electionDetailsSharedPrefs.clearElectionData();
           Intent intent = new Intent(context, HomeActivity.class);
           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
           context.startActivity(intent);
         } else {
           loadToast.error();
-          Toast.makeText(getApplication(), "Something went wrong please try again",
-              Toast.LENGTH_SHORT).show();
+          ResourceKt.toastShort(getApplication(),"Something went wrong please try again");
         }
       }
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
         loadToast.error();
-        Toast.makeText(getApplication(), "Something went wrong please try again",
-            Toast.LENGTH_SHORT).show();
+        ResourceKt.toastShort(getApplication(), "Something went wrong please try again");
       }
     });
   }

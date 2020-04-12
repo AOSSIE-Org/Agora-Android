@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -18,6 +17,7 @@ import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.utilities.ResourceKt;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,19 +97,18 @@ class InviteVotersViewModel extends AndroidViewModel {
       public void onResponse(Call<String> call, Response<String> response) {
         if (response.message().equals("OK")) {
           loadToast.success();
-          Toast.makeText(context, "Voters Added Successfully", Toast.LENGTH_SHORT).show();
+          ResourceKt.toastShort(context, "Voters Added Successfully");
           context.startActivity(new Intent(context, HomeActivity.class));
         } else if (response.message().equals("Internal Server Error")) {
           loadToast.error();
-          Toast.makeText(context, "Internal server error", Toast.LENGTH_SHORT).show();
+          ResourceKt.toastShort(context, "Internal server error");
         }
       }
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
         loadToast.error();
-        Toast.makeText(getApplication(), "Something went wrong please try again",
-            Toast.LENGTH_SHORT).show();
+        ResourceKt.toastShort(getApplication(), "Something went wrong please try again");
       }
     });
   }
