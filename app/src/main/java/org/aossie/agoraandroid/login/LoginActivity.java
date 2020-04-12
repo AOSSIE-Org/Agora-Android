@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.forgotpassword.ForgotPasswordSend;
+import org.aossie.agoraandroid.utilities.HideKeyboard;
 
 @SuppressWarnings("ConstantConditions")
 public class LoginActivity extends AppCompatActivity {
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         if (userPass.isEmpty()) {
           mLoginPassword.setError("Please enter password");
         } else {
+          HideKeyboard.INSTANCE.hideKeyboardInActivity(LoginActivity.this);
           mLoginPassword.setError(null);
           loginViewModel.logInRequest(userName, userPass);
         }

@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer;
 import com.google.android.material.textfield.TextInputLayout;
 import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.utilities.ResourceKt;
+import org.aossie.agoraandroid.utilities.HideKeyboard;
 
 public class ForgotPasswordSend extends AppCompatActivity {
 
@@ -31,6 +31,7 @@ public class ForgotPasswordSend extends AppCompatActivity {
         if (userName.isEmpty()) {
           mUserNameEditText.setError("Please Enter User Name");
         } else {
+          HideKeyboard.INSTANCE.hideKeyboardInActivity(ForgotPasswordSend.this);
           loadToast.setText("Processing");
           loadToast.show();
           forgotPasswordViewModel.sendForgotPassLink(userName);
