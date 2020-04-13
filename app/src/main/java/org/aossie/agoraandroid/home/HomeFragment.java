@@ -115,7 +115,7 @@ public class HomeFragment extends Fragment {
     String userName = sharedPrefs.getUserName();
     String userPassword = sharedPrefs.getPass();
     SimpleDateFormat formatter =
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
     Date currentDate = Calendar.getInstance().getTime();
     try {
       String expireOn = sharedPrefs.getTokenExpiresOn();

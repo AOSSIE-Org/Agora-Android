@@ -15,6 +15,8 @@ import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
+import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInActivity
+import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 
 class ProfileFragment : Fragment() {
 
@@ -42,11 +44,13 @@ class ProfileFragment : Fragment() {
 
     binding.updateProfileBtn.setOnClickListener {
       loadToast.show()
-      if(binding.firstNameTil.error == null && binding.lastNameTil.error == null)
+      if(binding.firstNameTil.error == null && binding.lastNameTil.error == null) {
+      hideKeyboardInFrag(this@ProfileFragment)
         viewModel.updateUser(
             binding.firstNameTiet.text.toString().trim(),
             binding.lastNameTiet.text.toString().trim()
         )
+      }
       else loadToast.error()
     }
 
@@ -59,6 +63,7 @@ class ProfileFragment : Fragment() {
           conPass.isEmpty() -> binding.confirmPasswordTil.error = getString(string.password_empty_warn)
           newPass != conPass -> binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
           else -> {
+            hideKeyboardInFrag(this@ProfileFragment)
             loadToast.show()
             viewModel.changePassword(binding.newPasswordTiet.text.toString())
           }

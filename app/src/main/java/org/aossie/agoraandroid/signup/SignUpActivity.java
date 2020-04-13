@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.utilities.HideKeyboard;
 
 @SuppressWarnings("ConstantConditions")
 public class SignUpActivity extends AppCompatActivity {
@@ -37,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     mSignUpButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        HideKeyboard.INSTANCE.hideKeyboardInActivity(SignUpActivity.this);
         validateAllFields();
       }
     });

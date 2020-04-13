@@ -40,7 +40,7 @@ class HomeViewModel extends AndroidViewModel {
               .show();
           sharedPrefs.clearLogin();
           Intent intent = new Intent(getApplication(), HomeLoginActivity.class);
-          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
           context.startActivity(intent);
         }
       }
