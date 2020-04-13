@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.utilities.HideKeyboard;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateElectionOne extends AppCompatActivity {
@@ -79,6 +80,7 @@ public class CreateElectionOne extends AppCompatActivity {
         if (mEndDate.isEmpty()) {
           mEndDateTextLayout.setError("Please enter end date");
         } else {
+          HideKeyboard.INSTANCE.hideKeyboardInActivity(CreateElectionOne.this);
           mEndDateTextLayout.setError(null);
           electionDetailsSharedPrefs.saveElectionName(mElectionName);
           electionDetailsSharedPrefs.saveElectionDesc(mElectionDescription);
