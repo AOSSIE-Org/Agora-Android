@@ -60,4 +60,15 @@ object Requests {
       "    \"hash\": \"string\"\n" +
       "  }\n" +
       "]"
+
+  const val UPDATE_USER = "{\n" +
+      " \"username\": \"string\",\n" +
+      " \"email\": \"string\",\n" +
+      " \"firstName\": \"string\",\n" +
+      " \"lastName\": \"string\",\n" +
+      " \"avatarURL\": \"string\",\n" +
+      " \"twoFactorAuthentication\": \"true\",\n" +
+      " \"token\": {},\n" +
+      " \"trustedDevice\": \"string\" \n" +
+      "}"
 }

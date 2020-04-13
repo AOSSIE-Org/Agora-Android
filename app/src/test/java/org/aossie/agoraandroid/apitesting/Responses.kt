@@ -78,4 +78,7 @@ object Responses {
       "        }\n" +
       "     ]\n"
 
+  const val UPDATE_USER = "{\n" +
+    "  \"message\": \"string\"\n" +
+    "}"
 }
