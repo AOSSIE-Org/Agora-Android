@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter;
+import org.aossie.agoraandroid.utilities.HideKeyboard;
 import org.aossie.agoraandroid.utilities.TinyDB;
 
 @SuppressWarnings("ConstantConditions")
@@ -55,6 +56,7 @@ public class CreateElectionTwo extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         if (mCandidates.size() != 0) {
+          HideKeyboard.INSTANCE.hideKeyboardInActivity(CreateElectionTwo.this);
           tinydb.putListString("Candidates", mCandidates);
           startActivity(new Intent(CreateElectionTwo.this, CreateElectionThree.class));
         } else {
