@@ -64,4 +64,21 @@ object Responses {
       "  \"message\": \"string\"\n" +
       "}"
 
+  const val ELECTION_RESULT = "[\n" +
+      "    {\n" +
+      "      \"candidate\": \"{\n" +
+      "      \"name\": \"string\",\n" +
+      "      \"id\": 0,\n" +
+      "      \"party\": \"string\"\n" +
+      "    },\n" +
+      "      \"score\": \"{\n" +
+      "      \"numerator\": 0,\n" +
+      "      \"denominator\": 0,\n" +
+      "           }\n" +
+      "        }\n" +
+      "     ]\n"
+
+  const val UPDATE_USER = "{\n" +
+    "  \"message\": \"string\"\n" +
+    "}"
 }
