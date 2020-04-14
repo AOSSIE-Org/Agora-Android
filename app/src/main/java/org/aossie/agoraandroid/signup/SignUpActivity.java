@@ -70,37 +70,39 @@ public class SignUpActivity extends AppCompatActivity {
     String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
     String securityQuestion = securityQuestionOfSignUp;
 
-    validateUsername(userName);
+    if (!validateUsername(userName)) {
+      mUserNameEditText.setError("Please enter User Name");
+    } else {
+      mUserNameEditText.setError(null);
+    }
 
-    if (firstName.isEmpty()) {
+    if (!validateFirstName(firstName)) {
       mFirstNameEditText.setError("Please enter First Name");
     } else {
       mFirstNameEditText.setError(null);
     }
 
-    if (lastName.isEmpty()) {
+    if (!validateLastName(lastName)) {
       mLastNameEditText.setError("Please enter Last Name");
     } else {
       mLastNameEditText.setError(null);
     }
 
-    if (securityQuestionAnswer.isEmpty()) {
+    if (!validatePassword(userPass)) {
+      mPasswordEditText.setError("Please enter password");
+    } else {
+      mPasswordEditText.setError(null);
+    }
+
+    if (!validateSecurityQuestionAnswer(securityQuestionAnswer)) {
       mSecurityAnswer.setError("Please enter Security Answer");
     } else {
       mSecurityAnswer.setError(null);
     }
 
-    validatePassword(userPass);
-
-    validateEmail(userName, firstName, lastName, userEmail, userPass, securityQuestionAnswer,
-        securityQuestion);
-  }
-
-  private void validateEmail(String userName, String firstName, String lastName,
-      String userEmail, String userPass, String securityQuestionAnswer, String securityQuestion) {
-    if (userEmail.isEmpty()) {
+    if (!validateEmail(userEmail)) {
       mEmailEditText.setError("Please enter Email Address");
-    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+    } else if (!validateEmail(userEmail)) {
       mEmailEditText.setError("Enter a valid email address!!!");
     } else {
       mEmailEditText.setError(null);
@@ -108,20 +110,54 @@ public class SignUpActivity extends AppCompatActivity {
           securityQuestion, securityQuestionAnswer);
     }
   }
-  
-  private void validatePassword(String userPass) {
-    if (userPass.isEmpty()) {
-      mPasswordEditText.setError("Please enter password");
+
+  private boolean validateUsername(String userName) {
+    if (userName.isEmpty()) {
+      return false;
     } else {
-      mPasswordEditText.setError(null);
+      return true;
     }
   }
 
-  private void validateUsername(String userName) {
-    if (userName.isEmpty()) {
-      mUserNameEditText.setError("Please enter User Name");
+  private boolean validateFirstName(String firstName) {
+    if (firstName.isEmpty()) {
+      return false;
     } else {
-      mUserNameEditText.setError(null);
+      return true;
+    }
+  }
+
+  private boolean validateLastName(String lastName) {
+    if (lastName.isEmpty()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  private boolean validateEmail(String userEmail) {
+    if (userEmail.isEmpty()) {
+        return false;
+    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  
+  private boolean validatePassword(String userPass) {
+    if (userPass.isEmpty()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  private boolean validateSecurityQuestionAnswer(String securityQuestionAnswer) {
+    if (securityQuestionAnswer.isEmpty()) {
+      return false;
+    } else {
+      return true;
     }
   }
 }
