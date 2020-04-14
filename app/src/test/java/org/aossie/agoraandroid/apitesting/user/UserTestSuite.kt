@@ -7,6 +7,7 @@ import org.junit.runners.Suite
 @Suite.SuiteClasses(
     ChangePasswordTest::class,
     LogOutTest::class,
-    GetUserTest::class
+    GetUserTest::class,
+    UpdateUserTest::class
 )
 class UserTestSuite
