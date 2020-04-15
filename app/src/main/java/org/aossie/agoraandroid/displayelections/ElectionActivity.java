@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.invitevoters.InviteVotersActivity;
 import org.aossie.agoraandroid.result.ResultViewModel;
+import org.aossie.agoraandroid.utilities.ResourceKt;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
 public class ElectionActivity extends AppCompatActivity {
@@ -60,7 +60,7 @@ public class ElectionActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         if (status.equals("Finished")) {
-          Toast.makeText(ElectionActivity.this, "Election is Finished", Toast.LENGTH_SHORT).show();
+          ResourceKt.toastShort(ElectionActivity.this,"Election is Finished");
         } else {
           Intent intent = new Intent(getApplicationContext(), InviteVotersActivity.class);
           intent.putExtra("id", id);
@@ -73,8 +73,7 @@ public class ElectionActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         if (status.equals("Pending")) {
-          Toast.makeText(ElectionActivity.this, "Election is not started yet", Toast.LENGTH_SHORT)
-              .show();
+          ResourceKt.toastShort(ElectionActivity.this, "Election is not started yet");
         } else {
           resultViewModel.getResult(token, id);
         }
@@ -86,8 +85,7 @@ public class ElectionActivity extends AppCompatActivity {
       public void onClick(View v) {
         switch (status) {
           case "Active":
-            Toast.makeText(ElectionActivity.this, "Active Elections Cannot Be Deleted",
-                Toast.LENGTH_SHORT).show();
+            ResourceKt.toastShort(ElectionActivity.this, "Active Elections Cannot Be Deleted");
             break;
           case "Finished":
             displayElectionViewModel.deleteElection(token, id);

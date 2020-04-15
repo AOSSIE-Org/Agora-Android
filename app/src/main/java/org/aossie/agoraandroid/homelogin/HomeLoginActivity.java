@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.facebook.AccessToken;
@@ -21,6 +20,7 @@ import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.login.LoginActivity;
 import org.aossie.agoraandroid.login.LoginViewModel;
 import org.aossie.agoraandroid.signup.SignUpActivity;
+import org.aossie.agoraandroid.utilities.ResourceKt;
 
 public class HomeLoginActivity extends AppCompatActivity {
 
@@ -31,7 +31,7 @@ public class HomeLoginActivity extends AppCompatActivity {
     protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
         AccessToken currentAccessToken) {
       if (currentAccessToken == null) {
-        Toast.makeText(HomeLoginActivity.this, "User Logged Out", Toast.LENGTH_SHORT).show();
+        ResourceKt.toastShort(HomeLoginActivity.this, "User Logged Out");
       } else {
         String facebookAccessToken = currentAccessToken.getToken();
         loginViewModel.facebookLogInRequest(facebookAccessToken);
@@ -60,13 +60,12 @@ public class HomeLoginActivity extends AppCompatActivity {
 
           @Override
           public void onCancel() {
-            Toast.makeText(HomeLoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
+            ResourceKt.toastLong(HomeLoginActivity.this, "Login Cancel");
           }
 
           @Override
           public void onError(FacebookException exception) {
-            Toast.makeText(HomeLoginActivity.this, exception.getMessage(), Toast.LENGTH_LONG)
-                .show();
+            ResourceKt.toastLong(HomeLoginActivity.this, exception.getMessage());
           }
         });
 

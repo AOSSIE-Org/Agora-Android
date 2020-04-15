@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -29,6 +28,7 @@ import org.aossie.agoraandroid.displayelections.PendingElectionsActivity;
 import org.aossie.agoraandroid.displayelections.TotalElectionsActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.utilities.ResourceKt;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -172,15 +172,13 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
           }
         } else {
-          Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
-              .show();
+          ResourceKt.toastShort(getContext(),"Something went wrong please try again");
         }
       }
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
-        Toast.makeText(getContext(), "Something went wrong please try again", Toast.LENGTH_SHORT)
-            .show();
+        ResourceKt.toastShort(getContext(), "Something went wrong please try again");
       }
     });
   }
@@ -245,8 +243,7 @@ public class HomeFragment extends Fragment {
         mShimmerViewContainer.setVisibility(View.GONE);
         constraintLayout.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(false); // Disables the refresh icon
-        Toast.makeText(getActivity(), "Something went wrong please refresh", Toast.LENGTH_SHORT)
-            .show();
+        ResourceKt.toastShort(getActivity(), "Something went wrong please refresh");
       }
     });
   }
