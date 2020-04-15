@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.apitesting.user
 
+import org.aossie.agoraandroid.apitesting.authentication.ChangePasswordTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 

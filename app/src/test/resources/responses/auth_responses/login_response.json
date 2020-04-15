@@ -1,0 +1,13 @@
+{
+  "username": "string",
+  "email": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "avatarURL": "string",
+  "twoFactorAuthentication": true,
+  "token": {
+    "token": "string",
+    "expiresOn": "2020-04-15T01:15:51.438Z"
+  },
+  "trustedDevice": "string"
+}

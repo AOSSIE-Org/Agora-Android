@@ -1,0 +1,22 @@
+{
+  "name": "string",
+  "description": "string",
+  "electionType": "string",
+  "candidates": [
+    "string"
+  ],
+  "ballotVisibility": "string",
+  "voterListVisibility": true,
+  "startingDate": "2020-04-15T01:45:51.588Z",
+  "endingDate": "2020-04-15T01:45:51.588Z",
+  "isInvite": true,
+  "isRealTime": true,
+  "votingAlgo": "string",
+  "noVacancies": 0,
+  "ballot": [
+    {
+      "voteBallot": "string",
+      "hash": "string"
+    }
+  ]
+}
