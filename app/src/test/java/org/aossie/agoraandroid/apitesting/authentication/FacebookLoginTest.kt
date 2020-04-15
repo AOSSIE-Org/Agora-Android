@@ -3,8 +3,7 @@ package org.aossie.agoraandroid.apitesting.authentication
 import okhttp3.mockwebserver.MockResponse
 import okio.IOException
 import org.aossie.agoraandroid.apitesting.BaseTest
-import org.aossie.agoraandroid.apitesting.Requests
-import org.aossie.agoraandroid.apitesting.Responses
+import org.aossie.agoraandroid.utilities.MockFileParser
 import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
@@ -14,9 +13,12 @@ class FacebookLoginTest : BaseTest() {
   @Test
   @Throws(IOException::class)
   fun facebookLoginUnitTest() {
-    mockWebServer.enqueue(MockResponse().setBody(Responses.AUTH_FACEBOOK_LOGIN))
-    val response: Response<*> = apiService.facebookLogin(Requests.AUTH_FACEBOOK_LOGIN)
+
+    val facebookLoginResponse:String= MockFileParser("responses/auth_responses/facebookLoginResponse.json").content
+
+    mockWebServer.enqueue(MockResponse().setBody(facebookLoginResponse))
+    val response: Response<*> = apiService.facebookLogin("authToken")
         .execute()
-    Assert.assertEquals(response.body(), Responses.AUTH_FACEBOOK_LOGIN)
+    Assert.assertEquals(response.body(), facebookLoginResponse)
   }
 }
