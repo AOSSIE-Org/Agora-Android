@@ -1,0 +1,13 @@
+[
+  {
+    "candidate": {
+      "name": "string",
+      "id": 0,
+      "party": "string"
+    },
+    "score": {
+      "numerator": 0,
+      "denominator": 0
+    }
+  }
+]

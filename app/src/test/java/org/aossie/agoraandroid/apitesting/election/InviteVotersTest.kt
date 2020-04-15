@@ -2,8 +2,7 @@ package org.aossie.agoraandroid.apitesting.election
 
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
-import org.aossie.agoraandroid.apitesting.Requests
-import org.aossie.agoraandroid.apitesting.Responses
+import org.aossie.agoraandroid.utilities.MockFileParser
 import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
@@ -14,13 +13,21 @@ class InviteVotersTest : BaseTest() {
   @Test
   @Throws(IOException::class)
   fun inviteVotersTest() {
-    mockWebServer.enqueue(MockResponse().setBody(Responses.INVITE_VOTERS))
+    val invitationResponse: String =
+      MockFileParser("responses/election_responses/invite_voter_response.json").content
+
+    val invitationRequest: String =
+      MockFileParser("requests/election_requests/invite_voter_request.json").content
+
+    mockWebServer.enqueue(MockResponse().setBody(invitationResponse))
     val response: Response<*> = apiService.sendVoters(
-        "authToken",
-        "id",
-        Requests.INVITE_VOTERS
-    )
+            "authToken",
+            "id",
+            invitationRequest
+        )
         .execute()
-    Assert.assertEquals(response.body(), Responses.INVITE_VOTERS)
+    Assert.assertEquals(response.body(), invitationResponse)
   }
 }
+
+
