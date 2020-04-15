@@ -2,8 +2,6 @@ package org.aossie.agoraandroid.apitesting.authentication
 
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
-import org.aossie.agoraandroid.apitesting.Requests
-import org.aossie.agoraandroid.apitesting.Responses
 import org.aossie.agoraandroid.utilities.MockFileParser
 import org.junit.Assert
 import org.junit.Test

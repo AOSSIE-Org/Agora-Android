@@ -14,7 +14,7 @@ class FacebookLoginTest : BaseTest() {
   @Throws(IOException::class)
   fun facebookLoginUnitTest() {
 
-    val facebookLoginResponse:String= MockFileParser("responses/auth_responses/facebookLoginResponse.json").content
+    val facebookLoginResponse:String= MockFileParser("responses/auth_responses/facebook_login_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(facebookLoginResponse))
     val response: Response<*> = apiService.facebookLogin("authToken")
