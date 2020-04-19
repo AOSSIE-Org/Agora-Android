@@ -1,11 +1,14 @@
 package org.aossie.agoraandroid.signup;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import com.google.android.material.textfield.TextInputLayout;
@@ -19,6 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
   private SignUpViewModel signUpViewModel;
   private AppCompatSpinner appCompatSpinner;
   private String securityQuestionOfSignUp;
+  private boolean switchOnWatcher = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class SignUpActivity extends AppCompatActivity {
     mSignUpButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        //to enable the textwatcher checking after the first click
+        switchOnWatcher = true;
         HideKeyboard.INSTANCE.hideKeyboardInActivity(SignUpActivity.this);
         validateAllFields();
       }
@@ -59,6 +65,13 @@ public class SignUpActivity extends AppCompatActivity {
         securityQuestionOfSignUp = getResources().getStringArray(R.array.security_questions)[0];
       }
     });
+
+    mUserNameEditText.getEditText().addTextChangedListener(signUpWatcher);
+    mFirstNameEditText.getEditText().addTextChangedListener(signUpWatcher);
+    mLastNameEditText.getEditText().addTextChangedListener(signUpWatcher);
+    mPasswordEditText.getEditText().addTextChangedListener(signUpWatcher);
+    mSecurityAnswer.getEditText().addTextChangedListener(signUpWatcher);
+    mEmailEditText.getEditText().addTextChangedListener(signUpWatcher);
   }
 
   private void validateAllFields() {
@@ -102,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     if (!validateEmail(userEmail)) {
       mEmailEditText.setError("Please enter Email Address");
-    } else if (!validateEmail(userEmail)) {
+    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
       mEmailEditText.setError("Enter a valid email address!!!");
     } else {
       mEmailEditText.setError(null);
@@ -110,6 +123,54 @@ public class SignUpActivity extends AppCompatActivity {
           securityQuestion, securityQuestionAnswer);
     }
   }
+
+  private TextWatcher signUpWatcher = new TextWatcher() {
+    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+      if (switchOnWatcher) {
+        if (!mUserNameEditText.getEditText().getText().toString().isEmpty()) {
+          mUserNameEditText.setError(null);
+        } else {
+          mUserNameEditText.setError("Please enter User Name");
+        }
+
+        if (!mFirstNameEditText.getEditText().getText().toString().isEmpty()) {
+          mFirstNameEditText.setError(null);
+        } else {
+          mFirstNameEditText.setError("Please enter First Name");
+        }
+
+        if (!mLastNameEditText.getEditText().getText().toString().isEmpty()) {
+          mLastNameEditText.setError(null);
+        } else {
+          mLastNameEditText.setError("Please enter Last Name");
+        }
+
+        if (!mPasswordEditText.getEditText().getText().toString().isEmpty()) {
+          mPasswordEditText.setError(null);
+        } else {
+          mPasswordEditText.setError("Please enter Password");
+        }
+
+        if (!mSecurityAnswer.getEditText().getText().toString().isEmpty()) {
+          mSecurityAnswer.setError(null);
+        } else {
+          mSecurityAnswer.setError("Please enter Security Answer");
+        }
+
+        if (!mEmailEditText.getEditText().getText().toString().isEmpty()) {
+          mEmailEditText.setError(null);
+        } else {
+          mEmailEditText.setError("Please enter Email");
+        }
+      }
+    }
+
+    @Override public void afterTextChanged(Editable s) {
+    }
+  };
 
   private boolean validateUsername(String userName) {
     if (userName.isEmpty()) {
@@ -137,8 +198,6 @@ public class SignUpActivity extends AppCompatActivity {
 
   private boolean validateEmail(String userEmail) {
     if (userEmail.isEmpty()) {
-        return false;
-    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
       return false;
     } else {
       return true;
