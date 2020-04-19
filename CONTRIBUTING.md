@@ -56,7 +56,8 @@ For creating a merge request, it is very **important** to follow the [best pract
 3. Use meaningful commit messages in a MR.
 4. Use one commit per task. Do not over commit (add unnecessary commits for a single task) or under commit (merge 2 or more tasks in one commit).
 5. Add screenshot/short video in case the changes made in the MR, are being reflected in the UI of the application.
-6. Close the issue as soon as the corresponding MR is accepted/closed.
+6. The author must follow the templates defined by the maintainers of the repository while opening a issue/MR.
+7. Close the issue as soon as the corresponding MR is accepted/closed.
   
 ## Some don'ts
 
