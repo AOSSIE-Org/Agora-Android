@@ -154,6 +154,10 @@
   <string name="last_name_empty">Last Name cannot be empty</string>
   <string name="email_changed">Email cannot be changed</string>
   <string name="username_changed">Username cannot be changed</string>
+  <string name="user_name_empty">User Name cannot be empty</string>
+  <string name="email_empty">Email cannot be empty</string>
+  <string name="invalid_email">A valid email address is required!</string>
+  <string name="security_answer_empty">Security Answer cannot be empty</string>
 
 </resources>
 

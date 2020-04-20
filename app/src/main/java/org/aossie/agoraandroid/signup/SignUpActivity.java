@@ -125,7 +125,7 @@ public class SignUpActivity extends AppCompatActivity {
 
   private void validateUsername(String userName) {
     if (userName.isEmpty()) {
-      mUserNameEditText.setError("Please enter User Name");
+      mUserNameEditText.setError(getString(R.string.user_name_empty));
       userNameValidated = false;
     } else {
       mUserNameEditText.setError(null);
@@ -135,7 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
 
   private void validateFirstName(String firstName) {
     if (firstName.isEmpty()) {
-      mFirstNameEditText.setError("Please enter First Name");
+      mFirstNameEditText.setError(getString(R.string.first_name_empty));
       firstNameValidated = false;
     } else {
       mFirstNameEditText.setError(null);
@@ -145,7 +145,7 @@ public class SignUpActivity extends AppCompatActivity {
 
   private void validateLastName(String lastName) {
     if (lastName.isEmpty()) {
-      mLastNameEditText.setError("Please enter Last Name");
+      mLastNameEditText.setError(getString(R.string.last_name_empty));
       lastNameValidated = false;
     } else {
       mLastNameEditText.setError(null);
@@ -155,7 +155,7 @@ public class SignUpActivity extends AppCompatActivity {
 
   private void validateUserPass(String userPass) {
     if (userPass.isEmpty()) {
-      mPasswordEditText.setError("Please enter password");
+      mPasswordEditText.setError(getString(R.string.password_empty_warn));
       passwordValidated = false;
     } else {
       mPasswordEditText.setError(null);
@@ -165,7 +165,7 @@ public class SignUpActivity extends AppCompatActivity {
 
   private void validateSecurityAnswer(String securityQuestionAnswer) {
     if (securityQuestionAnswer.isEmpty()) {
-      mSecurityAnswer.setError("Please enter Security Answer");
+      mSecurityAnswer.setError(getString(R.string.security_answer_empty));
       securityAnswerValidated = false;
     } else {
       mSecurityAnswer.setError(null);
@@ -175,10 +175,10 @@ public class SignUpActivity extends AppCompatActivity {
 
   private void validateUserEmail(String userEmail) {
     if (userEmail.isEmpty()) {
-      mEmailEditText.setError("Please enter email address");
+      mEmailEditText.setError(getString(R.string.email_empty));
       emailValidated = false;
     } else if (!Patterns.EMAIL_ADDRESS.matcher(mEmailEditText.getEditText().getText().toString()).matches()) {
-      mEmailEditText.setError("A valid email address is required!!!");
+      mEmailEditText.setError(getString(R.string.invalid_email));
       emailValidated = false;
     } else {
       mEmailEditText.setError(null);
