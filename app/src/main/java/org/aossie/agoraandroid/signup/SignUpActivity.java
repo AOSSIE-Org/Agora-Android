@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.signup;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +23,13 @@ public class SignUpActivity extends AppCompatActivity {
   private AppCompatSpinner appCompatSpinner;
   private String securityQuestionOfSignUp;
   private boolean switchOnWatcher = false;
+
+  private boolean userNameValidated = false;
+  private boolean firstNameValidated = false;
+  private boolean lastNameValidated = false;
+  private boolean emailValidated = false;
+  private boolean passwordValidated = false;
+  private boolean securityAnswerValidated = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +95,10 @@ public class SignUpActivity extends AppCompatActivity {
     validateLastName(lastName);
     validateUserPass(userPass);
     validateSecurityAnswer(securityQuestionAnswer);
+    validateUserEmail(userEmail);
 
-    if (userEmail.isEmpty()) {
-      mEmailEditText.setError("Please enter Email Address");
-    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-      mEmailEditText.setError("Enter a valid email address!!!");
-    } else {
-      mEmailEditText.setError(null);
+    if (userNameValidated && firstNameValidated && lastNameValidated
+        && emailValidated && passwordValidated && securityAnswerValidated) {
       signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName,
           securityQuestion, securityQuestionAnswer);
     }
@@ -121,50 +126,63 @@ public class SignUpActivity extends AppCompatActivity {
   private void validateUsername(String userName) {
     if (userName.isEmpty()) {
       mUserNameEditText.setError("Please enter User Name");
+      userNameValidated = false;
     } else {
       mUserNameEditText.setError(null);
+      userNameValidated = true;
     }
   }
 
   private void validateFirstName(String firstName) {
     if (firstName.isEmpty()) {
       mFirstNameEditText.setError("Please enter First Name");
+      firstNameValidated = false;
     } else {
       mFirstNameEditText.setError(null);
+      firstNameValidated = true;
     }
   }
 
   private void validateLastName(String lastName) {
     if (lastName.isEmpty()) {
       mLastNameEditText.setError("Please enter Last Name");
+      lastNameValidated = false;
     } else {
       mLastNameEditText.setError(null);
+      lastNameValidated = true;
     }
   }
 
   private void validateUserPass(String userPass) {
     if (userPass.isEmpty()) {
       mPasswordEditText.setError("Please enter password");
+      passwordValidated = false;
     } else {
       mPasswordEditText.setError(null);
+      passwordValidated = true;
     }
   }
 
   private void validateSecurityAnswer(String securityQuestionAnswer) {
     if (securityQuestionAnswer.isEmpty()) {
       mSecurityAnswer.setError("Please enter Security Answer");
+      securityAnswerValidated = false;
     } else {
       mSecurityAnswer.setError(null);
+      securityAnswerValidated = true;
     }
   }
 
   private void validateUserEmail(String userEmail) {
     if (userEmail.isEmpty()) {
       mEmailEditText.setError("Please enter email address");
+      emailValidated = false;
     } else if (!Patterns.EMAIL_ADDRESS.matcher(mEmailEditText.getEditText().getText().toString()).matches()) {
       mEmailEditText.setError("A valid email address is required!!!");
+      emailValidated = false;
     } else {
       mEmailEditText.setError(null);
+      emailValidated = true;
     }
   }
 }
