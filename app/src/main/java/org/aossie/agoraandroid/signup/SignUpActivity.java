@@ -177,7 +177,8 @@ public class SignUpActivity extends AppCompatActivity {
     if (userEmail.isEmpty()) {
       mEmailEditText.setError(getString(R.string.email_empty));
       emailValidated = false;
-    } else if (!Patterns.EMAIL_ADDRESS.matcher(mEmailEditText.getEditText().getText().toString()).matches()) {
+    } else if (!Patterns.EMAIL_ADDRESS
+        .matcher(mEmailEditText.getEditText().getText().toString()).matches()) {
       mEmailEditText.setError(getString(R.string.invalid_email));
       emailValidated = false;
     } else {
