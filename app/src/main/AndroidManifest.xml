@@ -62,19 +62,10 @@
         android:configChanges="orientation|screenSize" />
     <activity
         android:name=".signup.SignUpActivity"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".homelogin.HomeLoginActivity" />
+        android:configChanges="orientation|screenSize" />
     <activity
         android:name=".login.LoginActivity"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".homelogin.HomeLoginActivity" />
-    <activity android:name=".homelogin.HomeLoginActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.DEFAULT" />
-      </intent-filter>
-    </activity>
+        android:configChanges="orientation|screenSize" />
     <activity android:name=".ui.activities.MainActivity"
         android:theme="@style/SplashTheme">
       <intent-filter>
