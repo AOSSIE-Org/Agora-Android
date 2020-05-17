@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.fragments
+package org.aossie.agoraandroid.ui.fragments.welcome
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,22 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.facebook.AccessToken
 import com.facebook.AccessTokenTracker
 import com.facebook.CallbackManager
 import com.facebook.CallbackManager.Factory
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
-import com.facebook.FacebookSdk
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import kotlinx.android.synthetic.main.fragment_welcome.view.fb_login_btn
 import kotlinx.android.synthetic.main.fragment_welcome.view.signin_btn
 import kotlinx.android.synthetic.main.fragment_welcome.view.signup_btn
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.login.LoginActivity
-import org.aossie.agoraandroid.login.LoginViewModel
-import org.aossie.agoraandroid.signup.SignUpActivity
+import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import java.util.Arrays
 
 /**
@@ -33,6 +31,7 @@ class WelcomeFragment : Fragment() {
 
   private var callbackManager: CallbackManager? = null
   private var loginViewModel: LoginViewModel? = null
+  private lateinit var rootView: View
   var accessTokenTracker: AccessTokenTracker = object : AccessTokenTracker() {
     override fun onCurrentAccessTokenChanged(
       oldAccessToken: AccessToken,
@@ -54,8 +53,8 @@ class WelcomeFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    val rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
-    loginViewModel = LoginViewModel(activity!!.application, context)
+    rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
+    loginViewModel = LoginViewModel(activity!!.application, context!!)
     callbackManager = Factory.create()
     LoginManager.getInstance()
         .registerCallback(callbackManager,
@@ -82,13 +81,12 @@ class WelcomeFragment : Fragment() {
           )
     }
     rootView.signin_btn.setOnClickListener {
-      val logInIntent = Intent(context, LoginActivity::class.java)
-      logInIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-      startActivity(logInIntent)
+      Navigation.findNavController(rootView)
+          .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToLoginFragment())
     }
     rootView.signup_btn.setOnClickListener {
-      val signUpIntent = Intent(context, SignUpActivity::class.java)
-      startActivity(signUpIntent)
+      Navigation.findNavController(rootView)
+          .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToSignUpFragment())
     }
 
     return rootView

@@ -7,7 +7,45 @@
 
   <fragment
       android:id="@+id/welcomeFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.WelcomeFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment"
       android:label="fragment_welcome"
-      tools:layout="@layout/fragment_welcome" />
+      tools:layout="@layout/fragment_welcome" >
+    <action
+        android:id="@+id/action_welcomeFragment_to_loginFragment"
+        app:destination="@id/loginFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out" />
+    <action
+        android:id="@+id/action_welcomeFragment_to_signUpFragment"
+        app:destination="@id/signUpFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
+  </fragment>
+  <fragment
+      android:id="@+id/loginFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment"
+      android:label="fragment_login"
+      tools:layout="@layout/fragment_login" >
+    <action
+        android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+        app:destination="@id/forgotPasswordFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
+  </fragment>
+  <fragment
+      android:id="@+id/signUpFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment"
+      android:label="fragment_sign_up"
+      tools:layout="@layout/fragment_sign_up" />
+  <fragment
+      android:id="@+id/forgotPasswordFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment"
+      android:label="fragment_forgot_password"
+      tools:layout="@layout/fragment_forgot_password" />
 </navigation>

@@ -12,8 +12,9 @@
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
-      android:theme="@style/AppTheme">
-    <activity android:name=".result.ResultActivity"></activity>
+      android:theme="@style/AppTheme"
+      android:fullBackupContent="true">
+    <activity android:name=".result.ResultActivity"/>
     <activity
         android:name=".invitevoters.InviteVotersActivity"
         android:configChanges="orientation|screenSize" />
@@ -39,32 +40,27 @@
         android:name=".displayelections.TotalElectionsActivity"
         android:configChanges="orientation|screenSize" />
     <activity
-        android:name=".forgotpassword.ForgotPasswordSend"
-        android:configChanges="orientation|screenSize" />
-    <activity
         android:name=".createelection.CreateElectionTwo"
         android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionOne" />
+        android:parentActivityName=".createelection.CreateElectionOne"
+        tools:targetApi="jelly_bean" />
     <activity
         android:name=".createelection.CreateElectionFour"
         android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionThree" />
+        android:parentActivityName=".createelection.CreateElectionThree"
+        tools:targetApi="jelly_bean" />
     <activity
         android:name=".createelection.CreateElectionThree"
         android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionTwo" />
+        android:parentActivityName=".createelection.CreateElectionTwo"
+        tools:targetApi="jelly_bean" />
     <activity
         android:name=".createelection.CreateElectionOne"
         android:configChanges="orientation|screenSize"
-        android:parentActivityName=".home.HomeActivity" />
+        android:parentActivityName=".home.HomeActivity"
+        tools:targetApi="jelly_bean" />
     <activity
         android:name=".home.HomeActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".signup.SignUpActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".login.LoginActivity"
         android:configChanges="orientation|screenSize" />
     <activity android:name=".ui.activities.MainActivity"
         android:theme="@style/SplashTheme">
