@@ -155,5 +155,8 @@
   <string name="email_changed">Email cannot be changed</string>
   <string name="username_changed">Username cannot be changed</string>
 
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
 
