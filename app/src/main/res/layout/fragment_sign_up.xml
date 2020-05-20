@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".signup.SignUpActivity"
+    tools:context=".ui.fragments.auth.signup.SignUpFragment"
     >
 
   <ScrollView
@@ -64,13 +64,13 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
+          android:gravity="center_horizontal"
           android:text="@string/user_sign_up"
           android:textAlignment="center"
           android:textAppearance="@style/TextAppearance.AppCompat.Headline"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/app_logo_iv"
-          android:gravity="center_horizontal"
           />
 
       <com.google.android.material.textfield.TextInputLayout
@@ -206,3 +206,4 @@
   </ScrollView>
 
 </layout>
+

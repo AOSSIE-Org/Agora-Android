@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".login.LoginActivity"
+    tools:context=".ui.fragments.auth.login.LoginFragment"
     >
 
   <ScrollView
@@ -43,6 +43,7 @@
           android:id="@+id/user_login_label_tv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
           android:layout_marginTop="8dp"
           android:text="@string/user_login"
           android:textAlignment="center"
@@ -50,7 +51,6 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/app_logo_iv"
-          android:layout_gravity="center_horizontal"
           />
 
       <TextView
@@ -113,3 +113,4 @@
 
 
 </layout>
+
