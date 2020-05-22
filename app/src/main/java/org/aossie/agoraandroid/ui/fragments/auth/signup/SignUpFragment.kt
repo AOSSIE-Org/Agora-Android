@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_sign_up.view.signup_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.showActionBar
 
 /**
  * A simple [Fragment] subclass.
@@ -39,6 +40,7 @@ class SignUpFragment : Fragment() {
   ): View? {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_sign_up, container, false)
+    showActionBar()
     signUpViewModel = SignUpViewModel(activity!!.application, context!!)
     rootView.signup_btn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)

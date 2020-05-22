@@ -12,12 +12,14 @@ import kotlinx.android.synthetic.main.fragment_login.view.login_btn
 import kotlinx.android.synthetic.main.fragment_login.view.login_password_til
 import kotlinx.android.synthetic.main.fragment_login.view.login_user_name_til
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.showActionBar
 
 /**
  * A simple [Fragment] subclass.
  */
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(), AuthListener {
 
   private var loginViewModel: LoginViewModel? = null
 
@@ -30,8 +32,9 @@ class LoginFragment : Fragment() {
   ): View? {
     // Inflate the layout for this fragment
     rootView =  inflater.inflate(R.layout.fragment_login, container, false)
-
+    showActionBar()
     loginViewModel = LoginViewModel(activity!!.application, context!!)
+    loginViewModel?.authListener = this
     rootView.forgot_password_tv.setOnClickListener {
       Navigation.findNavController(rootView)
           .navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
@@ -60,6 +63,11 @@ class LoginFragment : Fragment() {
     }
 
     return rootView
+  }
+
+  override fun onSuccess() {
+    Navigation.findNavController(rootView)
+        .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
   }
 
 }
