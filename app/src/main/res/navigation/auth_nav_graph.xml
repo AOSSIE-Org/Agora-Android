@@ -8,44 +8,71 @@
   <fragment
       android:id="@+id/welcomeFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment"
-      android:label="fragment_welcome"
+      android:label="Welcome"
       tools:layout="@layout/fragment_welcome" >
     <action
         android:id="@+id/action_welcomeFragment_to_loginFragment"
         app:destination="@id/loginFragment"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"
-        app:popEnterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/fade_out" />
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left" />
     <action
         android:id="@+id/action_welcomeFragment_to_signUpFragment"
         app:destination="@id/signUpFragment"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"
-        app:popEnterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
   </fragment>
   <fragment
       android:id="@+id/loginFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment"
-      android:label="fragment_login"
+      android:label="Login"
       tools:layout="@layout/fragment_login" >
     <action
         android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
         app:destination="@id/forgotPasswordFragment"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"
-        app:popEnterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/fade_out"/>
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+    <action
+        android:id="@+id/action_loginFragment_to_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
   </fragment>
   <fragment
       android:id="@+id/signUpFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment"
-      android:label="fragment_sign_up"
+      android:label="Sing Up"
       tools:layout="@layout/fragment_sign_up" />
   <fragment
       android:id="@+id/forgotPasswordFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment"
-      android:label="fragment_forgot_password"
+      android:label="Forgot Password"
       tools:layout="@layout/fragment_forgot_password" />
+  <fragment
+      android:id="@+id/homeFragment"
+      android:name="org.aossie.agoraandroid.home.HomeFragment"
+      android:label="Home"
+      tools:layout="@layout/fragment_home"/>
+  <fragment
+      android:id="@+id/electionsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment"
+      android:label="Elections"
+      tools:layout="@layout/fragment_elections" />
+  <fragment
+      android:id="@+id/profileFragment"
+      android:name="org.aossie.agoraandroid.home.ProfileFragment"
+      android:label="Profile"
+      tools:layout="@layout/fragment_profile" />
+  <fragment
+      android:id="@+id/moreFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.MoreFragment"
+      android:label="More"
+      tools:layout="@layout/fragment_more" />
 </navigation>

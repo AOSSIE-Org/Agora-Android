@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.home.HomeActivity
 import org.aossie.agoraandroid.remote.RetrofitClient
+import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.json.JSONException
 import org.json.JSONObject
@@ -21,6 +22,7 @@ class LoginViewModel(
 ) : AndroidViewModel(application) {
   private val sharedPrefs = SharedPrefs(getApplication())
   private var loadToast: LoadToast? = null
+  var authListener: AuthListener ?= null
   fun logInRequest(
     userName: String?,
     userPassword: String?
@@ -60,10 +62,7 @@ class LoginViewModel(
             sharedPrefs.savePass(userPassword)
             sharedPrefs.saveTokenExpiresOn(expiresOn)
             loadToast!!.success()
-            val intent = Intent(context, HomeActivity::class.java)
-            intent.addCategory(Intent.CATEGORY_HOME)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            context.startActivity(intent)
+            authListener?.onSuccess()
           } catch (e: JSONException) {
             e.printStackTrace()
           }
