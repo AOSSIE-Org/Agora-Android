@@ -17,7 +17,7 @@
         android:icon="@drawable/ic_person_black_24dp"/>
 
     <item
-        android:id="@+id/moreFragment"
+        android:id="@+id/moreOptionsFragment"
         android:title="@string/more"
         android:icon="@drawable/ic_more_icon"/>
 

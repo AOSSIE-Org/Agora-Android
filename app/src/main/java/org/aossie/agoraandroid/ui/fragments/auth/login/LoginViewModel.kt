@@ -6,7 +6,6 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import net.steamcrafted.loadtoast.LoadToast
-import org.aossie.agoraandroid.home.HomeActivity
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.SharedPrefs
@@ -150,7 +149,7 @@ class LoginViewModel(
             sharedPrefs.saveEmail(email)
             sharedPrefs.saveFirstName(firstName)
             sharedPrefs.saveLastName(lastName)
-            context.startActivity(Intent(context, HomeActivity::class.java))
+            authListener?.onSuccess()
           } catch (e: JSONException) {
             e.printStackTrace()
           }

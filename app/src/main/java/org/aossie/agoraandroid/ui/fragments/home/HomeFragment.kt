@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.home
+package org.aossie.agoraandroid.ui.fragments.home
 
 import android.content.Intent
 import android.os.Bundle
