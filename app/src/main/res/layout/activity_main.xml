@@ -1,21 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:animateLayoutChanges="true"
+      android:scrollbarDefaultDelayBeforeFade="@integer/config_navAnimTime"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/colorPrimaryDark">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_back"
+        android:layout_width="@dimen/size_25dp"
+        android:layout_height="@dimen/size_25dp"
+        android:layout_gravity="start"
+        android:layout_marginEnd="@dimen/size_15dp"
+        app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+        android:layout_marginRight="@dimen/size_15dp"
+        />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/title"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_18sp"
+        android:textColorHint="@color/white"
+        android:layout_gravity="center"/>
+  </androidx.appcompat.widget.Toolbar>
 
   <androidx.fragment.app.FragmentContainerView
       android:id="@+id/host_fragment"
       android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
       app:defaultNavHost="true"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
       app:navGraph="@navigation/auth_nav_graph"
       />
+  
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/bottom_navigation"
+      android:animateLayoutChanges="true"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/bottomNav"
+      android:textSize="@dimen/size_10sp"
+      app:itemIconSize="@dimen/size_22dp"
+      app:menu="@menu/bottom_nav_menu"
+      android:foreground="?attr/selectableItemBackground"
+      />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
