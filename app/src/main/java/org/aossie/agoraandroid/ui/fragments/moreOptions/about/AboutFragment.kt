@@ -1,25 +1,22 @@
-package org.aossie.agoraandroid.ui.fragments
+package org.aossie.agoraandroid.ui.fragments.moreOptions.about
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import org.aossie.agoraandroid.R
+import androidx.fragment.app.Fragment
+import org.aossie.agoraandroid.R.layout
 
 /**
  * A simple [Fragment] subclass.
  */
-class MoreFragment : Fragment() {
-
+class AboutFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_more, container, false)
+    return inflater.inflate(layout.fragment_about, container, false)
   }
-
 }

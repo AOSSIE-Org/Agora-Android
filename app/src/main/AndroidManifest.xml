@@ -55,13 +55,14 @@
         android:parentActivityName=".createelection.CreateElectionTwo"
         tools:targetApi="jelly_bean" />
     <activity
-        android:name=".createelection.CreateElectionOne"
+        android:name=".ui.fragments.moreOptions.HomeActivity"
         android:configChanges="orientation|screenSize"
-        android:parentActivityName=".home.HomeActivity"
         tools:targetApi="jelly_bean" />
     <activity
-        android:name=".home.HomeActivity"
-        android:configChanges="orientation|screenSize" />
+        android:name=".createelection.CreateElectionOne"
+        android:configChanges="orientation|screenSize"
+        android:parentActivityName="org.aossie.agoraandroid.ui.fragments.moreOptions.HomeActivity"
+        tools:targetApi="jelly_bean" />
     <activity android:name=".ui.activities.MainActivity"
         android:theme="@style/SplashTheme">
       <intent-filter>

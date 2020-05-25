@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import net.steamcrafted.loadtoast.LoadToast;
 
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.home.HomeActivity;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
