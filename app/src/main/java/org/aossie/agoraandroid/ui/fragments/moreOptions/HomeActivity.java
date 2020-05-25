@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.home;
+package org.aossie.agoraandroid.ui.fragments.moreOptions;
 
 import android.os.Bundle;
 import android.view.Menu;

@@ -30,4 +30,16 @@
     <item name="android:textColor">@android:color/white</item>
     <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
   </style>
+
+  <style name="MoreFragmentsTextViewStyle" parent="Widget.AppCompat.TextView">
+    <item name="android:background">@drawable/white_text_style</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:padding">@dimen/size_15dp</item>
+    <item name="android:drawablePadding">@dimen/size_40dp</item>
+    <item name="android:textSize">@dimen/size_18sp</item>
+    <item name="drawableSize">@dimen/size_35dp</item>
+  </style>
+
+  <dimen name="size_40dp">40dp</dimen>
 </resources>

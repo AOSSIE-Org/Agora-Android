@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.home
+package org.aossie.agoraandroid.ui.fragments.profile
 
 import android.app.Application
 import android.util.Log
@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.remote.RetrofitClient
+import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
+import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.json.JSONException
 import org.json.JSONObject
@@ -72,10 +74,14 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
       ) {
         if (response.message() == "OK") {
           sharedPrefs.savePass(password)
-          _passwordRequestCode.value = ResponseResults.Success()
+          _passwordRequestCode.value =
+            Success()
         } else {
           Log.d("TAG", "onResponse:" + response.body())
-          _passwordRequestCode.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
+          _passwordRequestCode.value =
+            Error(
+                getApplication<Application>().getString(string.token_expired)
+            )
         }
       }
 
@@ -83,7 +89,12 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         call: Call<String>,
         t: Throwable
       ) {
-        _passwordRequestCode.value = ResponseResults.Error(getApplication<Application>().getString(string.something_went_wrong_please_try_again_later))
+        _passwordRequestCode.value =
+          Error(
+              getApplication<Application>().getString(
+                  string.something_went_wrong_please_try_again_later
+              )
+          )
       }
     })
   }
@@ -117,9 +128,13 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         if(response.message() == "OK") {
           sharedPrefs.saveFirstName(firstName)
           sharedPrefs.saveLastName(lastName)
-          _userUpdateResponse.value = ResponseResults.Success()
+          _userUpdateResponse.value =
+            Success()
         }else{
-          _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.token_expired))
+          _userUpdateResponse.value =
+            Error(
+                getApplication<Application>().getString(string.token_expired)
+            )
         }
       }
 
@@ -127,7 +142,12 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         call: Call<String>,
         t: Throwable
       ) {
-        _userUpdateResponse.value = ResponseResults.Error(getApplication<Application>().getString(string.something_went_wrong_please_try_again_later))
+        _userUpdateResponse.value =
+          Error(
+              getApplication<Application>().getString(
+                  string.something_went_wrong_please_try_again_later
+              )
+          )
       }
     })
   }
