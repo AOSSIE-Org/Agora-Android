@@ -5,25 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.facebook.shimmer.ShimmerFrameLayout
+import kotlinx.android.synthetic.main.data_placeholder_shimmer_layout.view.btn_create_election
+import kotlinx.android.synthetic.main.fragment_home.view.card_view_active_elections
+import kotlinx.android.synthetic.main.fragment_home.view.card_view_finished_elections
+import kotlinx.android.synthetic.main.fragment_home.view.card_view_pending_elections
+import kotlinx.android.synthetic.main.fragment_home.view.card_view_total_elections
+import kotlinx.android.synthetic.main.fragment_home.view.constraintLayout
+import kotlinx.android.synthetic.main.fragment_home.view.shimmer_view_container
 import kotlinx.android.synthetic.main.fragment_home.view.swipe_refresh
-import org.aossie.agoraandroid.R
+import kotlinx.android.synthetic.main.fragment_home.view.text_view_active_count
+import kotlinx.android.synthetic.main.fragment_home.view.text_view_finished_count
+import kotlinx.android.synthetic.main.fragment_home.view.text_view_pending_count
+import kotlinx.android.synthetic.main.fragment_home.view.text_view_total_count
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.createelection.CreateElectionOne
 import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs
-import org.aossie.agoraandroid.displayelections.ActiveElectionsActivity
-import org.aossie.agoraandroid.displayelections.FinishedElectionsActivity
-import org.aossie.agoraandroid.displayelections.PendingElectionsActivity
-import org.aossie.agoraandroid.displayelections.TotalElectionsActivity
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.showActionBar
@@ -38,19 +39,14 @@ import java.util.Calendar
 import java.util.Locale
 
 class HomeFragment : Fragment() {
-  private var mActiveCountTextView: TextView? = null
-  private var mPendingCountTextView: TextView? = null
-  private var mTotalCountTextView: TextView? = null
-  private var mFinishedCountTextView: TextView? = null
   private var electionDetailsSharedPrefs: ElectionDetailsSharedPrefs? = null
   private var mActiveCount = 0
   private var mFinishedCount = 0
   private var mPendingCount = 0
   private var flag = 0
-  private var mShimmerViewContainer: ShimmerFrameLayout? = null
-  private var constraintLayout: ConstraintLayout? = null
   private var sharedPrefs: SharedPrefs? = null
-  private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
+
+  private lateinit var rootView: View
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -58,50 +54,31 @@ class HomeFragment : Fragment() {
   ): View? {
     electionDetailsSharedPrefs = ElectionDetailsSharedPrefs(activity)
     sharedPrefs = SharedPrefs(activity!!)
-    val view = inflater.inflate(layout.fragment_home, container, false)
+    rootView = inflater.inflate(layout.fragment_home, container, false)
     showActionBar()
-    mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container)
-    constraintLayout = view.findViewById(R.id.constraintLayout)
-    mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh)
-    view.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
-    val mTotalElectionsCardView: CardView = view.findViewById(R.id.card_view_total_elections)
-    val mPendingElectionsCardView: CardView = view.findViewById(R.id.card_view_pending_elections)
-    val mActiveElectionsCardView: CardView = view.findViewById(R.id.card_view_active_elections)
-    val mFinishedElectionsCardView: CardView = view.findViewById(R.id.card_view_finished_elections)
-    mActiveCountTextView = view.findViewById(R.id.text_view_active_count)
-    mPendingCountTextView = view.findViewById(R.id.text_view_pending_count)
-    mTotalCountTextView = view.findViewById(R.id.text_view_total_count)
-    mFinishedCountTextView = view.findViewById(R.id.text_view_finished_count)
-    val createElection =
-      view.findViewById<Button>(R.id.button_create_election)
-    mActiveElectionsCardView.setOnClickListener {
-      startActivity(
-          Intent(
-              activity, ActiveElectionsActivity::class.java
-          )
-      )
+    rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
+    rootView.card_view_active_elections.setOnClickListener {
+      Navigation.findNavController(rootView)
+          .navigate(HomeFragmentDirections.actionHomeFragmentToActiveElectionsFragment())
     }
-    mPendingElectionsCardView.setOnClickListener {
-      startActivity(
-          Intent(activity, PendingElectionsActivity::class.java)
-      )
+    rootView.card_view_pending_elections.setOnClickListener {
+      Navigation.findNavController(rootView)
+          .navigate(HomeFragmentDirections.actionHomeFragmentToPendingElectionsFragment())
     }
-    mFinishedElectionsCardView.setOnClickListener {
-      startActivity(
-          Intent(activity, FinishedElectionsActivity::class.java)
-      )
+    rootView.card_view_finished_elections.setOnClickListener {
+      Navigation.findNavController(rootView)
+          .navigate(HomeFragmentDirections.actionHomeFragmentToFinishedElectionsFragment())
     }
-    mTotalElectionsCardView.setOnClickListener {
-      startActivity(
-          Intent(activity, TotalElectionsActivity::class.java)
-      )
+    rootView.card_view_total_elections.setOnClickListener {
+      Navigation.findNavController(rootView)
+          .navigate(HomeFragmentDirections.actionHomeFragmentToElectionsFragment())
     }
-    createElection.setOnClickListener {
+    rootView.btn_create_election.setOnClickListener {
       startActivity(
           Intent(activity, CreateElectionOne::class.java)
       )
     }
-    view.swipe_refresh.setOnRefreshListener(
+    rootView.swipe_refresh.setOnRefreshListener(
         OnRefreshListener { doYourUpdate() }
     )
     val userName = sharedPrefs!!.userName
@@ -123,14 +100,7 @@ class HomeFragment : Fragment() {
       e.printStackTrace()
     }
     getElectionData(sharedPrefs!!.token)
-    return view
-  }
-
-  override fun onViewCreated(
-    view: View,
-    savedInstanceState: Bundle?
-  ) {
-    super.onViewCreated(view, savedInstanceState)
+    return rootView
   }
 
   private fun updateToken(
@@ -152,9 +122,9 @@ class HomeFragment : Fragment() {
         response: Response<String?>
       ) {
         if (response.message() == "OK") {
-          mShimmerViewContainer!!.stopShimmer()
-          mShimmerViewContainer!!.visibility = View.GONE
-          constraintLayout!!.visibility = View.VISIBLE
+          rootView.shimmer_view_container.stopShimmer()
+          rootView.shimmer_view_container.visibility = View.GONE
+          rootView.constraintLayout.visibility = View.VISIBLE
           try {
             val jsonObjects = JSONObject(response.body())
             val token = jsonObjects.getJSONObject("token")
@@ -190,9 +160,9 @@ class HomeFragment : Fragment() {
         response: Response<String?>
       ) {
         if (response.message() == "OK") {
-          mShimmerViewContainer!!.stopShimmer()
-          mShimmerViewContainer!!.visibility = View.GONE
-          constraintLayout!!.visibility = View.VISIBLE
+          rootView.shimmer_view_container.stopShimmer()
+          rootView.shimmer_view_container.visibility = View.GONE
+          rootView.constraintLayout.visibility = View.VISIBLE
           electionDetailsSharedPrefs!!.saveElectionDetails(response.body())
           try {
             val jsonObject = JSONObject(response.body())
@@ -223,12 +193,12 @@ class HomeFragment : Fragment() {
               }
             }
             flag++
-            mTotalCountTextView!!.text = jsonArray.length()
+            rootView.text_view_total_count.text = jsonArray.length()
                 .toString()
-            mPendingCountTextView!!.text = mPendingCount.toString()
-            mActiveCountTextView!!.text = mActiveCount.toString()
-            mFinishedCountTextView!!.text = mFinishedCount.toString()
-            mSwipeRefreshLayout!!.isRefreshing = false // Disables the refresh icon
+           rootView.text_view_pending_count.text = mPendingCount.toString()
+            rootView.text_view_active_count.text = mActiveCount.toString()
+            rootView.text_view_finished_count.text = mFinishedCount.toString()
+            rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
           } catch (e: JSONException) {
             e.printStackTrace()
           } catch (e: ParseException) {
@@ -241,10 +211,10 @@ class HomeFragment : Fragment() {
         call: Call<String?>,
         t: Throwable
       ) {
-        mShimmerViewContainer!!.stopShimmer()
-        mShimmerViewContainer!!.visibility = View.GONE
-        constraintLayout!!.visibility = View.VISIBLE
-        mSwipeRefreshLayout!!.isRefreshing = false // Disables the refresh icon
+        rootView.shimmer_view_container.stopShimmer()
+        rootView.shimmer_view_container.visibility = View.GONE
+        rootView.constraintLayout.visibility = View.VISIBLE
+        rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
         Toast.makeText(activity, "Something went wrong please refresh", Toast.LENGTH_SHORT)
             .show()
       }
@@ -253,18 +223,18 @@ class HomeFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
-    mShimmerViewContainer!!.startShimmer()
+    rootView.shimmer_view_container.startShimmer()
   }
 
   override fun onPause() {
-    mShimmerViewContainer!!.stopShimmer()
+    rootView.shimmer_view_container.stopShimmer()
     super.onPause()
   }
 
   private fun doYourUpdate() {
-    constraintLayout!!.visibility = View.GONE
-    mShimmerViewContainer!!.visibility = View.VISIBLE
-    mShimmerViewContainer!!.startShimmer()
+    rootView.constraintLayout.visibility = View.GONE
+    rootView.shimmer_view_container.visibility = View.VISIBLE
+    rootView.shimmer_view_container.startShimmer()
     getElectionData(sharedPrefs!!.token) //try to fetch data again
   }
 }

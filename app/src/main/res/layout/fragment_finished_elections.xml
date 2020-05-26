@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.elections.ElectionsFragment"
+    tools:context=".ui.fragments.displayelections.FinishedElectionsFragment"
     >
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_total_elections"
+      android:id="@+id/rv_finished_elections"
       android:layout_width="0dp"
       android:layout_height="0dp"
       app:layout_constraintBottom_toBottomOf="parent"
@@ -17,3 +17,4 @@
       tools:item_layout="@layout/list_item_election_details"
       />
 </androidx.constraintlayout.widget.ConstraintLayout>
+

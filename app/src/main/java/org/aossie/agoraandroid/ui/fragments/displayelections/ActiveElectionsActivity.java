@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayelections;
+package org.aossie.agoraandroid.ui.fragments.displayelections;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PendingElectionsActivity extends AppCompatActivity {
+public class ActiveElectionsActivity extends AppCompatActivity {
   private final ArrayList<String> mElectionNameList = new ArrayList<>();
   private final ArrayList<String> mElectionDescriptionList = new ArrayList<>();
   private final ArrayList<String> mElectionStartDateList = new ArrayList<>();
@@ -30,7 +30,7 @@ public class PendingElectionsActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_pending_elections);
+    setContentView(R.layout.activity_active_elections);
     //added back button to Toolbar
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -47,7 +47,8 @@ public class PendingElectionsActivity extends AppCompatActivity {
     }
     ElectionDetailsSharedPrefs electionDetailsSharedPrefs =
         new ElectionDetailsSharedPrefs(getApplicationContext());
-    RecyclerView rvElectionDetails = findViewById(R.id.rv_pending_elections);
+    RecyclerView rvElectionDetails = findViewById(R.id.rv_active_elections);
+
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
     rvElectionDetails.setLayoutManager(mLayoutManager);
     try {
@@ -63,8 +64,8 @@ public class PendingElectionsActivity extends AppCompatActivity {
         Date formattedEndingDate = formatter.parse(singleElectionJsonObject.getString("end"));
         Date currentDate = Calendar.getInstance().getTime();
 
-        if (currentDate.before(formattedStartingDate)) {
-          mElectionStatusList.add("Pending");
+        if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
+          mElectionStatusList.add("Active");
           mElectionStartDateList.add(formattedStartingDate.toString());
           mElectionEndDateList.add(formattedEndingDate.toString());
           mElectionNameList.add(singleElectionJsonObject.getString("name"));
@@ -86,7 +87,7 @@ public class PendingElectionsActivity extends AppCompatActivity {
     ElectionsRecyclerAdapter electionsRecyclerAdapter =
         new ElectionsRecyclerAdapter(mIDList, this, mElectionNameList, mElectionDescriptionList,
             mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList,
-            "pending");
+            "active");
     rvElectionDetails.setAdapter(electionsRecyclerAdapter);
   }
 }
