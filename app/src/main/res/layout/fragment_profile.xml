@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".home.ProfileFragment"
+    tools:context=".ui.fragments.profile.ProfileFragment"
     >
 
   <ScrollView
@@ -207,7 +207,7 @@
 
     <variable
         name="viewModel"
-        type="org.aossie.agoraandroid.home.ProfileViewModel"
+        type="org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel"
         />
   </data>
 </layout>

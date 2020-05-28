@@ -2,25 +2,140 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph">
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
   <fragment
-      android:id="@+id/fragment_about"
-      android:name="org.aossie.agoraandroid.home.AboutFragment"
-      android:label="About Agora"
-      tools:layout="@layout/fragment_about" />
+      android:id="@+id/welcomeFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment"
+      android:label="Welcome"
+      tools:layout="@layout/fragment_welcome" >
+    <action
+        android:id="@+id/action_welcomeFragment_to_loginFragment"
+        app:destination="@id/loginFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left" />
+    <action
+        android:id="@+id/action_welcomeFragment_to_signUpFragment"
+        app:destination="@id/signUpFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+  </fragment>
   <fragment
-      android:id="@+id/fragment_contact_us"
-      android:name="org.aossie.agoraandroid.home.ContactUsFragment"
+      android:id="@+id/loginFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment"
+      android:label="Login"
+      tools:layout="@layout/fragment_login" >
+    <action
+        android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+        app:destination="@id/forgotPasswordFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+    <action
+        android:id="@+id/action_loginFragment_to_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+  </fragment>
+  <fragment
+      android:id="@+id/signUpFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment"
+      android:label="Sing Up"
+      tools:layout="@layout/fragment_sign_up" />
+  <fragment
+      android:id="@+id/forgotPasswordFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment"
+      android:label="Forgot Password"
+      tools:layout="@layout/fragment_forgot_password" />
+  <fragment
+      android:id="@+id/homeFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.home.HomeFragment"
+      android:label="Home"
+      tools:layout="@layout/fragment_home"/>
+  <fragment
+      android:id="@+id/electionsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment"
+      android:label="Elections"
+      tools:layout="@layout/fragment_elections" />
+  <fragment
+      android:id="@+id/profileFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment"
+      android:label="Profile"
+      tools:layout="@layout/fragment_profile" />
+  <fragment
+      android:id="@+id/moreOptionsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment"
+      android:label="More Options"
+      tools:layout="@layout/fragment_more_options" >
+    <action
+        android:id="@+id/action_moreOptionsFragment_to_aboutFragment"
+        app:destination="@id/aboutFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+    <action
+        android:id="@+id/action_moreOptionsFragment_to_reportBugFragment"
+        app:destination="@id/reportBugFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+    <action
+        android:id="@+id/action_moreOptionsFragment_to_shareWithOthersFragment"
+        app:destination="@id/shareWithOthersFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+    <action
+        android:id="@+id/action_moreOptionsFragment_to_contactUsFragment"
+        app:destination="@id/contactUsFragment"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"/>
+    <action
+        android:id="@+id/action_moreOptionsFragment_to_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"/>
+    <action
+        android:id="@+id/action_moreOptionsFragment_to_welcomeFragment"
+        app:destination="@id/welcomeFragment"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"/>
+  </fragment>
+  <fragment
+      android:id="@+id/reportBugFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.report.ReportBugFragment"
+      android:label="Report"
+      tools:layout="@layout/fragment_report_bug" />
+  <fragment
+      android:id="@+id/contactUsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.contactUs.ContactUsFragment"
       android:label="Contact Us"
       tools:layout="@layout/fragment_contact_us" />
   <fragment
-      android:id="@+id/fragment_share_with_others"
-      android:name="org.aossie.agoraandroid.home.ShareWithOthersFragment"
-      android:label="Share With Others"
-      tools:layout="@layout/fragment_share_with_others" />
+      android:id="@+id/aboutFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.about.AboutFragment"
+      android:label="About Agora"
+      tools:layout="@layout/fragment_about" />
   <fragment
-      android:id="@+id/fragment_report_bug"
-      android:name="org.aossie.agoraandroid.home.ReportBugFragment"
-      android:label="Report A Bug"
-      tools:layout="@layout/fragment_report_bug" />
+      android:id="@+id/shareWithOthersFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.share.ShareWithOthersFragment"
+      android:label="Share with Others"
+      tools:layout="@layout/fragment_share_with_others" />
 </navigation>

@@ -12,10 +12,11 @@ import kotlinx.android.synthetic.main.activity_main.iv_back
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_main.tv_title
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.home.HomeFragment
-import org.aossie.agoraandroid.home.ProfileFragment
-import org.aossie.agoraandroid.ui.fragments.MoreFragment
+import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
+import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
+import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
+import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 import org.aossie.agoraandroid.utilities.SharedPrefs
 
 class MainActivity : AppCompatActivity() {
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
       setToolbar(destination)
+      handleBottomNavVisibility(destination.id)
     }
 
     NavigationUI.setupWithNavController(bottom_navigation, navController)
@@ -50,7 +52,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun setToolbar(destination: NavDestination) {
-    handleBottomNavVisibility(destination.id)
     handleBackButton(destination.id)
     tv_title.text = destination.label
   }
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
       R.id.profileFragment,
       R.id.homeFragment,
       R.id.electionsFragment,
-      R.id.moreFragment
+      R.id.moreOptionsFragment
       -> bottom_navigation.visibility = View.VISIBLE
       else -> bottom_navigation.visibility = View.GONE
     }
@@ -69,12 +70,12 @@ class MainActivity : AppCompatActivity() {
   override fun onBackPressed() {
     val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     if (hostFragment is NavHostFragment) {
-      val currentFragment = hostFragment.childFragmentManager.fragments.first()
-      when (currentFragment) {
-        is HomeFragment -> moveTaskToBack(true)
+      when (hostFragment.childFragmentManager.fragments.first()) {
+        is HomeFragment,
+        is WelcomeFragment -> moveTaskToBack(true)
         is ElectionsFragment,
         is ProfileFragment,
-        is MoreFragment -> navController.navigate(R.id.homeFragment)
+        is MoreOptionsFragment -> navController.navigate(R.id.homeFragment)
        else -> super.onBackPressed()
       }
     } else {
@@ -86,7 +87,11 @@ class MainActivity : AppCompatActivity() {
     when (id) {
       R.id.loginFragment,
       R.id.signUpFragment,
-      R.id.forgotPasswordFragment -> iv_back.let {
+      R.id.forgotPasswordFragment,
+      R.id.aboutFragment,
+      R.id.reportBugFragment,
+      R.id.shareWithOthersFragment,
+      R.id.contactUsFragment -> iv_back.let {
         it.visibility = View.VISIBLE
         it.setOnClickListener { onBackPressed() }
       }
