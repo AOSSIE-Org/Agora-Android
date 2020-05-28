@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.fragments.elections
+package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import kotlinx.android.synthetic.main.fragment_elections.view.rv_total_elections
+import kotlinx.android.synthetic.main.fragment_active_elections.view.rv_active_elections
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsRecyclerAdapter
 import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs
@@ -21,10 +21,7 @@ import java.util.Calendar
 /**
  * A simple [Fragment] subclass.
  */
-class ElectionsFragment : Fragment() {
-
-  private lateinit var rootView: View
-
+class ActiveElectionsFragment : Fragment() {
   private val mElectionNameList =
     ArrayList<String>()
   private val mElectionDescriptionList =
@@ -38,6 +35,7 @@ class ElectionsFragment : Fragment() {
   private val mCandidatesList =
     ArrayList<String>()
   private val mIDList = ArrayList<String>()
+  private lateinit var rootView: View
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -45,12 +43,11 @@ class ElectionsFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_elections, container, false)
+    rootView = inflater.inflate(R.layout.fragment_active_elections, container, false)
+    val electionDetailsSharedPrefs = ElectionDetailsSharedPrefs(context)
 
-    val electionDetailsSharedPrefs =
-      ElectionDetailsSharedPrefs(context)
     val mLayoutManager: LayoutManager = LinearLayoutManager(context)
-    rootView.rv_total_elections.layoutManager = mLayoutManager
+    rootView.rv_active_elections.layoutManager = mLayoutManager
     try {
       val jsonObject =
         JSONObject(electionDetailsSharedPrefs.electionDetails)
@@ -58,28 +55,21 @@ class ElectionsFragment : Fragment() {
       for (i in 0 until electionsJsonArray.length()) {
         val mCandidateName = StringBuilder()
         val singleElectionJsonObject = electionsJsonArray.getJSONObject(i)
-        mElectionNameList.add(singleElectionJsonObject.getString("name"))
-        mIDList.add(singleElectionJsonObject.getString("_id"))
-        mElectionDescriptionList.add(singleElectionJsonObject.getString("description"))
         val formatter =
           SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val formattedStartingDate =
           formatter.parse(singleElectionJsonObject.getString("start"))
         val formattedEndingDate =
           formatter.parse(singleElectionJsonObject.getString("end"))
-        mElectionStartDateList.add(formattedStartingDate.toString())
-        mElectionEndDateList.add(formattedEndingDate.toString())
         val currentDate = Calendar.getInstance()
             .time
-        if (currentDate.before(formattedStartingDate)) {
-          mElectionStatusList.add("Pending")
-        } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-                formattedEndingDate
-            )
-        ) {
+        if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
           mElectionStatusList.add("Active")
-        } else if (currentDate.after(formattedEndingDate)) {
-          mElectionStatusList.add("Finished")
+          mElectionStartDateList.add(formattedStartingDate.toString())
+          mElectionEndDateList.add(formattedEndingDate.toString())
+          mElectionNameList.add(singleElectionJsonObject.getString("name"))
+          mIDList.add(singleElectionJsonObject.getString("_id"))
+          mElectionDescriptionList.add(singleElectionJsonObject.getString("description"))
         }
         val candidatesJsonArray =
           singleElectionJsonObject.getJSONArray("candidates")
@@ -101,9 +91,9 @@ class ElectionsFragment : Fragment() {
     val electionsRecyclerAdapter = ElectionsRecyclerAdapter(
         mIDList, context, mElectionNameList, mElectionDescriptionList,
         mElectionStartDateList, mElectionEndDateList, mElectionStatusList, mCandidatesList,
-        "total"
+        "active"
     )
-    rootView.rv_total_elections.adapter = electionsRecyclerAdapter
+    rootView.rv_active_elections.adapter = electionsRecyclerAdapter
 
     return rootView
   }

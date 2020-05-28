@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.displayelections.ElectionActivity;
+import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionActivity;
 
 public class ElectionsRecyclerAdapter
     extends RecyclerView.Adapter<ElectionsRecyclerAdapter.ElectionsViewHolder> {
