@@ -59,7 +59,38 @@
       android:id="@+id/homeFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.home.HomeFragment"
       android:label="Home"
-      tools:layout="@layout/fragment_home"/>
+      tools:layout="@layout/fragment_home">
+    <action
+        android:id="@+id/action_homeFragment_to_activeElectionsFragment"
+        app:destination="@+id/activeElectionsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out" />
+    <action
+        android:id="@+id/action_homeFragment_to_pendingElectionsFragment"
+        app:destination="@+id/pendingElectionsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"
+        />
+    <action
+        android:id="@+id/action_homeFragment_to_finishedElectionsFragment"
+        app:destination="@+id/finishedElectionsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"
+        />
+    <action
+        android:id="@+id/action_homeFragment_to_electionsFragment"
+        app:destination="@id/electionsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out" />
+  </fragment>
   <fragment
       android:id="@+id/electionsFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment"
@@ -138,4 +169,19 @@
       android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.share.ShareWithOthersFragment"
       android:label="Share with Others"
       tools:layout="@layout/fragment_share_with_others" />
+  <fragment
+      android:id="@+id/activeElectionsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment"
+      android:label="Active Elections"
+      tools:layout="@layout/fragment_active_elections" />
+  <fragment
+      android:id="@+id/finishedElectionsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment"
+      android:label="Finished Elections"
+      tools:layout="@layout/fragment_finished_elections" />
+  <fragment
+      android:id="@+id/pendingElectionsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFragment"
+      android:label="Pending Elections"
+      tools:layout="@layout/fragment_pending_elections" />
 </navigation>
