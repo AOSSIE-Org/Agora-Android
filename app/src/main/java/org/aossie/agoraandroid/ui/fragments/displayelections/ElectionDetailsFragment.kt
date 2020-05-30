@@ -1,7 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.displayelections
 
-import android.content.Intent
-import android.content.Intent.getIntent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -25,9 +23,7 @@ import kotlinx.android.synthetic.main.fragment_election_details.view.tv_end_date
 import kotlinx.android.synthetic.main.fragment_election_details.view.tv_start_date
 import kotlinx.android.synthetic.main.fragment_election_details.view.tv_status
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.invitevoters.InviteVotersActivity
 import org.aossie.agoraandroid.result.ResultViewModel
-import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragmentDirections
 import org.aossie.agoraandroid.utilities.SharedPrefs
 
 /**
@@ -61,13 +57,17 @@ class ElectionDetailsFragment : Fragment(), DisplayElectionListener {
         Toast.makeText(context, "Election is Finished", Toast.LENGTH_SHORT)
             .show()
       } else {
-        val intent = Intent(
-            context,
-            InviteVotersActivity::class.java
-        )
-        intent.putExtra("id", id)
-        intent.putExtra("token", token)
-        startActivity(intent)
+        val action = ElectionDetailsFragmentDirections
+            .actionElectionDetailsFragmentToInviteVotersFragment(id!! , token!!)
+        Navigation.findNavController(rootView)
+            .navigate(action)
+//        val intent = Intent(
+//            context,
+//            InviteVotersActivity::class.java
+//        )
+//        intent.putExtra("id", id)
+//        intent.putExtra("token", token)
+//        startActivity(intent)
       }
     }
     rootView.button_result.setOnClickListener {

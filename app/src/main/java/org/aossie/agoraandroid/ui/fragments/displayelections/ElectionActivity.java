@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import org.aossie.agoraandroid.R;
-import org.aossie.agoraandroid.invitevoters.InviteVotersActivity;
 import org.aossie.agoraandroid.result.ResultViewModel;
 import org.aossie.agoraandroid.utilities.SharedPrefs;
 
@@ -62,10 +61,10 @@ public class ElectionActivity extends AppCompatActivity {
         if (status.equals("Finished")) {
           Toast.makeText(ElectionActivity.this, "Election is Finished", Toast.LENGTH_SHORT).show();
         } else {
-          Intent intent = new Intent(getApplicationContext(), InviteVotersActivity.class);
-          intent.putExtra("id", id);
-          intent.putExtra("token", token);
-          startActivity(intent);
+          //Intent intent = new Intent(getApplicationContext(), InviteVotersActivity.class);
+          //intent.putExtra("id", id);
+          //intent.putExtra("token", token);
+          //startActivity(intent);
         }
       }
     });
