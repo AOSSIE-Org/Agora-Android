@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayelections;
+package org.aossie.agoraandroid.ui.fragments.displayelections;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,7 +9,9 @@ import androidx.lifecycle.AndroidViewModel;
 import net.steamcrafted.loadtoast.LoadToast;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.ui.fragments.auth.AuthListener;
 import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeActivity;
+import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,6 +19,7 @@ import retrofit2.Response;
 class DisplayElectionViewModel extends AndroidViewModel {
   private final Context context;
   private LoadToast loadToast;
+  private DisplayElectionListener displayElectionListener;
 
   DisplayElectionViewModel(@NonNull Application application, Context context) {
     super(application);
@@ -57,12 +60,15 @@ class DisplayElectionViewModel extends AndroidViewModel {
     Call<String> getVotersResponse = apiService.getVoters(token, id);
     getVotersResponse.enqueue(new Callback<String>() {
       @Override
-      public void onResponse(Call<String> call, Response<String> response) {
+      public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
         if (response.message().equals("OK")) {
           loadToast.success();
-          Intent intent = new Intent(context, VotersActivity.class);
-          intent.putExtra("voters_response", response.body());
-          context.startActivity(intent);
+          if (response.body() != null) {
+            displayElectionListener.onGetVotersSuccess(response.body());
+          }
+          //Intent intent = new Intent(context, VotersActivity.class);
+          //intent.putExtra("voters_response", response.body());
+          //context.startActivity(intent);
         }
       }
 
