@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.displayelections;
+package org.aossie.agoraandroid.ui.fragments.displayelections;
 
 import android.content.Intent;
 import android.graphics.Color;
