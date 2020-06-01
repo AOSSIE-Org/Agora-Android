@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import kotlinx.android.synthetic.main.fragment_pending_elections.view.rv_pending_elections
 import org.aossie.agoraandroid.ElectionAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsRecyclerAdapter
-import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs
+import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.json.JSONException
 import org.json.JSONObject
 import java.text.ParseException
@@ -52,7 +51,7 @@ class PendingElectionsFragment : Fragment(), ElectionAdapterCallback {
       rootView = inflater.inflate(R.layout.fragment_pending_elections, container, false)
 
       val electionDetailsSharedPrefs =
-        ElectionDetailsSharedPrefs(context)
+        ElectionDetailsSharedPrefs(context!!)
       val mLayoutManager: LayoutManager = LinearLayoutManager(context)
       rootView?.rv_pending_elections?.layoutManager = mLayoutManager
       try {

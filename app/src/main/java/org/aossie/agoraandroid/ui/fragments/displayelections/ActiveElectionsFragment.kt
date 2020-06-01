@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_active_elections.view.rv_active_e
 import org.aossie.agoraandroid.ElectionAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsRecyclerAdapter
-import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs
+import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.json.JSONException
 import org.json.JSONObject
 import java.text.ParseException
@@ -50,7 +49,7 @@ class ActiveElectionsFragment : Fragment(), ElectionAdapterCallback {
 
     if(rootView == null) {
       rootView = inflater.inflate(R.layout.fragment_active_elections, container, false)
-      val electionDetailsSharedPrefs = ElectionDetailsSharedPrefs(context)
+      val electionDetailsSharedPrefs = ElectionDetailsSharedPrefs(context!!)
 
       val mLayoutManager: LayoutManager = LinearLayoutManager(context)
       rootView?.rv_active_elections?.layoutManager = mLayoutManager
