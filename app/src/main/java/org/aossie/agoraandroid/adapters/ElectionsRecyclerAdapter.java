@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import org.aossie.agoraandroid.ElectionAdapterCallback;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionActivity;
 
@@ -21,11 +22,12 @@ public class ElectionsRecyclerAdapter
       endDateList, statusList, candidateList, mIDList;
   private final String electionType;
   private Context mContext;
+  ElectionAdapterCallback electionAdapterCallback;
 
   public ElectionsRecyclerAdapter(ArrayList<String> mIDList, Context context,
       ArrayList<String> electionNameList, ArrayList<String> electionDescriptionList,
       ArrayList<String> startDateList, ArrayList<String> endDateList, ArrayList<String> statusList,
-      ArrayList<String> candidateList, String type) {
+      ArrayList<String> candidateList, String type, ElectionAdapterCallback electionAdapterCallback) {
     this.mIDList = mIDList;
     mContext = context;
     this.electionNameList = electionNameList;
@@ -35,6 +37,7 @@ public class ElectionsRecyclerAdapter
     this.statusList = statusList;
     this.candidateList = candidateList;
     this.electionType = type;
+    this.electionAdapterCallback = electionAdapterCallback;
   }
 
   @NonNull
@@ -76,15 +79,22 @@ public class ElectionsRecyclerAdapter
     holder.electionLayout.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(mContext, ElectionActivity.class);
-        intent.putExtra("election_name", electionNameList.get(position));
-        intent.putExtra("election_description", electionDescriptionList.get(position));
-        intent.putExtra("start_date", startDateList.get(position));
-        intent.putExtra("end_date", endDateList.get(position));
-        intent.putExtra("candidates", candidateList.get(position));
-        intent.putExtra("status", statusList.get(position));
-        intent.putExtra("id", mIDList.get(position));
-        mContext.startActivity(intent);
+        electionAdapterCallback.onItemClicked(electionNameList.get(position),
+            electionDescriptionList.get(position),
+            startDateList.get(position),
+            endDateList.get(position),
+            statusList.get(position),
+            candidateList.get(position),
+            mIDList.get(position));
+        //Intent intent = new Intent(mContext, ElectionActivity.class);
+        //intent.putExtra("election_name", electionNameList.get(position));
+        //intent.putExtra("election_description", electionDescriptionList.get(position));
+        //intent.putExtra("start_date", startDateList.get(position));
+        //intent.putExtra("end_date", endDateList.get(position));
+        //intent.putExtra("candidates", candidateList.get(position));
+        //intent.putExtra("status", statusList.get(position));
+        //intent.putExtra("id", mIDList.get(position));
+        //mContext.startActivity(intent);
       }
     });
   }

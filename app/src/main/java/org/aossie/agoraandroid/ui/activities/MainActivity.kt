@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_main.iv_back
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_main.tv_title
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment
+import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragmentArgs
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
