@@ -19,25 +19,7 @@
         android:name=".invitevoters.InviteVotersActivity"
         android:configChanges="orientation|screenSize" />
     <activity
-        android:name=".ui.fragments.displayelections.VotersActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".ui.fragments.displayelections.BallotActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
         android:name=".ui.fragments.displayelections.ElectionActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".ui.fragments.displayelections.FinishedElectionsActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".ui.fragments.displayelections.ActiveElectionsActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".ui.fragments.displayelections.PendingElectionsActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
-        android:name=".ui.fragments.displayelections.TotalElectionsActivity"
         android:configChanges="orientation|screenSize" />
     <activity
         android:name=".createelection.CreateElectionTwo"
