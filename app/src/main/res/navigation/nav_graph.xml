@@ -9,41 +9,41 @@
       android:id="@+id/welcomeFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment"
       android:label="Welcome"
-      tools:layout="@layout/fragment_welcome" >
+      tools:layout="@layout/fragment_welcome">
     <action
         android:id="@+id/action_welcomeFragment_to_loginFragment"
         app:destination="@id/loginFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left" />
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_welcomeFragment_to_signUpFragment"
         app:destination="@id/signUpFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
   </fragment>
   <fragment
       android:id="@+id/loginFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment"
       android:label="Login"
-      tools:layout="@layout/fragment_login" >
+      tools:layout="@layout/fragment_login">
     <action
         android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
         app:destination="@id/forgotPasswordFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_loginFragment_to_homeFragment"
         app:destination="@id/homeFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
   </fragment>
   <fragment
       android:id="@+id/signUpFragment"
@@ -62,27 +62,25 @@
       tools:layout="@layout/fragment_home">
     <action
         android:id="@+id/action_homeFragment_to_activeElectionsFragment"
-        app:destination="@+id/activeElectionsFragment"
+        app:destination="@id/activeElectionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out" />
     <action
         android:id="@+id/action_homeFragment_to_pendingElectionsFragment"
-        app:destination="@+id/pendingElectionsFragment"
+        app:destination="@id/pendingElectionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/fade_out"
-        />
+        app:popExitAnim="@anim/fade_out" />
     <action
         android:id="@+id/action_homeFragment_to_finishedElectionsFragment"
-        app:destination="@+id/finishedElectionsFragment"
+        app:destination="@id/finishedElectionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/fade_out"
-        />
+        app:popExitAnim="@anim/fade_out" />
     <action
         android:id="@+id/action_homeFragment_to_electionsFragment"
         app:destination="@id/electionsFragment"
@@ -95,7 +93,11 @@
       android:id="@+id/electionsFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment"
       android:label="Elections"
-      tools:layout="@layout/fragment_elections" />
+      tools:layout="@layout/fragment_elections">
+    <action
+        android:id="@+id/action_electionsFragment_to_electionDetailsFragment"
+        app:destination="@+id/electionDetailsFragment" />
+  </fragment>
   <fragment
       android:id="@+id/profileFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment"
@@ -105,49 +107,49 @@
       android:id="@+id/moreOptionsFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment"
       android:label="More Options"
-      tools:layout="@layout/fragment_more_options" >
+      tools:layout="@layout/fragment_more_options">
     <action
         android:id="@+id/action_moreOptionsFragment_to_aboutFragment"
         app:destination="@id/aboutFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_reportBugFragment"
         app:destination="@id/reportBugFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_shareWithOthersFragment"
         app:destination="@id/shareWithOthersFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_contactUsFragment"
         app:destination="@id/contactUsFragment"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"
         app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"/>
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_homeFragment"
         app:destination="@id/homeFragment"
-        app:popEnterAnim="@anim/slide_in_right"
-        app:popExitAnim="@anim/slide_out_left"
         app:enterAnim="@anim/slide_in_left"
-        app:exitAnim="@anim/slide_out_right"/>
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_welcomeFragment"
         app:destination="@id/welcomeFragment"
-        app:popEnterAnim="@anim/slide_in_right"
-        app:popExitAnim="@anim/slide_out_left"
         app:enterAnim="@anim/slide_in_left"
-        app:exitAnim="@anim/slide_out_right"/>
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left" />
   </fragment>
   <fragment
       android:id="@+id/reportBugFragment"
@@ -173,15 +175,81 @@
       android:id="@+id/activeElectionsFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment"
       android:label="Active Elections"
-      tools:layout="@layout/fragment_active_elections" />
+      tools:layout="@layout/fragment_active_elections">
+    <action
+        android:id="@+id/action_activeElectionsFragment_to_electionDetailsFragment"
+        app:destination="@+id/electionDetailsFragment" />
+  </fragment>
   <fragment
       android:id="@+id/finishedElectionsFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment"
       android:label="Finished Elections"
-      tools:layout="@layout/fragment_finished_elections" />
+      tools:layout="@layout/fragment_finished_elections">
+    <action
+        android:id="@+id/action_finishedElectionsFragment_to_electionDetailsFragment"
+        app:destination="@+id/electionDetailsFragment" />
+  </fragment>
   <fragment
       android:id="@+id/pendingElectionsFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFragment"
       android:label="Pending Elections"
-      tools:layout="@layout/fragment_pending_elections" />
+      tools:layout="@layout/fragment_pending_elections">
+    <action
+        android:id="@+id/action_pendingElectionsFragment_to_electionDetailsFragment"
+        app:destination="@+id/electionDetailsFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/electionDetailsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment"
+      android:label="Election Details"
+      tools:layout="@layout/fragment_election_details">
+    <argument
+        android:name="electionName"
+        app:argType="string" />
+    <argument
+        android:name="electionDesc"
+        app:argType="string" />
+    <argument
+        android:name="startDate"
+        app:argType="string" />
+    <argument
+        android:name="endDate"
+        app:argType="string" />
+    <argument
+        android:name="status"
+        app:argType="string" />
+    <argument
+        android:name="candidate"
+        app:argType="string" />
+    <argument
+        android:name="id"
+        app:argType="string" />
+    <action
+        android:id="@+id/action_electionDetailsFragment_to_votersFragment"
+        app:destination="@+id/votersFragment" />
+    <action
+        android:id="@+id/action_electionDetailsFragment_to_ballotFragment"
+        app:destination="@+id/ballotFragment" />
+    <action
+        android:id="@+id/action_electionDetailsFragment_to_homeFragment"
+        app:destination="@id/homeFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/votersFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment"
+      android:label="Voters"
+      tools:layout="@layout/fragment_voters">
+    <argument
+      android:name="voterResponse"
+      app:argType="string"/>
+  </fragment>
+  <fragment
+      android:id="@+id/ballotFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment"
+      android:label="Ballot Fragment"
+      tools:layout="@layout/fragment_ballot">
+    <argument
+        android:name="ballotResponse"
+        app:argType="string"/>
+  </fragment>
 </navigation>
