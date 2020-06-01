@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_finished_elections.view.rv_finish
 import org.aossie.agoraandroid.ElectionAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsRecyclerAdapter
-import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs
+import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.json.JSONException
 import org.json.JSONObject
 import java.text.ParseException
@@ -52,7 +52,7 @@ class FinishedElectionsFragment : Fragment(), ElectionAdapterCallback {
       rootView = inflater.inflate(R.layout.fragment_finished_elections, container, false)
 
       val electionDetailsSharedPrefs =
-        ElectionDetailsSharedPrefs(context)
+        ElectionDetailsSharedPrefs(context!!)
       val mLayoutManager: LayoutManager = LinearLayoutManager(context)
       rootView?.rv_finished_elections?.layoutManager = mLayoutManager
       val electionsRecyclerAdapter = ElectionsRecyclerAdapter(
