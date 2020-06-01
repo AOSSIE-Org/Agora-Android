@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
     }
     rootView.btn_create_election.setOnClickListener {
       startActivity(
-          Intent(activity, CreateElectionOne::class.java)
+          Intent(context, CreateElectionOne::class.java)
       )
     }
     rootView.swipe_refresh.setOnRefreshListener(
