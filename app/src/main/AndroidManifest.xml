@@ -22,28 +22,8 @@
         android:name=".ui.fragments.displayelections.ElectionActivity"
         android:configChanges="orientation|screenSize" />
     <activity
-        android:name=".createelection.CreateElectionTwo"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionOne"
-        tools:targetApi="jelly_bean" />
-    <activity
-        android:name=".createelection.CreateElectionFour"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionThree"
-        tools:targetApi="jelly_bean" />
-    <activity
-        android:name=".createelection.CreateElectionThree"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName=".createelection.CreateElectionTwo"
-        tools:targetApi="jelly_bean" />
-    <activity
         android:name=".ui.fragments.moreOptions.HomeActivity"
         android:configChanges="orientation|screenSize"
-        tools:targetApi="jelly_bean" />
-    <activity
-        android:name=".createelection.CreateElectionOne"
-        android:configChanges="orientation|screenSize"
-        android:parentActivityName="org.aossie.agoraandroid.ui.fragments.moreOptions.HomeActivity"
         tools:targetApi="jelly_bean" />
     <activity android:name=".ui.activities.MainActivity"
         android:theme="@style/SplashTheme">

@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import kotlinx.android.synthetic.main.data_placeholder_shimmer_layout.view.btn_create_election
+import kotlinx.android.synthetic.main.fragment_home.view.button_create_election
 import kotlinx.android.synthetic.main.fragment_home.view.card_view_active_elections
 import kotlinx.android.synthetic.main.fragment_home.view.card_view_finished_elections
 import kotlinx.android.synthetic.main.fragment_home.view.card_view_pending_elections
@@ -23,9 +22,8 @@ import kotlinx.android.synthetic.main.fragment_home.view.text_view_pending_count
 import kotlinx.android.synthetic.main.fragment_home.view.text_view_total_count
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
-import org.aossie.agoraandroid.createelection.CreateElectionOne
-import org.aossie.agoraandroid.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.remote.RetrofitClient
+import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.showActionBar
 import org.json.JSONException
@@ -52,7 +50,7 @@ class HomeFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    electionDetailsSharedPrefs = ElectionDetailsSharedPrefs(activity)
+    electionDetailsSharedPrefs = ElectionDetailsSharedPrefs(context!!)
     sharedPrefs = SharedPrefs(activity!!)
     rootView = inflater.inflate(layout.fragment_home, container, false)
     showActionBar()
@@ -73,10 +71,9 @@ class HomeFragment : Fragment() {
       Navigation.findNavController(rootView)
           .navigate(HomeFragmentDirections.actionHomeFragmentToElectionsFragment())
     }
-    rootView.btn_create_election.setOnClickListener {
-      startActivity(
-          Intent(context, CreateElectionOne::class.java)
-      )
+    rootView.button_create_election.setOnClickListener {
+      Navigation.findNavController(rootView)
+          .navigate(HomeFragmentDirections.actionHomeFragmentToUploadElectionDetailsFragment())
     }
     rootView.swipe_refresh.setOnRefreshListener(
         OnRefreshListener { doYourUpdate() }

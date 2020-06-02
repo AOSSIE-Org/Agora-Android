@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_nav_graph"
-    app:startDestination="@id/welcomeFragment">
+    app:startDestination="@+id/welcomeFragment">
 
   <fragment
       android:id="@+id/welcomeFragment"
@@ -12,14 +12,14 @@
       tools:layout="@layout/fragment_welcome">
     <action
         android:id="@+id/action_welcomeFragment_to_loginFragment"
-        app:destination="@id/loginFragment"
+        app:destination="@+id/loginFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_welcomeFragment_to_signUpFragment"
-        app:destination="@id/signUpFragment"
+        app:destination="@+id/signUpFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
@@ -32,7 +32,7 @@
       tools:layout="@layout/fragment_login">
     <action
         android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
-        app:destination="@id/forgotPasswordFragment"
+        app:destination="@+id/forgotPasswordFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
@@ -62,21 +62,21 @@
       tools:layout="@layout/fragment_home">
     <action
         android:id="@+id/action_homeFragment_to_activeElectionsFragment"
-        app:destination="@id/activeElectionsFragment"
+        app:destination="@+id/activeElectionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out" />
     <action
         android:id="@+id/action_homeFragment_to_pendingElectionsFragment"
-        app:destination="@id/pendingElectionsFragment"
+        app:destination="@+id/pendingElectionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out" />
     <action
         android:id="@+id/action_homeFragment_to_finishedElectionsFragment"
-        app:destination="@id/finishedElectionsFragment"
+        app:destination="@+id/finishedElectionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
@@ -88,6 +88,13 @@
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out" />
+    <action
+        android:id="@+id/action_homeFragment_to_uploadElectionDetailsFragment"
+        app:destination="@+id/uploadElectionDetailsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
   </fragment>
   <fragment
       android:id="@+id/electionsFragment"
@@ -110,28 +117,28 @@
       tools:layout="@layout/fragment_more_options">
     <action
         android:id="@+id/action_moreOptionsFragment_to_aboutFragment"
-        app:destination="@id/aboutFragment"
+        app:destination="@+id/aboutFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_reportBugFragment"
-        app:destination="@id/reportBugFragment"
+        app:destination="@+id/reportBugFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_shareWithOthersFragment"
-        app:destination="@id/shareWithOthersFragment"
+        app:destination="@+id/shareWithOthersFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_moreOptionsFragment_to_contactUsFragment"
-        app:destination="@id/contactUsFragment"
+        app:destination="@+id/contactUsFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
@@ -178,7 +185,7 @@
       tools:layout="@layout/fragment_active_elections">
     <action
         android:id="@+id/action_activeElectionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@id/electionDetailsFragment" />
   </fragment>
   <fragment
       android:id="@+id/finishedElectionsFragment"
@@ -187,7 +194,7 @@
       tools:layout="@layout/fragment_finished_elections">
     <action
         android:id="@+id/action_finishedElectionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@id/electionDetailsFragment" />
   </fragment>
   <fragment
       android:id="@+id/pendingElectionsFragment"
@@ -196,7 +203,7 @@
       tools:layout="@layout/fragment_pending_elections">
     <action
         android:id="@+id/action_pendingElectionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@id/electionDetailsFragment" />
   </fragment>
   <fragment
       android:id="@+id/electionDetailsFragment"
@@ -251,5 +258,57 @@
     <argument
         android:name="ballotResponse"
         app:argType="string"/>
+  </fragment>
+  <fragment
+      android:id="@+id/uploadElectionDetailsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionDetailsFragment"
+      android:label="Upload Election Details"
+      tools:layout="@layout/fragment_upload_election_details" >
+    <action
+        android:id="@+id/action_uploadElectionDetailsFragment_to_uploadCandidatesFragment"
+        app:destination="@+id/uploadCandidatesFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+  </fragment>
+  <fragment
+      android:id="@+id/uploadCandidatesFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadCandidatesFragment"
+      android:label="Upload Election Candidates"
+      tools:layout="@layout/fragment_upload_candidates" >
+    <action
+        android:id="@+id/action_uploadCandidatesFragment_to_uploadVotingAlgoFragment"
+        app:destination="@+id/uploadVotingAlgoFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+  </fragment>
+  <fragment
+      android:id="@+id/uploadVotingAlgoFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadVotingAlgoFragment"
+      android:label="Select Voting Algorithm"
+      tools:layout="@layout/fragment_upload_voting_algo" >
+    <action
+        android:id="@+id/action_uploadVotingAlgoFragment_to_uploadElectionFragment"
+        app:destination="@+id/uploadElectionFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+  </fragment>
+  <fragment
+      android:id="@+id/uploadElectionFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionFragment"
+      android:label="Upload Election"
+      tools:layout="@layout/fragment_upload_election">
+    <action
+        android:id="@+id/action_uploadElectionFragment_to_homeFragment"
+        app:destination="@id/homeFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
   </fragment>
 </navigation>
