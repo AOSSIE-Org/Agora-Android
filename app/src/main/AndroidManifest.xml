@@ -16,9 +16,6 @@
       android:fullBackupContent="true">
     <activity android:name=".result.ResultActivity"/>
     <activity
-        android:name=".invitevoters.InviteVotersActivity"
-        android:configChanges="orientation|screenSize" />
-    <activity
         android:name=".ui.fragments.displayelections.ElectionActivity"
         android:configChanges="orientation|screenSize" />
     <activity
