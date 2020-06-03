@@ -14,7 +14,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      app:layout_constraintTop_toTopOf="parent"
       tools:item_layout="@layout/list_item_ballot_details"
       />
 </androidx.constraintlayout.widget.ConstraintLayout>
