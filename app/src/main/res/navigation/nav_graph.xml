@@ -39,7 +39,7 @@
         app:popExitAnim="@anim/slide_out_right" />
     <action
         android:id="@+id/action_loginFragment_to_homeFragment"
-        app:destination="@id/homeFragment"
+        app:destination="@+id/homeFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
@@ -83,7 +83,7 @@
         app:popExitAnim="@anim/fade_out" />
     <action
         android:id="@+id/action_homeFragment_to_electionsFragment"
-        app:destination="@+id/electionsFragment"
+        app:destination="@id/electionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
@@ -185,7 +185,7 @@
       tools:layout="@layout/fragment_active_elections">
     <action
         android:id="@+id/action_activeElectionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@id/electionDetailsFragment" />
   </fragment>
   <fragment
       android:id="@+id/finishedElectionsFragment"
@@ -247,7 +247,7 @@
         app:popExitAnim="@anim/slide_out_right"/>
     <action
         android:id="@+id/action_electionDetailsFragment_to_homeFragment"
-        app:destination="@id/homeFragment"
+        app:destination="@+id/homeFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
@@ -324,7 +324,7 @@
       tools:layout="@layout/fragment_upload_election">
     <action
         android:id="@+id/action_uploadElectionFragment_to_homeFragment"
-        app:destination="@id/homeFragment"
+        app:destination="@+id/homeFragment"
         app:enterAnim="@anim/slide_in_left"
         app:exitAnim="@anim/slide_out_right"
         app:popEnterAnim="@anim/slide_in_right"

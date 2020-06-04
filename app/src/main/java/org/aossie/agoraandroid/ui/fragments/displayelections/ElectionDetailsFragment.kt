@@ -61,6 +61,13 @@ class ElectionDetailsFragment : Fragment(), DisplayElectionListener {
             .actionElectionDetailsFragmentToInviteVotersFragment(id!! , token!!)
         Navigation.findNavController(rootView)
             .navigate(action)
+//        val intent = Intent(
+//            context,
+//            InviteVotersActivity::class.java
+//        )
+//        intent.putExtra("id", id)
+//        intent.putExtra("token", token)
+//        startActivity(intent)
       }
     }
     rootView.button_result.setOnClickListener {
