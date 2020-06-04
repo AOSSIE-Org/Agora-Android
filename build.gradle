@@ -31,6 +31,7 @@ buildscript {
     daggerVersion = '2.25.4'
     coreVersion = "1.2.0"
     prefsVersion = "1.1.0"
+    roomVersion = '2.2.4'
   }
 
   repositories {
