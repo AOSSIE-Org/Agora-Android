@@ -3,8 +3,11 @@ package org.aossie.agoraandroid.data.db
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import javax.inject.Inject
 
-class PreferenceProvider(
+class PreferenceProvider
+@Inject
+constructor(
   context: Context
 ) {
   private val appContext = context.applicationContext
