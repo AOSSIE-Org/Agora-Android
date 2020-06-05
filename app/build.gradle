@@ -77,6 +77,10 @@ dependencies {
   kapt "com.google.dagger:dagger-compiler:$daggerVersion"
   //Shared Prefs
   implementation "androidx.preference:preference-ktx:$prefsVersion"
+  // room
+  implementation "androidx.room:room-runtime:$roomVersion"
+  kapt "androidx.room:room-compiler:$roomVersion"
+  implementation "androidx.room:room-ktx:$roomVersion"
 }
 repositories {
   mavenCentral()
