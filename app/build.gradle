@@ -81,6 +81,9 @@ dependencies {
   implementation "androidx.room:room-runtime:$roomVersion"
   kapt "androidx.room:room-compiler:$roomVersion"
   implementation "androidx.room:room-ktx:$roomVersion"
+  // coroutine
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 }
 repositories {
   mavenCentral()

@@ -1,13 +1,18 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
 import android.app.Application
-import android.content.Context
-import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import net.steamcrafted.loadtoast.LoadToast
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.json.JSONException
 import org.json.JSONObject
@@ -16,77 +21,43 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel(
-  application: Application,
-  private val context: Context
+  private val userRepository: UserRepository,
+  application: Application
 ) : AndroidViewModel(application) {
   private val sharedPrefs = SharedPrefs(getApplication())
-  private var loadToast: LoadToast? = null
   var authListener: AuthListener ?= null
-  fun logInRequest(
-    userName: String?,
-    userPassword: String?
-  ) {
-    loadToast = LoadToast(context)
-    loadToast!!.setText("Logging in")
-    loadToast!!.show()
-    val jsonObject = JSONObject()
-    try {
-      jsonObject.put("identifier", userName)
-      jsonObject.put("password", userPassword)
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-    val apiService = RetrofitClient.getAPIService()
-    val logInResponse = apiService.logIn(jsonObject.toString())
-    logInResponse.enqueue(object : Callback<String?> {
-      override fun onResponse(
-        call: Call<String?>,
-        response: Response<String?>
-      ) {
-        if (response.message() == "OK") {
-          try {
-            val jsonObjects = JSONObject(response.body()!!)
-            val token = jsonObjects.getJSONObject("token")
-            val expiresOn = token.getString("expiresOn")
-            val key = token.getString("token")
-            val sUserName = jsonObjects.getString("username")
-            val email = jsonObjects.getString("email")
-            val firstName = jsonObjects.getString("firstName")
-            val lastName = jsonObjects.getString("lastName")
-            sharedPrefs.saveUserName(sUserName)
-            sharedPrefs.saveEmail(email)
-            sharedPrefs.saveFirstName(firstName)
-            sharedPrefs.saveLastName(lastName)
-            sharedPrefs.saveToken(key)
-            sharedPrefs.savePass(userPassword)
-            sharedPrefs.saveTokenExpiresOn(expiresOn)
-            loadToast!!.success()
-            authListener?.onSuccess()
-          } catch (e: JSONException) {
-            e.printStackTrace()
-          }
-        } else {
-          loadToast!!.error()
-          Toast.makeText(
-              getApplication(), "Wrong User Name or Password",
-              Toast.LENGTH_SHORT
-          )
-              .show()
-        }
-      }
 
-      override fun onFailure(
-        call: Call<String?>,
-        t: Throwable
-      ) {
-        loadToast!!.error()
-        Toast.makeText(
-            getApplication(), "Something went wrong please try again",
-            Toast.LENGTH_SHORT
-        )
-            .show()
+  fun logInRequest(
+      identifier: String,
+      password: String
+  ){
+    authListener?.onStarted()
+    if (identifier.isEmpty() || password.isEmpty()) {
+      authListener?.onFailure("Invalid Email or Password")
+      return
+    }
+    viewModelScope.launch(Dispatchers.Main){
+      try{
+        val authResponse = userRepository.userLogin(identifier, password)
+        authResponse.let {
+          val user = User(it.username, it.email, it.firstName, it.lastName, it.towFactorAuthentication, it.token?.token, it.token?.expiredOn)
+          sharedPrefs.saveUserName(user.username)
+          sharedPrefs.saveEmail(user.email)
+          sharedPrefs.saveFirstName(user.firstName)
+          sharedPrefs.saveLastName(user.lastName)
+          sharedPrefs.saveToken(user.token)
+          sharedPrefs.savePass(password)
+          sharedPrefs.saveTokenExpiresOn(user.expiredAt)
+          authListener?.onSuccess()
+        }
+      }catch (e : ApiException){
+        authListener?.onFailure(e.message!!)
+      }catch (e : NoInternetException){
+        authListener?.onFailure(e.message!!)
+      }catch (e : Exception){
+        authListener?.onFailure(e.message!!)
       }
-    })
+    }
   }
 
   fun facebookLogInRequest(accessToken: String?) {
