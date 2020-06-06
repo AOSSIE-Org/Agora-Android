@@ -21,6 +21,9 @@ import kotlinx.android.synthetic.main.fragment_welcome.view.fb_login_btn
 import kotlinx.android.synthetic.main.fragment_welcome.view.signin_btn
 import kotlinx.android.synthetic.main.fragment_welcome.view.signup_btn
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.network.Api
+import org.aossie.agoraandroid.data.network.NetworkInterceptor
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.hideActionBar
 import java.util.Arrays
@@ -56,7 +59,9 @@ class WelcomeFragment : Fragment() {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
     hideActionBar()
-    loginViewModel = LoginViewModel(activity!!.application, context!!)
+    val networkConnectionInterceptor = NetworkInterceptor(context!!)
+    val userRepository = UserRepository(Api(networkConnectionInterceptor))
+    loginViewModel = LoginViewModel(userRepository,activity!!.application)
     callbackManager = Factory.create()
     LoginManager.getInstance()
         .registerCallback(callbackManager,

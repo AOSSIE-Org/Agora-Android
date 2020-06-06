@@ -88,4 +88,12 @@ class MoreOptionsFragment : Fragment(), AuthListener {
         )
   }
 
+  override fun onStarted() {
+    TODO("Not yet implemented")
+  }
+
+  override fun onFailure(message: String) {
+    TODO("Not yet implemented")
+  }
+
 }

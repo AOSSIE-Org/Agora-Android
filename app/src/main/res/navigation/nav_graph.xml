@@ -83,7 +83,7 @@
         app:popExitAnim="@anim/fade_out" />
     <action
         android:id="@+id/action_homeFragment_to_electionsFragment"
-        app:destination="@id/electionsFragment"
+        app:destination="@+id/electionsFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
@@ -185,7 +185,7 @@
       tools:layout="@layout/fragment_active_elections">
     <action
         android:id="@+id/action_activeElectionsFragment_to_electionDetailsFragment"
-        app:destination="@id/electionDetailsFragment" />
+        app:destination="@+id/electionDetailsFragment" />
   </fragment>
   <fragment
       android:id="@+id/finishedElectionsFragment"
