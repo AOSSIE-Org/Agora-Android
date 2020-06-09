@@ -63,4 +63,5 @@
   <color name="gray_holo_light">#fff3f3f3</color>
 
   <color name="bottomNav">#F2F2F2</color>
+  <color name="grey">#808080</color>
 </resources>
