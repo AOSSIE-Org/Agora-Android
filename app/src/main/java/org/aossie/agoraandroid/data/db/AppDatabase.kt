@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import org.aossie.agoraandroid.data.db.dao.UserDao
 import org.aossie.agoraandroid.data.db.entities.User
 
 @Database(
@@ -34,5 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
           .build()
     }
   }
+
+  abstract fun getUserDao(): UserDao
 
 }

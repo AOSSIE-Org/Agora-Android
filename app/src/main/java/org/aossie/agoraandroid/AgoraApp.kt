@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid
 
 import android.app.Application
+import android.content.res.Resources
 import org.aossie.agoraandroid.di.AppComponent
 import org.aossie.agoraandroid.di.DaggerAppComponent
 
