@@ -1,23 +1,33 @@
 package org.aossie.agoraandroid.di.modules
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoMap
+import org.aossie.agoraandroid.di.utils.FragmentKey
 import org.aossie.agoraandroid.di.utils.MainFragmentFactory
+import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
+import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
+import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 
 @Module
-object FragmentModule{
+abstract class FragmentModule{
 
-    @JvmStatic
-    @Provides
-    fun providesMainFragmentFactory(
-        viewModelFactory: ViewModelProvider.Factory
-    ): FragmentFactory {
-        return MainFragmentFactory(
-            viewModelFactory
-        )
-    }
+  @Binds
+  @IntoMap
+  @FragmentKey(WelcomeFragment::class)
+  abstract fun bindWelcomeFragment(mainFragment: WelcomeFragment): Fragment
 
+  @Binds
+  @IntoMap
+  @FragmentKey(LoginFragment::class)
+  abstract fun bindLoginFragment(mainFragment: LoginFragment): Fragment
+
+
+  @Binds
+  abstract fun bindFragmentFactory(factory: MainFragmentFactory): FragmentFactory
 
 }
