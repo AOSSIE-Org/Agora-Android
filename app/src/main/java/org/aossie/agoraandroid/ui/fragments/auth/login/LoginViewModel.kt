@@ -1,7 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,8 +23,11 @@ class LoginViewModel(
   private val userRepository: UserRepository,
   application: Application
 ) : AndroidViewModel(application) {
+  
   private val sharedPrefs = SharedPrefs(getApplication())
   var authListener: AuthListener ?= null
+  
+  fun getLoggedInUser() = userRepository.getUser()
 
   fun logInRequest(
       identifier: String,
@@ -41,6 +43,7 @@ class LoginViewModel(
         val authResponse = userRepository.userLogin(identifier, password)
         authResponse.let {
           val user = User(it.username, it.email, it.firstName, it.lastName, it.towFactorAuthentication, it.token?.token, it.token?.expiredOn)
+          userRepository.saveUser(user)
           sharedPrefs.saveUserName(user.username)
           sharedPrefs.saveEmail(user.email)
           sharedPrefs.saveFirstName(user.firstName)

@@ -160,6 +160,10 @@
   <string name="title">title</string>
   <string name="more">More</string>
   <string name="elections">Elections</string>
+  
+  <string name="bad_request">Bad Request</string>
+  <string name="unauthenticated">Unauthenticated</string>
+  <string name="invalid_credentials">Invalid Credentials</string>
 
 </resources>
 

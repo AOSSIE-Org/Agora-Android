@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_login.view.forgot_password_tv
@@ -14,15 +13,20 @@ import kotlinx.android.synthetic.main.fragment_login.view.login_btn
 import kotlinx.android.synthetic.main.fragment_login.view.login_password_til
 import kotlinx.android.synthetic.main.fragment_login.view.login_user_name_til
 import kotlinx.android.synthetic.main.fragment_login.view.password
+import kotlinx.android.synthetic.main.fragment_login.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_login.view.username
-import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.db.AppDatabase
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.NetworkInterceptor
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.showActionBar
+import org.aossie.agoraandroid.utilities.snackbar
 
 /**
  * A simple [Fragment] subclass.
@@ -33,8 +37,6 @@ class LoginFragment : Fragment(), AuthListener {
 
   private lateinit var rootView: View
 
-  private lateinit var loadToast: LoadToast
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -44,9 +46,10 @@ class LoginFragment : Fragment(), AuthListener {
     rootView = inflater.inflate(R.layout.fragment_login, container, false)
     showActionBar()
 
-    loadToast = LoadToast(context)
     val networkConnectionInterceptor = NetworkInterceptor(context!!)
-    val userRepository = UserRepository(Api(networkConnectionInterceptor))
+    val userRepository = UserRepository(Api(networkConnectionInterceptor),
+        AppDatabase(context!!),
+        PreferenceProvider(context!!))
     loginViewModel = LoginViewModel(userRepository, activity!!.application)
     loginViewModel?.authListener = this
 
@@ -90,18 +93,18 @@ class LoginFragment : Fragment(), AuthListener {
   }
 
   override fun onSuccess() {
-    loadToast.success()
+    rootView.progress_bar.hide()
     Navigation.findNavController(rootView)
         .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
   }
 
   override fun onStarted() {
-    loadToast.setText("Logging in")
-    loadToast.show()
+    rootView.progress_bar.show()
   }
 
   override fun onFailure(message: String) {
-    loadToast.error()
+    rootView.progress_bar.hide()
+    rootView.snackbar(message)
   }
 
 }

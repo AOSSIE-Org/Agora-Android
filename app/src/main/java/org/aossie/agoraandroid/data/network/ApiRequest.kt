@@ -1,11 +1,16 @@
 package org.aossie.agoraandroid.data.network
 
+import android.content.res.Resources
 import android.util.Log
+import org.aossie.agoraandroid.AgoraApp
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
 import java.lang.StringBuilder
+import kotlin.coroutines.coroutineContext
 
 abstract class ApiRequest {
   suspend fun<T:Any> apiRequest(call : suspend () -> Response<T>) : T {
@@ -21,9 +26,15 @@ abstract class ApiRequest {
           message.append(JSONObject(it).getString("message"))
         }catch (e : JSONException){
         }
-        message.append("\n")
+        if(message.isNotEmpty()) message.append("\n")
       }
-      message.append("Error Code is : ${response.code()}")
+      when(response.code()){
+        AppConstants.BAD_REQUEST_CODE -> message.append("${AppConstants.BAD_REQUEST_MESSAGE} : ERROR - ")
+        AppConstants.UNAUTHENTICATED_CODE -> message.append("${AppConstants.UNAUTHENTICATED_MESSAGE} : ERROR - ")
+        AppConstants.INVALID_CREDENTIALS_CODE -> message.append("${AppConstants.INVALID_CREDENTIALS_MESSAGE} : ERROR - ")
+        else -> message.append("Error Code is : ")
+      }
+      message.append(response.code().toString())
       throw ApiException(message.toString())
     }
   }
