@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.facebook.AccessToken
 import com.facebook.AccessTokenTracker
@@ -29,14 +31,21 @@ import org.aossie.agoraandroid.data.network.NetworkInterceptor
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.hideActionBar
 import java.util.Arrays
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class WelcomeFragment : Fragment() {
+class WelcomeFragment
+  @Inject
+  constructor(
+    private val viewModelFactory: ViewModelProvider.Factory
+  ): Fragment() {
 
   private var callbackManager: CallbackManager? = null
-  private var loginViewModel: LoginViewModel? = null
+  private val loginViewModel: LoginViewModel by viewModels {
+    viewModelFactory
+  }
   private lateinit var rootView: View
   var accessTokenTracker: AccessTokenTracker = object : AccessTokenTracker() {
     override fun onCurrentAccessTokenChanged(
@@ -61,9 +70,7 @@ class WelcomeFragment : Fragment() {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
     hideActionBar()
-    val networkConnectionInterceptor = NetworkInterceptor(context!!)
-    val userRepository = UserRepository(Api(networkConnectionInterceptor), AppDatabase(context!!), PreferenceProvider(context!!))
-    loginViewModel = LoginViewModel(userRepository,activity!!.application)
+
     callbackManager = Factory.create()
     LoginManager.getInstance()
         .registerCallback(callbackManager,

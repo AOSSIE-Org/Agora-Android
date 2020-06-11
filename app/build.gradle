@@ -26,6 +26,10 @@ android {
   }
   defaultConfig {
     vectorDrawables.useSupportLibrary = true
+    multiDexEnabled = true
+  }
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
   }
 }
 
@@ -84,6 +88,8 @@ dependencies {
   // coroutine
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+
+  implementation 'androidx.multidex:multidex:2.0.1'
 }
 repositories {
   mavenCentral()
