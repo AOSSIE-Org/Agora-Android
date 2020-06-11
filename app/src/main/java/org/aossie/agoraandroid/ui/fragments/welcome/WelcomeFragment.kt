@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_welcome.view.signin_btn
 import kotlinx.android.synthetic.main.fragment_welcome.view.signup_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.db.AppDatabase
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.NetworkInterceptor
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
@@ -60,7 +62,7 @@ class WelcomeFragment : Fragment() {
     rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
     hideActionBar()
     val networkConnectionInterceptor = NetworkInterceptor(context!!)
-    val userRepository = UserRepository(Api(networkConnectionInterceptor))
+    val userRepository = UserRepository(Api(networkConnectionInterceptor), AppDatabase(context!!), PreferenceProvider(context!!))
     loginViewModel = LoginViewModel(userRepository,activity!!.application)
     callbackManager = Factory.create()
     LoginManager.getInstance()
