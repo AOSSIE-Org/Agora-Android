@@ -28,6 +28,7 @@ class UserRepository(
   suspend fun saveUser(user: User) {
     appDatabase.getUserDao().insert(user)
     preferenceProvider.setIsLoggedIn(true)
+    preferenceProvider.setCurrentToken(user.token)
   }
 
   fun getUser(): LiveData<User>{

@@ -2,14 +2,12 @@ package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.remote.RetrofitClient
-import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

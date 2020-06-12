@@ -39,7 +39,6 @@ constructor(
       identifier: String,
       password: String
   ){
-    Log.d("start", "yes")
     authListener?.onStarted()
     if (identifier.isEmpty() || password.isEmpty()) {
       authListener?.onFailure("Invalid Email or Password")
@@ -58,6 +57,7 @@ constructor(
           sharedPrefs.saveToken(user.token)
           sharedPrefs.savePass(password)
           sharedPrefs.saveTokenExpiresOn(user.expiredAt)
+          Log.d("friday", user.token)
           authListener?.onSuccess()
         }
       }catch (e : ApiException){

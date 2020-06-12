@@ -8,6 +8,7 @@ import dagger.multibindings.IntoMap
 import org.aossie.agoraandroid.di.utils.ViewModelFactory
 import org.aossie.agoraandroid.di.utils.ViewModelKey
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
+import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -19,5 +20,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     internal abstract fun bindsLoginViewModel(viewModel: LoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeViewModel::class)
+    internal abstract fun bindsHomeViewModel(viewModel: HomeViewModel): ViewModel
 
 }
