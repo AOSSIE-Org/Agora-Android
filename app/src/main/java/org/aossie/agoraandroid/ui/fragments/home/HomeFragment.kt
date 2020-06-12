@@ -1,11 +1,15 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import kotlinx.android.synthetic.main.fragment_home.view.button_create_election
@@ -20,10 +24,14 @@ import kotlinx.android.synthetic.main.fragment_home.view.text_view_active_count
 import kotlinx.android.synthetic.main.fragment_home.view.text_view_finished_count
 import kotlinx.android.synthetic.main.fragment_home.view.text_view_pending_count
 import kotlinx.android.synthetic.main.fragment_home.view.text_view_total_count
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
+import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeViewModel
+import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.showActionBar
 import org.json.JSONException
@@ -34,15 +42,26 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import javax.inject.Inject
 
-class HomeFragment : Fragment() {
+class HomeFragment
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory,
+  private val preferenceProvider: PreferenceProvider
+) : Fragment() {
   private var electionDetailsSharedPrefs: ElectionDetailsSharedPrefs? = null
   private var mActiveCount = 0
   private var mFinishedCount = 0
   private var mPendingCount = 0
   private var flag = 0
   private var sharedPrefs: SharedPrefs? = null
+
+  private val homeViewModel: HomeViewModel by viewModels {
+    viewModelFactory
+  }
 
   private lateinit var rootView: View
   override fun onCreateView(
@@ -97,6 +116,46 @@ class HomeFragment : Fragment() {
       e.printStackTrace()
     }
     getElectionData(sharedPrefs!!.token)
+
+
+    Coroutines.main {
+      val elections = homeViewModel.elections.await()
+      if(view != null) {
+        elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+          rootView.shimmer_view_container.stopShimmer()
+          rootView.shimmer_view_container.visibility = View.GONE
+          rootView.constraintLayout.visibility = View.VISIBLE
+          for (i in it.indices) {
+            val election = it[i]
+            val startingDate = election.start
+            val endingDate = election.end
+            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            val formattedStartingDate = formatter.parse(startingDate)
+            val formattedEndingDate = formatter.parse(endingDate)
+            val currentDate = Calendar.getInstance()
+                .time
+            // Separating into Active, Finished or Pending Elections
+            if (flag == 0) {
+              if (currentDate.before(formattedStartingDate)) {
+                mPendingCount++
+              } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
+                mActiveCount++
+              } else if (currentDate.after(formattedEndingDate)) {
+                mFinishedCount++
+              }
+            }
+          }
+          flag++
+          rootView.text_view_total_count.text = it.size.toString()
+          rootView.text_view_pending_count.text = mPendingCount.toString()
+          rootView.text_view_active_count.text = mActiveCount.toString()
+          rootView.text_view_finished_count.text = mFinishedCount.toString()
+          rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
+        })
+      }
+
+    }
+
     return rootView
   }
 
@@ -157,50 +216,7 @@ class HomeFragment : Fragment() {
         response: Response<String?>
       ) {
         if (response.message() == "OK") {
-          rootView.shimmer_view_container.stopShimmer()
-          rootView.shimmer_view_container.visibility = View.GONE
-          rootView.constraintLayout.visibility = View.VISIBLE
           electionDetailsSharedPrefs!!.saveElectionDetails(response.body())
-          try {
-            val jsonObject = JSONObject(response.body())
-            val jsonArray = jsonObject.getJSONArray("elections")
-            for (i in 0 until jsonArray.length()) {
-              val jsonObject1 = jsonArray.getJSONObject(i)
-              val startingDate = jsonObject1.getString("start")
-              val endingDate = jsonObject1.getString("end")
-              val formatter =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-              val formattedStartingDate = formatter.parse(startingDate)
-              val formattedEndingDate = formatter.parse(endingDate)
-              val currentDate = Calendar.getInstance()
-                  .time
-
-              // Separating into Active, Finished or Pending Elections
-              if (flag == 0) {
-                if (currentDate.before(formattedStartingDate)) {
-                  mPendingCount++
-                } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-                        formattedEndingDate
-                    )
-                ) {
-                  mActiveCount++
-                } else if (currentDate.after(formattedEndingDate)) {
-                  mFinishedCount++
-                }
-              }
-            }
-            flag++
-            rootView.text_view_total_count.text = jsonArray.length()
-                .toString()
-           rootView.text_view_pending_count.text = mPendingCount.toString()
-            rootView.text_view_active_count.text = mActiveCount.toString()
-            rootView.text_view_finished_count.text = mFinishedCount.toString()
-            rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
-          } catch (e: JSONException) {
-            e.printStackTrace()
-          } catch (e: ParseException) {
-            e.printStackTrace()
-          }
         }
       }
 
@@ -208,12 +224,6 @@ class HomeFragment : Fragment() {
         call: Call<String?>,
         t: Throwable
       ) {
-        rootView.shimmer_view_container.stopShimmer()
-        rootView.shimmer_view_container.visibility = View.GONE
-        rootView.constraintLayout.visibility = View.VISIBLE
-        rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
-        Toast.makeText(activity, "Something went wrong please refresh", Toast.LENGTH_SHORT)
-            .show()
       }
     })
   }
@@ -229,9 +239,8 @@ class HomeFragment : Fragment() {
   }
 
   private fun doYourUpdate() {
-    rootView.constraintLayout.visibility = View.GONE
-    rootView.shimmer_view_container.visibility = View.VISIBLE
-    rootView.shimmer_view_container.startShimmer()
+    preferenceProvider.setUpdateNeeded(true)
+    Navigation.findNavController(rootView).navigate(R.id.homeFragment)
     getElectionData(sharedPrefs!!.token) //try to fetch data again
   }
 }

@@ -1,12 +1,11 @@
 package org.aossie.agoraandroid.di.modules
 
-import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.AppDatabase
-import org.aossie.agoraandroid.data.db.AppDatabase.Companion
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.NetworkInterceptor
@@ -43,5 +42,14 @@ class AppModule {
     preferenceProvider: PreferenceProvider
   ): UserRepository{
     return UserRepository(api, appDatabase, preferenceProvider)
+  }
+
+  @Provides
+  fun providesElectionsRepository(
+    api: Api,
+    appDatabase: AppDatabase,
+    preferenceProvider: PreferenceProvider
+  ): ElectionsRepository{
+    return ElectionsRepository(api, appDatabase, preferenceProvider)
   }
 }
