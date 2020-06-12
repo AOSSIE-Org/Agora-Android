@@ -1,8 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
 import android.app.Application
+import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,13 +21,16 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class LoginViewModel(
+class LoginViewModel
+@Inject
+constructor(
   private val userRepository: UserRepository,
-  application: Application
-) : AndroidViewModel(application) {
+    private val context: Context
+) : ViewModel() {
   
-  private val sharedPrefs = SharedPrefs(getApplication())
+  private val sharedPrefs = SharedPrefs(context)
   var authListener: AuthListener ?= null
   
   fun getLoggedInUser() = userRepository.getUser()
@@ -33,6 +39,7 @@ class LoginViewModel(
       identifier: String,
       password: String
   ){
+    Log.d("start", "yes")
     authListener?.onStarted()
     if (identifier.isEmpty() || password.isEmpty()) {
       authListener?.onFailure("Invalid Email or Password")
@@ -84,7 +91,7 @@ class LoginViewModel(
           }
         } else {
           Toast.makeText(
-              getApplication(), "Wrong User Name or Password",
+              context, "Wrong User Name or Password",
               Toast.LENGTH_SHORT
           )
               .show()
@@ -96,7 +103,7 @@ class LoginViewModel(
         t: Throwable
       ) {
         Toast.makeText(
-            getApplication(), "Something went wrong please try again",
+            context, "Something went wrong please try again",
             Toast.LENGTH_SHORT
         )
             .show()
@@ -129,7 +136,7 @@ class LoginViewModel(
           }
         } else {
           Toast.makeText(
-              getApplication(), "Wrong User Name or Password",
+              context, "Wrong User Name or Password",
               Toast.LENGTH_SHORT
           )
               .show()
@@ -141,7 +148,7 @@ class LoginViewModel(
         t: Throwable
       ) {
         Toast.makeText(
-            getApplication(), "Something went wrong please try again",
+            context, "Something went wrong please try again",
             Toast.LENGTH_SHORT
         )
             .show()
