@@ -11,6 +11,7 @@ import org.aossie.agoraandroid.di.utils.FragmentKey
 import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
+import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 
 @Module
@@ -25,6 +26,16 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(LoginFragment::class)
   abstract fun bindLoginFragment(mainFragment: LoginFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(HomeFragment::class)
+  abstract fun bindHomeFragment(homeFragment: HomeFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(MoreOptionsFragment::class)
+  abstract fun bindMoreOptionsFragment(moreOptionsFragment: MoreOptionsFragment): Fragment
 
 
   @Binds
