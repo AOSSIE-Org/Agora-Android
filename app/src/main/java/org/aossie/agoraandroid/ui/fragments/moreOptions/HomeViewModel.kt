@@ -12,6 +12,9 @@ import org.aossie.agoraandroid.utilities.lazyDeferred
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 class HomeViewModel @Inject
@@ -21,9 +24,25 @@ constructor(
 ) : ViewModel() {
   private val sharedPrefs = SharedPrefs(context)
   var authListener: AuthListener? = null
+  private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private val currentDate: Date = Calendar.getInstance()
+      .time
+  private val date: String = formatter.format(currentDate)
 
   val elections by lazyDeferred{
     electionsRepository.getElections()
+  }
+  val totalElectionsCount by lazyDeferred{
+    electionsRepository.getTotalElectionsCount()
+  }
+  val pendingElectionsCount by lazyDeferred{
+    electionsRepository.getPendingElectionsCount(date)
+  }
+  val finishedElectionsCount by lazyDeferred{
+    electionsRepository.getFinishedElectionsCount(date)
+  }
+  val activeElectionsCount by lazyDeferred{
+    electionsRepository.getActiveElectionsCount(date)
   }
 
   fun doLogout(token: String?) {

@@ -18,7 +18,12 @@
     <activity
         android:name=".ui.fragments.displayelections.ElectionActivity"
         android:configChanges="orientation|screenSize" />
+    <activity
+        android:name=".ui.fragments.moreOptions.HomeActivity"
+        android:configChanges="orientation|screenSize"
+        tools:targetApi="jelly_bean" />
     <activity android:name=".ui.activities.MainActivity"
+        android:configChanges="orientation|screenSize"
         android:theme="@style/SplashTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
