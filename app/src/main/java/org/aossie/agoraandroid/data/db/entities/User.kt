@@ -14,7 +14,8 @@ data class User(
   var lastName: String? = null,
   var twoFactorAuthentication: Boolean? = null,
   var token: String? = null,
-  var expiredAt: String? = null
+  var expiredAt: String? = null,
+  var password: String? = null
 ){
   @PrimaryKey(autoGenerate = false)
   var uid : Int = CURRENT_USER_ID

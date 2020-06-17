@@ -40,6 +40,30 @@ constructor(
     }
   }
 
+  suspend fun getFinishedElectionsCount(currentDate: String): LiveData<Int> {
+    return withContext(Dispatchers.IO){
+      db.getElectionDao().getFinishedElectionsCount(currentDate)
+    }
+  }
+
+  suspend fun getPendingElectionsCount(currentDate: String): LiveData<Int> {
+    return withContext(Dispatchers.IO){
+      db.getElectionDao().getPendingElectionsCount(currentDate)
+    }
+  }
+
+  suspend fun getTotalElectionsCount(): LiveData<Int> {
+    return withContext(Dispatchers.IO){
+      db.getElectionDao().getTotalElectionsCount()
+    }
+  }
+
+  suspend fun getActiveElectionsCount(currentDate: String): LiveData<Int> {
+    return withContext(Dispatchers.IO){
+      db.getElectionDao().getActiveElectionsCount(currentDate)
+    }
+  }
+
   private fun saveElections(elections : List<Election>) {
     Coroutines.io {
       prefs.setUpdateNeeded(false)
@@ -60,6 +84,7 @@ constructor(
         val response = apiRequest { api.getAllElections(prefs.getCurrentToken()) }
         elections.postValue(response.elections)
         Log.d("friday", isNeeded.toString())
+        Log.d("friday", response.toString())
       }catch (e: NoInternetException){
 
       }catch (e: ApiException){
