@@ -48,7 +48,7 @@ constructor(
       try{
         val authResponse = userRepository.userLogin(identifier, password)
         authResponse.let {
-          val user = User(it.username, it.email, it.firstName, it.lastName, it.towFactorAuthentication, it.token?.token, it.token?.expiredOn)
+          val user = User(it.username, it.email, it.firstName, it.lastName, it.towFactorAuthentication, it.token?.token, it.token?.expiresOn, password)
           userRepository.saveUser(user)
           sharedPrefs.saveUserName(user.username)
           sharedPrefs.saveEmail(user.email)
@@ -57,7 +57,7 @@ constructor(
           sharedPrefs.saveToken(user.token)
           sharedPrefs.savePass(password)
           sharedPrefs.saveTokenExpiresOn(user.expiredAt)
-          Log.d("friday", user.token)
+          Log.d("friday", user.toString())
           authListener?.onSuccess()
         }
       }catch (e : ApiException){

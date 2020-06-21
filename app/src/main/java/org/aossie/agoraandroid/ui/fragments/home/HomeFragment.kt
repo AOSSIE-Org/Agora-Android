@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
@@ -29,11 +29,14 @@ import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.remote.RetrofitClient
+import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.showActionBar
+import org.aossie.agoraandroid.utilities.snackbar
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -42,7 +45,6 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
@@ -50,16 +52,16 @@ class HomeFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
-  private val preferenceProvider: PreferenceProvider
-) : Fragment() {
+    private val preferenceProvider: PreferenceProvider
+) : Fragment(), AuthListener {
   private var electionDetailsSharedPrefs: ElectionDetailsSharedPrefs? = null
-  private var mActiveCount = 0
-  private var mFinishedCount = 0
-  private var mPendingCount = 0
-  private var flag = 0
   private var sharedPrefs: SharedPrefs? = null
 
   private val homeViewModel: HomeViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val loginViewModel: LoginViewModel by viewModels{
     viewModelFactory
   }
 
@@ -73,7 +75,29 @@ constructor(
     sharedPrefs = SharedPrefs(activity!!)
     rootView = inflater.inflate(layout.fragment_home, container, false)
     showActionBar()
+    loginViewModel.authListener = this
     rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
+    loginViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer {
+      val formatter =
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+      val currentDate = Calendar.getInstance()
+          .time
+        val expireOn = it.expiredAt
+      Log.d("expiresOn", expireOn)
+      try {
+        if (expireOn != null) {
+          val expiresOn = formatter.parse(expireOn)
+          //If the token is expired, get a new one to continue login session of user
+          if (currentDate.after(expiresOn)) {
+            loginViewModel.logInRequest(it.username!!, it.password!!)
+          }
+        }
+      }catch (e: ParseException){
+        e.printStackTrace()
+      }
+    })
+    getElectionData(sharedPrefs!!.token)
+
     rootView.card_view_active_elections.setOnClickListener {
       Navigation.findNavController(rootView)
           .navigate(HomeFragmentDirections.actionHomeFragmentToActiveElectionsFragment())
@@ -97,59 +121,31 @@ constructor(
     rootView.swipe_refresh.setOnRefreshListener(
         OnRefreshListener { doYourUpdate() }
     )
-    val userName = sharedPrefs!!.userName
-    val userPassword = sharedPrefs!!.pass
-    val formatter =
-      SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-    val currentDate = Calendar.getInstance()
-        .time
-    try {
-      val expireOn = sharedPrefs!!.tokenExpiresOn
-      if (expireOn != null) {
-        val expiresOn = formatter.parse(expireOn)
-        //If the token is expired, get a new one to continue login session of user
-        if (currentDate.after(expiresOn)) {
-          updateToken(userName, userPassword)
-        }
-      }
-    } catch (e: ParseException) {
-      e.printStackTrace()
-    }
-    getElectionData(sharedPrefs!!.token)
 
 
     Coroutines.main {
+      val totalElectionCount = homeViewModel.totalElectionsCount.await()
+      val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
+      val activeElectionCount = homeViewModel.activeElectionsCount.await()
+      val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
       val elections = homeViewModel.elections.await()
       if(view != null) {
+        totalElectionCount.observe(viewLifecycleOwner, Observer {
+          rootView.text_view_total_count.text = it.toString()
+        })
+        pendingElectionCount.observe(viewLifecycleOwner, Observer {
+          rootView.text_view_pending_count.text = it.toString()
+        })
+        finishedElectionCount.observe(viewLifecycleOwner, Observer {
+          rootView.text_view_finished_count.text = it.toString()
+        })
+        activeElectionCount.observe(viewLifecycleOwner, Observer {
+          rootView.text_view_active_count.text = it.toString()
+        })
         elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
           rootView.shimmer_view_container.stopShimmer()
           rootView.shimmer_view_container.visibility = View.GONE
           rootView.constraintLayout.visibility = View.VISIBLE
-          for (i in it.indices) {
-            val election = it[i]
-            val startingDate = election.start
-            val endingDate = election.end
-            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            val formattedStartingDate = formatter.parse(startingDate)
-            val formattedEndingDate = formatter.parse(endingDate)
-            val currentDate = Calendar.getInstance()
-                .time
-            // Separating into Active, Finished or Pending Elections
-            if (flag == 0) {
-              if (currentDate.before(formattedStartingDate)) {
-                mPendingCount++
-              } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
-                mActiveCount++
-              } else if (currentDate.after(formattedEndingDate)) {
-                mFinishedCount++
-              }
-            }
-          }
-          flag++
-          rootView.text_view_total_count.text = it.size.toString()
-          rootView.text_view_pending_count.text = mPendingCount.toString()
-          rootView.text_view_active_count.text = mActiveCount.toString()
-          rootView.text_view_finished_count.text = mFinishedCount.toString()
           rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
         })
       }
@@ -242,5 +238,17 @@ constructor(
     preferenceProvider.setUpdateNeeded(true)
     Navigation.findNavController(rootView).navigate(R.id.homeFragment)
     getElectionData(sharedPrefs!!.token) //try to fetch data again
+  }
+
+  override fun onSuccess() {
+    doYourUpdate()
+  }
+
+  override fun onStarted() {
+    // do nothing
+  }
+
+  override fun onFailure(message: String) {
+    rootView.snackbar("$message (Token Expired) ")
   }
 }
