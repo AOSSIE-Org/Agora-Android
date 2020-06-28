@@ -11,6 +11,7 @@ import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseRes
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,8 +20,7 @@ import javax.inject.Inject
 class ProfileViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository,
-  private val context: Context
+  private val userRepository: UserRepository
 ) : ViewModel() {
 
   val user by lazyDeferred {
@@ -46,7 +46,7 @@ constructor(
     }
   }
 
-  fun changePassword(password: String, token: String) {
+  fun changePassword(password: String) {
     val jsonObject = JSONObject()
     try {
       jsonObject.put("password", password)
@@ -55,12 +55,14 @@ constructor(
     }
     Coroutines.main {
       try {
-        val response = userRepository.changePassword(token, jsonObject.toString())
+        val response = userRepository.changePassword(jsonObject.toString())
         Log.d("friday", response[1])
         _passwordRequestCode.value = Success(response[1])
       } catch (e: ApiException) {
         _passwordRequestCode.value = Error(e.message.toString())
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        _passwordRequestCode.value = Error(e.message.toString())
+      }catch (e: NoInternetException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: Exception) {
         _passwordRequestCode.value = Error(e.message.toString())
@@ -93,12 +95,15 @@ constructor(
     }
     Coroutines.main {
       try {
-        val response = userRepository.updateUser(token, jsonObject.toString())
+        val response = userRepository.updateUser(jsonObject.toString())
         Log.d("friday", response[1])
         _userUpdateResponse.value = Success(response[1])
       } catch (e: ApiException) {
         _userUpdateResponse.value = Error(e.message.toString())
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        Log.d("friday", "Session Expired")
+        _userUpdateResponse.value = Error(e.message.toString())
+      }catch (e: NoInternetException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
         _userUpdateResponse.value = Error(e.message.toString())

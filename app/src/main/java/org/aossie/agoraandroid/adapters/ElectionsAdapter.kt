@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.aossie.agoraandroid.ElectionAdapterCallback
-import org.aossie.agoraandroid.ElectionRecyclerAdapterCallback
+import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.ListItemElectionsBinding

@@ -22,14 +22,11 @@ import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
-import org.aossie.agoraandroid.utilities.SharedPrefs
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
   private lateinit var navController: NavController
-
-  private lateinit var sharedPrefs: SharedPrefs
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -51,8 +48,6 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
     setSupportActionBar(toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(false)
-
-    sharedPrefs = SharedPrefs(this)
 
     val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     if (hostFragment is NavHostFragment)

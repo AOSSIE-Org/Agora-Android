@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_elections.view.rv_total_elections
 import kotlinx.android.synthetic.main.fragment_elections.view.tv_empty_election
 import kotlinx.android.synthetic.main.fragment_elections.view.tv_something_went_wrong
-import org.aossie.agoraandroid.ElectionRecyclerAdapterCallback
+import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -29,7 +29,8 @@ class ElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(), ElectionRecyclerAdapterCallback {
+) : Fragment(),
+    ElectionRecyclerAdapterCallback {
 
   private lateinit var rootView: View
 

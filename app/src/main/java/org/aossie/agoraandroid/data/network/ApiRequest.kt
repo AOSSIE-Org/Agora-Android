@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.data.network
 
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
@@ -23,11 +24,12 @@ abstract class ApiRequest {
         if(message.isNotEmpty()) message.append("\n")
       }
       when(response.code()){
-        AppConstants.BAD_REQUEST_CODE -> message.append("${AppConstants.BAD_REQUEST_MESSAGE} : ERROR - ")
-        AppConstants.UNAUTHENTICATED_CODE -> message.append("${AppConstants.UNAUTHENTICATED_MESSAGE} : ERROR - ")
-        AppConstants.INVALID_CREDENTIALS_CODE -> message.append("${AppConstants.INVALID_CREDENTIALS_MESSAGE} : ERROR - ")
+        AppConstants.BAD_REQUEST_CODE -> message.append(AppConstants.BAD_REQUEST_MESSAGE)
+        AppConstants.UNAUTHENTICATED_CODE -> message.append(AppConstants.UNAUTHENTICATED_MESSAGE)
+        AppConstants.INVALID_CREDENTIALS_CODE -> message.append(AppConstants.INVALID_CREDENTIALS_MESSAGE)
+        AppConstants.INTERNAL_SERVER_ERROR_CODE -> message.append(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE)
       }
-      message.append(response.code().toString())
+      if(message.isEmpty()) message.append(response.code().toString())
       throw ApiException(message.toString())
     }
   }

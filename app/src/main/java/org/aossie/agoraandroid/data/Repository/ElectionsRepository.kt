@@ -15,6 +15,7 @@ import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import java.io.IOException
 import javax.inject.Inject
 
@@ -91,6 +92,8 @@ constructor(
 
       }catch (e: ApiException){
 
+      }catch (e: SessionExpirationException){
+
       }catch (e: IOException){
 
       }
@@ -116,38 +119,33 @@ constructor(
   }
 
   suspend fun deleteElection(
-    token: String,
     id: String
   ): ArrayList<String> {
-    return apiRequest { api.deleteElection(token, id) }
+    return apiRequest { api.deleteElection(prefs.getCurrentToken(), id) }
   }
 
   suspend fun getVoters(
-    token: String,
     id: String
   ): Voters {
-    return apiRequest { api.getVoters(token, id) }
+    return apiRequest { api.getVoters(prefs.getCurrentToken(), id) }
   }
 
   suspend fun getBallots(
-    token: String,
     id: String
   ): Ballots {
-    return apiRequest { api.getBallot(token, id) }
+    return apiRequest { api.getBallot(prefs.getCurrentToken(), id) }
   }
 
   suspend fun sendVoters(
-    token: String,
     id: String,
     body: String
   ): ArrayList<String>{
-    return apiRequest { api.sendVoters(token, id, body) }
+    return apiRequest { api.sendVoters(prefs.getCurrentToken(), id, body) }
   }
 
   suspend fun createElection(
-    token: String,
     body: String
   ): ArrayList<String>{
-    return apiRequest { api.createElection(body, token) }
+    return apiRequest { api.createElection(body, prefs.getCurrentToken()) }
   }
 }

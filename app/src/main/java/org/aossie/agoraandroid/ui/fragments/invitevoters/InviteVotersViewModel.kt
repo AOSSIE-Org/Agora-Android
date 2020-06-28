@@ -6,6 +6,7 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -24,8 +25,7 @@ constructor(
   ) fun inviteVoters(
     mVoterNames: ArrayList<String>,
     mVoterEmails: ArrayList<String>,
-    id: String,
-    token: String
+    id: String
   ) {
     val jsonArray = JSONArray()
     for (i in mVoterEmails.indices) {
@@ -34,24 +34,25 @@ constructor(
       jsonObject.put("hash", mVoterEmails[i])
       jsonArray.put(jsonObject)
       Log.d("TAG", "inviteVoters: $jsonArray")
-      sendVoters(id, token, jsonArray.toString())
+      sendVoters(id, jsonArray.toString())
     }
   }
 
   private fun sendVoters(
     id: String,
-    token: String,
     body: String
   ) {
     inviteVoterListener.onStarted()
     Coroutines.main {
       try {
-        val response = electionsRepository.sendVoters(token, id, body)
+        val response = electionsRepository.sendVoters(id, body)
         Log.d("friday", response.toString())
         inviteVoterListener.onSuccess(response[1])
       }catch (e: ApiException) {
         inviteVoterListener.onFailure(e.message!!)
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        inviteVoterListener.onFailure(e.message!!)
+      }catch (e: NoInternetException) {
         inviteVoterListener.onFailure(e.message!!)
       } catch (e: Exception) {
         inviteVoterListener.onFailure(e.message!!)

@@ -14,7 +14,7 @@ import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionViewMod
 import org.aossie.agoraandroid.ui.fragments.displayelections.DisplayElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersViewModel
-import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeViewModel
+import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
 
 @Module

@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import javax.inject.Inject
 
 class SignUpViewModel
@@ -17,7 +17,6 @@ class SignUpViewModel
 constructor(
   private val userRepository: UserRepository
 ) : ViewModel() {
-  private var loadToast: LoadToast? = null
 
   lateinit var authListener: AuthListener
   fun signUpRequest(
@@ -49,6 +48,8 @@ constructor(
         }else {
           authListener.onFailure(e.message!!)
         }
+      }catch (e: SessionExpirationException){
+        authListener.onFailure(e.message!!)
       }catch (e: NoInternetException){
         authListener.onFailure(e.message!!)
       }catch (e: Exception){

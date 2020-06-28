@@ -11,6 +11,7 @@ import org.aossie.agoraandroid.data.db.model.VoterList
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -51,19 +52,20 @@ constructor(
   }
 
   fun getBallot(
-    token: String?,
     id: String?
   ) {
     displayElectionListener.onStarted()
     Coroutines.main {
       try {
-        val response = electionsRepository.getBallots(token!!, id!!).ballots
+        val response = electionsRepository.getBallots(id!!).ballots
         Log.d("friday", response.toString())
         mBallotResponse.postValue(response)
         displayElectionListener.onSuccess()
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        displayElectionListener.onFailure(e.message!!)
+      }catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)
@@ -72,19 +74,20 @@ constructor(
   }
 
   fun getVoter(
-    token: String?,
     id: String?
   ) {
     displayElectionListener.onStarted()
     Coroutines.main {
       try {
-        val response = electionsRepository.getVoters(token!!, id!!).voters
+        val response = electionsRepository.getVoters(id!!).voters
         Log.d("friday", response.toString())
         mVoterResponse.postValue(response)
         displayElectionListener.onSuccess()
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        displayElectionListener.onFailure(e.message!!)
+      }catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)
@@ -93,19 +96,20 @@ constructor(
   }
 
   fun deleteElection(
-    token: String?,
     id: String?
   ) {
     displayElectionListener.onStarted()
     Coroutines.main {
       try {
-        val response = electionsRepository.deleteElection(token!!, id!!)
+        val response = electionsRepository.deleteElection(id!!)
         Log.d("friday", response.toString())
         displayElectionListener.onSuccess(response[1])
         displayElectionListener.onDeleteElectionSuccess()
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        displayElectionListener.onFailure(e.message!!)
+      }catch (e: NoInternetException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)

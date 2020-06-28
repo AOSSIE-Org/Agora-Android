@@ -100,8 +100,8 @@ class ElectionDetailsFragment
     binding.root.button_delete.setOnClickListener {
       when (status) {
         "ACTIVE" -> binding.root.snackbar("Active Elections Cannot Be Deleted")
-        "FINISHED" -> displayElectionViewModel.deleteElection(token, id)
-        "PENDING" -> displayElectionViewModel.deleteElection(token, id)
+        "FINISHED" -> displayElectionViewModel.deleteElection(id)
+        "PENDING" -> displayElectionViewModel.deleteElection(id)
       }
     }
 

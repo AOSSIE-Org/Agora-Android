@@ -80,6 +80,10 @@ class UserRepository(
     return appDatabase.getUserDao().getUser()
   }
 
+  fun getUserInfo(): User{
+    return appDatabase.getUserDao().getUserInfo()
+  }
+
   suspend fun deleteUser(){
     appDatabase.getUserDao().removeUser()
     preferenceProvider.clearData()
@@ -90,12 +94,12 @@ class UserRepository(
     return apiRequest { api.sendForgotPassword(username) }
   }
 
-  suspend fun updateUser(token: String, body: String): ArrayList<String>{
-    return apiRequest { api.updateUser(token, body) }
+  suspend fun updateUser(body: String): ArrayList<String>{
+    return apiRequest { api.updateUser(preferenceProvider.getCurrentToken(), body) }
   }
 
-  suspend fun changePassword(token: String, body: String): ArrayList<String>{
-    return apiRequest { api.changePassword(body, token) }
+  suspend fun changePassword(body: String): ArrayList<String>{
+    return apiRequest { api.changePassword(body, preferenceProvider.getCurrentToken()) }
   }
 
 }

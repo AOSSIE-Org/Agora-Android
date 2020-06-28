@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.data.network
 
 import okhttp3.OkHttpClient
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
@@ -96,11 +97,13 @@ interface Api {
 
   companion object{
     operator fun invoke(
-      networkInterceptor: NetworkInterceptor
+      networkInterceptor: NetworkInterceptor,
+      authorizationInterceptor: AuthorizationInterceptor
     ): Api {
 
       val okHttpClient = OkHttpClient.Builder()
           .addInterceptor(networkInterceptor)
+          .addInterceptor(authorizationInterceptor)
           .build()
 
       return Retrofit.Builder()

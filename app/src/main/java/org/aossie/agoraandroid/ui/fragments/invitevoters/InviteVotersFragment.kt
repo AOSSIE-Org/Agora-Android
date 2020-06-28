@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -22,18 +21,15 @@ import kotlinx.android.synthetic.main.fragment_invite_voters.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_invite_voters.view.recycler_view_voters
 import kotlinx.android.synthetic.main.fragment_invite_voters.view.text_input_voter_email
 import kotlinx.android.synthetic.main.fragment_invite_voters.view.text_input_voter_name
-import kotlinx.android.synthetic.main.fragment_sign_up.signup_first_name
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInActivity
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.json.JSONException
-import java.lang.StringBuilder
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -48,6 +44,8 @@ class InviteVotersFragment
   ): Fragment(), InviteVoterListener {
 
   private lateinit var rootView: View
+
+  var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
   private val mVoterNames = ArrayList<String>()
   private val mVoterEmails = ArrayList<String>()
@@ -120,8 +118,7 @@ class InviteVotersFragment
       try {
         val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(arguments!!)
         val id : String = inviteVotersFragmentArgs.id
-        val token: String = inviteVotersFragmentArgs.token
-        inviteVotersViewModel.inviteVoters(mVoterNames, mVoterEmails, id, token)
+        inviteVotersViewModel.inviteVoters(mVoterNames, mVoterEmails, id)
 
       } catch (e: JSONException) {
         e.printStackTrace()
@@ -137,6 +134,8 @@ class InviteVotersFragment
           .toString()
       if (inviteValidator(email, name, mVoterEmails)) {
         addCandidate(name, email)
+      }else{
+        rootView.snackbar("Enter valid name and email address")
       }
     }
 
@@ -188,6 +187,11 @@ class InviteVotersFragment
           R.id.text_input_voter_email
       ) as TextInputLayout).error = base.resources
           .getString(string.voter_same_email)
+      return false
+    }else if(!email.matches(emailPattern.toRegex())){
+      (base.findViewById<View>(
+          R.id.text_input_voter_email
+      ) as TextInputLayout).error = "Please enter valid email address"
       return false
     }
     (base.findViewById<View>(

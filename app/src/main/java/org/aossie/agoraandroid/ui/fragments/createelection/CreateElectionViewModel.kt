@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.model.Ballot
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -18,7 +17,6 @@ internal class CreateElectionViewModel
 @Inject
 constructor(
     private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
-    private val prefs: PreferenceProvider,
     private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
@@ -28,7 +26,6 @@ constructor(
     createElectionListener.onStarted()
     val candidates = electionDetailsSharedPrefs.getCandidates()
     val jsArray = JSONArray(candidates)
-    val token = prefs.getCurrentToken()
     val jsonObject = JSONObject()
     try {
       val ballot = JSONArray(ArrayList<Ballot>())
@@ -50,7 +47,7 @@ constructor(
     }
     viewModelScope.launch(Dispatchers.Main){
       try{
-        val response = electionsRepository.createElection(token!!, jsonObject.toString())
+        val response = electionsRepository.createElection(jsonObject.toString())
          createElectionListener.onSuccess(response[1])
       }catch (e : ApiException){
         createElectionListener.onFailure(e.message!!)

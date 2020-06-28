@@ -1,11 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.moreOptions
 
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -18,11 +16,10 @@ import kotlinx.android.synthetic.main.fragment_more_options.view.tv_dashboard
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_logout
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_report
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_share
-import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
-import org.aossie.agoraandroid.utilities.SharedPrefs
+import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.shortSnackbar
 import org.aossie.agoraandroid.utilities.show
@@ -43,8 +40,6 @@ class MoreOptionsFragment
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
   }
-  private var loadToast: LoadToast? = null
-  private var sharedPrefs: SharedPrefs? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -53,8 +48,6 @@ class MoreOptionsFragment
   ): View? {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_more_options, container, false)
-    sharedPrefs = SharedPrefs(context!!)
-    loadToast = LoadToast(context)
 
     homeViewModel.authListener = this
 

@@ -85,6 +85,7 @@ class UploadElectionFragment
     rootView.progress_bar.hide()
     if(message!=null) rootView.snackbar(message)
     prefs.setUpdateNeeded(true)
+    electionDetailsSharedPrefs.clearElectionData()
     Navigation.findNavController(rootView)
         .navigate(UploadElectionFragmentDirections.actionUploadElectionFragmentToHomeFragment())
   }

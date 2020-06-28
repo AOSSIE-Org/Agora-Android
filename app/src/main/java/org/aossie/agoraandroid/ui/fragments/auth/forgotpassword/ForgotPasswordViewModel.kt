@@ -1,11 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.auth.forgotpassword
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -19,7 +15,6 @@ constructor(
 ) : ViewModel() {
 
   lateinit var authListener: AuthListener
-
 
   fun sendResetLink(userName: String?)= Coroutines.main {
     authListener.onStarted()

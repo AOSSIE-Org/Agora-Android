@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
@@ -31,7 +32,8 @@ import javax.inject.Inject
 class ProfileFragment
   @Inject
   constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
+    private val viewModelFactory: ViewModelProvider.Factory,
+      private val prefs: PreferenceProvider
   ): Fragment() , AuthListener{
 
   lateinit var binding: FragmentProfileBinding
@@ -83,7 +85,6 @@ class ProfileFragment
     }
 
     binding.changePasswordBtn.setOnClickListener {
-      binding.root.progress_bar.show()
       val newPass = binding.newPasswordTiet.text.toString()
       val conPass = binding.confirmPasswordTiet.text.toString()
       if(binding.newPasswordTil.error == null && binding.confirmPasswordTil.error == null) {
@@ -92,8 +93,9 @@ class ProfileFragment
           conPass.isEmpty() -> binding.confirmPasswordTil.error = getString(string.password_empty_warn)
           newPass != conPass -> binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
           else -> {
+            binding.root.progress_bar.show()
             hideKeyboardInFrag(this@ProfileFragment)
-            viewModel.changePassword(binding.newPasswordTiet.text.toString(), mUser.token!!)
+            viewModel.changePassword(binding.newPasswordTiet.text.toString())
           }
         }
       }

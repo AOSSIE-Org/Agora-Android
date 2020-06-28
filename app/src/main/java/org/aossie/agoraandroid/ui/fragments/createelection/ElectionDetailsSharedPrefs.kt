@@ -114,16 +114,6 @@ constructor(
         BallotVisibilityKey, null
     )
 
-  fun saveElectionDetails(electionDetails: String?) {
-    editor.putString(ElectionDetailsKey, electionDetails)
-    editor.commit()
-  }
-
-  val electionDetails: String?
-    get() = sharedPreferences.getString(
-        ElectionDetailsKey, null
-    )
-
   fun clearElectionData() {
     editor.putString(NameKey, null)
     editor.putString(StartTimeKey, null)
@@ -148,7 +138,6 @@ constructor(
     private const val DescriptionKey = "electionDescription"
     private const val VotingAlgoKey = "votingAlgorithm"
     private const val BallotVisibilityKey = "ballotVisibility"
-    private const val ElectionDetailsKey = "electionDetails"
     private const val CandidatesKey = "candidates"
   }
 

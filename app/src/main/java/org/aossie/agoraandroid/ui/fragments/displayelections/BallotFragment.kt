@@ -10,21 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import kotlinx.android.synthetic.main.fragment_ballot.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_ballot.view.recycler_view_ballots
 import kotlinx.android.synthetic.main.fragment_ballot.view.tv_empty_ballots
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.adapters.BallotRecyclerAdapter
 import org.aossie.agoraandroid.adapters.BallotsAdapter
-import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.model.Ballot
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
-import org.json.JSONException
-import org.json.JSONObject
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -34,8 +29,7 @@ import javax.inject.Inject
 class BallotFragment
   @Inject
   constructor(
-    private val viewModelFactory: ViewModelProvider.Factory,
-      private val prefs: PreferenceProvider
+    private val viewModelFactory: ViewModelProvider.Factory
   ) : Fragment(), DisplayElectionListener {
 
   private lateinit var rootView: View
@@ -65,8 +59,7 @@ class BallotFragment
     }
 
     id = VotersFragmentArgs.fromBundle(arguments!!).id
-    token = prefs.getCurrentToken()
-    displayElectionViewModel.getBallot(token, id)
+    displayElectionViewModel.getBallot(id)
 
     return rootView
   }

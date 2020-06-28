@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,18 +12,16 @@ import org.aossie.agoraandroid.data.network.responses.Token
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.SharedPrefs
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import javax.inject.Inject
 
 class LoginViewModel
 @Inject
 constructor(
   private val userRepository: UserRepository,
-  private val context: Context,
   private val prefs: PreferenceProvider
 ) : ViewModel() {
 
-  private val sharedPrefs = SharedPrefs(context)
   var authListener: AuthListener? = null
 
   fun getLoggedInUser() = userRepository.getUser()
@@ -47,17 +44,12 @@ constructor(
               it.token?.token, it.token?.expiresOn, password
           )
           userRepository.saveUser(user)
-          sharedPrefs.saveUserName(user.username)
-          sharedPrefs.saveEmail(user.email)
-          sharedPrefs.saveFirstName(user.firstName)
-          sharedPrefs.saveLastName(user.lastName)
-          sharedPrefs.saveToken(user.token)
-          sharedPrefs.savePass(password)
-          sharedPrefs.saveTokenExpiresOn(user.expiredAt)
           Log.d("friday", user.toString())
           authListener?.onSuccess()
         }
       } catch (e: ApiException) {
+        authListener?.onFailure(e.message!!)
+      }catch (e: SessionExpirationException) {
         authListener?.onFailure(e.message!!)
       } catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
@@ -76,7 +68,9 @@ constructor(
         Log.d("friday", authResponse.toString())
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        authListener?.onFailure(e.message!!)
+      }catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
         authListener?.onFailure(e.message!!)
@@ -94,19 +88,15 @@ constructor(
               token.token, token.expiresOn
           )
           userRepository.saveUser(user)
-          sharedPrefs.saveUserName(user.username)
-          sharedPrefs.saveEmail(user.email)
-          sharedPrefs.saveFirstName(user.firstName)
-          sharedPrefs.saveLastName(user.lastName)
-          sharedPrefs.saveToken(user.token)
-          sharedPrefs.saveTokenExpiresOn(user.expiredAt)
           Log.d("friday", authResponse.toString())
           prefs.setIsFacebookUser(true)
           authListener?.onSuccess()
         }
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
-      } catch (e: NoInternetException) {
+      } catch (e: SessionExpirationException) {
+        authListener?.onFailure(e.message!!)
+      }catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
         authListener?.onFailure(e.message!!)

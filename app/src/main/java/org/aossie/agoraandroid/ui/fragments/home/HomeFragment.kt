@@ -27,18 +27,11 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
-import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
-import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
-import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.showActionBar
 import org.aossie.agoraandroid.utilities.snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -51,8 +44,6 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val preferenceProvider: PreferenceProvider
 ) : Fragment(), AuthListener {
-  private var electionDetailsSharedPrefs: ElectionDetailsSharedPrefs? = null
-  private var sharedPrefs: SharedPrefs? = null
 
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
@@ -68,14 +59,10 @@ constructor(
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    electionDetailsSharedPrefs = ElectionDetailsSharedPrefs(context!!)
-    sharedPrefs = SharedPrefs(activity!!)
     rootView = inflater.inflate(layout.fragment_home, container, false)
     showActionBar()
     loginViewModel.authListener = this
     rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
-
-    getElectionData(sharedPrefs!!.token)
 
     rootView.card_view_active_elections.setOnClickListener {
       Navigation.findNavController(rootView)
@@ -102,22 +89,52 @@ constructor(
     )
 
     loginViewModel.getLoggedInUser()
-        .observe(viewLifecycleOwner, Observer {
+        .observe(viewLifecycleOwner, Observer { user ->
           val formatter =
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
           val currentDate = Calendar.getInstance()
               .time
-          val expireOn = it?.expiredAt
+          val expireOn = user?.expiredAt
+          Log.d("friday", user.toString())
           Log.d("expiresOn", expireOn.toString())
           try {
             if (expireOn != null) {
               val expiresOn = formatter.parse(expireOn)
               //If the token is expired, get a new one to continue login session of user
               if (currentDate.after(expiresOn)) {
+                Log.d("expired", expireOn.toString())
                 if(preferenceProvider.getIsFacebookUser()){
                   loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
                 }else {
-                  loginViewModel.logInRequest(it.username!!, it.password!!)
+                  loginViewModel.logInRequest(user.username!!, user.password!!)
+                }
+              }else{
+                Coroutines.main {
+                  val elections = homeViewModel.elections.await()
+                  val totalElectionCount = homeViewModel.totalElectionsCount.await()
+                  val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
+                  val activeElectionCount = homeViewModel.activeElectionsCount.await()
+                  val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
+                  if (view != null) {
+                    elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                      totalElectionCount.observe(viewLifecycleOwner, Observer {
+                        rootView.text_view_total_count.text = it.toString()
+                      })
+                      pendingElectionCount.observe(viewLifecycleOwner, Observer {
+                        rootView.text_view_pending_count.text = it.toString()
+                      })
+                      finishedElectionCount.observe(viewLifecycleOwner, Observer {
+                        rootView.text_view_finished_count.text = it.toString()
+                      })
+                      activeElectionCount.observe(viewLifecycleOwner, Observer {
+                        rootView.text_view_active_count.text = it.toString()
+                      })
+                      rootView.shimmer_view_container.stopShimmer()
+                      rootView.shimmer_view_container.visibility = View.GONE
+                      rootView.constraintLayout.visibility = View.VISIBLE
+                      rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
+                    })
+                  }
                 }
               }
             }
@@ -125,57 +142,7 @@ constructor(
             e.printStackTrace()
           }
         })
-    Coroutines.main {
-      val elections = homeViewModel.elections.await()
-      val totalElectionCount = homeViewModel.totalElectionsCount.await()
-      val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
-      val activeElectionCount = homeViewModel.activeElectionsCount.await()
-      val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
-      if (view != null) {
-        elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-          totalElectionCount.observe(viewLifecycleOwner, Observer {
-            rootView.text_view_total_count.text = it.toString()
-          })
-          pendingElectionCount.observe(viewLifecycleOwner, Observer {
-            rootView.text_view_pending_count.text = it.toString()
-          })
-          finishedElectionCount.observe(viewLifecycleOwner, Observer {
-            rootView.text_view_finished_count.text = it.toString()
-          })
-          activeElectionCount.observe(viewLifecycleOwner, Observer {
-            rootView.text_view_active_count.text = it.toString()
-          })
-          rootView.shimmer_view_container.stopShimmer()
-          rootView.shimmer_view_container.visibility = View.GONE
-          rootView.constraintLayout.visibility = View.VISIBLE
-          rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
-        })
-      }
-    }
-
-
     return rootView
-  }
-
-  private fun getElectionData(token: String?) {
-    val apiService = RetrofitClient.getAPIService()
-    val electionDataResponse = apiService.getAllElections(token)
-    electionDataResponse.enqueue(object : Callback<String?> {
-      override fun onResponse(
-        call: Call<String?>,
-        response: Response<String?>
-      ) {
-        if (response.message() == "OK") {
-          electionDetailsSharedPrefs!!.saveElectionDetails(response.body())
-        }
-      }
-
-      override fun onFailure(
-        call: Call<String?>,
-        t: Throwable
-      ) {
-      }
-    })
   }
 
   override fun onResume() {
@@ -191,7 +158,6 @@ constructor(
   private fun doYourUpdate() {
     preferenceProvider.setUpdateNeeded(true)
     Navigation.findNavController(rootView).navigate(R.id.homeFragment)
-    getElectionData(sharedPrefs!!.token) //try to fetch data again
   }
 
   override fun onSuccess(message: String?) {

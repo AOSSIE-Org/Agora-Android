@@ -32,8 +32,7 @@ import javax.inject.Inject
 class VotersFragment
   @Inject
   constructor(
-    private val viewModelFactory: ViewModelProvider.Factory,
-      private val prefs: PreferenceProvider
+    private val viewModelFactory: ViewModelProvider.Factory
   ): Fragment(), DisplayElectionListener {
 
   private lateinit var rootView: View
@@ -62,8 +61,7 @@ class VotersFragment
     }
 
     id = VotersFragmentArgs.fromBundle(arguments!!).id
-    token = prefs.getCurrentToken()
-    displayElectionViewModel.getVoter(token, id)
+    displayElectionViewModel.getVoter(id)
 
     return rootView
   }
