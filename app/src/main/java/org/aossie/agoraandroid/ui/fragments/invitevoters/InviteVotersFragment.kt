@@ -158,17 +158,17 @@ class InviteVotersFragment
     rootView.progress_bar.show()
   }
 
-  override fun onFailure(message: String?) {
+  override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     val mMessage = StringBuilder()
-    if(!message.isNullOrEmpty()) mMessage.append(message) else mMessage.append("Something Went Wrong")
+    mMessage.append(message)
     rootView.snackbar(mMessage.toString())
   }
 
-  override fun onSuccess(message: String?) {
+  override fun onSuccess(message: String) {
     rootView.progress_bar.hide()
     prefs.setUpdateNeeded(true)
-    if(!message.isNullOrEmpty()) rootView.snackbar(message)
+    rootView.snackbar(message)
     Navigation.findNavController(rootView)
         .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
   }

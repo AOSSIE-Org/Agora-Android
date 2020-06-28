@@ -6,25 +6,43 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import net.steamcrafted.loadtoast.LoadToast
+import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
+import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
+import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
+import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.utilities.snackbar
+import javax.inject.Inject
 
-class ProfileFragment : Fragment() {
+class ProfileFragment
+  @Inject
+  constructor(
+    private val viewModelFactory: ViewModelProvider.Factory
+  ): Fragment() , AuthListener{
 
   lateinit var binding: FragmentProfileBinding
-  lateinit var viewModel: ProfileViewModel
-  lateinit var loadToast: LoadToast
+  private val viewModel: ProfileViewModel by viewModels {
+    viewModelFactory
+  }
+  private val loginViewModel: LoginViewModel by viewModels{
+    viewModelFactory
+  }
+
+  lateinit var mUser: User
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -32,31 +50,40 @@ class ProfileFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
 
-    viewModel = ViewModelProvider(this)
-      .get(ProfileViewModel::class.java)
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-
-    loadToast = LoadToast(activity)
-    binding.viewModel = viewModel
-
+    Coroutines.main {
+      val user = viewModel.user.await()
+      user.observe(viewLifecycleOwner, Observer {
+        binding.user = it
+        mUser = it
+      })
+    }
     binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
     binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
     binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
     binding.confirmPasswordTiet.addTextChangedListener(getTextWatcher(4))
 
     binding.updateProfileBtn.setOnClickListener {
-      loadToast.show()
+      binding.root.progress_bar.show()
       if(binding.firstNameTil.error == null && binding.lastNameTil.error == null) {
       hideKeyboardInFrag(this@ProfileFragment)
-        viewModel.updateUser(
-            binding.firstNameTiet.text.toString().trim(),
-            binding.lastNameTiet.text.toString().trim()
-        )
+          viewModel.updateUser(
+              mUser.username!!,
+              mUser.email!!,
+              binding.firstNameTiet.text.toString()
+                  .trim(),
+              binding.lastNameTiet.text.toString()
+                  .trim(),
+              mUser.token!!,
+              mUser.expiredAt!!
+          )
       }
-      else loadToast.error()
+      else binding.root.progress_bar.hide()
+
     }
 
     binding.changePasswordBtn.setOnClickListener {
+      binding.root.progress_bar.show()
       val newPass = binding.newPasswordTiet.text.toString()
       val conPass = binding.confirmPasswordTiet.text.toString()
       if(binding.newPasswordTil.error == null && binding.confirmPasswordTil.error == null) {
@@ -66,11 +93,11 @@ class ProfileFragment : Fragment() {
           newPass != conPass -> binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
           else -> {
             hideKeyboardInFrag(this@ProfileFragment)
-            loadToast.show()
-            viewModel.changePassword(binding.newPasswordTiet.text.toString())
+            viewModel.changePassword(binding.newPasswordTiet.text.toString(), mUser.token!!)
           }
         }
       }
+      else binding.root.progress_bar.hide()
     }
 
     viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
@@ -83,22 +110,24 @@ class ProfileFragment : Fragment() {
   }
   private fun handleUser(response: ResponseResults) = when(response) {
     is Success -> {
-      loadToast.success()
-      Toast.makeText(activity, getString(string.user_updated), Toast.LENGTH_SHORT).show()
+      binding.root.progress_bar.hide()
+      binding.root.snackbar(response.message.toString())
+      loginViewModel.logInRequest(mUser.username!!, mUser.password!!)
     }
     is Error -> {
-      loadToast.error()
-      Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+      binding.root.progress_bar.hide()
+      binding.root.snackbar(response.message)
     }
   }
   private fun handlePassword(response: ResponseResults) = when(response) {
     is Success -> {
-      loadToast.success()
-      Toast.makeText(activity, getString(string.password_change_success), Toast.LENGTH_SHORT).show()
+      binding.root.progress_bar.hide()
+      binding.root.snackbar(response.message.toString())
+      loginViewModel.logInRequest(mUser.username!!, binding.newPasswordTiet.text.toString())
     }
     is Error -> {
-      loadToast.error()
-      Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+      binding.root.progress_bar.hide()
+      binding.root.snackbar(response.message)
     }
   }
 
@@ -117,7 +146,7 @@ class ProfileFragment : Fragment() {
           3 -> {
             when {
               s.isNullOrEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
-              s.toString() == viewModel.pass -> binding.newPasswordTil.error = getString(string.password_same_oldpassword_warn)
+              s.toString() == mUser.password -> binding.newPasswordTil.error = getString(string.password_same_oldpassword_warn)
               else -> binding.newPasswordTil.error = null
             }
           }
@@ -133,5 +162,18 @@ class ProfileFragment : Fragment() {
       override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
       override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
+  }
+
+  override fun onSuccess(message: String?) {
+    binding.root.progress_bar.hide()
+  }
+
+  override fun onStarted() {
+    binding.root.progress_bar.show()
+  }
+
+  override fun onFailure(message: String) {
+    binding.root.progress_bar.hide()
+    binding.root.snackbar(message)
   }
 }

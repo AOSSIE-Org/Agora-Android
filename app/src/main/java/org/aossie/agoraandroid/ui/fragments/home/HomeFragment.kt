@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -37,8 +36,6 @@ import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.showActionBar
 import org.aossie.agoraandroid.utilities.snackbar
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -104,33 +101,37 @@ constructor(
         OnRefreshListener { doYourUpdate() }
     )
 
-
-      loginViewModel.getLoggedInUser()
-          .observe(viewLifecycleOwner, Observer {
-            val formatter =
-              SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            val currentDate = Calendar.getInstance()
-                .time
-            val expireOn = it?.expiredAt
-            Log.d("expiresOn", expireOn.toString())
-            try {
-              if (expireOn != null) {
-                val expiresOn = formatter.parse(expireOn)
-                //If the token is expired, get a new one to continue login session of user
-                if (currentDate.after(expiresOn)) {
+    loginViewModel.getLoggedInUser()
+        .observe(viewLifecycleOwner, Observer {
+          val formatter =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+          val currentDate = Calendar.getInstance()
+              .time
+          val expireOn = it?.expiredAt
+          Log.d("expiresOn", expireOn.toString())
+          try {
+            if (expireOn != null) {
+              val expiresOn = formatter.parse(expireOn)
+              //If the token is expired, get a new one to continue login session of user
+              if (currentDate.after(expiresOn)) {
+                if(preferenceProvider.getIsFacebookUser()){
+                  loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
+                }else {
                   loginViewModel.logInRequest(it.username!!, it.password!!)
                 }
               }
-            } catch (e: ParseException) {
-              e.printStackTrace()
             }
-          })
-      Coroutines.main {
-        val elections = homeViewModel.elections.await()
-        val totalElectionCount = homeViewModel.totalElectionsCount.await()
-        val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
-        val activeElectionCount = homeViewModel.activeElectionsCount.await()
-        val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
+          } catch (e: ParseException) {
+            e.printStackTrace()
+          }
+        })
+    Coroutines.main {
+      val elections = homeViewModel.elections.await()
+      val totalElectionCount = homeViewModel.totalElectionsCount.await()
+      val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
+      val activeElectionCount = homeViewModel.activeElectionsCount.await()
+      val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
+      if (view != null) {
         elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
           totalElectionCount.observe(viewLifecycleOwner, Observer {
             rootView.text_view_total_count.text = it.toString()
@@ -150,6 +151,7 @@ constructor(
           rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
         })
       }
+    }
 
 
     return rootView
@@ -192,7 +194,7 @@ constructor(
     getElectionData(sharedPrefs!!.token) //try to fetch data again
   }
 
-  override fun onSuccess() {
+  override fun onSuccess(message: String?) {
     doYourUpdate()
   }
 

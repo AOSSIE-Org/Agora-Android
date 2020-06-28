@@ -71,7 +71,7 @@ class UploadCandidatesFragment
     ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rootView.names_rv)
     rootView.names_rv.adapter = candidateRecyclerAdapter
     rootView.submit_details_btn.setOnClickListener {
-      if (mCandidates.isEmpty()) {
+      if (mCandidates.isNotEmpty()) {
         hideKeyboardInActivity(activity as AppCompatActivity)
         electionDetailsSharedPrefs.saveCandidates(mCandidates)
         Navigation.findNavController(rootView)

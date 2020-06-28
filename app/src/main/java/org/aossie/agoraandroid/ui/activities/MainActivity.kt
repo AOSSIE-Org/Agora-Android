@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -115,6 +116,16 @@ class MainActivity : AppCompatActivity() {
       }
       else -> iv_back.visibility = View.GONE
     }
+  }
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    data: Intent?
+  ) {
+    super.onActivityResult(requestCode, resultCode, data)
+    val navHostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
+    val childFragments = navHostFragment?.childFragmentManager?.fragments
+    childFragments?.forEach { it.onActivityResult(requestCode, resultCode, data) }
   }
 }
 

@@ -19,7 +19,6 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           >
-
         <Button
             android:id="@+id/submit_details_btn"
             style="@style/MainButtonStyle"
@@ -166,18 +165,18 @@
             />
 
       </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/size_10dp"
         android:visibility="invisible"
         android:background="@drawable/progressbar_background"
+        android:padding="@dimen/size_10dp"
         android:layout_gravity="center"
         />
   </FrameLayout>
+
 
 </layout>

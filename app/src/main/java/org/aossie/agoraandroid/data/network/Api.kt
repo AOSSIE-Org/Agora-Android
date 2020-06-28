@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
+import org.aossie.agoraandroid.data.network.responses.Token
 import org.aossie.agoraandroid.data.network.responses.Voters
 import retrofit2.Call
 import retrofit2.Response
@@ -73,6 +74,25 @@ interface Api {
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("election")
   suspend fun createElection(@Body body: String?, @Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
+
+  //update user
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("user/update")
+  suspend fun updateUser(@Header("X-Auth-Token") authToken: String?, @Body body: String?): Response<ArrayList<String>>
+
+  //POST request to change password
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("user/changePassword")
+  suspend fun changePassword(@Body body: String?, @Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
+
+  //GET request to log in via facebook Access Token
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("auth/authenticate/facebook")
+  suspend fun facebookLogin(@Header("Access-Token") accessToken: String?): Response<Token>
+
+  //GET request to get user's data
+  @Headers("Accept: application/json", "Content-Type: application/json") @GET("user")
+  suspend fun getUserData(@Header("X-Auth-Token") authToken: String?): Response<AuthResponse>
 
   companion object{
     operator fun invoke(

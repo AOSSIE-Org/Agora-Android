@@ -106,7 +106,7 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: NoInternetException) {
-        mNotConnected.postValue(true)
+        displayElectionListener.onFailure(e.message!!)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)
       }

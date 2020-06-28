@@ -6,8 +6,12 @@ import androidx.preference.PreferenceManager
 import javax.inject.Inject
 
 private const val IS_LOGGED_IN = "isLoggedIn"
+private const val IS_FACEBOOK_USER = "isFacebookUser"
 private const val IS_UPDATE_NEEDED = "isUpdateNeeded"
 private const val ACCESS_TOKEN = "token"
+private const val FACEBOOK_ACCESS_TOKEN = "facebookAccessToken"
+private const val USERNAME = "username"
+private const val PASSWORD = "password"
 
 class PreferenceProvider
 @Inject
@@ -27,6 +31,17 @@ constructor(
 
   fun getIsLoggedIn(): Boolean {
     return preferences.getBoolean(IS_LOGGED_IN, false)
+  }
+
+  fun setIsFacebookUser(boolean: Boolean) {
+    preferences.edit().putBoolean(
+        IS_FACEBOOK_USER,
+        boolean
+    ).apply()
+  }
+
+  fun getIsFacebookUser(): Boolean {
+    return preferences.getBoolean(IS_FACEBOOK_USER, false)
   }
 
   fun setUpdateNeeded(isNeeded : Boolean){
@@ -50,6 +65,40 @@ constructor(
 
   fun getCurrentToken() : String?{
     return preferences.getString(ACCESS_TOKEN, null)
+  }
+
+  fun setFacebookAccessToken(accessToken: String?) {
+    preferences.edit().putString(
+        FACEBOOK_ACCESS_TOKEN,
+        accessToken
+    ).apply()
+
+  }
+
+  fun getFacebookAccessToken() : String?{
+    return preferences.getString(FACEBOOK_ACCESS_TOKEN, null)
+  }
+
+  fun getUsername() : String?{
+    return preferences.getString(USERNAME, null)
+  }
+
+  fun setUsername(accessToken: String?) {
+    preferences.edit().putString(
+        USERNAME,
+        accessToken
+    ).apply()
+  }
+
+  fun getPassword() : String?{
+    return preferences.getString(PASSWORD, null)
+  }
+
+  fun setPassword(accessToken: String?) {
+    preferences.edit().putString(
+        PASSWORD,
+        accessToken
+    ).apply()
   }
 
   fun clearData(){

@@ -24,6 +24,7 @@ import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
+import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 
 @Module
@@ -118,6 +119,12 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(UploadElectionFragment::class)
   abstract fun bindsUploadElectionFragment(uploadElectionFragment: UploadElectionFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(ProfileFragment::class)
+  abstract fun bindsProfileFragment(profileFragment: ProfileFragment): Fragment
+
 
   @Binds
   abstract fun bindFragmentFactory(factory: MainFragmentFactory): FragmentFactory

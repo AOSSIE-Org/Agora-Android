@@ -217,7 +217,7 @@ class SignUpFragment
     }
   }
 
-  override fun onSuccess() {
+  override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
     rootView.snackbar("An activation link has been sent to registered email id to verify your account")
   }

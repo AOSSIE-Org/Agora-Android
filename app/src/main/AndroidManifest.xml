@@ -8,13 +8,13 @@
   <application
       android:name=".AgoraApp"
       android:allowBackup="true"
+      android:fullBackupContent="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
-      android:theme="@style/AppTheme"
-      android:fullBackupContent="true">
-    <activity android:name=".result.ResultActivity"/>
+      android:theme="@style/AppTheme">
+    <activity android:name=".result.ResultActivity" />
     <activity
         android:name=".ui.fragments.displayelections.ElectionActivity"
         android:configChanges="orientation|screenSize" />
@@ -22,9 +22,11 @@
         android:name=".ui.fragments.moreOptions.HomeActivity"
         android:configChanges="orientation|screenSize"
         tools:targetApi="jelly_bean" />
-    <activity android:name=".ui.activities.MainActivity"
+    <activity
+        android:name=".ui.activities.MainActivity"
         android:configChanges="orientation|screenSize"
-        android:theme="@style/SplashTheme">
+        android:theme="@style/SplashTheme"
+        android:windowSoftInputMode="adjustPan">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +46,8 @@
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
 
-        <data android:scheme="@string/fb_login_protocol_scheme"
+        <data
+            android:scheme="@string/fb_login_protocol_scheme"
             tools:ignore="AppLinkUrlError" />
       </intent-filter>
     </activity>

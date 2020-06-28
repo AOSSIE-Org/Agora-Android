@@ -7,6 +7,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.data.network.responses.Token
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -52,7 +53,20 @@ class UserRepository(
     return apiRequest { api.logIn(jsonObject.toString()) }
   }
 
+  suspend fun fbLogin(
+    accessToken: String
+  ): Token {
+    return apiRequest { api.facebookLogin(accessToken) }
+  }
+
+  suspend fun getUserData(
+    token: String
+  ): AuthResponse {
+    return apiRequest { api.getUserData(token) }
+  }
+
   suspend fun saveUser(user: User) {
+    appDatabase.getUserDao().removeUser()
     appDatabase.getUserDao().insert(user)
     preferenceProvider.setIsLoggedIn(true)
     preferenceProvider.setCurrentToken(user.token)
@@ -74,6 +88,14 @@ class UserRepository(
 
   suspend fun sendForgotPasswordLink(username: String?): String{
     return apiRequest { api.sendForgotPassword(username) }
+  }
+
+  suspend fun updateUser(token: String, body: String): ArrayList<String>{
+    return apiRequest { api.updateUser(token, body) }
+  }
+
+  suspend fun changePassword(token: String, body: String): ArrayList<String>{
+    return apiRequest { api.changePassword(body, token) }
   }
 
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.facebook.login.LoginManager
 import kotlinx.android.synthetic.main.fragment_more_options.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_about
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_contact_us
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_more_options.view.tv_report
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_share
 import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.hide
@@ -33,7 +35,8 @@ import javax.inject.Inject
 class MoreOptionsFragment
   @Inject
   constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
+    private val viewModelFactory: ViewModelProvider.Factory,
+      private val prefs: PreferenceProvider
   ): Fragment(), AuthListener {
 
   private lateinit var rootView: View
@@ -97,8 +100,11 @@ class MoreOptionsFragment
     return rootView
   }
 
-  override fun onSuccess() {
+  override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
+    if(prefs.getIsFacebookUser()){
+      LoginManager.getInstance().logOut()
+    }
     homeViewModel.deleteUserData()
     rootView.shortSnackbar("Logged Out")
     Navigation.findNavController(rootView)
