@@ -77,26 +77,7 @@ constructor(
     showActionBar()
     loginViewModel.authListener = this
     rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
-    loginViewModel.getLoggedInUser()
-        .observe(viewLifecycleOwner, Observer {
-          val formatter =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-          val currentDate = Calendar.getInstance()
-              .time
-          val expireOn = it?.expiredAt
-          Log.d("expiresOn", expireOn.toString())
-          try {
-            if (expireOn != null) {
-              val expiresOn = formatter.parse(expireOn)
-              //If the token is expired, get a new one to continue login session of user
-              if (currentDate.after(expiresOn)) {
-                loginViewModel.logInRequest(it.username!!, it.password!!)
-              }
-            }
-          } catch (e: ParseException) {
-            e.printStackTrace()
-          }
-        })
+
     getElectionData(sharedPrefs!!.token)
 
     rootView.card_view_active_elections.setOnClickListener {
@@ -123,31 +104,53 @@ constructor(
         OnRefreshListener { doYourUpdate() }
     )
 
-    Coroutines.main {
-      val elections = homeViewModel.elections.await()
-      val totalElectionCount = homeViewModel.totalElectionsCount.await()
-      val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
-      val activeElectionCount = homeViewModel.activeElectionsCount.await()
-      val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
-      elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-        totalElectionCount.observe(viewLifecycleOwner, Observer {
-          rootView.text_view_total_count.text = it.toString()
+
+      loginViewModel.getLoggedInUser()
+          .observe(viewLifecycleOwner, Observer {
+            val formatter =
+              SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            val currentDate = Calendar.getInstance()
+                .time
+            val expireOn = it?.expiredAt
+            Log.d("expiresOn", expireOn.toString())
+            try {
+              if (expireOn != null) {
+                val expiresOn = formatter.parse(expireOn)
+                //If the token is expired, get a new one to continue login session of user
+                if (currentDate.after(expiresOn)) {
+                  loginViewModel.logInRequest(it.username!!, it.password!!)
+                }
+              }
+            } catch (e: ParseException) {
+              e.printStackTrace()
+            }
+          })
+      Coroutines.main {
+        val elections = homeViewModel.elections.await()
+        val totalElectionCount = homeViewModel.totalElectionsCount.await()
+        val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
+        val activeElectionCount = homeViewModel.activeElectionsCount.await()
+        val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
+        elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+          totalElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_total_count.text = it.toString()
+          })
+          pendingElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_pending_count.text = it.toString()
+          })
+          finishedElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_finished_count.text = it.toString()
+          })
+          activeElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_active_count.text = it.toString()
+          })
+          rootView.shimmer_view_container.stopShimmer()
+          rootView.shimmer_view_container.visibility = View.GONE
+          rootView.constraintLayout.visibility = View.VISIBLE
+          rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
         })
-        pendingElectionCount.observe(viewLifecycleOwner, Observer {
-          rootView.text_view_pending_count.text = it.toString()
-        })
-        finishedElectionCount.observe(viewLifecycleOwner, Observer {
-          rootView.text_view_finished_count.text = it.toString()
-        })
-        activeElectionCount.observe(viewLifecycleOwner, Observer {
-          rootView.text_view_active_count.text = it.toString()
-        })
-        rootView.shimmer_view_container.stopShimmer()
-        rootView.shimmer_view_container.visibility = View.GONE
-        rootView.constraintLayout.visibility = View.VISIBLE
-        rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
-      })
-    }
+      }
+
 
     return rootView
   }

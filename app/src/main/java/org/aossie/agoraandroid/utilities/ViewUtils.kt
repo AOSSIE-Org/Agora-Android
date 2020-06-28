@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.utilities
 
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -17,11 +18,19 @@ fun ProgressBar.hide() {
   visibility = ProgressBar.GONE
 }
 
+fun TextView.hide() {
+  visibility = TextView.GONE
+}
+
+fun TextView.show() {
+  visibility = TextView.VISIBLE
+}
+
 fun View.snackbar(message: String) {
   Snackbar
       .make(this, message, Snackbar.LENGTH_INDEFINITE)
       .also { snackbar ->
-        snackbar.setAction("OK", View.OnClickListener {
+        snackbar.setAction(AppConstants.ok, View.OnClickListener {
           snackbar.dismiss()
         }).show()
       }

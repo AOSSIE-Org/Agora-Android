@@ -169,6 +169,9 @@
   <string name="fri_jan_24_12_00_04">Fri Jan 24 12:00:04</string>
   <string name="end_at">End At : </string>
   <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_ut_aliquam">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam</string>
+  <string name="no_voters_for_this_election">No Voters for this Election</string>
+  <string name="empty_ballots">Empty Ballots</string>
+  <string name="empty_elections">Empty Elections</string>
 
 </resources>
 

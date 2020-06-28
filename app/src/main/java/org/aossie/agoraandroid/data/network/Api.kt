@@ -1,13 +1,16 @@
 package org.aossie.agoraandroid.data.network
 
 import okhttp3.OkHttpClient
+import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -37,6 +40,21 @@ interface Api {
         "X-Auth-Token"
     ) authToken: String?
   ): Response<ElectionsResponse>
+
+  //DELETE election with specified id
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @DELETE("election/{id}")
+  suspend fun deleteElection(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<ArrayList<String>>
+
+  //GET Ballots for election with specified id
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("election/{id}/ballots")
+  suspend fun getBallot(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<Ballots>
+
+  //GET Voters for election with specified id
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("election/{id}/voters")
+  suspend fun getVoters(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<Voters>
 
   @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("user/logout")

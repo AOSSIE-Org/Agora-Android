@@ -1,139 +1,96 @@
 package org.aossie.agoraandroid.ui.fragments.displayelections
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import net.steamcrafted.loadtoast.LoadToast
-import org.aossie.agoraandroid.remote.RetrofitClient
-import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.ViewModel
+import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.data.db.model.Ballot
+import org.aossie.agoraandroid.data.db.model.VoterList
+import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.NoInternetException
+import javax.inject.Inject
 
-internal class DisplayElectionViewModel(
-  application: Application,
-  private val context: Context
-) : AndroidViewModel(application) {
-  private var loadToast: LoadToast? = null
-  private val mVoterResponse = MutableLiveData<String?>()
-  var voterResponse: LiveData<String?> = mVoterResponse
-  private val mBallotResponse = MutableLiveData<String?>()
-  var ballotResponse: LiveData<String?> = mBallotResponse
-  var displayElectionListener: DisplayElectionListener?= null
+class DisplayElectionViewModel
+@Inject
+constructor(
+  private val electionsRepository: ElectionsRepository
+) : ViewModel() {
+  private val mVoterResponse = MutableLiveData<List<VoterList>>()
+  var voterResponse: LiveData<List<VoterList>> = mVoterResponse
+  private val mNotConnected = MutableLiveData<Boolean>()
+  var notConnected: LiveData<Boolean> = mNotConnected
+  private val mBallotResponse = MutableLiveData<List<Ballot>>()
+  var ballotResponse: LiveData<List<Ballot>> = mBallotResponse
+  lateinit var displayElectionListener: DisplayElectionListener
+
+  suspend fun getElectionById(id: String): LiveData<Election> {
+    return electionsRepository.getElectionById(id)
+  }
+
   fun getBallot(
     token: String?,
     id: String?
   ) {
-    loadToast = LoadToast(context)
-    loadToast!!.setText("Getting Details")
-    loadToast!!.show()
-    val apiService = RetrofitClient.getAPIService()
-    val getBallotResponse = apiService.getBallot(token, id)
-    getBallotResponse.enqueue(object : Callback<String?> {
-      override fun onResponse(
-        call: Call<String?>,
-        response: Response<String?>
-      ) {
-        if (response.message() == "OK") {
-          loadToast!!.success()
-          mBallotResponse.value = response.body()
-        }
+    displayElectionListener.onStarted()
+    Coroutines.main {
+      try {
+        val response = electionsRepository.getBallots(token!!, id!!).ballots
+        Log.d("friday", response.toString())
+        mBallotResponse.postValue(response)
+        displayElectionListener.onSuccess()
+      } catch (e: ApiException) {
+        displayElectionListener.onFailure(e.message!!)
+      } catch (e: NoInternetException) {
+        mNotConnected.postValue(true)
+      } catch (e: Exception) {
+        displayElectionListener.onFailure(e.message!!)
       }
-
-      override fun onFailure(
-        call: Call<String?>,
-        t: Throwable
-      ) {
-        loadToast!!.error()
-        Toast.makeText(
-            getApplication(),
-            "Something Went Wrong Please Try Again Later",
-            Toast.LENGTH_SHORT
-        )
-            .show()
-      }
-    })
+    }
   }
 
   fun getVoter(
     token: String?,
     id: String?
   ) {
-    loadToast = LoadToast(context)
-    loadToast!!.setText("Getting Voters")
-    loadToast!!.show()
-    val apiService = RetrofitClient.getAPIService()
-    val getVotersResponse = apiService.getVoters(token, id)
-    getVotersResponse.enqueue(object : Callback<String?> {
-      override fun onResponse(
-        call: Call<String?>,
-        response: Response<String?>
-      ) {
-        if (response.message() == "OK") {
-          loadToast!!.success()
-          if (response.body() != null) {
-            mVoterResponse.postValue(response.body())
-          }
-        }
+    displayElectionListener.onStarted()
+    Coroutines.main {
+      try {
+        val response = electionsRepository.getVoters(token!!, id!!).voters
+        Log.d("friday", response.toString())
+        mVoterResponse.postValue(response)
+        displayElectionListener.onSuccess()
+      } catch (e: ApiException) {
+        displayElectionListener.onFailure(e.message!!)
+      } catch (e: NoInternetException) {
+        mNotConnected.postValue(true)
+      } catch (e: Exception) {
+        displayElectionListener.onFailure(e.message!!)
       }
-
-      override fun onFailure(
-        call: Call<String?>,
-        t: Throwable
-      ) {
-        loadToast!!.error()
-        Toast.makeText(
-            getApplication(),
-            "Something Went Wrong Please Try Again Later",
-            Toast.LENGTH_SHORT
-        )
-            .show()
-      }
-    })
+    }
   }
 
   fun deleteElection(
     token: String?,
     id: String?
   ) {
-    loadToast = LoadToast(context)
-    loadToast!!.setText("Deleting Election")
-    loadToast!!.show()
-    val apiService = RetrofitClient.getAPIService()
-    val deleteElectionResponse = apiService.deleteElection(token, id)
-    deleteElectionResponse.enqueue(object : Callback<String?> {
-      override fun onResponse(
-        call: Call<String?>,
-        response: Response<String?>
-      ) {
-        if (response.message() == "OK") {
-          loadToast!!.success()
-          Toast.makeText(
-              getApplication(), "Election Deleted Successfully",
-              Toast.LENGTH_SHORT
-          )
-              .show()
-          displayElectionListener?.onDeleteElectionSuccess()
-        }
+    displayElectionListener.onStarted()
+    Coroutines.main {
+      try {
+        val response = electionsRepository.deleteElection(token!!, id!!)
+        Log.d("friday", response.toString())
+        displayElectionListener.onSuccess(response[1])
+        displayElectionListener.onDeleteElectionSuccess()
+      } catch (e: ApiException) {
+        displayElectionListener.onFailure(e.message!!)
+      } catch (e: NoInternetException) {
+        mNotConnected.postValue(true)
+      } catch (e: Exception) {
+        displayElectionListener.onFailure(e.message!!)
       }
-
-      override fun onFailure(
-        call: Call<String?>,
-        t: Throwable
-      ) {
-        loadToast!!.show()
-        Toast.makeText(
-            getApplication(),
-            "Something Went Wrong Please Try Again Later",
-            Toast.LENGTH_SHORT
-        )
-            .show()
-      }
-    })
+    }
   }
 
 }

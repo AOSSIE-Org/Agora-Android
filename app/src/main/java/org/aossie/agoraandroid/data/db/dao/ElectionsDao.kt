@@ -30,6 +30,9 @@ interface ElectionsDao {
   @Query("SELECT COUNT(*) FROM Election")
   fun getTotalElectionsCount() : LiveData<Int>
 
+  @Query("SELECT * FROM Election WHERE _id = :id")
+  fun getElectionById(id: String) : LiveData<Election>
+
   @Query("SELECT COUNT(*) FROM Election WHERE :currentDate < start")
   fun getPendingElectionsCount(currentDate: String) : LiveData<Int>
 

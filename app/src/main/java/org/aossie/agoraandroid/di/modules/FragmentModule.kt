@@ -12,6 +12,9 @@ import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
+import org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment
+import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment
+import org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
@@ -54,6 +57,21 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(SignUpFragment::class)
   abstract fun bindsSignUpFragment(signUpFragment: SignUpFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(ElectionDetailsFragment::class)
+  abstract fun bindsElectionDetailsFragment(electionDetailsFragment: ElectionDetailsFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(VotersFragment::class)
+  abstract fun bindsVotersFragment(votersFragment: VotersFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(BallotFragment::class)
+  abstract fun bindsBallotFragment(ballotFragment: BallotFragment): Fragment
 
 
   @Binds

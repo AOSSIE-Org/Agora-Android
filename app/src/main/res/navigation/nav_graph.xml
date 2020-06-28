@@ -103,7 +103,11 @@
       tools:layout="@layout/fragment_elections">
     <action
         android:id="@+id/action_electionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@+id/electionDetailsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
   </fragment>
   <fragment
       android:id="@+id/profileFragment"
@@ -210,24 +214,24 @@
       android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment"
       android:label="Election Details"
       tools:layout="@layout/fragment_election_details">
-    <argument
-        android:name="electionName"
-        app:argType="string" />
-    <argument
-        android:name="electionDesc"
-        app:argType="string" />
-    <argument
-        android:name="startDate"
-        app:argType="string" />
-    <argument
-        android:name="endDate"
-        app:argType="string" />
-    <argument
-        android:name="status"
-        app:argType="string" />
-    <argument
-        android:name="candidate"
-        app:argType="string" />
+<!--    <argument-->
+<!--        android:name="electionName"-->
+<!--        app:argType="string" />-->
+<!--    <argument-->
+<!--        android:name="electionDesc"-->
+<!--        app:argType="string" />-->
+<!--    <argument-->
+<!--        android:name="startDate"-->
+<!--        app:argType="string" />-->
+<!--    <argument-->
+<!--        android:name="endDate"-->
+<!--        app:argType="string" />-->
+<!--    <argument-->
+<!--        android:name="status"-->
+<!--        app:argType="string" />-->
+<!--    <argument-->
+<!--        android:name="candidate"-->
+<!--        app:argType="string" />-->
     <argument
         android:name="id"
         app:argType="string" />
@@ -266,7 +270,7 @@
       android:label="Voters"
       tools:layout="@layout/fragment_voters">
     <argument
-      android:name="voterResponse"
+      android:name="id"
       app:argType="string"/>
   </fragment>
   <fragment
@@ -275,7 +279,7 @@
       android:label="Ballot Fragment"
       tools:layout="@layout/fragment_ballot">
     <argument
-        android:name="ballotResponse"
+        android:name="id"
         app:argType="string"/>
   </fragment>
   <fragment

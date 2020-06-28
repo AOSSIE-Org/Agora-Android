@@ -8,8 +8,10 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
+import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -66,6 +68,7 @@ constructor(
   private fun saveElections(elections : List<Election>) {
     Coroutines.io {
       prefs.setUpdateNeeded(false)
+      db.getElectionDao().deleteAllElections()
       db.getElectionDao().saveElections(elections)
     }
   }
@@ -104,5 +107,32 @@ constructor(
     return withContext(Dispatchers.IO){
       db.getElectionDao().getActiveElections(currentDate)
     }
+  }
+
+  suspend fun getElectionById(id: String): LiveData<Election>{
+    return withContext(Dispatchers.IO){
+      db.getElectionDao().getElectionById(id)
+    }
+  }
+
+  suspend fun deleteElection(
+    token: String,
+    id: String
+  ): ArrayList<String> {
+    return apiRequest { api.deleteElection(token, id) }
+  }
+
+  suspend fun getVoters(
+    token: String,
+    id: String
+  ): Voters {
+    return apiRequest { api.getVoters(token, id) }
+  }
+
+  suspend fun getBallots(
+    token: String,
+    id: String
+  ): Ballots {
+    return apiRequest { api.getBallot(token, id) }
   }
 }

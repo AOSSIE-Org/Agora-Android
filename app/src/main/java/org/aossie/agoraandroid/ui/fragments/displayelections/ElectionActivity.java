@@ -27,7 +27,7 @@ public class ElectionActivity extends AppCompatActivity {
     setContentView(R.layout.activity_election);
 
     SharedPrefs sharedPrefs = new SharedPrefs(getApplicationContext());
-    displayElectionViewModel = new DisplayElectionViewModel(getApplication(), this);
+    //displayElectionViewModel = new DisplayElectionViewModel(getApplication(), this);
     resultViewModel = new ResultViewModel(getApplication(), this);
     token = sharedPrefs.getToken();
     mElectionName = findViewById(R.id.tv_election_name);

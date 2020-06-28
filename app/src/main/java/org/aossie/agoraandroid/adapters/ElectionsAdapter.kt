@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import org.aossie.agoraandroid.ElectionAdapterCallback
+import org.aossie.agoraandroid.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.ListItemElectionsBinding
@@ -22,7 +24,8 @@ private const val PENDING_ELECTION_LABEL = "PENDING"
 private const val FINISHED_ELECTION_LABEL = "FINISHED"
 
 class ElectionsAdapter(
-  private val elections: List<Election>
+  private val elections: List<Election>,
+  private val adapterCallback: ElectionRecyclerAdapterCallback
 ) : RecyclerView.Adapter<ElectionsAdapter.ElectionsViewHolder>() {
 
   override fun onCreateViewHolder(
@@ -42,14 +45,14 @@ class ElectionsAdapter(
   override fun onBindViewHolder(
     holder: ElectionsViewHolder,
     position: Int
-  ) = holder.bind(elections[position])
+  ) = holder.bind(elections[position], adapterCallback)
 
   class ElectionsViewHolder(
     val binding: ListItemElectionsBinding,
     val context: Context
   ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(election: Election) {
+    fun bind(election: Election, adapterCallback: ElectionRecyclerAdapterCallback) {
       binding.election = election
       try {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
@@ -88,6 +91,9 @@ class ElectionsAdapter(
       }
       binding.tvCandidateList.text = mCandidatesName
       binding.executePendingBindings()
+      itemView.setOnClickListener {
+        adapterCallback.onItemClicked(election._id)
+      }
     }
   }
 }

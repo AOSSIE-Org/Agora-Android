@@ -8,14 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_elections.view.rv_total_elections
-import org.aossie.agoraandroid.ElectionAdapterCallback
+import kotlinx.android.synthetic.main.fragment_elections.view.tv_empty_election
+import kotlinx.android.synthetic.main.fragment_elections.view.tv_something_went_wrong
+import org.aossie.agoraandroid.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
 
 /**
@@ -25,13 +29,16 @@ class ElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(), ElectionAdapterCallback {
+) : Fragment(), ElectionRecyclerAdapterCallback {
 
   private lateinit var rootView: View
 
   private val electionViewModel: ElectionViewModel by viewModels {
     viewModelFactory
   }
+
+  lateinit var mElections: ArrayList<Election>
+  private lateinit var electionsAdapter: ElectionsAdapter
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -40,6 +47,12 @@ constructor(
   ): View? {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_elections, container, false)
+    mElections = ArrayList()
+    electionsAdapter = ElectionsAdapter(mElections as List<Election>, this)
+    rootView.rv_total_elections.apply {
+      layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+      adapter = electionsAdapter
+    }
     return rootView
   }
 
@@ -50,31 +63,33 @@ constructor(
 
   private fun bindUI() {
     Coroutines.main {
-      val elections = electionViewModel.elections.await()
-      elections.observe(activity!!, Observer {
-        initRecyclerView(it)
-      })
+      try {
+        val elections = electionViewModel.elections.await()
+        elections.observe(requireActivity(), Observer {
+          if (it != null) {
+            addElections(it)
+          }
+        })
+      } catch (e: IllegalStateException) {
+        rootView.tv_something_went_wrong.show()
+      }
     }
   }
 
-  private fun initRecyclerView(elections: List<Election>) {
-    val electionsAdapter = ElectionsAdapter(elections)
-    rootView.rv_total_elections.apply {
-      layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-      adapter = electionsAdapter
+  private fun addElections(elections: List<Election>) {
+    if (elections.isNotEmpty()) {
+      mElections.addAll(elections)
+      electionsAdapter.notifyDataSetChanged()
+    } else {
+      rootView.tv_empty_election.show()
     }
   }
 
-  override fun onItemClicked(
-    electionName: String,
-    electionDesc: String,
-    startDate: String,
-    endDate: String,
-    status: String,
-    candidate: String,
-    id: String
-  ) {
-
+  override fun onItemClicked(_id: String) {
+    val action =
+      ElectionsFragmentDirections
+          .actionElectionsFragmentToElectionDetailsFragment(_id)
+    Navigation.findNavController(rootView)
+        .navigate(action)
   }
-
 }

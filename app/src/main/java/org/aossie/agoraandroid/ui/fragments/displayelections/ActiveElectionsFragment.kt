@@ -114,15 +114,7 @@ class ActiveElectionsFragment : Fragment(), ElectionAdapterCallback {
     id: String
   ) {
     val action =
-      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(
-          electionName,
-          electionDesc,
-          startDate,
-          endDate,
-          status,
-          candidate,
-          id
-      )
+      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(id)
     Navigation.findNavController(rootView!!)
         .navigate(action)
   }
