@@ -15,6 +15,9 @@ interface ElectionsDao {
   @Query("SELECT * FROM Election")
   fun getElections() : LiveData<List<Election>>
 
+  @Query("DELETE FROM Election")
+  suspend fun deleteAllElections()
+
   @Query("SELECT * FROM Election WHERE :currentDate < start")
   fun getPendingElections(currentDate: String) : List<Election>
 

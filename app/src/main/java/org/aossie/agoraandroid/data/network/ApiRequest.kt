@@ -1,16 +1,10 @@
 package org.aossie.agoraandroid.data.network
 
-import android.content.res.Resources
-import android.util.Log
-import org.aossie.agoraandroid.AgoraApp
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
-import java.lang.StringBuilder
-import kotlin.coroutines.coroutineContext
 
 abstract class ApiRequest {
   suspend fun<T:Any> apiRequest(call : suspend () -> Response<T>) : T {

@@ -51,4 +51,10 @@ constructor(
   fun getCurrentToken() : String?{
     return preferences.getString(ACCESS_TOKEN, null)
   }
+
+  fun clearData(){
+    preferences.edit().clear().apply()
+  }
+
+
 }

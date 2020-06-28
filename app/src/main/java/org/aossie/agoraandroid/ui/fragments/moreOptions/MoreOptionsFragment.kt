@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import kotlinx.android.synthetic.main.fragment_more_options.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_about
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_contact_us
 import kotlinx.android.synthetic.main.fragment_more_options.view.tv_dashboard
@@ -20,6 +21,9 @@ import net.steamcrafted.loadtoast.LoadToast
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.SharedPrefs
+import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.shortSnackbar
+import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
@@ -29,12 +33,12 @@ import javax.inject.Inject
 class MoreOptionsFragment
   @Inject
   constructor(
-    private val viewmodelFactory: ViewModelProvider.Factory
+    private val viewModelFactory: ViewModelProvider.Factory
   ): Fragment(), AuthListener {
 
   private lateinit var rootView: View
   private val homeViewModel: HomeViewModel by viewModels {
-    viewmodelFactory
+    viewModelFactory
   }
   private var loadToast: LoadToast? = null
   private var sharedPrefs: SharedPrefs? = null
@@ -49,7 +53,7 @@ class MoreOptionsFragment
     sharedPrefs = SharedPrefs(context!!)
     loadToast = LoadToast(context)
 
-    homeViewModel!!.authListener = this
+    homeViewModel.authListener = this
 
     rootView.tv_share.setOnClickListener {
       Navigation.findNavController(rootView)
@@ -87,27 +91,27 @@ class MoreOptionsFragment
     }
 
     rootView.tv_logout.setOnClickListener {
-      homeViewModel!!.doLogout(sharedPrefs!!.token)
+      homeViewModel.doLogout()
     }
 
     return rootView
   }
 
   override fun onSuccess() {
-    loadToast!!.success()
-    rootView.snackbar("Logged Out")
+    rootView.progress_bar.hide()
+    homeViewModel.deleteUserData()
+    rootView.shortSnackbar("Logged Out")
     Navigation.findNavController(rootView)
         .navigate(
             MoreOptionsFragmentDirections.actionMoreOptionsFragmentToWelcomeFragment()
         )
   }
   override fun onStarted() {
-    loadToast!!.setText("Logging out")
-    loadToast!!.show()
+    rootView.progress_bar.show()
   }
 
   override fun onFailure(message: String) {
-    loadToast!!.error()
+    rootView.progress_bar.hide()
     rootView.snackbar(message)
   }
 

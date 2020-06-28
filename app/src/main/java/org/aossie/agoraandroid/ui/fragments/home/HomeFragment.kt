@@ -122,7 +122,6 @@ constructor(
         OnRefreshListener { doYourUpdate() }
     )
 
-
     Coroutines.main {
       val totalElectionCount = homeViewModel.totalElectionsCount.await()
       val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
@@ -153,54 +152,6 @@ constructor(
     }
 
     return rootView
-  }
-
-  private fun updateToken(
-    userName: String?,
-    userPassword: String?
-  ) {
-    val jsonObject = JSONObject()
-    try {
-      jsonObject.put("identifier", userName)
-      jsonObject.put("password", userPassword)
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-    val apiService = RetrofitClient.getAPIService()
-    val logInResponse = apiService.logIn(jsonObject.toString())
-    logInResponse.enqueue(object : Callback<String?> {
-      override fun onResponse(
-        call: Call<String?>,
-        response: Response<String?>
-      ) {
-        if (response.message() == "OK") {
-          rootView.shimmer_view_container.stopShimmer()
-          rootView.shimmer_view_container.visibility = View.GONE
-          rootView.constraintLayout.visibility = View.VISIBLE
-          try {
-            val jsonObjects = JSONObject(response.body())
-            val token = jsonObjects.getJSONObject("token")
-            val expiresOn = token.getString("expiresOn")
-            val key = token.getString("token")
-            sharedPrefs!!.saveToken(key)
-            sharedPrefs!!.saveTokenExpiresOn(expiresOn)
-          } catch (e: JSONException) {
-            e.printStackTrace()
-          }
-        } else {
-          Toast.makeText(context, "Something went wrong please try again", Toast.LENGTH_SHORT)
-              .show()
-        }
-      }
-
-      override fun onFailure(
-        call: Call<String?>,
-        t: Throwable
-      ) {
-        Toast.makeText(context, "Something went wrong please try again", Toast.LENGTH_SHORT)
-            .show()
-      }
-    })
   }
 
   private fun getElectionData(token: String?) {

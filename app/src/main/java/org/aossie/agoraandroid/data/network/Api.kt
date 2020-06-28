@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.data.network
 import okhttp3.OkHttpClient
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,6 +29,13 @@ interface Api {
         "X-Auth-Token"
     ) authToken: String?
   ): Response<ElectionsResponse>
+
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("user/logout")
+  suspend fun logout(
+    @Header(
+        "X-Auth-Token"
+    ) authToken: String?): Response<String>
 
   companion object{
     operator fun invoke(

@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.data.Repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -31,13 +32,18 @@ class UserRepository(
     preferenceProvider.setCurrentToken(user.token)
   }
 
+  suspend fun logout(): String {
+    return apiRequest{ api.logout(preferenceProvider.getCurrentToken()) }
+  }
+
   fun getUser(): LiveData<User>{
     return appDatabase.getUserDao().getUser()
   }
 
   suspend fun deleteUser(){
     appDatabase.getUserDao().removeUser()
-    preferenceProvider.setIsLoggedIn(false)
+    preferenceProvider.clearData()
+    appDatabase.getElectionDao().deleteAllElections()
   }
 
 }

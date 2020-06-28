@@ -16,8 +16,6 @@ import kotlinx.android.synthetic.main.activity_main.tv_title
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.di.utils.MainFragmentFactory
-import org.aossie.agoraandroid.di.utils.ViewModelFactory
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
@@ -65,10 +63,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     NavigationUI.setupWithNavController(bottom_navigation, navController)
-
-    val userName = sharedPrefs.userName
-    val password = sharedPrefs.pass
-    if (userName != null && password != null) {
+    prefs.setUpdateNeeded(true)
+    if (prefs.getIsLoggedIn()) {
       navController.navigate(R.id.homeFragment)
     }
   }

@@ -1,12 +1,17 @@
 package org.aossie.agoraandroid.ui.fragments.moreOptions
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import retrofit2.Call
@@ -20,58 +25,52 @@ import javax.inject.Inject
 class HomeViewModel @Inject
 constructor(
   private val electionsRepository: ElectionsRepository,
+  private val userRepository: UserRepository,
   private val context: Context
 ) : ViewModel() {
   private val sharedPrefs = SharedPrefs(context)
-  var authListener: AuthListener? = null
+  lateinit var authListener: AuthListener
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
   private val currentDate: Date = Calendar.getInstance()
       .time
   private val date: String = formatter.format(currentDate)
 
-  val elections by lazyDeferred{
+  val elections by lazyDeferred {
     electionsRepository.getElections()
   }
-  val totalElectionsCount by lazyDeferred{
+  val totalElectionsCount by lazyDeferred {
     electionsRepository.getTotalElectionsCount()
   }
-  val pendingElectionsCount by lazyDeferred{
+  val pendingElectionsCount by lazyDeferred {
     electionsRepository.getPendingElectionsCount(date)
   }
-  val finishedElectionsCount by lazyDeferred{
+  val finishedElectionsCount by lazyDeferred {
     electionsRepository.getFinishedElectionsCount(date)
   }
-  val activeElectionsCount by lazyDeferred{
+  val activeElectionsCount by lazyDeferred {
     electionsRepository.getActiveElectionsCount(date)
   }
 
-  fun doLogout(token: String?) {
-    authListener!!.onStarted()
-    val apiService = RetrofitClient.getAPIService()
-    val logoutResponse = apiService.logout(token)
-    logoutResponse.enqueue(object : Callback<String?> {
-      override fun onResponse(
-        call: Call<String?>,
-        response: Response<String?>
-      ) {
-        if (response.message() == "OK") {
-          Toast.makeText(
-              context, "Logged Out Successfully",
-              Toast.LENGTH_SHORT
-          )
-              .show()
-          sharedPrefs.clearLogin()
-          authListener!!.onSuccess()
-        }
-      }
+  fun deleteUserData(){
+    Coroutines.main {
+      userRepository.deleteUser()
+    }
+  }
 
-      override fun onFailure(
-        call: Call<String?>,
-        t: Throwable
-      ) {
-        authListener!!.onFailure("Something Went Wrong Please Try Again Later")
+  fun doLogout() {
+    authListener.onStarted()
+    Coroutines.main {
+      try {
+        userRepository.logout()
+        authListener.onSuccess()
+      } catch (e: ApiException) {
+        authListener.onFailure(e.message!!)
+      } catch (e: NoInternetException) {
+        authListener.onFailure(e.message!!)
+      } catch (e: Exception) {
+        authListener.onFailure(e.message!!)
       }
-    })
+    }
   }
 
 }

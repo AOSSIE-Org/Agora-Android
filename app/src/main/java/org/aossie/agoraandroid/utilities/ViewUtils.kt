@@ -26,3 +26,9 @@ fun View.snackbar(message: String) {
         }).show()
       }
 }
+
+fun View.shortSnackbar(message: String){
+  Snackbar
+      .make(this, message, Snackbar.LENGTH_SHORT)
+      .show()
+}
