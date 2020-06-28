@@ -14,4 +14,6 @@
   <dimen name="size_4dp">4dp</dimen>
   <dimen name="size_24sp">24sp</dimen>
   <dimen name="size_12sp">12sp</dimen>
+  <dimen name="size_20dp">20dp</dimen>
+  <dimen name="size_16dp">16dp</dimen>
 </resources>

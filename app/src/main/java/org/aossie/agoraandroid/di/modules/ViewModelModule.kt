@@ -9,6 +9,7 @@ import org.aossie.agoraandroid.di.utils.ViewModelFactory
 import org.aossie.agoraandroid.di.utils.ViewModelKey
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpViewModel
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeViewModel
 
@@ -37,4 +38,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ForgotPasswordViewModel::class)
     internal abstract fun bindsForgotPasswordViewModel(viewModel: ForgotPasswordViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SignUpViewModel::class)
+    internal abstract fun bindsSignUpViewModel(viewModel: SignUpViewModel): ViewModel
 }

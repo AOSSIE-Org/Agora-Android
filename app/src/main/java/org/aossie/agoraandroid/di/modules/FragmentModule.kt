@@ -11,6 +11,7 @@ import org.aossie.agoraandroid.di.utils.FragmentKey
 import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
+import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
@@ -48,6 +49,11 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(ForgotPasswordFragment::class)
   abstract fun bindsForgotPasswordFragment(electionsFragment: ForgotPasswordFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(SignUpFragment::class)
+  abstract fun bindsSignUpFragment(signUpFragment: SignUpFragment): Fragment
 
 
   @Binds

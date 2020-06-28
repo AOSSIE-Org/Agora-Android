@@ -51,7 +51,7 @@ constructor(
   private fun bindUI() {
     Coroutines.main {
       val elections = electionViewModel.elections.await()
-      elections.observe(requireActivity(), Observer {
+      elections.observe(activity!!, Observer {
         initRecyclerView(it)
       })
     }

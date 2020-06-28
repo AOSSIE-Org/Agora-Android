@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.data.Repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -8,6 +7,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.json.JSONException
 import org.json.JSONObject
 
 class UserRepository(
@@ -15,6 +15,32 @@ class UserRepository(
   private val appDatabase: AppDatabase,
   private val preferenceProvider: PreferenceProvider
 ) : ApiRequest() {
+
+  suspend fun userSignup(
+    identifier: String,
+    password: String,
+    email: String?,
+    firstName: String?,
+    lastName: String?,
+    securityQuestion: String?,
+    securityAnswer: String?
+  ): String{
+    val jsonObject = JSONObject()
+    val securityJsonObject = JSONObject()
+    try {
+      jsonObject.put("identifier", identifier)
+      jsonObject.put("password", password)
+      jsonObject.put("email", email)
+      jsonObject.put("firstName", firstName)
+      jsonObject.put("lastName", lastName)
+      securityJsonObject.put("question", securityQuestion)
+      securityJsonObject.put("answer", securityAnswer)
+      jsonObject.put("securityQuestion", securityJsonObject)
+    } catch (e: JSONException) {
+      e.printStackTrace()
+    }
+    return apiRequest { api.createUser(jsonObject.toString()) }
+  }
 
   suspend fun userLogin(
     identifier: String,

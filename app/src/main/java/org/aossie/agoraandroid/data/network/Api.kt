@@ -20,6 +20,10 @@ private const val BASE_URL = "https://agora-rest-api.herokuapp.com/api/v1/"
 interface Api {
 
   @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("auth/signup")
+  suspend fun createUser(@Body body: String?): Response<String>
+
+  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("auth/login")
   suspend fun logIn(@Body body: String): Response<AuthResponse>
 

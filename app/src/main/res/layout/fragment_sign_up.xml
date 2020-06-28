@@ -16,13 +16,24 @@
         android:padding="16dp"
         >
 
+      <ProgressBar
+          android:id="@+id/progress_bar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:visibility="invisible"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+
       <Button
           android:id="@+id/signup_btn"
           style="@style/MainButtonStyle"
-          android:layout_marginTop="16dp"
-          android:layout_marginBottom="8dp"
+          android:layout_marginTop="@dimen/size_16dp"
+          android:layout_marginBottom="@dimen/size_8dp"
           android:text="@string/sign_up"
-          app:backgroundTint="@color/yellowTint"
+          android:enabled="false"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
@@ -59,34 +70,21 @@
             />
       </RelativeLayout>
 
-      <TextView
-          android:id="@+id/user_signup_label_tv"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:gravity="center_horizontal"
-          android:text="@string/user_sign_up"
-          android:textAlignment="center"
-          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/app_logo_iv"
-          />
-
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/signup_user_name"
           style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginTop="24dp"
+          android:layout_marginTop="@dimen/size_20dp"
           android:hint="@string/user_name"
           app:boxStrokeColor="@color/colorPrimary"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/user_signup_label_tv"
+          app:layout_constraintTop_toBottomOf="@+id/app_logo_iv"
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -110,6 +108,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -133,6 +132,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -154,6 +154,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -175,6 +176,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -196,6 +198,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
