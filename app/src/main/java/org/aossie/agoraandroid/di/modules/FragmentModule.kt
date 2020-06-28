@@ -2,17 +2,18 @@ package org.aossie.agoraandroid.di.modules
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
 import org.aossie.agoraandroid.di.utils.FragmentKey
 import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
+import org.aossie.agoraandroid.ui.fragments.createelection.UploadCandidatesFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionDetailsFragment
+import org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionFragment
+import org.aossie.agoraandroid.ui.fragments.createelection.UploadVotingAlgoFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment
@@ -21,7 +22,6 @@ import org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFra
 import org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
-import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVoterListener
 import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
@@ -103,6 +103,21 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(UploadElectionDetailsFragment::class)
   abstract fun bindsUploadElectionDetailsFragment(uploadElectionDetailsFragment: UploadElectionDetailsFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(UploadCandidatesFragment::class)
+  abstract fun bindsUploadCandidatesFragment(uploadCandidatesFragment: UploadCandidatesFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(UploadVotingAlgoFragment::class)
+  abstract fun bindsUploadVotingAlgoFragment(uploadVotingAlgoFragment: UploadVotingAlgoFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(UploadElectionFragment::class)
+  abstract fun bindsUploadElectionFragment(uploadElectionFragment: UploadElectionFragment): Fragment
 
   @Binds
   abstract fun bindFragmentFactory(factory: MainFragmentFactory): FragmentFactory

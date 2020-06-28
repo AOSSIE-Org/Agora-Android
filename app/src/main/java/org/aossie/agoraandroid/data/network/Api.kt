@@ -69,6 +69,11 @@ interface Api {
         "X-Auth-Token"
     ) authToken: String?): Response<String>
 
+  //POST request to create a new election
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("election")
+  suspend fun createElection(@Body body: String?, @Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
+
   companion object{
     operator fun invoke(
       networkInterceptor: NetworkInterceptor

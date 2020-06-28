@@ -143,4 +143,11 @@ constructor(
   ): ArrayList<String>{
     return apiRequest { api.sendVoters(token, id, body) }
   }
+
+  suspend fun createElection(
+    token: String,
+    body: String
+  ): ArrayList<String>{
+    return apiRequest { api.createElection(body, token) }
+  }
 }

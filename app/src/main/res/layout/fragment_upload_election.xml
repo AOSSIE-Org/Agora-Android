@@ -5,163 +5,179 @@
     tools:context=".ui.fragments.createelection.UploadElectionFragment"
     >
 
-  <ScrollView
+  <FrameLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:padding="16dp"
-      >
+      android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="16dp"
         >
 
-      <Button
-          android:id="@+id/submit_details_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginTop="32dp"
-          android:text="@string/Create_Election"
-          app:backgroundTint="@color/greenTint"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
-          />
-
-      <CheckBox
-          android:id="@+id/real_time_results_check"
-          android:layout_width="0dp"
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:text="@string/get_real_time_results"
-          android:textSize="18sp"
-          app:layout_constraintBottom_toTopOf="@+id/secret_ballots_tv"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/invite_voters_check"
-          />
-
-      <CheckBox
-          android:id="@+id/invite_voters_check"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:text="@string/invite_voters"
-          android:textSize="18sp"
-          app:layout_constraintBottom_toTopOf="@+id/real_time_results_check"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/some_more_options_label_tv"
-          />
-
-      <RadioGroup
-          android:id="@+id/radioGroup2"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/list_of_voters_tv"
           >
 
-        <RadioButton
-            android:id="@+id/access_only_me_radio_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:checked="true"
-            android:text="@string/only_me"
-            android:textSize="18sp"
+        <Button
+            android:id="@+id/submit_details_btn"
+            style="@style/MainButtonStyle"
+            android:layout_marginTop="32dp"
+            android:text="@string/Create_Election"
+            app:backgroundTint="@color/greenTint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
             />
 
-        <RadioButton
-            android:id="@+id/access_everyone_radio_btn"
-            android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/real_time_results_check"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/everyone_with_access_to_election"
+            android:text="@string/get_real_time_results"
             android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/secret_ballots_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/invite_voters_check"
             />
-      </RadioGroup>
 
-      <RadioGroup
-          android:id="@+id/radioGroup"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/secret_ballots_tv"
-          >
-
-        <RadioButton
-            android:id="@+id/ballot_visibility_secret_radio_btn"
-            android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/invite_voters_check"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:checked="true"
-            android:text="@string/ballots_are_completely_secret"
+            android:layout_marginTop="16dp"
+            android:text="@string/invite_voters"
             android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/real_time_results_check"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/some_more_options_label_tv"
             />
 
-        <RadioButton
-            android:id="@+id/ballot_visibility_only_me_radio_btn"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/radioGroup2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/ballots_visible_only_to_me"
-            android:textSize="18sp"
-            />
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_of_voters_tv"
+            >
 
-        <RadioButton
-            android:id="@+id/ballot_visibility_everyone_radio_btn"
-            android:layout_width="match_parent"
+          <RadioButton
+              android:id="@+id/access_only_me_radio_btn"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:checked="true"
+              android:text="@string/only_me"
+              android:textSize="18sp"
+              />
+
+          <RadioButton
+              android:id="@+id/access_everyone_radio_btn"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="@string/everyone_with_access_to_election"
+              android:textSize="18sp"
+              />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/ballots_visible_to_everyone"
-            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/secret_ballots_tv"
+            >
+
+          <RadioButton
+              android:id="@+id/ballot_visibility_secret_radio_btn"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:checked="true"
+              android:text="@string/ballots_are_completely_secret"
+              android:textSize="18sp"
+              />
+
+          <RadioButton
+              android:id="@+id/ballot_visibility_only_me_radio_btn"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="@string/ballots_visible_only_to_me"
+              android:textSize="18sp"
+              />
+
+          <RadioButton
+              android:id="@+id/ballot_visibility_everyone_radio_btn"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:text="@string/ballots_visible_to_everyone"
+              android:textSize="18sp"
+              />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/list_of_voters_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/who_can_see_the_list_of_voters"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
             />
-      </RadioGroup>
 
-      <TextView
-          android:id="@+id/list_of_voters_tv"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:gravity="center"
-          android:text="@string/who_can_see_the_list_of_voters"
-          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-          />
+        <TextView
+            android:id="@+id/secret_ballots_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/how_secret_are_ballots"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/real_time_results_check"
+            />
 
-      <TextView
-          android:id="@+id/secret_ballots_tv"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:gravity="center"
-          android:text="@string/how_secret_are_ballots"
-          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/real_time_results_check"
-          />
+        <TextView
+            android:id="@+id/some_more_options_label_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/some_more_options"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-      <TextView
-          android:id="@+id/some_more_options_label_tv"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:gravity="center"
-          android:text="@string/some_more_options"
-          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          />
+      </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-  </ScrollView>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/size_10dp"
+        android:visibility="invisible"
+        android:background="@drawable/progressbar_background"
+        android:layout_gravity="center"
+        />
+  </FrameLayout>
 
 </layout>
