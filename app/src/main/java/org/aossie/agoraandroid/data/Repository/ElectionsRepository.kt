@@ -135,4 +135,12 @@ constructor(
   ): Ballots {
     return apiRequest { api.getBallot(token, id) }
   }
+
+  suspend fun sendVoters(
+    token: String,
+    id: String,
+    body: String
+  ): ArrayList<String>{
+    return apiRequest { api.sendVoters(token, id, body) }
+  }
 }

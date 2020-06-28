@@ -1,10 +1,11 @@
 package org.aossie.agoraandroid.data.network
 
 import okhttp3.OkHttpClient
-import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
+import org.aossie.agoraandroid.data.network.responses.Voters
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -55,6 +56,11 @@ interface Api {
   @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("election/{id}/voters")
   suspend fun getVoters(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<Voters>
+
+  //POST the list of voters to election
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("election/{id}/voters")
+  suspend fun sendVoters(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?, @Body body: String?): Response<ArrayList<String>>
 
   @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("user/logout")

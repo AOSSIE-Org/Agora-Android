@@ -103,8 +103,10 @@ class VotersFragment
   private fun getVotersFromDb(){
     Coroutines.main {
       displayElectionViewModel.getElectionById(id!!).observe(requireActivity(), Observer {
-        initRecyclerView(it.voterList as List<VoterList>)
-        rootView.progress_bar.hide()
+        if(it != null ) {
+          initRecyclerView(it.voterList as List<VoterList>)
+          rootView.progress_bar.hide()
+        }
       })
     }
   }
