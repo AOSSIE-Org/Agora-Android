@@ -16,5 +16,27 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:item_layout="@layout/list_item_election_details"
       />
+  <TextView
+      android:id="@+id/tv_empty_election"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/size_18sp"
+      android:visibility="invisible"
+      android:text="@string/empty_elections"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+  <TextView
+      android:id="@+id/tv_something_went_wrong"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/size_18sp"
+      android:visibility="invisible"
+      android:text="@string/something_went_wrong_please_try_again_later"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

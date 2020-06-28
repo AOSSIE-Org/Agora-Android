@@ -3,8 +3,13 @@ package org.aossie.agoraandroid.ui.fragments.createelection
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import javax.inject.Inject
 
-class ElectionDetailsSharedPrefs(context: Context) {
+class ElectionDetailsSharedPrefs
+@Inject
+constructor(
+  context: Context)
+{
   private val sharedPreferences: SharedPreferences
   private val editor: Editor
 

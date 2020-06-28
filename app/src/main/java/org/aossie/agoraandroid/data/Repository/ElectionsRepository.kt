@@ -73,7 +73,7 @@ constructor(
     }
   }
 
-  suspend fun getPendingElections(currentDate: String): List<Election> {
+  suspend fun getPendingElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO){
       db.getElectionDao().getPendingElections(currentDate)
     }
@@ -97,13 +97,13 @@ constructor(
     }
   }
 
-  suspend fun getFinishedElections(currentDate: String): List<Election> {
+  suspend fun getFinishedElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO){
       db.getElectionDao().getFinishedElections(currentDate)
     }
   }
 
-  suspend fun getActiveElections(currentDate: String): List<Election> {
+  suspend fun getActiveElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO){
       db.getElectionDao().getActiveElections(currentDate)
     }

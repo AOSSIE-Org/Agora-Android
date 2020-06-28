@@ -12,8 +12,12 @@ import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
+import org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionDetailsFragment
+import org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment
+import org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment
+import org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
@@ -80,6 +84,25 @@ abstract class FragmentModule{
   @FragmentKey(InviteVotersFragment::class)
   abstract fun bindsInviteVotersFragment(inviteVotersFragment: InviteVotersFragment): Fragment
 
+  @Binds
+  @IntoMap
+  @FragmentKey(ActiveElectionsFragment::class)
+  abstract fun bindsActiveElectionsFragment(activeElectionsFragment: ActiveElectionsFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(PendingElectionsFragment::class)
+  abstract fun bindsPendingElectionsFragment(pendingElectionsFragment: PendingElectionsFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(FinishedElectionsFragment::class)
+  abstract fun bindsFinishedElectionsFragment(finishedElectionsFragment: FinishedElectionsFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(UploadElectionDetailsFragment::class)
+  abstract fun bindsUploadElectionDetailsFragment(uploadElectionDetailsFragment: UploadElectionDetailsFragment): Fragment
 
   @Binds
   abstract fun bindFragmentFactory(factory: MainFragmentFactory): FragmentFactory

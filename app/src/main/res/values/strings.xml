@@ -53,8 +53,8 @@
   <string name="enter_candidate_s_name">Enter Candidate\'s Name</string>
   <string name="election_description">Election Description</string>
   <string name="election_name">Election Name</string>
-  <string name="start_date_format">Start Date(YYYY-MM-DD, HH:MM)</string>
-  <string name="end_date_format">End Date(YYYY-MM-DD, HH:MM)</string>
+  <string name="start_date_format">Start Date(YYYY/MM/DD at HH:MM)</string>
+  <string name="end_date_format">End Date(YYYY/MM/DD at HH:MM)</string>
   <string name="enter_details">Enter Details</string>
   <string name="datePicker">datePicker</string>
   <string name="select_voting_algorithm">Select Voting Algorithm</string>

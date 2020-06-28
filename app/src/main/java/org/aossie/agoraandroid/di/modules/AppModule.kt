@@ -9,6 +9,7 @@ import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.NetworkInterceptor
+import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 
 @Module
 class AppModule {
@@ -18,6 +19,11 @@ class AppModule {
   @Provides
   fun providesPreferenceProvider(context: Context): PreferenceProvider{
     return PreferenceProvider(context)
+  }
+
+  @Provides
+  fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs{
+    return ElectionDetailsSharedPrefs(context)
   }
 
   @Provides

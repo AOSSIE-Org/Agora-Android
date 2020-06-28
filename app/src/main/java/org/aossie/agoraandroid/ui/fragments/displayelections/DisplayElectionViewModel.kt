@@ -11,6 +11,11 @@ import org.aossie.agoraandroid.data.db.model.VoterList
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.lazyDeferred
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class DisplayElectionViewModel
@@ -18,6 +23,21 @@ class DisplayElectionViewModel
 constructor(
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
+
+  private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+  private val currentDate: Date = Calendar.getInstance()
+      .time
+  private val date: String = formatter.format(currentDate)
+
+  val activeElections by lazyDeferred {
+    electionsRepository.getActiveElections(date)
+  }
+  val pendingElections by lazyDeferred {
+    electionsRepository.getPendingElections(date)
+  }
+  val finishedElections by lazyDeferred {
+    electionsRepository.getFinishedElections(date)
+  }
   private val mVoterResponse = MutableLiveData<List<VoterList>>()
   var voterResponse: LiveData<List<VoterList>> = mVoterResponse
   private val mNotConnected = MutableLiveData<Boolean>()

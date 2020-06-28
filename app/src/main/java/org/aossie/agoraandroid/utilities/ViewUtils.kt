@@ -1,8 +1,10 @@
 package org.aossie.agoraandroid.utilities
 
+import android.R.string
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -34,6 +36,16 @@ fun View.snackbar(message: String) {
           snackbar.dismiss()
         }).show()
       }
+}
+
+fun View.errorDialog(message: String){
+  AlertDialog.Builder(context)
+      .setTitle("Alert ! ! !")
+      .setMessage(message)
+      .setCancelable(false)
+      .setPositiveButton(string.ok) { dialog, which ->
+        dialog.cancel()
+      }.create().show()
 }
 
 fun View.shortSnackbar(message: String){

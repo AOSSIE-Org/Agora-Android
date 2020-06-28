@@ -21,10 +21,10 @@
           style="@style/MainButtonStyle"
           android:layout_marginTop="64dp"
           android:text="@string/next"
-          app:backgroundTint="@color/yellowTint"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/end_date_til"
+          android:enabled="false"
           />
 
 
@@ -86,6 +86,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_election_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -107,9 +108,11 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_end_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:textColor="@color/black"
             />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,6 +132,7 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_election_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
@@ -143,6 +147,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="24dp"
           android:hint="@string/start_date_format"
+          app:hintAnimationEnabled="true"
           app:boxStrokeColor="@color/colorPrimary"
           app:layout_constraintEnd_toStartOf="@+id/start_date_ibtn"
           app:layout_constraintStart_toStartOf="parent"
@@ -150,8 +155,10 @@
           >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_start_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:enabled="false"
             />
       </com.google.android.material.textfield.TextInputLayout>

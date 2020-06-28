@@ -19,13 +19,13 @@ interface ElectionsDao {
   suspend fun deleteAllElections()
 
   @Query("SELECT * FROM Election WHERE :currentDate < start")
-  fun getPendingElections(currentDate: String) : List<Election>
+  fun getPendingElections(currentDate: String) : LiveData<List<Election>>
 
   @Query("SELECT * FROM Election WHERE :currentDate > [end]")
-  fun getFinishedElections(currentDate: String) : List<Election>
+  fun getFinishedElections(currentDate: String) : LiveData<List<Election>>
 
   @Query("SELECT * FROM Election WHERE :currentDate BETWEEN start AND [end]")
-  fun getActiveElections(currentDate: String) : List<Election>
+  fun getActiveElections(currentDate: String) : LiveData<List<Election>>
 
   @Query("SELECT COUNT(*) FROM Election")
   fun getTotalElectionsCount() : LiveData<Int>
