@@ -12,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 private const val BASE_URL = "https://agora-rest-api.herokuapp.com/api/v1/"
 
@@ -21,6 +22,9 @@ interface Api {
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("auth/login")
   suspend fun logIn(@Body body: String): Response<AuthResponse>
+
+  @POST("auth/forgotPassword/send/{userName}")
+  suspend fun sendForgotPassword(@Path("userName") userName: String?): Response<String>
 
   @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("election")

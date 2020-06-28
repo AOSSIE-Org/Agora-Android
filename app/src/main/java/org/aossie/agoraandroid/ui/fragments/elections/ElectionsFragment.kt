@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_elections.rv_total_elections
+import kotlinx.android.synthetic.main.fragment_elections.view.rv_total_elections
 import org.aossie.agoraandroid.ElectionAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
@@ -27,7 +27,7 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(), ElectionAdapterCallback {
 
-  private var rootView: View? = null
+  private lateinit var rootView: View
 
   private val electionViewModel: ElectionViewModel by viewModels {
     viewModelFactory
@@ -39,7 +39,8 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_elections, container, false)
+    rootView = inflater.inflate(R.layout.fragment_elections, container, false)
+    return rootView
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -58,7 +59,7 @@ constructor(
 
   private fun initRecyclerView(elections: List<Election>) {
     val electionsAdapter = ElectionsAdapter(elections)
-    rv_total_elections.apply {
+    rootView.rv_total_elections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
     }

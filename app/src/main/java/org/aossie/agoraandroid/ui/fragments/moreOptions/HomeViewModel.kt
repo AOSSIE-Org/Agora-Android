@@ -1,36 +1,26 @@
 package org.aossie.agoraandroid.ui.fragments.moreOptions
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.remote.RetrofitClient
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.SharedPrefs
 import org.aossie.agoraandroid.utilities.lazyDeferred
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class HomeViewModel @Inject
 constructor(
   private val electionsRepository: ElectionsRepository,
-  private val userRepository: UserRepository,
-  private val context: Context
+  private val userRepository: UserRepository
 ) : ViewModel() {
-  private val sharedPrefs = SharedPrefs(context)
   lateinit var authListener: AuthListener
-  private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+  private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
   private val currentDate: Date = Calendar.getInstance()
       .time
   private val date: String = formatter.format(currentDate)

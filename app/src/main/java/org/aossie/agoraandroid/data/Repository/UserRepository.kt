@@ -46,4 +46,8 @@ class UserRepository(
     appDatabase.getElectionDao().deleteAllElections()
   }
 
+  suspend fun sendForgotPasswordLink(username: String?): String{
+    return apiRequest { api.sendForgotPassword(username) }
+  }
+
 }

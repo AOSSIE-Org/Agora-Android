@@ -26,7 +26,6 @@ abstract class ApiRequest {
         AppConstants.BAD_REQUEST_CODE -> message.append("${AppConstants.BAD_REQUEST_MESSAGE} : ERROR - ")
         AppConstants.UNAUTHENTICATED_CODE -> message.append("${AppConstants.UNAUTHENTICATED_MESSAGE} : ERROR - ")
         AppConstants.INVALID_CREDENTIALS_CODE -> message.append("${AppConstants.INVALID_CREDENTIALS_MESSAGE} : ERROR - ")
-        else -> message.append("Error Code is : ")
       }
       message.append(response.code().toString())
       throw ApiException(message.toString())

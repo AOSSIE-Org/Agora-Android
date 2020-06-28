@@ -14,7 +14,6 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import java.io.IOException
-import java.util.Date
 import javax.inject.Inject
 
 class ElectionsRepository

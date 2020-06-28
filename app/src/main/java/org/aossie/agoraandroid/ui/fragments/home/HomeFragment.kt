@@ -52,7 +52,7 @@ class HomeFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
-    private val preferenceProvider: PreferenceProvider
+  private val preferenceProvider: PreferenceProvider
 ) : Fragment(), AuthListener {
   private var electionDetailsSharedPrefs: ElectionDetailsSharedPrefs? = null
   private var sharedPrefs: SharedPrefs? = null
@@ -61,7 +61,7 @@ constructor(
     viewModelFactory
   }
 
-  private val loginViewModel: LoginViewModel by viewModels{
+  private val loginViewModel: LoginViewModel by viewModels {
     viewModelFactory
   }
 
@@ -77,25 +77,26 @@ constructor(
     showActionBar()
     loginViewModel.authListener = this
     rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
-    loginViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer {
-      val formatter =
-        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-      val currentDate = Calendar.getInstance()
-          .time
-        val expireOn = it?.expiredAt
-      Log.d("expiresOn", expireOn)
-      try {
-        if (expireOn != null) {
-          val expiresOn = formatter.parse(expireOn)
-          //If the token is expired, get a new one to continue login session of user
-          if (currentDate.after(expiresOn)) {
-            loginViewModel.logInRequest(it.username!!, it.password!!)
+    loginViewModel.getLoggedInUser()
+        .observe(viewLifecycleOwner, Observer {
+          val formatter =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+          val currentDate = Calendar.getInstance()
+              .time
+          val expireOn = it?.expiredAt
+          Log.d("expiresOn", expireOn.toString())
+          try {
+            if (expireOn != null) {
+              val expiresOn = formatter.parse(expireOn)
+              //If the token is expired, get a new one to continue login session of user
+              if (currentDate.after(expiresOn)) {
+                loginViewModel.logInRequest(it.username!!, it.password!!)
+              }
+            }
+          } catch (e: ParseException) {
+            e.printStackTrace()
           }
-        }
-      }catch (e: ParseException){
-        e.printStackTrace()
-      }
-    })
+        })
     getElectionData(sharedPrefs!!.token)
 
     rootView.card_view_active_elections.setOnClickListener {
@@ -123,12 +124,12 @@ constructor(
     )
 
     Coroutines.main {
+      val elections = homeViewModel.elections.await()
       val totalElectionCount = homeViewModel.totalElectionsCount.await()
       val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
       val activeElectionCount = homeViewModel.activeElectionsCount.await()
       val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
-      val elections = homeViewModel.elections.await()
-      if(view != null) {
+      elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
         totalElectionCount.observe(viewLifecycleOwner, Observer {
           rootView.text_view_total_count.text = it.toString()
         })
@@ -141,14 +142,11 @@ constructor(
         activeElectionCount.observe(viewLifecycleOwner, Observer {
           rootView.text_view_active_count.text = it.toString()
         })
-        elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-          rootView.shimmer_view_container.stopShimmer()
-          rootView.shimmer_view_container.visibility = View.GONE
-          rootView.constraintLayout.visibility = View.VISIBLE
-          rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
-        })
-      }
-
+        rootView.shimmer_view_container.stopShimmer()
+        rootView.shimmer_view_container.visibility = View.GONE
+        rootView.constraintLayout.visibility = View.VISIBLE
+        rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
+      })
     }
 
     return rootView
