@@ -82,7 +82,7 @@ constructor(
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
       val currentDate = Calendar.getInstance()
           .time
-        val expireOn = it.expiredAt
+        val expireOn = it?.expiredAt
       Log.d("expiresOn", expireOn)
       try {
         if (expireOn != null) {

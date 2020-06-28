@@ -10,6 +10,7 @@ import dagger.multibindings.IntoMap
 import org.aossie.agoraandroid.di.utils.FragmentKey
 import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
+import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
@@ -36,6 +37,11 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(MoreOptionsFragment::class)
   abstract fun bindMoreOptionsFragment(moreOptionsFragment: MoreOptionsFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(ElectionsFragment::class)
+  abstract fun bindElectionsFragment(electionsFragment: ElectionsFragment): Fragment
 
 
   @Binds

@@ -11,7 +11,7 @@
   <color name="logo_yellow">#fcd116</color>
 
   //election colors for reference
-  <color name="red_active_elections">#e20b0b</color>
+  <color name="red_active_elections">#FF4155</color>
   <color name="blue_finished_elections">#05b0c5</color>
   <color name="orange_total_elections">#fe9d18</color>
   <color name="green_pending_elections">#4ba64f</color>
