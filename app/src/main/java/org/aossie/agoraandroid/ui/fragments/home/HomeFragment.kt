@@ -103,38 +103,10 @@ constructor(
               //If the token is expired, get a new one to continue login session of user
               if (currentDate.after(expiresOn)) {
                 Log.d("expired", expireOn.toString())
-                if(preferenceProvider.getIsFacebookUser()){
+                if (preferenceProvider.getIsFacebookUser()) {
                   loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
-                }else {
+                } else {
                   loginViewModel.logInRequest(user.username!!, user.password!!)
-                }
-              }else{
-                Coroutines.main {
-                  val elections = homeViewModel.elections.await()
-                  val totalElectionCount = homeViewModel.totalElectionsCount.await()
-                  val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
-                  val activeElectionCount = homeViewModel.activeElectionsCount.await()
-                  val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
-                  if (view != null) {
-                    elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                      totalElectionCount.observe(viewLifecycleOwner, Observer {
-                        rootView.text_view_total_count.text = it.toString()
-                      })
-                      pendingElectionCount.observe(viewLifecycleOwner, Observer {
-                        rootView.text_view_pending_count.text = it.toString()
-                      })
-                      finishedElectionCount.observe(viewLifecycleOwner, Observer {
-                        rootView.text_view_finished_count.text = it.toString()
-                      })
-                      activeElectionCount.observe(viewLifecycleOwner, Observer {
-                        rootView.text_view_active_count.text = it.toString()
-                      })
-                      rootView.shimmer_view_container.stopShimmer()
-                      rootView.shimmer_view_container.visibility = View.GONE
-                      rootView.constraintLayout.visibility = View.VISIBLE
-                      rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
-                    })
-                  }
                 }
               }
             }
@@ -142,6 +114,33 @@ constructor(
             e.printStackTrace()
           }
         })
+    Coroutines.main {
+      val elections = homeViewModel.elections.await()
+      val totalElectionCount = homeViewModel.totalElectionsCount.await()
+      val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
+      val activeElectionCount = homeViewModel.activeElectionsCount.await()
+      val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
+      if (view != null) {
+        elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+          totalElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_total_count.text = it.toString()
+          })
+          pendingElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_pending_count.text = it.toString()
+          })
+          finishedElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_finished_count.text = it.toString()
+          })
+          activeElectionCount.observe(viewLifecycleOwner, Observer {
+            rootView.text_view_active_count.text = it.toString()
+          })
+          rootView.shimmer_view_container.stopShimmer()
+          rootView.shimmer_view_container.visibility = View.GONE
+          rootView.constraintLayout.visibility = View.VISIBLE
+          rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
+        })
+      }
+    }
     return rootView
   }
 
@@ -157,7 +156,8 @@ constructor(
 
   private fun doYourUpdate() {
     preferenceProvider.setUpdateNeeded(true)
-    Navigation.findNavController(rootView).navigate(R.id.homeFragment)
+    Navigation.findNavController(rootView)
+        .navigate(R.id.homeFragment)
   }
 
   override fun onSuccess(message: String?) {
@@ -169,6 +169,6 @@ constructor(
   }
 
   override fun onFailure(message: String) {
-    rootView.snackbar("$message (Token Expired) ")
+    rootView.snackbar("$message - Token Expired, Swipe refresh to update) ")
   }
 }
