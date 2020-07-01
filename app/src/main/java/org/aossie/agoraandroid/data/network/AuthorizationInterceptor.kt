@@ -23,7 +23,7 @@ class AuthorizationInterceptor(
     if (prefs.getIsLoggedIn()) {
       // if response code is 401 or 403, network call has encountered authentication error
       if (mainResponse.code() == 401 || mainResponse.code() == 403) {
-        Coroutines.main{
+        Coroutines.io{
           var user = appDatabase.getUserDao().getUserInfo()
           if (prefs.getIsFacebookUser()) {
             val response = client.api.facebookLogin(prefs.getFacebookAccessToken())
@@ -51,6 +51,8 @@ class AuthorizationInterceptor(
             }
           }
           appDatabase.getUserDao().replace(user)
+          prefs.setIsLoggedIn(true)
+          prefs.setCurrentToken(user.token)
         }
         throw SessionExpirationException("Your session was expired. Please try again")
       }
