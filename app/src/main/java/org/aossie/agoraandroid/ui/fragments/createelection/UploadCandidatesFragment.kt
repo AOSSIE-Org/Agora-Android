@@ -1,12 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
-import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -15,26 +14,30 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_upload_candidates.view.add_candidate_btn
 import kotlinx.android.synthetic.main.fragment_upload_candidates.view.candidate_til
+import kotlinx.android.synthetic.main.fragment_upload_candidates.view.et_candidate_name
 import kotlinx.android.synthetic.main.fragment_upload_candidates.view.names_rv
 import kotlinx.android.synthetic.main.fragment_upload_candidates.view.submit_details_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInActivity
-import org.aossie.agoraandroid.utilities.TinyDB
+import org.aossie.agoraandroid.utilities.snackbar
 import java.util.ArrayList
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class UploadCandidatesFragment : Fragment() {
+class UploadCandidatesFragment
+  @Inject
+  constructor(
+    private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs
+  ): Fragment() {
 
   private lateinit var rootView: View
 
   private val mCandidates = ArrayList<String>()
-  private var tinydb: TinyDB? = null
   private var candidateRecyclerAdapter: CandidateRecyclerAdapter? = null
   private val itemTouchHelperCallback: SimpleCallback =
     object : SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
@@ -62,26 +65,24 @@ class UploadCandidatesFragment : Fragment() {
   ): View? {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_upload_candidates, container, false)
-    tinydb = TinyDB(activity?.application)
 
     candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
     rootView.names_rv.layoutManager = LinearLayoutManager(context)
     ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rootView.names_rv)
     rootView.names_rv.adapter = candidateRecyclerAdapter
     rootView.submit_details_btn.setOnClickListener {
-      if (mCandidates.size != 0) {
+      if (mCandidates.isNotEmpty()) {
         hideKeyboardInActivity(activity as AppCompatActivity)
-        tinydb?.putListString("Candidates", mCandidates)
+        electionDetailsSharedPrefs.saveCandidates(mCandidates)
         Navigation.findNavController(rootView)
             .navigate(UploadCandidatesFragmentDirections.actionUploadCandidatesFragmentToUploadVotingAlgoFragment())
       } else {
-        Toast.makeText(
-            context, "Please Add At least One Candidate",
-            Toast.LENGTH_SHORT
-        )
-            .show()
+        rootView.snackbar("Please Add At least One Candidate")
       }
     }
+
+    rootView.et_candidate_name.addTextChangedListener(textWatcher)
+
     rootView.add_candidate_btn.setOnClickListener {
       val name = rootView.candidate_til.editText?.text.toString().trim { it <= ' ' }
       addCandidate(name)
@@ -94,6 +95,18 @@ class UploadCandidatesFragment : Fragment() {
     mCandidates.add(cName)
     candidateRecyclerAdapter!!.notifyDataSetChanged()
     rootView.candidate_til.editText?.setText("")
+  }
+
+  private val textWatcher: TextWatcher = object : TextWatcher {
+    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+    override fun afterTextChanged(s: Editable) {}
+
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+      val candidateNameInput: String = rootView.et_candidate_name.text
+          .toString()
+          .trim()
+      rootView.add_candidate_btn.isEnabled = candidateNameInput.isNotEmpty()
+    }
   }
 
 }

@@ -7,8 +7,15 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import org.aossie.agoraandroid.di.utils.ViewModelFactory
 import org.aossie.agoraandroid.di.utils.ViewModelKey
+import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
-import org.aossie.agoraandroid.ui.fragments.moreOptions.HomeViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpViewModel
+import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionViewModel
+import org.aossie.agoraandroid.ui.fragments.displayelections.DisplayElectionViewModel
+import org.aossie.agoraandroid.ui.fragments.elections.ElectionViewModel
+import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersViewModel
+import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
+import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -26,4 +33,38 @@ abstract class ViewModelModule {
     @ViewModelKey(HomeViewModel::class)
     internal abstract fun bindsHomeViewModel(viewModel: HomeViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(ElectionViewModel::class)
+    internal abstract fun bindsElectionViewModel(viewModel: ElectionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ForgotPasswordViewModel::class)
+    internal abstract fun bindsForgotPasswordViewModel(viewModel: ForgotPasswordViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SignUpViewModel::class)
+    internal abstract fun bindsSignUpViewModel(viewModel: SignUpViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DisplayElectionViewModel::class)
+    internal abstract fun bindsDisplayElectionViewModel(viewModel: DisplayElectionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(InviteVotersViewModel::class)
+    internal abstract fun bindsInviteVotersViewModel(viewModel: InviteVotersViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateElectionViewModel::class)
+    internal abstract fun bindsCreateElectionViewModel(viewModel: CreateElectionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    internal abstract fun bindsProfileViewModel(viewModel: ProfileViewModel): ViewModel
 }

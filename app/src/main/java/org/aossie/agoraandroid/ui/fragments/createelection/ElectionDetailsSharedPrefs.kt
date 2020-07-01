@@ -3,8 +3,14 @@ package org.aossie.agoraandroid.ui.fragments.createelection
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import com.google.gson.Gson
+import javax.inject.Inject
 
-class ElectionDetailsSharedPrefs(context: Context) {
+class ElectionDetailsSharedPrefs
+@Inject
+constructor(
+  context: Context)
+{
   private val sharedPreferences: SharedPreferences
   private val editor: Editor
 
@@ -53,6 +59,21 @@ class ElectionDetailsSharedPrefs(context: Context) {
   val isRealTime: Boolean
     get() = sharedPreferences.getBoolean(IsRealTimeKey, false)
 
+  //Save candidates
+  fun saveCandidates(candidates: ArrayList<String>) {
+    val gson = Gson()
+    val json = gson.toJson(candidates)
+    editor.putString(CandidatesKey, json)
+    editor.commit()
+  }
+
+  fun getCandidates(): ArrayList<String>?{
+    val json = sharedPreferences.getString(CandidatesKey, "")
+    val gson = Gson()
+    return gson.fromJson<ArrayList<String>>(json, ArrayList::class.java)
+  }
+
+
   //Save Real Time Results or not
   fun saveVoterListVisibility(voterListVisibility: Boolean?) {
     editor.putBoolean(
@@ -93,16 +114,6 @@ class ElectionDetailsSharedPrefs(context: Context) {
         BallotVisibilityKey, null
     )
 
-  fun saveElectionDetails(electionDetails: String?) {
-    editor.putString(ElectionDetailsKey, electionDetails)
-    editor.commit()
-  }
-
-  val electionDetails: String?
-    get() = sharedPreferences.getString(
-        ElectionDetailsKey, null
-    )
-
   fun clearElectionData() {
     editor.putString(NameKey, null)
     editor.putString(StartTimeKey, null)
@@ -127,7 +138,7 @@ class ElectionDetailsSharedPrefs(context: Context) {
     private const val DescriptionKey = "electionDescription"
     private const val VotingAlgoKey = "votingAlgorithm"
     private const val BallotVisibilityKey = "ballotVisibility"
-    private const val ElectionDetailsKey = "electionDetails"
+    private const val CandidatesKey = "candidates"
   }
 
   init {

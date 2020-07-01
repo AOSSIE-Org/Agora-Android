@@ -91,7 +91,7 @@ class LoginFragment
     }
   }
 
-  override fun onSuccess() {
+  override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
     Navigation.findNavController(rootView)
         .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
