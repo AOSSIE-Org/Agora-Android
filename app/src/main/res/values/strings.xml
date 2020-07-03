@@ -53,8 +53,8 @@
   <string name="enter_candidate_s_name">Enter Candidate\'s Name</string>
   <string name="election_description">Election Description</string>
   <string name="election_name">Election Name</string>
-  <string name="start_date_format">Start Date(YYYY-MM-DD, HH:MM)</string>
-  <string name="end_date_format">End Date(YYYY-MM-DD, HH:MM)</string>
+  <string name="start_date_format">Start Date(YYYY/MM/DD at HH:MM)</string>
+  <string name="end_date_format">End Date(YYYY/MM/DD at HH:MM)</string>
   <string name="enter_details">Enter Details</string>
   <string name="datePicker">datePicker</string>
   <string name="select_voting_algorithm">Select Voting Algorithm</string>
@@ -86,7 +86,7 @@
   <string name="enter_user_name_reset_pass_link">Please enter user name to receive password reset link</string>
   <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor</string>
   <string name="candidates">Candidates</string>
-  <string name="candidate_list_hardcoded">First Name  Second Name   Third Name  Fourth Name</string>
+  <string name="candidate_list_hardcoded">Candidates Name</string>
   <string name="start">START:</string>
   <string name="starting_date">Starting Date</string>
   <string name="status">STATUS:</string>
@@ -100,8 +100,8 @@
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
   <string name="election_name_">Election Name</string>
-  <string name="facebook_app_id">TODO</string>
-  <string name="fb_login_protocol_scheme">TODO</string>
+  <string name="facebook_app_id">569316977110919</string>
+  <string name="fb_login_protocol_scheme">fb569316977110919</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
   <string name="delete_election">delete election</string>
   <string name="invite_voter">Invite Voters</string>
@@ -160,10 +160,18 @@
   <string name="title">title</string>
   <string name="more">More</string>
   <string name="elections">Elections</string>
-  
+
   <string name="bad_request">Bad Request</string>
   <string name="unauthenticated">Unauthenticated</string>
   <string name="invalid_credentials">Invalid Credentials</string>
+  <string name="active">ACTIVE</string>
+  <string name="start_at">Start At : </string>
+  <string name="fri_jan_24_12_00_04">Fri Jan 24 12:00:04</string>
+  <string name="end_at">End At : </string>
+  <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_ut_aliquam">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam</string>
+  <string name="no_voters_for_this_election">No Voters for this Election</string>
+  <string name="empty_ballots">Empty Ballots</string>
+  <string name="empty_elections">Empty Elections</string>
 
 </resources>
 

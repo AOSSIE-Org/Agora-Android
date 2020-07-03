@@ -5,6 +5,7 @@ data class AuthResponse(
   var email: String?,
   var firstName: String?,
   var lastName: String?,
+  var avatarURL: String,
   var towFactorAuthentication: Boolean?,
   var token: Token?,
   var trustedDevice: String?

@@ -8,13 +8,15 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
+import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import java.io.IOException
-import java.util.Date
 import javax.inject.Inject
 
 class ElectionsRepository
@@ -67,11 +69,12 @@ constructor(
   private fun saveElections(elections : List<Election>) {
     Coroutines.io {
       prefs.setUpdateNeeded(false)
+      db.getElectionDao().deleteAllElections()
       db.getElectionDao().saveElections(elections)
     }
   }
 
-  suspend fun getPendingElections(currentDate: String): List<Election> {
+  suspend fun getPendingElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO){
       db.getElectionDao().getPendingElections(currentDate)
     }
@@ -89,21 +92,60 @@ constructor(
 
       }catch (e: ApiException){
 
+      }catch (e: SessionExpirationException){
+
       }catch (e: IOException){
 
       }
     }
   }
 
-  suspend fun getFinishedElections(currentDate: String): List<Election> {
+  suspend fun getFinishedElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO){
       db.getElectionDao().getFinishedElections(currentDate)
     }
   }
 
-  suspend fun getActiveElections(currentDate: String): List<Election> {
+  suspend fun getActiveElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO){
       db.getElectionDao().getActiveElections(currentDate)
     }
+  }
+
+  suspend fun getElectionById(id: String): LiveData<Election>{
+    return withContext(Dispatchers.IO){
+      db.getElectionDao().getElectionById(id)
+    }
+  }
+
+  suspend fun deleteElection(
+    id: String
+  ): ArrayList<String> {
+    return apiRequest { api.deleteElection(prefs.getCurrentToken(), id) }
+  }
+
+  suspend fun getVoters(
+    id: String
+  ): Voters {
+    return apiRequest { api.getVoters(prefs.getCurrentToken(), id) }
+  }
+
+  suspend fun getBallots(
+    id: String
+  ): Ballots {
+    return apiRequest { api.getBallot(prefs.getCurrentToken(), id) }
+  }
+
+  suspend fun sendVoters(
+    id: String,
+    body: String
+  ): ArrayList<String>{
+    return apiRequest { api.sendVoters(prefs.getCurrentToken(), id, body) }
+  }
+
+  suspend fun createElection(
+    body: String
+  ): ArrayList<String>{
+    return apiRequest { api.createElection(body, prefs.getCurrentToken()) }
   }
 }

@@ -17,4 +17,28 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:item_layout="@layout/list_item_ballot_details"
       />
+
+  <ProgressBar
+      android:id="@+id/progress_bar"
+      android:visibility="invisible"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <TextView
+      android:id="@+id/tv_empty_ballots"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/size_18sp"
+      android:visibility="invisible"
+      android:text="@string/empty_ballots"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

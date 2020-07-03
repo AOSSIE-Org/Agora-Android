@@ -1,41 +1,58 @@
 package org.aossie.agoraandroid.ui.fragments.displayelections
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_election_details.view.button_ballot
 import kotlinx.android.synthetic.main.fragment_election_details.view.button_delete
 import kotlinx.android.synthetic.main.fragment_election_details.view.button_invite_voters
 import kotlinx.android.synthetic.main.fragment_election_details.view.button_result
 import kotlinx.android.synthetic.main.fragment_election_details.view.button_voters
-import kotlinx.android.synthetic.main.fragment_election_details.view.constraint_layout
-import kotlinx.android.synthetic.main.fragment_election_details.view.tv_candidate_list
-import kotlinx.android.synthetic.main.fragment_election_details.view.tv_description
-import kotlinx.android.synthetic.main.fragment_election_details.view.tv_election_name
-import kotlinx.android.synthetic.main.fragment_election_details.view.tv_end_date
-import kotlinx.android.synthetic.main.fragment_election_details.view.tv_start_date
-import kotlinx.android.synthetic.main.fragment_election_details.view.tv_status
+import kotlinx.android.synthetic.main.fragment_election_details.view.progress_bar
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.result.ResultViewModel
-import org.aossie.agoraandroid.utilities.SharedPrefs
+import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.utilities.snackbar
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class ElectionDetailsFragment : Fragment(), DisplayElectionListener {
 
-  private lateinit var rootView: View
+private const val ACTIVE_ELECTION_LABEL = "ACTIVE"
+private const val PENDING_ELECTION_LABEL = "PENDING"
+private const val FINISHED_ELECTION_LABEL = "FINISHED"
+
+class ElectionDetailsFragment
+  @Inject
+  constructor(
+    private val viewModelFactory: ViewModelProvider.Factory,
+      private val prefs: PreferenceProvider
+  ): Fragment(), DisplayElectionListener {
+  lateinit var binding: FragmentElectionDetailsBinding
   private var id: String? = null
   private var status: String? = null
   private var token: String? = null
-  private var displayElectionViewModel: DisplayElectionViewModel? = null
+  private val displayElectionViewModel: DisplayElectionViewModel by viewModels{
+    viewModelFactory
+  }
   private var resultViewModel: ResultViewModel? = null
 
   override fun onCreateView(
@@ -43,99 +60,120 @@ class ElectionDetailsFragment : Fragment(), DisplayElectionListener {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    rootView = inflater.inflate(R.layout.fragment_election_details, container, false)
-
-    val sharedPrefs = SharedPrefs(context!!)
-    displayElectionViewModel = DisplayElectionViewModel(activity!!.application, context!!)
-    displayElectionViewModel?.displayElectionListener = this
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_election_details, container, false)
+    val args = ElectionDetailsFragmentArgs.fromBundle(arguments!!)
+    id = args.id
+    displayElectionViewModel.displayElectionListener = this
     resultViewModel = ResultViewModel(activity!!.application, context)
-    token = sharedPrefs.token
-    rootView.button_ballot.setOnClickListener { displayElectionViewModel?.getBallot(token, id) }
-    rootView.button_voters.setOnClickListener { displayElectionViewModel?.getVoter(token, id) }
-    rootView.button_invite_voters.setOnClickListener {
-      if (status == "Finished") {
-        Toast.makeText(context, "Election is Finished", Toast.LENGTH_SHORT)
-            .show()
+    token = prefs.getCurrentToken()
+    Log.d("friday", token.toString())
+    binding.root.button_ballot.setOnClickListener {
+      val action =
+        ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToBallotFragment(id.toString())
+      Navigation.findNavController(binding.root)
+          .navigate(action)
+    }
+    binding.root.button_voters.setOnClickListener {
+      val action =
+        ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToVotersFragment(id.toString())
+      Navigation.findNavController(binding.root)
+          .navigate(action)
+    }
+    binding.root.button_invite_voters.setOnClickListener {
+      if (status == "FINISHED") {
+        binding.root.snackbar("Election is Finished")
       } else {
         val action = ElectionDetailsFragmentDirections
-            .actionElectionDetailsFragmentToInviteVotersFragment(id!! , token!!)
-        Navigation.findNavController(rootView)
+            .actionElectionDetailsFragmentToInviteVotersFragment(id!!, token!!)
+        Navigation.findNavController(binding.root)
             .navigate(action)
-//        val intent = Intent(
-//            context,
-//            InviteVotersActivity::class.java
-//        )
-//        intent.putExtra("id", id)
-//        intent.putExtra("token", token)
-//        startActivity(intent)
       }
     }
-    rootView.button_result.setOnClickListener {
-      if (status == "Pending") {
-        Toast.makeText(context, "Election is not started yet", Toast.LENGTH_SHORT)
-            .show()
+    binding.root.button_result.setOnClickListener {
+      if (status == "PENDING") {
+        binding.root.snackbar("Election is not started yet")
       } else {
         resultViewModel?.getResult(token, id)
       }
     }
 
-    rootView.button_delete.setOnClickListener {
+    binding.root.button_delete.setOnClickListener {
       when (status) {
-        "Active" -> Toast.makeText(
-            context, "Active Elections Cannot Be Deleted",
-            Toast.LENGTH_SHORT
-        )
-            .show()
-        "Finished" -> displayElectionViewModel?.deleteElection(token, id)
-        "Pending" -> displayElectionViewModel?.deleteElection(token, id)
+        "ACTIVE" -> binding.root.snackbar("Active Elections Cannot Be Deleted")
+        "FINISHED" -> displayElectionViewModel.deleteElection(id)
+        "PENDING" -> displayElectionViewModel.deleteElection(id)
       }
     }
 
-    displayElectionViewModel!!.voterResponse.observe(
-        viewLifecycleOwner, Observer {
-      Log.d("friday", it)
-      val action = ElectionDetailsFragmentDirections
-          .actionElectionDetailsFragmentToVotersFragment(it!!)
-      Navigation.findNavController(rootView).navigate(action)
-    })
-
-    displayElectionViewModel!!.ballotResponse.observe(
-        viewLifecycleOwner, Observer {
-      val action = ElectionDetailsFragmentDirections
-          .actionElectionDetailsFragmentToBallotFragment(it!!)
-      Navigation.findNavController(rootView).navigate(action)
-    })
-
-    getIncomingIntent()
-    return rootView
-  }
-
-  private fun getIncomingIntent() {
-    val args = ElectionDetailsFragmentArgs.fromBundle(arguments!!)
-    val electionName: String = args.electionName
-    val electionDesc: String = args.electionDesc
-    val startDate: String = args.startDate
-    val endDate: String = args.endDate
-    val candidate: String = args.candidate
-    status = args.status
-    id = args.id
-    Log.d("friday : ", status)
-    when (status) {
-      "Active" -> rootView.constraint_layout.setBackgroundColor(Color.rgb(226, 11, 11))
-      "Finished" -> rootView.constraint_layout.setBackgroundColor(Color.rgb(5, 176, 197))
-      "Pending" -> rootView.constraint_layout.setBackgroundColor(Color.rgb(75, 166, 79))
+    Coroutines.main {
+      displayElectionViewModel.getElectionById(id!!).observe(
+          viewLifecycleOwner, Observer {
+        Log.d("friday", it.toString())
+        binding.election = it
+        try {
+          val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+          val formattedStartingDate: Date = formatter.parse(it.start)
+          val formattedEndingDate: Date = formatter.parse(it.end)
+          val currentDate = Calendar.getInstance()
+              .time
+          val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
+          //set end and start date
+          binding.tvEndDate.text = outFormat.format(formattedEndingDate)
+          binding.tvStartDate.text = outFormat.format(formattedStartingDate)
+          //set label color and election status
+          if (currentDate.before(formattedStartingDate)) {
+            binding.label.text = PENDING_ELECTION_LABEL
+            status = "PENDING"
+            binding.label.setBackgroundResource(R.drawable.pending_election_label)
+          } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
+            binding.label.text = ACTIVE_ELECTION_LABEL
+            status = "ACTIVE"
+            binding.label.setBackgroundResource(R.drawable.active_election_label)
+          } else if (currentDate.after(formattedEndingDate)) {
+            binding.label.text = FINISHED_ELECTION_LABEL
+            status = "FINISHED"
+            binding.label.setBackgroundResource(R.drawable.finished_election_label)
+          }
+        }catch (e: ParseException){
+          e.printStackTrace()
+        }
+        // add candidates name
+        val mCandidatesName = StringBuilder()
+        val candidates = it.candidates
+        if (candidates != null) {
+          for (j in 0 until candidates.size) {
+            mCandidatesName.append(candidates[j])
+            if (j != candidates.size - 1) {
+              mCandidatesName.append(", ")
+            }
+          }
+        }
+        binding.tvCandidateList.text = mCandidatesName
+        binding.executePendingBindings()
+      })
     }
-    rootView.tv_election_name.text = electionName
-    rootView.tv_description.text = electionDesc
-    rootView.tv_start_date.text = startDate
-    rootView.tv_end_date.text = endDate
-    rootView.tv_candidate_list.text = candidate
-    rootView.tv_status.text = status
+
+    return binding.root
   }
 
   override fun onDeleteElectionSuccess() {
-    Navigation.findNavController(rootView)
+    prefs.setUpdateNeeded(true)
+    Navigation.findNavController(binding.root)
         .navigate(ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment())
+  }
+
+  override fun onSuccess(message: String?) {
+    if(message!=null) binding.root.snackbar(message)
+    binding.root.progress_bar.hide()
+  }
+
+  override fun onStarted() {
+    binding.root.progress_bar.show()
+  }
+
+  override fun onFailure(message: String) {
+    binding.root.snackbar(message)
+    binding.root.progress_bar.hide()
   }
 }
 

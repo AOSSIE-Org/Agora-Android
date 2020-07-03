@@ -9,3 +9,9 @@ interface ElectionAdapterCallback{
     candidate :String,
     id: String)
 }
+
+interface ElectionRecyclerAdapterCallback{
+  fun onItemClicked(
+    _id: String
+  )
+}
