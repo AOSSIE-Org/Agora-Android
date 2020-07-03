@@ -1,45 +1,31 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
-import android.app.Application
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.remote.RetrofitClient
+import androidx.lifecycle.ViewModel
+import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
-import org.aossie.agoraandroid.utilities.SharedPrefs
+import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
+import org.aossie.agoraandroid.utilities.lazyDeferred
 import org.json.JSONException
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import javax.inject.Inject
 
-class ProfileViewModel(application: Application) : AndroidViewModel(application) {
+class ProfileViewModel
+@Inject
+constructor(
+  private val userRepository: UserRepository
+) : ViewModel() {
 
-  val sharedPrefs = SharedPrefs(application.applicationContext)
-
-  val firstName: String?
-    get() = sharedPrefs.firstName
-
-  val lastName: String?
-    get() = sharedPrefs.lastName
-
-  val userName: String?
-    get() = sharedPrefs.userName
-
-  val email: String?
-    get() = sharedPrefs.email
-
-  val token: String?
-    get() = sharedPrefs.token
-
-  val pass: String?
-    get() = sharedPrefs.pass
-
-  val expiresOn: String?
-    get() = sharedPrefs.tokenExpiresOn
+  val user by lazyDeferred {
+    userRepository.getUser()
+  }
 
   private val _passwordRequestCode = MutableLiveData<ResponseResults>()
 
@@ -51,9 +37,11 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
   val userUpdateResponse: LiveData<ResponseResults>
     get() = _userUpdateResponse
 
-  sealed class ResponseResults{
-    class Success : ResponseResults()
-    class Error(errorText : String) : ResponseResults(){
+  sealed class ResponseResults {
+    class Success(text: String? = null) : ResponseResults() {
+      val message = text
+    }
+    class Error(errorText: String) : ResponseResults() {
       val message = errorText
     }
   }
@@ -65,90 +53,61 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     } catch (e: JSONException) {
       e.printStackTrace()
     }
-    val apiService = RetrofitClient.getAPIService()
-    val changePassResponse = apiService.changePassword(jsonObject.toString(), token)
-    changePassResponse.enqueue(object : Callback<String> {
-      override fun onResponse(
-        call: Call<String>,
-        response: Response<String>
-      ) {
-        if (response.message() == "OK") {
-          sharedPrefs.savePass(password)
-          _passwordRequestCode.value =
-            Success()
-        } else {
-          Log.d("TAG", "onResponse:" + response.body())
-          _passwordRequestCode.value =
-            Error(
-                getApplication<Application>().getString(string.token_expired)
-            )
-        }
+    Coroutines.main {
+      try {
+        val response = userRepository.changePassword(jsonObject.toString())
+        Log.d("friday", response[1])
+        _passwordRequestCode.value = Success(response[1])
+      } catch (e: ApiException) {
+        _passwordRequestCode.value = Error(e.message.toString())
+      } catch (e: SessionExpirationException) {
+        _passwordRequestCode.value = Error(e.message.toString())
+      }catch (e: NoInternetException) {
+        _passwordRequestCode.value = Error(e.message.toString())
+      } catch (e: Exception) {
+        _passwordRequestCode.value = Error(e.message.toString())
       }
-
-      override fun onFailure(
-        call: Call<String>,
-        t: Throwable
-      ) {
-        _passwordRequestCode.value =
-          Error(
-              getApplication<Application>().getString(
-                  string.something_went_wrong_please_try_again_later
-              )
-          )
-      }
-    })
+    }
   }
 
   fun updateUser(
-    firstName : String,
-    lastName : String
+    userName: String,
+    userEmail: String,
+    firstName: String,
+    lastName: String,
+    token: String,
+    expiresOn: String
   ) {
+    //authListener.onStarted()
     val jsonObject = JSONObject()
     val tokenObject = JSONObject()
-    try{
+    try {
       jsonObject.put("username", userName)
       jsonObject.put("firstName", firstName)
       jsonObject.put("lastName", lastName)
-      jsonObject.put("email", email)
+      jsonObject.put("email", userEmail)
       jsonObject.put("twoFactorAuthentication", false)
       tokenObject.put("token", token)
       tokenObject.put("expiresOn", expiresOn)
       jsonObject.put("token", tokenObject)
-    }catch (e: JSONException){
+    } catch (e: JSONException) {
       e.printStackTrace()
     }
-
-    val apiService = RetrofitClient.getAPIService()
-    val updateUserResponse = apiService.updateUser(token, jsonObject.toString())
-    updateUserResponse.enqueue(object : Callback<String> {
-      override fun onResponse(
-        call: Call<String>,
-        response: Response<String>
-      ) {
-        if(response.message() == "OK") {
-          sharedPrefs.saveFirstName(firstName)
-          sharedPrefs.saveLastName(lastName)
-          _userUpdateResponse.value =
-            Success()
-        }else{
-          _userUpdateResponse.value =
-            Error(
-                getApplication<Application>().getString(string.token_expired)
-            )
-        }
+    Coroutines.main {
+      try {
+        val response = userRepository.updateUser(jsonObject.toString())
+        Log.d("friday", response[1])
+        _userUpdateResponse.value = Success(response[1])
+      } catch (e: ApiException) {
+        _userUpdateResponse.value = Error(e.message.toString())
+      } catch (e: SessionExpirationException) {
+        Log.d("friday", "Session Expired")
+        _userUpdateResponse.value = Error(e.message.toString())
+      }catch (e: NoInternetException) {
+        _userUpdateResponse.value = Error(e.message.toString())
+      } catch (e: Exception) {
+        _userUpdateResponse.value = Error(e.message.toString())
       }
-
-      override fun onFailure(
-        call: Call<String>,
-        t: Throwable
-      ) {
-        _userUpdateResponse.value =
-          Error(
-              getApplication<Application>().getString(
-                  string.something_went_wrong_please_try_again_later
-              )
-          )
-      }
-    })
+    }
   }
 }

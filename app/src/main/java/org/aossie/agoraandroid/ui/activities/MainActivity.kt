@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -16,21 +17,16 @@ import kotlinx.android.synthetic.main.activity_main.tv_title
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.di.utils.MainFragmentFactory
-import org.aossie.agoraandroid.di.utils.ViewModelFactory
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
-import org.aossie.agoraandroid.utilities.SharedPrefs
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
   private lateinit var navController: NavController
-
-  private lateinit var sharedPrefs: SharedPrefs
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -53,8 +49,6 @@ class MainActivity : AppCompatActivity() {
     setSupportActionBar(toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(false)
 
-    sharedPrefs = SharedPrefs(this)
-
     val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     if (hostFragment is NavHostFragment)
       navController = hostFragment.navController
@@ -65,10 +59,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     NavigationUI.setupWithNavController(bottom_navigation, navController)
-
-    val userName = sharedPrefs.userName
-    val password = sharedPrefs.pass
-    if (userName != null && password != null) {
+    prefs.setUpdateNeeded(true)
+    if (prefs.getIsLoggedIn()) {
       navController.navigate(R.id.homeFragment)
     }
   }
@@ -119,6 +111,16 @@ class MainActivity : AppCompatActivity() {
       }
       else -> iv_back.visibility = View.GONE
     }
+  }
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    data: Intent?
+  ) {
+    super.onActivityResult(requestCode, resultCode, data)
+    val navHostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
+    val childFragments = navHostFragment?.childFragmentManager?.fragments
+    childFragments?.forEach { it.onActivityResult(requestCode, resultCode, data) }
   }
 }
 

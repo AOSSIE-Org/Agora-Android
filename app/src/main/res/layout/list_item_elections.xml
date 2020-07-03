@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+    <variable
+        name="election"
+        type="org.aossie.agoraandroid.data.db.entities.Election" />
+  </data>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_8dp"
+        android:elevation="@dimen/size_5dp"
+        app:cardCornerRadius="@dimen/size_4dp">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="@dimen/size_8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+          <TextView
+              android:textStyle="bold"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="3"
+              android:hint="@string/election_name"
+              android:text="@{election.name}"
+              android:textSize="@dimen/size_24sp" />
+
+          <TextView
+              android:id="@+id/label"
+              android:layout_width="0dp"
+              android:layout_height="@dimen/size_22dp"
+              android:layout_gravity="center"
+              android:layout_weight="1"
+              android:background="@drawable/active_election_label"
+              android:gravity="center"
+              android:textColorHint="@color/white"
+              android:hint="@string/active"
+              android:text="@string/active"
+              android:textColor="@color/white"
+              android:textSize="@dimen/size_12sp"
+              android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:textStyle="bold"
+            android:textSize="@dimen/size_24sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{election.description}"
+            android:hint="@string/election_description"
+            android:textSize="@dimen/size_18sp"/>
+
+        <TextView
+            android:id="@+id/tv_candidate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/candidates"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tv_candidate_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/candidate_list_hardcoded"
+            android:textSize="@dimen/size_18sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="@string/start_at"
+              android:textStyle="bold"
+              android:textSize="@dimen/size_18sp" />
+
+          <TextView
+              android:id="@+id/tv_start_date"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="3"
+              android:hint="@string/fri_jan_24_12_00_04"
+              android:textStyle="bold"
+              android:textSize="@dimen/size_18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="@string/end_at"
+              android:textStyle="bold"
+              android:textSize="@dimen/size_18sp" />
+
+          <TextView
+              android:id="@+id/tv_end_date"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="3"
+              android:hint="@string/fri_jan_24_12_00_04"
+              android:textStyle="bold"
+              android:textSize="@dimen/size_18sp" />
+        </LinearLayout>
+      </LinearLayout>
+    </androidx.cardview.widget.CardView>
+  </RelativeLayout>
+</layout>
