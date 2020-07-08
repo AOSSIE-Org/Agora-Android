@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">#272727</color>
+  <color name="colorPrimaryDark">#000000</color>
+  <color name="splash_status_bar">#272727</color>
+  <color name="splash_navigation_bar">#272727</color>
+  <color name="splash_background">#272727</color>
+  <color name="black_text_color">#FFFFFF</color>
+  <color name="yellow_gradient_color">#272727</color>
+  <color name="green_gradient_color">#272727</color>
+  <color name="button_white_color">#272727</color>
+</resources>

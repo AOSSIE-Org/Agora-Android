@@ -1,8 +1,15 @@
 package org.aossie.agoraandroid.ui.activities
 
+import android.app.ActionBar
 import android.content.Intent
+import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.view.WindowManager.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
@@ -56,6 +63,7 @@ class MainActivity : AppCompatActivity() {
     navController.addOnDestinationChangedListener { _, destination, _ ->
       setToolbar(destination)
       handleBottomNavVisibility(destination.id)
+      handleStatusBar(destination.id)
     }
 
     NavigationUI.setupWithNavController(bottom_navigation, navController)
@@ -78,6 +86,17 @@ class MainActivity : AppCompatActivity() {
       R.id.moreOptionsFragment
       -> bottom_navigation.visibility = View.VISIBLE
       else -> bottom_navigation.visibility = View.GONE
+    }
+  }
+
+  private fun handleStatusBar(id: Int) {
+    when (id) {
+      R.id.welcomeFragment,
+      R.id.loginFragment,
+      R.id.signUpFragment,
+      R.id.forgotPasswordFragment
+      -> window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+      else -> window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
     }
   }
 
