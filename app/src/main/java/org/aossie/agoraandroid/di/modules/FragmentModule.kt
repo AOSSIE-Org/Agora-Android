@@ -30,10 +30,10 @@ import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 @Module
 abstract class FragmentModule{
 
-  @Binds
-  @IntoMap
-  @FragmentKey(WelcomeFragment::class)
-  abstract fun bindWelcomeFragment(mainFragment: WelcomeFragment): Fragment
+//  @Binds
+//  @IntoMap
+//  @FragmentKey(WelcomeFragment::class)
+//  abstract fun bindWelcomeFragment(mainFragment: WelcomeFragment): Fragment
 
   @Binds
   @IntoMap

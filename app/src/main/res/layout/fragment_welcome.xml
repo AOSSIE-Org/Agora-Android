@@ -1,91 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.welcome.WelcomeFragment"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     >
-  <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      >
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+  <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:paddingBottom="@dimen/size_40dp"
         >
-
-      <Button
-          android:id="@+id/signup_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginBottom="16dp"
-          android:text="@string/sign_up"
-          app:backgroundTint="@color/greenTint"
-          app:layout_constraintBottom_toTopOf="@+id/fb_login_btn"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          />
-
-      <Button
-          android:id="@+id/fb_login_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginBottom="16dp"
-          android:backgroundTint="@color/blueTint"
-          android:text="@string/continue_with_facebook"
-          app:layout_constraintBottom_toTopOf="@+id/signin_btn"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          />
-
-      <Button
-          android:id="@+id/signin_btn"
-          style="@style/MainButtonStyle"
-          android:layout_marginBottom="32dp"
-          android:text="@string/log_in"
-          app:backgroundTint="@color/yellowTint"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          />
-
       <ImageView
-          android:id="@+id/main_logo_iv"
-          android:layout_width="130dp"
-          android:layout_height="130dp"
-          android:layout_marginTop="64dp"
-          android:contentDescription="@string/content_description_for_agora_logo"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:srcCompat="@drawable/agora"
+          android:id="@+id/image"
+          android:layout_width="wrap_content"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:padding="@dimen/size_20dp"
+          android:contentDescription="@string/agora"
+          android:src="@drawable/boy_ship"
+          android:background="@drawable/corner_gradient"
           />
 
-      <TextView
-          android:id="@+id/agora_label_tv"
+    <TextView
+          android:id="@+id/welcome_message"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:gravity="center_horizontal"
-          android:text="@string/app_name"
-          android:textAlignment="center"
-          android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-          app:fontFamily="cursive"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/main_logo_iv"
-          />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+          android:text="@string/welcome_message"
+          android:layout_gravity="center"
+          android:layout_marginTop="@dimen/size_40dp"
+          android:textColor="@color/black_text_color"
+          android:textSize="@dimen/size_28sp"
+          android:layout_marginBottom="@dimen/size_15dp"
+          android:textStyle="bold" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/progressbar_background"
-        android:padding="@dimen/size_10dp"
-        android:visibility="invisible"
-        />
+      <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btn_signup"
+          style="@style/MainButtonStyle"
+          android:layout_width="@dimen/size_300dp"
+          android:layout_height="@dimen/size_48sp"
+          android:layout_gravity="center"
+          android:background="@drawable/yellow_border"
+          android:clickable="true"
+          android:focusable="true"
+          android:textColor="@color/black_text_color"
+          android:text="@string/get_started" />
 
-  </FrameLayout>
+      <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btn_login"
+          style="@style/MainButtonStyle"
+          android:layout_width="@dimen/size_300dp"
+          android:layout_gravity="center"
+          android:layout_height="@dimen/size_48sp"
+          android:layout_marginTop="@dimen/size_15dp"
+          android:clickable="true"
+          android:focusable="true"
+          android:text="@string/login" />
+    </LinearLayout>
 </layout>
+
+
 

@@ -2,7 +2,7 @@
   <string name="app_name">Agora Vote</string>
   <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
   <string name="log_in">LOG IN</string>
-  <string name="sign_up">SIGN UP</string>
+  <string name="sign_up">Sign Up</string>
   <string name="content_description_for_agora_logo">Agora Logo</string>
   <string name="user_name">User Name</string>
   <string name="password">Password</string>
@@ -172,6 +172,12 @@
   <string name="no_voters_for_this_election">No Voters for this Election</string>
   <string name="empty_ballots">Empty Ballots</string>
   <string name="empty_elections">Empty Elections</string>
+  <string name="get_started">Get Started</string>
+  <string name="agora">AGORA</string>
+  <string name="welcome_message">Don\'t just be there,\nbe present</string>
+  <string name="secret_security_question">Secret Security Question</string>
+  <string name="welcome_string">Welcome,</string>
+  <string name="or">——————— OR ———————</string>
 
 </resources>
 
