@@ -64,7 +64,6 @@ class SignUpFragment
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_sign_up, container, false)
     signUpViewModel.authListener = this
-    showActionBar()
 
     rootView.signup_btn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)

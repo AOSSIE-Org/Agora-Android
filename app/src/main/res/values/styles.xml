@@ -1,16 +1,20 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/montserrat</item>
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+    <item name="android:windowTranslucentStatus">true</item>
   </style>
 
   <style name="SplashTheme" parent="AppTheme">
     <item name="android:windowBackground">@drawable/splash_background</item>
+    <item name="android:statusBarColor">@color/splash_status_bar</item>
+    <item name="android:navigationBarColor">@color/splash_navigation_bar</item>
   </style>
 
   <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
@@ -29,6 +33,21 @@
     <item name="android:background">@drawable/button_background</item>
     <item name="android:textColor">@android:color/white</item>
     <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+  </style>
+
+  <style name="BlueButtonStyle" parent="Widget.AppCompat.Button">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">50dp</item>
+    <item name="android:background">@drawable/blue_button_background</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+  </style>
+
+  <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+  <item name="boxBackgroundColor">@android:color/transparent</item>
+    <item name="background">@android:color/transparent</item>
+    <item name="boxStrokeColor" >@color/yellow_color</item>
+    <item name="android:textColorHint">@color/black_text_color</item>
   </style>
 
   <style name="MoreFragmentsTextViewStyle" parent="Widget.AppCompat.TextView">
