@@ -6,6 +6,7 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:navigationBarColor">@color/navigation_bar</item>
     <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
     <item name="android:windowTranslucentStatus">true</item>
