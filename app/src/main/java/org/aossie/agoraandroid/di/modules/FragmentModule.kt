@@ -10,6 +10,7 @@ import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
+import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.UploadCandidatesFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionDetailsFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionFragment
@@ -124,6 +125,11 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(ProfileFragment::class)
   abstract fun bindsProfileFragment(profileFragment: ProfileFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(CreateElectionFragment::class)
+  abstract fun bindsCreateElectionFragment(createElectionFragment: CreateElectionFragment): Fragment
 
 
   @Binds
