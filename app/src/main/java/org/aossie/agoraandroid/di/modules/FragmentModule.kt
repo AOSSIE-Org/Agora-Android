@@ -10,10 +10,7 @@ import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
-import org.aossie.agoraandroid.ui.fragments.createelection.UploadCandidatesFragment
-import org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionDetailsFragment
-import org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionFragment
-import org.aossie.agoraandroid.ui.fragments.createelection.UploadVotingAlgoFragment
+import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment
@@ -25,15 +22,9 @@ import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersFragment
 import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
-import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 
 @Module
 abstract class FragmentModule{
-
-//  @Binds
-//  @IntoMap
-//  @FragmentKey(WelcomeFragment::class)
-//  abstract fun bindWelcomeFragment(mainFragment: WelcomeFragment): Fragment
 
   @Binds
   @IntoMap
@@ -102,28 +93,13 @@ abstract class FragmentModule{
 
   @Binds
   @IntoMap
-  @FragmentKey(UploadElectionDetailsFragment::class)
-  abstract fun bindsUploadElectionDetailsFragment(uploadElectionDetailsFragment: UploadElectionDetailsFragment): Fragment
-
-  @Binds
-  @IntoMap
-  @FragmentKey(UploadCandidatesFragment::class)
-  abstract fun bindsUploadCandidatesFragment(uploadCandidatesFragment: UploadCandidatesFragment): Fragment
-
-  @Binds
-  @IntoMap
-  @FragmentKey(UploadVotingAlgoFragment::class)
-  abstract fun bindsUploadVotingAlgoFragment(uploadVotingAlgoFragment: UploadVotingAlgoFragment): Fragment
-
-  @Binds
-  @IntoMap
-  @FragmentKey(UploadElectionFragment::class)
-  abstract fun bindsUploadElectionFragment(uploadElectionFragment: UploadElectionFragment): Fragment
-
-  @Binds
-  @IntoMap
   @FragmentKey(ProfileFragment::class)
   abstract fun bindsProfileFragment(profileFragment: ProfileFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(CreateElectionFragment::class)
+  abstract fun bindsCreateElectionFragment(createElectionFragment: CreateElectionFragment): Fragment
 
 
   @Binds

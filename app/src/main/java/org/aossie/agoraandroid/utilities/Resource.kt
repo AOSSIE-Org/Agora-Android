@@ -10,3 +10,5 @@ fun Context.getString(@StringRes resId: Int) = getString(resId)
 
 fun Application.getString(@StringRes resId: Int) = getString(resId)
 
+fun Application.get(@StringRes resId: Int) = getString(resId)
+
