@@ -294,58 +294,6 @@
         app:argType="string"/>
   </fragment>
   <fragment
-      android:id="@+id/uploadElectionDetailsFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionDetailsFragment"
-      android:label="Upload Election Details"
-      tools:layout="@layout/fragment_upload_election_details" >
-    <action
-        android:id="@+id/action_uploadElectionDetailsFragment_to_uploadCandidatesFragment"
-        app:destination="@+id/uploadCandidatesFragment"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
-  </fragment>
-  <fragment
-      android:id="@+id/uploadCandidatesFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadCandidatesFragment"
-      android:label="Upload Election Candidates"
-      tools:layout="@layout/fragment_upload_candidates" >
-    <action
-        android:id="@+id/action_uploadCandidatesFragment_to_uploadVotingAlgoFragment"
-        app:destination="@+id/uploadVotingAlgoFragment"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
-  </fragment>
-  <fragment
-      android:id="@+id/uploadVotingAlgoFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadVotingAlgoFragment"
-      android:label="Select Voting Algorithm"
-      tools:layout="@layout/fragment_upload_voting_algo" >
-    <action
-        android:id="@+id/action_uploadVotingAlgoFragment_to_uploadElectionFragment"
-        app:destination="@+id/uploadElectionFragment"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
-  </fragment>
-  <fragment
-      android:id="@+id/uploadElectionFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.createelection.UploadElectionFragment"
-      android:label="Upload Election"
-      tools:layout="@layout/fragment_upload_election">
-    <action
-        android:id="@+id/action_uploadElectionFragment_to_homeFragment"
-        app:destination="@+id/homeFragment"
-        app:enterAnim="@anim/slide_in_left"
-        app:exitAnim="@anim/slide_out_right"
-        app:popEnterAnim="@anim/slide_in_right"
-        app:popExitAnim="@anim/slide_out_left" />
-  </fragment>
-  <fragment
       android:id="@+id/inviteVotersFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersFragment"
       android:label="Invite Voters"

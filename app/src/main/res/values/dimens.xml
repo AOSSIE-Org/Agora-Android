@@ -41,4 +41,5 @@
   <dimen name="size_16sp">16sp</dimen>
   <dimen name="size_2dp">2dp</dimen>
   <dimen name="size_14sp">14sp</dimen>
+  <dimen name="size_200dp">200dp</dimen>
 </resources>

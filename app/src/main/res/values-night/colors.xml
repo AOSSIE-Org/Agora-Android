@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#272727</color>
+  <color name="colorPrimary">#8594A3</color>
   <color name="colorPrimaryDark">#30363d</color>
   <color name="splash_status_bar">#272727</color>
   <color name="splash_navigation_bar">#272727</color>
@@ -13,5 +13,4 @@
   <color name="grey_background">#696969</color>
   <color name="grey_color">#212121</color>
   <color name="whiteColor">#303030</color>
-  <color name="navigation_bar">#000000</color>
 </resources>
