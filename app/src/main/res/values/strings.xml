@@ -40,9 +40,6 @@
   <string name="invite_voters">Invite Voters?</string>
   <string name="get_real_time_results">Get real time results?</string>
   <string name="how_secret_are_ballots">How secret are ballots?</string>
-  <string name="ballots_are_completely_secret">Ballots are completely secret and never shown to anyone</string>
-  <string name="ballots_visible_only_to_me">Ballots are visible only to me</string>
-  <string name="ballots_visible_to_everyone">Ballots are visible to everyone with access to the election</string>
   <string name="who_can_see_the_list_of_voters">Who can see the list of voters?</string>
   <string name="only_me">Only me</string>
   <string name="everyone_with_access_to_election">Everyone with access to election</string>
@@ -53,28 +50,28 @@
   <string name="enter_candidate_s_name">Enter Candidate\'s Name</string>
   <string name="election_description">Election Description</string>
   <string name="election_name">Election Name</string>
-  <string name="start_date_format">Start Date(YYYY/MM/DD at HH:MM)</string>
-  <string name="end_date_format">End Date(YYYY/MM/DD at HH:MM)</string>
+  <string name="start_date_format">Start Date</string>
+  <string name="end_date_format">End Date</string>
   <string name="enter_details">Enter Details</string>
   <string name="datePicker">datePicker</string>
   <string name="select_voting_algorithm">Select Voting Algorithm</string>
-  <string name="oklahoma">Oklahoma</string>
-  <string name="rangevoting">RangeVoting</string>
-  <string name="rankedpairs">RankedPairs</string>
-  <string name="satisfaction_approval_voting">Satisfaction Approval Voting</string>
-  <string name="smithset">SmithSet</string>
-  <string name="sequential_proportional_approval_voting">Sequential Proportional Approval Voting</string>
-  <string name="approval">Approval</string>
-  <string name="exhaustive_ballot_with_dropoff">Exhaustive ballot with dropoff</string>
-  <string name="copeland">Copeland</string>
-  <string name="uncovered_set">UncoveredSet</string>
-  <string name="borda">Borda</string>
-  <string name="minimax_condorcet">MinimaxCondorcet</string>
-  <string name="nanson">Nanson</string>
-  <string name="kemeny_young">Kemeny-Young</string>
-  <string name="random_ballot">RandomBallot</string>
-  <string name="contingent_method">Contingent</string>
-  <string name="instant_runoff_2_round">InstantRunoff2Round</string>
+<!--  <string name="oklahoma">Oklahoma</string>-->
+<!--  <string name="rangevoting">RangeVoting</string>-->
+<!--  <string name="rankedpairs">RankedPairs</string>-->
+<!--  <string name="satisfaction_approval_voting">Satisfaction Approval Voting</string>-->
+<!--  <string name="smithset">SmithSet</string>-->
+<!--  <string name="sequential_proportional_approval_voting">Sequential Proportional Approval Voting</string>-->
+<!--  <string name="approval">Approval</string>-->
+<!--  <string name="exhaustive_ballot_with_dropoff">Exhaustive ballot with dropoff</string>-->
+<!--  <string name="copeland">Copeland</string>-->
+<!--  <string name="uncovered_set">UncoveredSet</string>-->
+<!--  <string name="borda">Borda</string>-->
+<!--  <string name="minimax_condorcet">MinimaxCondorcet</string>-->
+<!--  <string name="nanson">Nanson</string>-->
+<!--  <string name="kemeny_young">Kemeny-Young</string>-->
+<!--  <string name="random_ballot">RandomBallot</string>-->
+<!--  <string name="contingent_method">Contingent</string>-->
+<!--  <string name="instant_runoff_2_round">InstantRunoff2Round</string>-->
   <string name="baldwin">Baldwin</string>
   <string name="exhaustive_ballot">ExhaustiveBallot</string>
   <string name="logout">Logout</string>
@@ -125,6 +122,26 @@
   <string name="link_sent_please_check_your_email">Link Sent, Please Check Your Emails</string>
   <string name="invalid_username">Invalid Username</string>
   <string name="something_went_wrong_please_try_again_later">Something Went Wrong Please Try Again Later</string>
+  <string name="ballots_are_completely_secret">Completely secret and never shown to anyone</string>
+  <string name="ballots_visible_only_to_me">Visible only to me</string>
+  <string name="ballots_visible_to_everyone">Visible to everyone with access to the election</string>
+  <string name="oklahoma">Oklahoma</string>
+  <string name="rangevoting">RangeVoting</string>
+  <string name="rankedpairs">RankedPairs</string>
+  <string name="satisfaction_approval_voting">Satisfaction Approval Voting</string>
+  <string name="smithset">SmithSet</string>
+  <string name="sequential_proportional_approval_voting">Sequential Proportional Approval Voting</string>
+  <string name="approval">Approval</string>
+  <string name="exhaustive_ballot_with_dropoff">Exhaustive ballot with dropoff</string>
+  <string name="copeland">Copeland</string>
+  <string name="uncovered_set">UncoveredSet</string>
+  <string name="borda">Borda</string>
+  <string name="minimax_condorcet">MinimaxCondorcet</string>
+  <string name="nanson">Nanson</string>
+  <string name="kemeny_young">Kemeny-Young</string>
+  <string name="random_ballot">RandomBallot</string>
+  <string name="contingent_method">Contingent</string>
+  <string name="instant_runoff_2_round">InstantRunoff2Round</string>
 
 
   //string-array for security questions
@@ -134,6 +151,32 @@
     <item>What is your nickname?</item>
     <item>Which elementary school did you attend?</item>
     <item>What is your hometown?</item>
+  </string-array>
+
+  <string-array name="ballot_visibility">
+    <item name="ballots_are_completely_secret">Completely secret and never shown to anyone</item>
+    <item name="ballots_visible_only_to_me">Visible only to me</item>
+    <item name="ballots_visible_to_everyone">Visible to everyone with access to the election</item>
+  </string-array>
+
+  <string-array name="algorithms">
+    <item name="oklahoma">Oklahoma</item>
+    <item name="rangevoting">RangeVoting</item>
+    <item name="rankedpairs">RankedPairs</item>
+    <item name="satisfaction_approval_voting">Satisfaction Approval Voting</item>
+    <item name="smithset">SmithSet</item>
+    <item name="sequential_proportional_approval_voting">Sequential Proportional Approval Voting</item>
+    <item name="approval">Approval</item>
+    <item name="exhaustive_ballot_with_dropoff">Exhaustive ballot with dropoff</item>
+    <item name="copeland">Copeland</item>
+    <item name="uncovered_set">UncoveredSet</item>
+    <item name="borda">Borda</item>
+    <item name="minimax_condorcet">MinimaxCondorcet</item>
+    <item name="nanson">Nanson</item>
+    <item name="kemeny_young">Kemeny-Young</item>
+    <item name="random_ballot">RandomBallot</item>
+    <item name="contingent_method">Contingent</item>
+    <item name="instant_runoff_2_round">InstantRunoff2Round</item>
   </string-array>
 
   //profile fragment labels
@@ -178,6 +221,10 @@
   <string name="secret_security_question">Secret Security Question</string>
   <string name="welcome_string">Welcome,</string>
   <string name="or">——————— OR ———————</string>
+  <string name="voter_list_visibility">Voter List Visibility</string>
+  <string name="real_time">Real Time</string>
+  <string name="invite">Invite</string>
+  <string name="add">Add</string>
 
 </resources>
 

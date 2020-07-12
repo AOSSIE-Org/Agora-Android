@@ -82,7 +82,7 @@ constructor(
     }
     rootView.button_create_election.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(HomeFragmentDirections.actionHomeFragmentToUploadElectionDetailsFragment())
+          .navigate(HomeFragmentDirections.actionHomeFragmentToCreateElectionFragment())
     }
     rootView.swipe_refresh.setOnRefreshListener(
         OnRefreshListener { doYourUpdate() }
