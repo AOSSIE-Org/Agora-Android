@@ -75,4 +75,6 @@
   <color name="grey_background">#A9A9A9</color>
   <color name="grey_color">#F6F6F6</color>
   <color name="black_color">#000000</color>
+  <color name="mainButtonColor">#F3B63A</color>
+  <color name="darkSlateColor">#30363d</color>
 </resources>

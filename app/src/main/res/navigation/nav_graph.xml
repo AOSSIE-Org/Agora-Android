@@ -97,15 +97,12 @@
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out" />
     <action
-        android:id="@+id/action_homeFragment_to_uploadElectionDetailsFragment"
-        app:destination="@+id/uploadElectionDetailsFragment"
+        android:id="@+id/action_homeFragment_to_createElectionFragment"
+        app:destination="@id/createElectionFragment"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out"/>
-    <action
-        android:id="@+id/action_homeFragment_to_createElectionFragment"
-        app:destination="@id/createElectionFragment" />
   </fragment>
   <fragment
       android:id="@+id/electionsFragment"
@@ -123,15 +120,19 @@
   <fragment
       android:id="@+id/profileFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment"
-      android:label="Profile"
-      tools:layout="@layout/fragment_profile" />
-  <fragment
-      android:id="@+id/moreOptionsFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment"
-      android:label="More Options"
-      tools:layout="@layout/fragment_more_options">
+      android:label="Account Settings"
+      tools:layout="@layout/fragment_profile" >
     <action
-        android:id="@+id/action_moreOptionsFragment_to_aboutFragment"
+        android:id="@+id/action_profileFragment_to_settingsFragment"
+        app:destination="@id/settingsFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/settingsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment"
+      android:label="Settings"
+      tools:layout="@layout/fragment_settings">
+    <action
+        android:id="@+id/action_settingsFragment_to_aboutFragment"
         app:destination="@+id/aboutFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
@@ -145,52 +146,52 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
-        android:id="@+id/action_moreOptionsFragment_to_shareWithOthersFragment"
+        android:id="@+id/action_settingsFragment_to_shareWithOthersFragment"
         app:destination="@+id/shareWithOthersFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
-        android:id="@+id/action_moreOptionsFragment_to_contactUsFragment"
+        android:id="@+id/action_settingsFragment_to_contactUsFragment"
         app:destination="@+id/contactUsFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
-        android:id="@+id/action_moreOptionsFragment_to_homeFragment"
-        app:destination="@+id/homeFragment"
-        app:enterAnim="@anim/slide_in_left"
-        app:exitAnim="@anim/slide_out_right"
-        app:popEnterAnim="@anim/slide_in_right"
-        app:popExitAnim="@anim/slide_out_left" />
-    <action
-        android:id="@+id/action_moreOptionsFragment_to_welcomeFragment"
+        android:id="@+id/action_settingsFragment_to_welcomeFragment"
         app:destination="@+id/welcomeFragment"
         app:enterAnim="@anim/slide_in_left"
         app:exitAnim="@anim/slide_out_right"
         app:popEnterAnim="@anim/slide_in_right"
         app:popExitAnim="@anim/slide_out_left" />
+    <action
+        android:id="@+id/action_settingsFragment_to_profileFragment"
+        app:destination="@id/profileFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
   </fragment>
   <fragment
       android:id="@+id/reportBugFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.report.ReportBugFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.report.ReportBugFragment"
       android:label="Report"
       tools:layout="@layout/fragment_report_bug" />
   <fragment
       android:id="@+id/contactUsFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.contactUs.ContactUsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.contactUs.ContactUsFragment"
       android:label="Contact Us"
       tools:layout="@layout/fragment_contact_us" />
   <fragment
       android:id="@+id/aboutFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.about.AboutFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.about.AboutFragment"
       android:label="About Agora"
       tools:layout="@layout/fragment_about" />
   <fragment
       android:id="@+id/shareWithOthersFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.moreOptions.share.ShareWithOthersFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.share.ShareWithOthersFragment"
       android:label="Share with Others"
       tools:layout="@layout/fragment_share_with_others" />
   <fragment
@@ -225,24 +226,6 @@
       android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment"
       android:label="Election Details"
       tools:layout="@layout/fragment_election_details">
-<!--    <argument-->
-<!--        android:name="electionName"-->
-<!--        app:argType="string" />-->
-<!--    <argument-->
-<!--        android:name="electionDesc"-->
-<!--        app:argType="string" />-->
-<!--    <argument-->
-<!--        android:name="startDate"-->
-<!--        app:argType="string" />-->
-<!--    <argument-->
-<!--        android:name="endDate"-->
-<!--        app:argType="string" />-->
-<!--    <argument-->
-<!--        android:name="status"-->
-<!--        app:argType="string" />-->
-<!--    <argument-->
-<!--        android:name="candidate"-->
-<!--        app:argType="string" />-->
     <argument
         android:name="id"
         app:argType="string" />

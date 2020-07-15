@@ -3,23 +3,18 @@
 
     <item
         android:id="@+id/homeFragment"
-        android:title="@string/dashboard"
-        android:icon="@drawable/ic_view_carousel_black_24dp" />
+        android:title="@string/home"
+        android:icon="@drawable/ic_home" />
 
     <item
         android:id="@+id/electionsFragment"
         android:title="@string/elections"
-        android:icon="@drawable/ic_elections"/>
+        android:icon="@drawable/ic_elections" />
 
     <item
-        android:id="@+id/profileFragment"
-        android:title="@string/profile"
-        android:icon="@drawable/ic_person_black_24dp"/>
-
-    <item
-        android:id="@+id/moreOptionsFragment"
-        android:title="@string/more"
-        android:icon="@drawable/ic_more_icon"/>
+        android:id="@+id/settingsFragment"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings"/>
 
 
 </menu>

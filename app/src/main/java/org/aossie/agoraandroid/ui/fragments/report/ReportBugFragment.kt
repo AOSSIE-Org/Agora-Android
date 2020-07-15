@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.fragments.moreOptions.report
+package org.aossie.agoraandroid.ui.fragments.report
 
 import android.content.Intent
 import android.net.Uri

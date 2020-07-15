@@ -25,7 +25,7 @@ class WelcomeFragment: Fragment(){
   ): View? {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
-    hideActionBar()
+//    hideActionBar()
 
     rootView.btn_login.setOnClickListener {
       Navigation.findNavController(rootView)
