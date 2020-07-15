@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.fragments.moreOptions.about
+package org.aossie.agoraandroid.ui.fragments.about
 
 import android.os.Bundle
 import android.view.LayoutInflater

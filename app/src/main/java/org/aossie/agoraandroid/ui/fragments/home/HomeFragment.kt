@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -60,7 +61,7 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     rootView = inflater.inflate(layout.fragment_home, container, false)
-    showActionBar()
+//    showActionBar()
     loginViewModel.authListener = this
     rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
 

@@ -1,14 +1,8 @@
 package org.aossie.agoraandroid.ui.activities
 
-import android.app.ActionBar
 import android.content.Intent
-import android.os.Build
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.view.WindowManager.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentFactory
@@ -26,9 +20,10 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
-import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
+import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
+import org.aossie.agoraandroid.utilities.animGone
+import org.aossie.agoraandroid.utilities.animVisible
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -83,9 +78,9 @@ class MainActivity : AppCompatActivity() {
       R.id.profileFragment,
       R.id.homeFragment,
       R.id.electionsFragment,
-      R.id.moreOptionsFragment
-      -> bottom_navigation.visibility = View.VISIBLE
-      else -> bottom_navigation.visibility = View.GONE
+      R.id.settingsFragment
+      -> bottom_navigation.animVisible()
+      else -> bottom_navigation.animGone()
     }
   }
 
@@ -94,9 +89,17 @@ class MainActivity : AppCompatActivity() {
       R.id.welcomeFragment,
       R.id.loginFragment,
       R.id.signUpFragment,
-      R.id.forgotPasswordFragment
-      -> window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
-      else -> window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+      R.id.forgotPasswordFragment,
+      R.id.settingsFragment
+      -> {
+        window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        supportActionBar?.hide()
+      }
+      else ->
+      {
+        window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        supportActionBar?.show()
+      }
     }
   }
 
@@ -107,8 +110,7 @@ class MainActivity : AppCompatActivity() {
         is HomeFragment,
         is WelcomeFragment -> moveTaskToBack(true)
         is ElectionsFragment,
-        is ProfileFragment,
-        is MoreOptionsFragment -> navController.navigate(R.id.homeFragment)
+        is SettingsFragment -> navController.navigate(R.id.homeFragment)
        else -> super.onBackPressed()
       }
     } else {
@@ -118,13 +120,11 @@ class MainActivity : AppCompatActivity() {
 
   private fun handleBackButton(id: Int) {
     when (id) {
-      R.id.loginFragment,
-      R.id.signUpFragment,
-      R.id.forgotPasswordFragment,
       R.id.aboutFragment,
       R.id.reportBugFragment,
       R.id.shareWithOthersFragment,
-      R.id.contactUsFragment -> iv_back.let {
+      R.id.contactUsFragment,
+      R.id.profileFragment-> iv_back.let {
         it.visibility = View.VISIBLE
         it.setOnClickListener { onBackPressed() }
       }

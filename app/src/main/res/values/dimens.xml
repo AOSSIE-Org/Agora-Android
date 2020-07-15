@@ -42,4 +42,7 @@
   <dimen name="size_2dp">2dp</dimen>
   <dimen name="size_14sp">14sp</dimen>
   <dimen name="size_200dp">200dp</dimen>
+  <dimen name="size_175dp">175dp</dimen>
+  <dimen name="size_28dp">28dp</dimen>
+  <dimen name="size_32dp">32dp</dimen>
 </resources>

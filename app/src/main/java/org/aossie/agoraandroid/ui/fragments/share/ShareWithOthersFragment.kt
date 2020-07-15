@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.fragments.moreOptions.share
+package org.aossie.agoraandroid.ui.fragments.share
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.facebook.FacebookSdk
-import kotlinx.android.synthetic.main.fragment_share_with_others.view.button_share_now
+import kotlinx.android.synthetic.main.fragment_share_with_others.view.btn_share
 import org.aossie.agoraandroid.R.layout
 
 /**
@@ -22,7 +22,7 @@ class ShareWithOthersFragment : Fragment() {
   ): View? {
     val view =
       inflater.inflate(layout.fragment_share_with_others, container, false)
-    view.button_share_now.setOnClickListener {
+    view.btn_share.setOnClickListener {
       val shareIntent = Intent(Intent.ACTION_SEND)
 
       //Get the app link in the Play Store

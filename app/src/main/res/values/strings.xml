@@ -79,7 +79,7 @@
   <string name="zero">0</string>
   <string name="user_email_id">user email id</string>
   <string name="send_link">Send Link</string>
-  <string name="developed_with_by_aossie">Developed with ❤️ by AOSSIE</string>
+  <string name="developed_with_by_aossie">Developed with ❤ by AOSSIE</string>
   <string name="enter_user_name_reset_pass_link">Please enter user name to receive password reset link</string>
   <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor</string>
   <string name="candidates">Candidates</string>
@@ -97,8 +97,8 @@
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
   <string name="election_name_">Election Name</string>
-  <string name="facebook_app_id">569316977110919</string>
-  <string name="fb_login_protocol_scheme">fb569316977110919</string>
+  <string name="facebook_app_id">Put your fb app id here</string>
+  <string name="fb_login_protocol_scheme">Put your login protocol scheme here</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
   <string name="delete_election">delete election</string>
   <string name="invite_voter">Invite Voters</string>
@@ -225,6 +225,21 @@
   <string name="real_time">Real Time</string>
   <string name="invite">Invite</string>
   <string name="add">Add</string>
+  <string name="agora_example_com">agora@example.com</string>
+  <string name="john_doe">John Doe</string>
+  <string name="about_us">About Us</string>
+  <string name="account_settings">Account Settings</string>
+  <string name="settings">Settings</string>
+  <string name="empty_string"/>
+  <string name="space">\u0020</string>
+  <string name="let_s_get_the_ball_rolling">Let\'s Get the Ball Rolling</string>
+  <string name="feel_free_to_contact_us_on_our_gitter_channel_and_work_with_us_on_gitlab">Feel free to contact us on our Gitter Channel and work with us on Gitlab</string>
+  <string name="gitlab">Gitlab</string>
+  <string name="gitter">Gitter</string>
+  <string name="home">Home</string>
+  <string name="share">Share</string>
+  <string name="privacy_policy">Privacy Policy</string>
+  <string name="terms_and_conditions">Terms and Conditions</string>
 
 </resources>
 
