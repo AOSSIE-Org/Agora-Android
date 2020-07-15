@@ -20,7 +20,7 @@ import org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersFragment
-import org.aossie.agoraandroid.ui.fragments.moreOptions.MoreOptionsFragment
+import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment
 
 @Module
@@ -38,8 +38,8 @@ abstract class FragmentModule{
 
   @Binds
   @IntoMap
-  @FragmentKey(MoreOptionsFragment::class)
-  abstract fun bindMoreOptionsFragment(moreOptionsFragment: MoreOptionsFragment): Fragment
+  @FragmentKey(SettingsFragment::class)
+  abstract fun bindMoreOptionsFragment(settingsFragment: SettingsFragment): Fragment
 
   @Binds
   @IntoMap

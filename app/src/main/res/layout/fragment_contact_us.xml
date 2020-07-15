@@ -1,91 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.moreOptions.contactUs.ContactUsFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/grey_color"
+    tools:context=".ui.fragments.contactUs.ContactUsFragment"
     >
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_margin="@dimen/size_10dp"
       >
 
-    <Button
-        android:id="@+id/button_gitlab"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/rounded_button"
-        android:text="@string/gitlab_aossie"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_cornered_background"
+        android:padding="@dimen/size_20dp"
+        >
 
+      <ImageView
+          android:id="@+id/image"
+          android:layout_width="@dimen/size_300dp"
+          android:layout_height="@dimen/size_250dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          android:contentDescription="@string/agora"
+          android:src="@drawable/ic_contact_us"
+          />
 
-    <Button
-        android:id="@+id/button_gitter"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/rounded_button"
-        android:text="@string/gitter_aossie"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_gitlab"
-        />
+      <TextView
+          android:id="@+id/tv_contact_message"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/image"
+          android:layout_marginTop="@dimen/size_10dp"
+          android:layout_centerInParent="true"
+          app:layout_constraintTop_toBottomOf="@+id/image"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:text="@string/feel_free_to_contact_us_on_our_gitter_channel_and_work_with_us_on_gitlab"
+          android:textColor="@color/black_text_color"
+          android:textSize="@dimen/size_18sp"
+          />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/agora"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/btn_gitlab"
+        style="@style/WhiteButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/constraintLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="@dimen/size_16sp"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:drawableEnd="@drawable/ic_gitlab"
+        android:paddingStart="@dimen/size_40dp"
+        android:paddingEnd="@dimen/size_40dp"
+        android:text="@string/gitlab"
+        android:gravity="center_vertical"
         />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_gitter"
+        style="@style/WhiteButtonStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="@string/contact_us_desc"
-        android:textColor="@color/colorPrimary"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_below="@id/btn_gitlab"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="@dimen/size_16sp"
+        android:layout_marginEnd="@dimen/size_5dp"
+        android:drawableEnd="@drawable/ic_gitter"
+        android:paddingStart="@dimen/size_40dp"
+        android:paddingEnd="@dimen/size_40dp"
+        android:text="@string/gitter"
+        android:layout_marginBottom="@dimen/size_15dp"
+        android:gravity="center_vertical"
         />
 
+    <TextView
+        android:id="@+id/btn_report"
+        style="@style/WhiteButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_gitter"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/size_10dp"
+        android:layout_marginBottom="@dimen/size_15dp"
+        android:drawableEnd="@drawable/ic_bug"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/size_40dp"
+        android:paddingEnd="@dimen/size_40dp"
+        android:text="@string/report_a_bug"
+        android:textSize="@dimen/size_16sp"
+        />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  </RelativeLayout>
+
 </ScrollView>
