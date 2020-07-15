@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.fragments.settings.SettingsFragment"
+    >
+
+  <data>
+    <variable
+        name="user"
+        type="org.aossie.agoraandroid.data.db.entities.User"
+        />
+  </data>
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/grey_color"
+      >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+      <RelativeLayout
+          android:id="@+id/relativeLayout"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_200dp"
+            android:background="@drawable/mountain"
+            >
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/iv_profile_pic"
+              android:layout_width="@dimen/size_80dp"
+              android:layout_height="@dimen/size_80dp"
+              android:layout_centerInParent="true"
+              android:layout_marginStart="@dimen/size_15dp"
+              android:layout_marginTop="@dimen/size_75dp"
+              android:contentDescription="@string/agora"
+              app:cardCornerRadius="@dimen/size_40dp"
+              android:background="@android:color/transparent"
+              android:layout_centerHorizontal="true"
+              android:innerRadius="0dp"
+              android:shape="ring"
+              android:thicknessRatio="1.9"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_user"
+                android:background="@android:color/transparent"
+                />
+
+
+          </androidx.cardview.widget.CardView>
+
+          <TextView
+              android:id="@+id/tv_email_id"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerVertical="true"
+              android:layout_marginStart="@dimen/size_15dp"
+              android:textColor="@color/black_text_color"
+              android:textColorHint="@color/black_text_color"
+              android:text="@{user.email}"
+              android:hint="@string/agora_example_com"
+              android:textSize="@dimen/size_18sp"
+              app:layout_constraintStart_toEndOf="@+id/iv_profile_pic"
+              app:layout_constraintTop_toBottomOf="@+id/tv_name"
+              />
+
+          <TextView
+              android:id="@+id/tv_name"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/tv_email_id"
+              android:hint="@string/john_doe"
+              android:text="@{(user.firstName == null ? @string/empty_string : user.firstName) + @string/space + (user.lastName == null ? @string/empty_string : user.lastName)}"
+              android:textColorHint="@color/black_text_color"
+              android:textColor="@color/black_text_color"
+              android:layout_centerVertical="true"
+              android:layout_marginStart="@dimen/size_15dp"
+              android:layout_marginTop="@dimen/size_90dp"
+              android:textSize="@dimen/size_18sp"
+              app:layout_constraintStart_toEndOf="@+id/iv_profile_pic"
+              app:layout_constraintTop_toTopOf="parent"
+              />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative_layout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:paddingVertical="@dimen/size_10dp"
+            android:background="@color/whiteColor"
+            android:gravity="center"
+            android:text="@string/settings"
+            android:textColor="@color/black_text_color"
+            android:textSize="@dimen/size_22sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_account_settings"
+            style="@style/WhiteButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_settings"
+            android:layout_marginHorizontal="@dimen/size_10dp"
+            android:layout_marginTop="@dimen/size_15dp"
+            android:gravity="center"
+            android:text="@string/account_settings"
+            android:textSize="@dimen/size_16sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_about"
+            style="@style/WhiteButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_account_settings"
+            android:layout_marginHorizontal="@dimen/size_10dp"
+            android:layout_marginTop="@dimen/size_12dp"
+            android:gravity="center"
+            android:text="@string/about_us"
+            android:textSize="@dimen/size_16sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_share"
+            style="@style/WhiteButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_about"
+            android:layout_marginHorizontal="@dimen/size_10dp"
+            android:layout_marginTop="@dimen/size_12dp"
+            android:gravity="center"
+            android:text="@string/share_with_others"
+            android:textSize="@dimen/size_16sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_contact_us"
+            style="@style/WhiteButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_share"
+            android:layout_marginHorizontal="@dimen/size_10dp"
+            android:layout_marginTop="@dimen/size_12dp"
+            android:gravity="center"
+            android:text="@string/contact_us"
+            android:textSize="@dimen/size_16sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_logout"
+            style="@style/WhiteButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_contact_us"
+            android:layout_marginHorizontal="@dimen/size_10dp"
+            android:layout_marginTop="@dimen/size_12dp"
+            android:gravity="center"
+            android:text="@string/logout"
+            android:textSize="@dimen/size_16sp"
+            />
+      </RelativeLayout>
+      <ProgressBar
+          android:id="@+id/progress_bar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@drawable/progressbar_background"
+          android:padding="@dimen/size_10dp"
+          android:visibility="invisible"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </ScrollView>
+</layout><!--    <RelativeLayout-->
+    <!--        android:id="@+id/relativeLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        >-->
+    <!--      <TextView-->
+    <!--          android:id="@+id/tv_dashboard"-->
+    <!--          style="@style/MoreFragmentsTextViewStyle"-->
+    <!--          android:layout_alignParentStart="true"-->
+    <!--          android:layout_alignParentLeft="true"-->
+    <!--          android:layout_alignParentTop="true"-->
+    <!--          android:layout_alignParentEnd="true"-->
+    <!--          android:layout_alignParentRight="true"-->
+    <!--          android:drawableStart="@drawable/ic_view_carousel_black_24dp"-->
+    <!--          android:drawableLeft="@drawable/ic_view_carousel_black_24dp"-->
+    <!--          android:text="@string/dashboard"-->
+    <!--          />-->
+    <!--      <TextView-->
+    <!--          android:id="@+id/tv_about"-->
+    <!--          style="@style/MoreFragmentsTextViewStyle"-->
+    <!--          android:layout_below="@+id/tv_dashboard"-->
+    <!--          android:layout_alignParentStart="true"-->
+    <!--          android:layout_alignParentLeft="true"-->
+    <!--          android:layout_alignParentEnd="true"-->
+    <!--          android:layout_alignParentRight="true"-->
+    <!--          android:drawableStart="@drawable/ic_code_black_24dp"-->
+    <!--          android:drawableLeft="@drawable/ic_code_black_24dp"-->
+    <!--          android:text="@string/about_agora"-->
+    <!--          />-->
+    <!--      <TextView-->
+    <!--          android:id="@+id/tv_report"-->
+    <!--          style="@style/MoreFragmentsTextViewStyle"-->
+    <!--          android:layout_below="@+id/tv_about"-->
+    <!--          android:layout_alignParentStart="true"-->
+    <!--          android:layout_alignParentLeft="true"-->
+    <!--          android:layout_alignParentEnd="true"-->
+    <!--          android:layout_alignParentRight="true"-->
+    <!--          android:drawableStart="@drawable/ic_bug_report_black_24dp"-->
+    <!--          android:drawableLeft="@drawable/ic_bug_report_black_24dp"-->
+    <!--          android:text="@string/report_a_bug"-->
+    <!--          />-->
+    <!--      <TextView-->
+    <!--          android:id="@+id/tv_share"-->
+    <!--          style="@style/MoreFragmentsTextViewStyle"-->
+    <!--          android:layout_below="@id/tv_report"-->
+    <!--          android:layout_alignParentStart="true"-->
+    <!--          android:layout_alignParentLeft="true"-->
+    <!--          android:layout_alignParentEnd="true"-->
+    <!--          android:layout_alignParentRight="true"-->
+    <!--          android:drawableStart="@drawable/ic_share_black_24dp"-->
+    <!--          android:drawableLeft="@drawable/ic_share_black_24dp"-->
+    <!--          android:text="@string/share_with_others"-->
+    <!--          />-->
+    <!--      <TextView-->
+    <!--          android:id="@+id/tv_contact_us"-->
+    <!--          style="@style/MoreFragmentsTextViewStyle"-->
+    <!--          android:layout_below="@+id/tv_share"-->
+    <!--          android:layout_alignParentStart="true"-->
+    <!--          android:layout_alignParentLeft="true"-->
+    <!--          android:layout_alignParentEnd="true"-->
+    <!--          android:layout_alignParentRight="true"-->
+    <!--          android:drawableStart="@drawable/ic_local_post_office_black_24dp"-->
+    <!--          android:drawableLeft="@drawable/ic_local_post_office_black_24dp"-->
+    <!--          android:text="@string/contact_us"-->
+    <!--          />-->
+
+    <!--      <TextView-->
+    <!--          android:id="@+id/tv_logout"-->
+    <!--          style="@style/MoreFragmentsTextViewStyle"-->
+    <!--          android:layout_below="@+id/tv_contact_us"-->
+    <!--          android:layout_alignParentStart="true"-->
+    <!--          android:layout_alignParentLeft="true"-->
+    <!--          android:layout_alignParentEnd="true"-->
+    <!--          android:layout_alignParentRight="true"-->
+    <!--          android:drawableStart="@android:drawable/ic_lock_power_off"-->
+    <!--          android:drawableLeft="@android:drawable/ic_lock_power_off"-->
+    <!--          android:text="@string/logout"-->
+    <!--          />-->
+    <!--    </RelativeLayout>-->
+
+

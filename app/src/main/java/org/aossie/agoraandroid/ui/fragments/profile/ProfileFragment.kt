@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
@@ -168,6 +169,8 @@ class ProfileFragment
 
   override fun onSuccess(message: String?) {
     binding.root.progress_bar.hide()
+    Navigation.
+        findNavController(binding.root).navigate(ProfileFragmentDirections.actionProfileFragmentToSettingsFragment())
   }
 
   override fun onStarted() {
