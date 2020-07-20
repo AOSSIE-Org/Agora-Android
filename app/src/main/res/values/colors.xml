@@ -16,6 +16,10 @@
   <color name="orange_total_elections">#fe9d18</color>
   <color name="green_pending_elections">#4ba64f</color>
 
+  <color name="transparent_red_active_elections">#80FF4155</color>
+  <color name="transparent_blue_finished_elections">#8005b0c5</color>
+  <color name="transparent_green_pending_elections">#804ba64f</color>
+
 
   //main screen tint colors
   <color name="greenTint">#FF01643D</color>
@@ -77,4 +81,7 @@
   <color name="black_color">#000000</color>
   <color name="mainButtonColor">#F3B63A</color>
   <color name="darkSlateColor">#30363d</color>
+
+  <color name="hour_divider">#b0b0b0</color>
+  <color name="half_hour_divider">#e0e0e0</color>
 </resources>

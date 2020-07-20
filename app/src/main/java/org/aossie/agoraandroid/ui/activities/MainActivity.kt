@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.tv_title
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun handleBottomNavVisibility(id: Int) {
     when (id) {
-      R.id.profileFragment,
+      R.id.calendarViewElectionFragment,
       R.id.homeFragment,
       R.id.electionsFragment,
       R.id.settingsFragment
@@ -110,7 +111,8 @@ class MainActivity : AppCompatActivity() {
         is HomeFragment,
         is WelcomeFragment -> moveTaskToBack(true)
         is ElectionsFragment,
-        is SettingsFragment -> navController.navigate(R.id.homeFragment)
+        is SettingsFragment,
+        is CalendarViewElectionFragment -> navController.navigate(R.id.homeFragment)
        else -> super.onBackPressed()
       }
     } else {
