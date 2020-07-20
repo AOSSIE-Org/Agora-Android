@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_home" />
 
     <item
-        android:id="@+id/electionsFragment"
+        android:id="@+id/calendarViewElectionFragment"
         android:title="@string/elections"
         android:icon="@drawable/ic_elections" />
 
