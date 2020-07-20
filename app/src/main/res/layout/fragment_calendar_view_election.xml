@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,13 +10,12 @@
   <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/appBar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"/>
+      android:layout_height="wrap_content"
+      android:background="@color/colorPrimaryDark"
+      android:elevation="@dimen/size_5dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
 
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
         android:id="@+id/calendarView"
@@ -28,4 +27,56 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
-</RelativeLayout>
+  <LinearLayout
+      android:id="@+id/sample_content"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:orientation="vertical"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/appBar"
+      app:layout_constraintBottom_toBottomOf="parent">
+
+    <TextView
+        android:id="@+id/sample_date"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingLeft="@dimen/small_padding"
+        android:paddingTop="@dimen/large_padding"
+        android:paddingRight="@dimen/small_padding"
+        android:textAlignment="center"
+        tools:text="Jan 16, 2019" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/hour_divider" />
+
+    <ScrollView
+        android:id="@+id/sample_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:context=".SampleActivity">
+
+      <com.linkedin.android.tachyon.DayView
+          android:id="@+id/sample_day"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="@dimen/large_padding"
+          app:dividerHeight="@dimen/divider_height"
+          app:endHour="@integer/end_hour"
+          app:eventMargin="@dimen/small_padding"
+          app:halfHourDividerColor="@color/half_hour_divider"
+          app:halfHourHeight="@dimen/half_hour_height"
+          app:hourDividerColor="@color/hour_divider"
+          app:hourLabelMarginEnd="@dimen/large_padding"
+          app:hourLabelWidth="@dimen/hour_label_width"
+          app:startHour="@integer/start_hour" />
+    </ScrollView>
+  </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

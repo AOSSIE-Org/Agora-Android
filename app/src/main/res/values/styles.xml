@@ -70,6 +70,12 @@
     <item name="android:textAlignment">textStart</item>
   </style>
 
+  <style name="Theme.TachyonSample" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="colorPrimary">@android:color/holo_blue_light</item>
+    <item name="colorPrimaryDark">@android:color/holo_blue_dark</item>
+    <item name="colorAccent">@android:color/holo_blue_light</item>
+  </style>
+
   <dimen name="size_40dp">40dp</dimen>
   <dimen name="size_58dp">58dp</dimen>
 </resources>

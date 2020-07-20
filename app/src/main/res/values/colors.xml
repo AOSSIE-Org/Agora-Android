@@ -77,4 +77,7 @@
   <color name="black_color">#000000</color>
   <color name="mainButtonColor">#F3B63A</color>
   <color name="darkSlateColor">#30363d</color>
+
+  <color name="hour_divider">#b0b0b0</color>
+  <color name="half_hour_divider">#e0e0e0</color>
 </resources>

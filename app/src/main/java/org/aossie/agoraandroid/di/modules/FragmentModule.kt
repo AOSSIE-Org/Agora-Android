@@ -17,6 +17,7 @@ import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFrag
 import org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment
+import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersFragment
@@ -100,6 +101,11 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(CreateElectionFragment::class)
   abstract fun bindsCreateElectionFragment(createElectionFragment: CreateElectionFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(CalendarViewElectionFragment::class)
+  abstract fun bindsCalendarViewElectionFragment(calendarViewElectionFragment: CalendarViewElectionFragment): Fragment
 
 
   @Binds
