@@ -16,6 +16,10 @@
   <color name="orange_total_elections">#fe9d18</color>
   <color name="green_pending_elections">#4ba64f</color>
 
+  <color name="transparent_red_active_elections">#80FF4155</color>
+  <color name="transparent_blue_finished_elections">#8005b0c5</color>
+  <color name="transparent_green_pending_elections">#804ba64f</color>
+
 
   //main screen tint colors
   <color name="greenTint">#FF01643D</color>
