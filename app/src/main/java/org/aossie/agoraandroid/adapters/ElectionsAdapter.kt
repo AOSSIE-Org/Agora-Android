@@ -39,8 +39,7 @@ class ElectionsAdapter(
   }
 
   override fun getItemCount(): Int = elections.size
-
-  @RequiresApi(VERSION_CODES.JELLY_BEAN)
+  
   override fun onBindViewHolder(
     holder: ElectionsViewHolder,
     position: Int
@@ -55,14 +54,14 @@ class ElectionsAdapter(
       binding.election = election
       try {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-        val formattedStartingDate: Date = formatter.parse(election.start)
-        val formattedEndingDate: Date = formatter.parse(election.end)
+        val formattedStartingDate: Date? = formatter.parse(election.start!!)
+        val formattedEndingDate: Date? = formatter.parse(election.end!!)
         val currentDate = Calendar.getInstance()
             .time
         val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
         //set end and start date
-        binding.tvEndDate.text = outFormat.format(formattedEndingDate)
-        binding.tvStartDate.text = outFormat.format(formattedStartingDate)
+        binding.tvEndDate.text = outFormat.format(formattedEndingDate!!)
+        binding.tvStartDate.text = outFormat.format(formattedStartingDate!!)
         //set label color and election status
         if (currentDate.before(formattedStartingDate)) {
           binding.label.text = PENDING_ELECTION_LABEL

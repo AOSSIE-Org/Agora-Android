@@ -13,12 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.google.gson.Gson
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.android.synthetic.main.fragment_calendar_view_election.calendarView
+import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.calendarView
+import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.img_btn_month
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -61,17 +65,25 @@ constructor(
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_calendar_view_election, container, false)
+    rootView = inflater.inflate(layout.fragment_calendar_view_election, container, false)
+    rootView.calendarView.visibility = View.GONE
+    rootView.img_btn_month.setOnClickListener {
+      if(rootView.calendarView.visibility == View.GONE) {
+        rootView.calendarView.visibility = View.VISIBLE
+        it.animate().rotation(180F).start()
+      }
+      else if(rootView.calendarView.visibility == View.VISIBLE) {
+        rootView.calendarView.visibility = View.GONE
+        it.animate().rotation(360F).start()
+      }
+    }
 
-    // Create a new calendar object set to the start of today
     day = Calendar.getInstance()
     day?.set(Calendar.HOUR_OF_DAY, 0)
     day?.set(Calendar.MINUTE, 0)
     day?.set(Calendar.SECOND, 0)
     day?.set(Calendar.MILLISECOND, 0)
 
-    // Populate today's entry in the map with a list of example events
     allEvents = HashMap()
 
     dateFormat = SimpleDateFormat("MMM yyyy", Locale.ENGLISH)
@@ -84,7 +96,6 @@ constructor(
     scrollView = rootView.findViewById(R.id.sample_scroll)
     dayView = rootView.findViewById(R.id.sample_day)
 
-    // Inflate a label view for each hour the day view will display
     val hour = day!!.clone() as Calendar
     val hourLabelViews: MutableList<View> =
       ArrayList()
@@ -97,18 +108,15 @@ constructor(
     }
     dayView!!.setHourLabelViews(hourLabelViews)
 
-    /* start 10 years ago from now */
     val startDate = Calendar.getInstance()
     startDate.add(Calendar.YEAR, -10)
 
-    /* end after 10 years from now */
     val endDate = Calendar.getInstance()
     endDate.add(Calendar.YEAR, 10)
 
-    // Default Date set to Today.
     val defaultSelectedDate = Calendar.getInstance()
 
-    horizontalCalendar = Builder(rootView, R.id.calendarView)
+    horizontalCalendar = Builder(rootView, R.id.horizontal_calendarView)
         .range(startDate, endDate)
         .datesNumberOnScreen(5)
         .configure()
@@ -131,8 +139,18 @@ constructor(
       ) {
         day = date
         onDayChange()
+        calendarView.date = date.timeInMillis
         scrollView!!.smoothScrollTo(0, dayView!!.firstEventTop)
       }
+    }
+
+    rootView.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+      val cal = Calendar.getInstance()
+      cal.set(Calendar.YEAR, year)
+      cal.set(Calendar.MONTH, month)
+      cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+      dateTextView!!.text = dateFormat!!.format(cal.time)
+      horizontalCalendar!!.selectDate(cal, false)
     }
 
     Coroutines.main {
@@ -155,52 +173,49 @@ constructor(
   }
 
   private fun onEventsChange() {
-    // The day view needs a list of event views and a corresponding list of event time ranges
     var eventViews: MutableList<View?>? = null
     var eventTimeRanges: MutableList<EventTimeRange?>? = null
     val events = allEvents!![day!!.timeInMillis]
     val gson = Gson()
     Log.d("on Event Change", gson.toJson(events) + " , day time in millis : " + day!!.timeInMillis)
     if (events != null) {
-      // Sort the events by start time so the layout happens in correct order
       Collections.sort(
           events
       ) { o1, o2 -> if (o1.hour < o2.hour) -1 else if (o1.hour == o2.hour) if (o1.minute < o2.minute) -1 else if (o1.minute == o2.minute) 0 else 1 else 1 }
       eventViews = ArrayList()
       eventTimeRanges = ArrayList()
 
-      // Reclaim all of the existing event views so we can reuse them if needed, this process
-      // can be useful if your day view is hosted in a recycler view for example
       val recycled = dayView!!.removeEventViews()
       var remaining = recycled?.size ?: 0
       for (event in events) {
-        // Try to recycle an existing event view if there are enough left, otherwise inflate
-        // a new one
         val eventView =
           if (remaining > 0) recycled!![--remaining] else layoutInflater.inflate(
-              layout.event, dayView, false
+              layout.list_item_event, dayView, false
           )
-        (eventView.findViewById<View>(R.id.event_title) as TextView).text = event.title
+        val status = "Status : ${event.status}"
+        (eventView.findViewById<View>(R.id.tv_event_title) as TextView).text = event.title
+        (eventView.findViewById<View>(R.id.tv_event_description) as TextView).text = event.description
+        (eventView.findViewById<View>(R.id.tv_event_status) as TextView).text = status
         eventView.background = resources.getDrawable(event.color, resources.newTheme())
 
-        // When an event is clicked
         eventView.setOnClickListener {
+          val action =
+            CalendarViewElectionFragmentDirections
+                .actionCalendarViewElectionFragmentToElectionDetailsFragment(event.id)
+          Navigation.findNavController(rootView)
+              .navigate(action)
         }
-        eventViews.add(eventView)
 
-        // The day view needs the event time ranges in the start minute/end minute format,
-        // so calculate those here
+        eventViews.add(eventView)
         val startMinute = 60 * event.hour + event.minute
         val endMinute = startMinute + event.duration
         eventTimeRanges.add(EventTimeRange(startMinute, endMinute.toInt()))
       }
     }
-
-    // Update the day view with the new events
     dayView!!.setEventViews(eventViews, eventTimeRanges)
-    scrollView!!.post(Runnable {
+    scrollView!!.post {
       scrollView!!.smoothScrollTo(0, dayView!!.firstEventTop-300)
-    })
+    }
   }
 
   private fun addEvent(election: Election) {
@@ -209,13 +224,17 @@ constructor(
     val formattedEndingDate: Date? = formatter.parse(election.end!!)
     val currentDate = Calendar.getInstance()
         .time
+    var status : String ?= null
     var eventColor = R.drawable.cornered_blue_background
     if (currentDate.before(formattedStartingDate)) {
       eventColor = R.drawable.cornered_green_background
+      status = "PENDING"
     } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
       eventColor = R.drawable.cornered_red_background
+      status = "ACTIVE"
     } else if (currentDate.after(formattedEndingDate)) {
       eventColor = R.drawable.cornered_blue_background
+      status = "FINISHED"
     }
     val startCalendar = Calendar.getInstance()
     startCalendar.time = formattedStartingDate!!
@@ -238,12 +257,10 @@ constructor(
       val minute = startCalendar[Calendar.MINUTE]
       val duration =
         (endCalendar.timeInMillis - startCalendar.timeInMillis) / 60000
-      val color = eventColor
-      events.add(Event(id, title, description, hour, minute, duration, color))
+      events.add(Event(id, title, description, status, hour, minute, duration, eventColor))
       allEvents!![sDate.timeInMillis] = events
       val gson = Gson()
       Log.d("all Events", gson.toJson(allEvents))
-//      onDayChange()
       startCalendar.add(Calendar.DATE, 1)
       startCalendar.set(Calendar.HOUR, 0)
       startCalendar.set(Calendar.MINUTE, 0)
@@ -253,13 +270,11 @@ constructor(
     }
   }
 
-  /**
-   * A data class used to represent an event on the calendar.
-   */
   private class Event(
-    val id: String?,
+    val id: String,
     val title: String?,
     val description: String?,
+    val status: String?,
     val hour: Int,
     val minute: Int,
     val duration: Long,

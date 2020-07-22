@@ -22,9 +22,6 @@ import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- */
 class ElectionsFragment
 @Inject
 constructor(

@@ -1,4 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/coordinatorLayout"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:background="@android:color/white"-->
+<!--    android:layout_height="match_parent">-->
+
+<!--  <com.google.android.material.appbar.AppBarLayout-->
+<!--      android:id="@+id/app_bar"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="wrap_content"-->
+<!--      android:stateListAnimator="@animator/ann"-->
+<!--      app:expanded="false"-->
+<!--      android:background="@android:color/white"-->
+<!--      tools:targetApi="lollipop">-->
+
+<!--    <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--        android:id="@+id/collapsingToolbarLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+
+<!--        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap|enterAlways"-->
+<!--        app:statusBarScrim="?attr/colorPrimaryDark">-->
+
+<!--      &lt;!&ndash;large view &ndash;&gt;-->
+<!--      <CalendarView-->
+<!--          android:id="@+id/calenderView"-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="500dp"-->
+<!--          android:orientation="vertical"-->
+<!--          app:layout_collapseMode="pin"-->
+<!--          android:layout_marginTop="?attr/actionBarSize"-->
+<!--          >-->
+
+<!--      </CalendarView>-->
+<!--      <androidx.appcompat.widget.Toolbar-->
+<!--          android:id="@+id/toolbar"-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          app:title="fkdl"-->
+<!--          app:contentInsetLeft="0dp"-->
+<!--          app:contentInsetStart="0dp"-->
+<!--          app:titleTextColor="@color/colorPrimaryDark"-->
+<!--          android:background="#fff"-->
+<!--          app:layout_collapseMode="pin">-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true">-->
+
+<!--          <View-->
+<!--              android:layout_width="0dp"-->
+<!--              android:layout_height="0dp"-->
+<!--              android:layout_marginTop="10dp"-->
+<!--              android:id="@+id/backsupport"-->
+<!--              android:background="?attr/selectableItemBackground"-->
+<!--              android:clickable="true"-->
+<!--              android:layout_marginBottom="10dp"-->
+<!--              app:layout_constraintBottom_toBottomOf="parent"-->
+<!--              app:layout_constraintEnd_toEndOf="parent"-->
+<!--              app:layout_constraintStart_toStartOf="parent"-->
+<!--              app:layout_constraintTop_toTopOf="parent"-->
+<!--              android:focusable="true"-->
+<!--              />-->
+<!--          <LinearLayout-->
+<!--              android:layout_width="wrap_content"-->
+<!--              android:orientation="horizontal"-->
+<!--              app:layout_constraintLeft_toLeftOf="parent"-->
+<!--              app:layout_constraintTop_toTopOf="parent"-->
+<!--              android:gravity="center"-->
+<!--              app:layout_constraintBottom_toBottomOf="parent"-->
+<!--              android:layout_height="wrap_content"-->
+<!--              tools:ignore="UseCompoundDrawables"-->
+<!--              >-->
+<!--            <TextView-->
+<!--                android:id="@+id/sample_date"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/montserrat"-->
+<!--                android:text="@string/july"-->
+<!--                android:textColor="#464646"-->
+<!--                android:textSize="20sp" />-->
+<!--            <ImageView-->
+<!--                android:id="@+id/img_btn_month"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_down_arrow"-->
+<!--                android:paddingHorizontal="@dimen/size_5dp"-->
+<!--                tools:ignore="ContentDescription,RtlHardcoded" />-->
+<!--          </LinearLayout>-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--      </androidx.appcompat.widget.Toolbar>-->
+<!--    </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+
+<!--  </com.google.android.material.appbar.AppBarLayout>-->
+
+<!--  <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="match_parent"-->
+<!--      android:background="@color/grey_color"-->
+<!--      app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/appBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/colorPrimaryDark"-->
+<!--        android:elevation="@dimen/size_5dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--      <devs.mulham.horizontalcalendar.HorizontalCalendarView-->
+<!--          android:id="@+id/horizontal_calendarView"-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          app:textColorSelected="#FFFF"-->
+<!--          app:sizeBottomText="14sp"-->
+<!--          app:sizeMiddleText="20sp"/>-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/sample_content"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/appBar"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent">-->
+
+<!--      <androidx.core.widget.NestedScrollView-->
+<!--          android:id="@+id/sample_scroll"-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="0dp"-->
+<!--          android:layout_weight="1">-->
+
+<!--        <com.linkedin.android.tachyon.DayView-->
+<!--            android:id="@+id/sample_day"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="@dimen/large_padding"-->
+<!--            app:dividerHeight="@dimen/divider_height"-->
+<!--            app:endHour="@integer/end_hour"-->
+<!--            app:eventMargin="@dimen/small_padding"-->
+<!--            app:halfHourDividerColor="@color/half_hour_divider"-->
+<!--            app:halfHourHeight="@dimen/half_hour_height"-->
+<!--            app:hourDividerColor="@color/hour_divider"-->
+<!--            app:hourLabelMarginEnd="@dimen/large_padding"-->
+<!--            app:hourLabelWidth="@dimen/hour_label_width"-->
+<!--            app:startHour="@integer/start_hour" />-->
+<!--      </androidx.core.widget.NestedScrollView>-->
+<!--    </LinearLayout>-->
+<!--  </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,7 +170,7 @@
       android:id="@+id/collapsingToolbarLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:layout_scrollFlags="scroll|exitUntilCollapsed"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed|snap|enterAlways"
       app:expandedTitleMarginStart="64dp"
       android:background="@color/colorPrimaryDark"
       android:orientation="vertical"
@@ -47,16 +205,18 @@
               tools:text="Jan 2020"
               android:layout_marginStart="@dimen/size_20dp"/>
           <ImageButton
+              android:id="@+id/img_btn_month"
               android:layout_width="@dimen/size_40dp"
               android:layout_height="@dimen/size_40dp"
               android:background="@color/colorPrimaryDark"
               android:src="@drawable/drop_down"
               android:contentDescription="@string/drop_down_for_calendar"
-              android:paddingTop="@dimen/size_10dp"
               />
         </LinearLayout>
         <CalendarView
-            android:visibility="gone"
+            android:id="@+id/calendarView"
+            android:animateLayoutChanges="true"
+            android:scrollbarFadeDuration="@integer/config_navAnimTime"
             android:background="@color/whiteColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -76,7 +236,7 @@
       app:layout_constraintTop_toBottomOf="@id/collapsingToolbarLayout">
 
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
-        android:id="@+id/calendarView"
+        android:id="@+id/horizontal_calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:textColorSelected="#FFFF"

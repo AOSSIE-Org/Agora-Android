@@ -259,6 +259,7 @@
   <string name="scroll_target_last_event_top">Last Event Top</string>
   <string name="scroll_target_last_event_bottom">Last Event Bottom</string>
   <string name="drop_down_for_calendar">drop down for calendar</string>
+  <string name="july">July</string>
 
 </resources>
 
