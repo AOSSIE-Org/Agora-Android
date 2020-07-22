@@ -6,21 +6,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.gson.Gson
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
-import kotlinx.android.synthetic.main.fragment_calendar_view_election.calendarView
+import kotlinx.android.synthetic.main.content_calendar_view.sample_scroll
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.calendarView
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.img_btn_month
 import org.aossie.agoraandroid.R
@@ -28,6 +36,7 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.ArrayList
 import java.util.Calendar
 import java.util.Collections
@@ -139,7 +148,7 @@ constructor(
       ) {
         day = date
         onDayChange()
-        calendarView.date = date.timeInMillis
+        rootView.calendarView.date = date.timeInMillis
         scrollView!!.smoothScrollTo(0, dayView!!.firstEventTop)
       }
     }
@@ -268,6 +277,15 @@ constructor(
       startCalendar.set(Calendar.HOUR_OF_DAY, 0)
       formattedStartingDate = startCalendar.time
     }
+  }
+
+  fun getStatusBarHeight(): Int {
+    var result = 0
+    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+    if (resourceId > 0) {
+      result = resources.getDimensionPixelSize(resourceId)
+    }
+    return result
   }
 
   private class Event(
