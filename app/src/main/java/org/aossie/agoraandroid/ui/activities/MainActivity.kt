@@ -19,7 +19,6 @@ import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
-import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
       handleStatusBar(destination.id)
     }
 
-    NavigationUI.setupWithNavController(bottom_navigation, navController)
+   NavigationUI.setupWithNavController(bottom_navigation, navController)
     prefs.setUpdateNeeded(true)
     if (prefs.getIsLoggedIn()) {
       navController.navigate(R.id.homeFragment)
@@ -110,7 +109,6 @@ class MainActivity : AppCompatActivity() {
       when (hostFragment.childFragmentManager.fragments.first()) {
         is HomeFragment,
         is WelcomeFragment -> moveTaskToBack(true)
-        is ElectionsFragment,
         is SettingsFragment,
         is CalendarViewElectionFragment -> navController.navigate(R.id.homeFragment)
        else -> super.onBackPressed()

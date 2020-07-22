@@ -77,4 +77,15 @@
 
   <include layout="@layout/content_calendar_view" />
 
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fab_list_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="end|bottom"
+      android:src="@drawable/ic_list"
+      android:backgroundTint="@color/colorPrimaryDark"
+      app:tint="@color/white"
+      android:contentDescription="@string/list"
+      android:layout_margin="16dp" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
