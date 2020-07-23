@@ -11,8 +11,6 @@ import androidx.annotation.DrawableRes
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -25,8 +23,7 @@ import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.calendarView
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.fab_list_view
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.img_btn_month
-import kotlinx.android.synthetic.main.fragment_home.view.constraintLayout
-import kotlinx.android.synthetic.main.fragment_home.view.shimmer_view_container
+import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_home.view.swipe_refresh
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
@@ -34,6 +31,8 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.show
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Calendar
@@ -171,6 +170,7 @@ constructor(
         if (it != null) {
           for (election in it) {
             addEvent(election)
+            onDayChange()
           }
         }
       })
@@ -190,11 +190,11 @@ constructor(
 
   override fun onResume() {
     super.onResume()
-    rootView.shimmer_view_container.startShimmer()
+    rootView.progress_bar.show()
   }
 
   override fun onPause() {
-    rootView.shimmer_view_container.stopShimmer()
+    rootView.progress_bar.hide()
     super.onPause()
   }
 
@@ -255,10 +255,8 @@ constructor(
     scrollView!!.post {
       scrollView!!.smoothScrollTo(0, dayView!!.firstEventTop-300)
     }
-    if(rootView.img_btn_month.visibility == View.GONE){
-      rootView.shimmer_view_container.stopShimmer()
-      rootView.shimmer_view_container.visibility = View.GONE
-      rootView.img_btn_month.visibility = View.VISIBLE
+    if(rootView.progress_bar.visibility == View.VISIBLE){
+      rootView.progress_bar.hide()
     }
   }
 
@@ -311,7 +309,6 @@ constructor(
       startCalendar.set(Calendar.SECOND, 0)
       startCalendar.set(Calendar.HOUR_OF_DAY, 0)
       formattedStartingDate = startCalendar.time
-      onDayChange()
     }
   }
 
