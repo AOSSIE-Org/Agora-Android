@@ -11,6 +11,8 @@ import androidx.annotation.DrawableRes
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -23,8 +25,13 @@ import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.calendarView
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.fab_list_view
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.img_btn_month
+import kotlinx.android.synthetic.main.fragment_home.view.constraintLayout
+import kotlinx.android.synthetic.main.fragment_home.view.shimmer_view_container
+import kotlinx.android.synthetic.main.fragment_home.view.swipe_refresh
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
 import java.text.SimpleDateFormat
@@ -38,7 +45,8 @@ import javax.inject.Inject
 class CalendarViewElectionFragment
 @Inject
 constructor(
-  private val viewModelFactory: ViewModelProvider.Factory
+  private val viewModelFactory: ViewModelProvider.Factory,
+  private val prefs: PreferenceProvider
 ) : Fragment() {
 
   lateinit var rootView: View
@@ -66,6 +74,8 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     rootView = inflater.inflate(layout.fragment_calendar_view_election, container, false)
+    rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
+
     rootView.calendarView.visibility = View.GONE
     rootView.img_btn_month.setOnClickListener {
       if(rootView.calendarView.visibility == View.GONE) {
@@ -153,13 +163,14 @@ constructor(
       horizontalCalendar!!.selectDate(cal, false)
     }
 
+    rootView.swipe_refresh.setOnRefreshListener { doYourUpdate() }
+
     Coroutines.main {
       val elections = electionViewModel.elections.await()
       elections.observe(requireActivity(), Observer {
         if (it != null) {
           for (election in it) {
             addEvent(election)
-            onDayChange()
           }
         }
       })
@@ -177,9 +188,27 @@ constructor(
     return rootView
   }
 
+  override fun onResume() {
+    super.onResume()
+    rootView.shimmer_view_container.startShimmer()
+  }
+
+  override fun onPause() {
+    rootView.shimmer_view_container.stopShimmer()
+    super.onPause()
+  }
+
+  private fun doYourUpdate() {
+    prefs.setUpdateNeeded(true)
+    Navigation.findNavController(rootView)
+        .navigate(R.id.calendarViewElectionFragment)
+  }
+
   private fun onDayChange() {
    dateTextView!!.text = dateFormat!!.format(day!!.time)
-   if(activity != null) onEventsChange()
+   if(activity != null){
+     onEventsChange()
+   }
   }
 
   private fun onEventsChange() {
@@ -225,6 +254,11 @@ constructor(
     dayView!!.setEventViews(eventViews, eventTimeRanges)
     scrollView!!.post {
       scrollView!!.smoothScrollTo(0, dayView!!.firstEventTop-300)
+    }
+    if(rootView.img_btn_month.visibility == View.GONE){
+      rootView.shimmer_view_container.stopShimmer()
+      rootView.shimmer_view_container.visibility = View.GONE
+      rootView.img_btn_month.visibility = View.VISIBLE
     }
   }
 
@@ -277,16 +311,8 @@ constructor(
       startCalendar.set(Calendar.SECOND, 0)
       startCalendar.set(Calendar.HOUR_OF_DAY, 0)
       formattedStartingDate = startCalendar.time
+      onDayChange()
     }
-  }
-
-  fun getStatusBarHeight(): Int {
-    var result = 0
-    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-    if (resourceId > 0) {
-      result = resources.getDimensionPixelSize(resourceId)
-    }
-    return result
   }
 
   private class Event(

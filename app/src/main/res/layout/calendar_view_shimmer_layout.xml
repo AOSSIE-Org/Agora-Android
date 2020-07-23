@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_color"
+    >
+  <com.google.android.material.appbar.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/colorPrimaryDark"
+      >
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/size_45dp"
+          android:orientation="horizontal"
+          tools:ignore="UselessParent"
+          app:layout_scrollFlags="scroll|enterAlways"
+          android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+          app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+          >
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_width="@dimen/size_100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/size_20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat"
+            android:gravity="start"
+            android:background="@drawable/grey_cornered_background"
+            android:paddingLeft="@dimen/small_padding"
+            android:paddingRight="@dimen/small_padding"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            />
+      </LinearLayout>
+
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:sizeBottomText="14sp"
+        app:sizeMiddleText="20sp"
+        app:textColorSelected="#FFFF"
+        />
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
