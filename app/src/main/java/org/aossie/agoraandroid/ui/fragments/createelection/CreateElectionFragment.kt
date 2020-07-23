@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -43,8 +43,6 @@ import kotlinx.android.synthetic.main.fragment_create_election.view.spinner_algo
 import kotlinx.android.synthetic.main.fragment_create_election.view.spinner_ballot_visibility
 import kotlinx.android.synthetic.main.fragment_create_election.view.start_date_til
 import kotlinx.android.synthetic.main.fragment_create_election.view.submit_details_btn
-import kotlinx.android.synthetic.main.fragment_sign_up.view.sign_up_security_question
-
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
@@ -253,34 +251,26 @@ constructor(
     }
   }
   private fun validateInputs(): Boolean{
-    var isValid = false
+    var isValid : Boolean
     if (mElectionName!!.isEmpty()) {
       rootView.election_name_til.error = "Please enter Election Name"
-      isValid = false
     } else {
       rootView.election_name_til.error = null
-      isValid = true
     }
     if (mElectionDescription!!.isEmpty()) {
       rootView.election_description_til.error = "Please enter description"
-      isValid = false
     } else {
       rootView.election_description_til.error = null
-      isValid = true
     }
     if (mStartDate!!.isEmpty()) {
       rootView.start_date_til.error = "Please enter start date"
-      isValid = false
     } else {
       rootView.start_date_til.error = null
-      isValid = true
     }
     if (mEndDate!!.isEmpty()) {
       rootView.end_date_til.error = "Please enter end date"
-      isValid = false
     }else{
       rootView.end_date_til.error = null
-      isValid = true
     }
     isValid = if(calendar3!!.before(calendar2)){
       rootView.errorDialog("End date should be after starting date and time i.e. $mStartDate")

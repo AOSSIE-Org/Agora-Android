@@ -5,13 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import kotlinx.android.synthetic.main.fragment_home.view.button_create_election
 import kotlinx.android.synthetic.main.fragment_home.view.card_view_active_elections
 import kotlinx.android.synthetic.main.fragment_home.view.card_view_finished_elections
@@ -31,7 +29,6 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
-import org.aossie.agoraandroid.utilities.showActionBar
 import org.aossie.agoraandroid.utilities.snackbar
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -61,7 +58,7 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     rootView = inflater.inflate(layout.fragment_home, container, false)
-//    showActionBar()
+
     loginViewModel.authListener = this
     rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
 
@@ -85,9 +82,7 @@ constructor(
       Navigation.findNavController(rootView)
           .navigate(HomeFragmentDirections.actionHomeFragmentToCreateElectionFragment())
     }
-    rootView.swipe_refresh.setOnRefreshListener(
-        OnRefreshListener { doYourUpdate() }
-    )
+    rootView.swipe_refresh.setOnRefreshListener { doYourUpdate() }
 
     loginViewModel.getLoggedInUser()
         .observe(viewLifecycleOwner, Observer { user ->
@@ -125,20 +120,20 @@ constructor(
         elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
           totalElectionCount.observe(viewLifecycleOwner, Observer {
             rootView.text_view_total_count.text = it.toString()
+            pendingElectionCount.observe(viewLifecycleOwner, Observer { pending ->
+              rootView.text_view_pending_count.text = pending.toString()
+              finishedElectionCount.observe(viewLifecycleOwner, Observer {finished->
+                rootView.text_view_finished_count.text = finished.toString()
+                activeElectionCount.observe(viewLifecycleOwner, Observer {active->
+                  rootView.text_view_active_count.text = active.toString()
+                  rootView.shimmer_view_container.stopShimmer()
+                  rootView.shimmer_view_container.visibility = View.GONE
+                  rootView.constraintLayout.visibility = View.VISIBLE
+                  rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
+                })
+              })
+            })
           })
-          pendingElectionCount.observe(viewLifecycleOwner, Observer {
-            rootView.text_view_pending_count.text = it.toString()
-          })
-          finishedElectionCount.observe(viewLifecycleOwner, Observer {
-            rootView.text_view_finished_count.text = it.toString()
-          })
-          activeElectionCount.observe(viewLifecycleOwner, Observer {
-            rootView.text_view_active_count.text = it.toString()
-          })
-          rootView.shimmer_view_container.stopShimmer()
-          rootView.shimmer_view_container.visibility = View.GONE
-          rootView.constraintLayout.visibility = View.VISIBLE
-          rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
         })
       }
     }

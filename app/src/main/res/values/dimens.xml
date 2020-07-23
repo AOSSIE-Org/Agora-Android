@@ -56,4 +56,6 @@
   <dimen name="add_event_button_background_size">85dp</dimen>
   <dimen name="add_event_button_background_bottom_margin">4dp</dimen>
   <dimen name="size_3dp">3dp</dimen>
+  <dimen name="size_8sp">8sp</dimen>
+  <dimen name="size_6dp">6dp</dimen>
 </resources>

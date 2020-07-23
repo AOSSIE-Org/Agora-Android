@@ -201,7 +201,11 @@
       tools:layout="@layout/fragment_active_elections">
     <action
         android:id="@+id/action_activeElectionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@+id/electionDetailsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
   </fragment>
   <fragment
       android:id="@+id/finishedElectionsFragment"
@@ -210,7 +214,11 @@
       tools:layout="@layout/fragment_finished_elections">
     <action
         android:id="@+id/action_finishedElectionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@+id/electionDetailsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
   </fragment>
   <fragment
       android:id="@+id/pendingElectionsFragment"
@@ -219,7 +227,11 @@
       tools:layout="@layout/fragment_pending_elections">
     <action
         android:id="@+id/action_pendingElectionsFragment_to_electionDetailsFragment"
-        app:destination="@+id/electionDetailsFragment" />
+        app:destination="@+id/electionDetailsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
   </fragment>
   <fragment
       android:id="@+id/electionDetailsFragment"
@@ -307,5 +319,20 @@
       android:id="@+id/calendarViewElectionFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment"
       android:label="Elections"
-      tools:layout="@layout/fragment_calendar_view_election" />
+      tools:layout="@layout/fragment_calendar_view_election" >
+    <action
+        android:id="@+id/action_calendarViewElectionFragment_to_electionDetailsFragment"
+        app:destination="@id/electionDetailsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
+    <action
+        android:id="@+id/action_calendarViewElectionFragment_to_electionsFragment"
+        app:destination="@id/electionsFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"/>
+  </fragment>
 </navigation>

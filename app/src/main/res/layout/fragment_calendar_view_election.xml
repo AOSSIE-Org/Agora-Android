@@ -1,121 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_color"
-    android:fitsSystemWindows="true">
+    android:background="@color/grey_color">
 
-  <com.google.android.material.appbar.CollapsingToolbarLayout
-      android:id="@+id/collapsingToolbarLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:layout_scrollFlags="scroll|exitUntilCollapsed"
-      app:expandedTitleMarginStart="64dp"
-      android:background="@color/colorPrimaryDark"
-      android:orientation="vertical"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:paddingBottom="@dimen/size_20dp">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_color"
+        >
 
-      <LinearLayout
+      <com.google.android.material.appbar.AppBarLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical">
+          android:background="@color/colorPrimaryDark"
+          >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-          <TextView
-              android:id="@+id/sample_date"
-              style="@style/Base.TextAppearance.AppCompat.Medium"
-              android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            >
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/size_50dp"
+              android:orientation="horizontal"
+              >
+            <TextView
+                android:id="@+id/sample_date"
+                style="@style/Base.TextAppearance.AppCompat.Medium"
+                android:layout_width="@dimen/size_90dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/size_20dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat"
+                android:gravity="start"
+                android:paddingLeft="@dimen/small_padding"
+                android:paddingRight="@dimen/small_padding"
+                android:textAlignment="viewStart"
+                android:textColor="@color/white"
+                tools:hint="Jan 2020"
+                />
+            <ImageButton
+                android:id="@+id/img_btn_month"
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:contentDescription="@string/drop_down_for_calendar"
+                android:src="@drawable/ic_down_arrow"
+                />
+          </LinearLayout>
+          <CalendarView
+              android:id="@+id/calendarView"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_gravity="center_vertical"
-              android:textColor="@color/white"
-              android:ellipsize="end"
-              android:gravity="start"
-              android:paddingLeft="@dimen/small_padding"
-              android:paddingTop="@dimen/large_padding"
-              android:paddingRight="@dimen/small_padding"
-              android:fontFamily="@font/montserrat"
-              android:textAlignment="viewStart"
-              tools:text="Jan 2020"
-              android:layout_marginStart="@dimen/size_20dp"/>
-          <ImageButton
-              android:layout_width="@dimen/size_40dp"
-              android:layout_height="@dimen/size_40dp"
-              android:background="@color/colorPrimaryDark"
-              android:src="@drawable/drop_down"
-              android:contentDescription="@string/drop_down_for_calendar"
-              android:paddingTop="@dimen/size_10dp"
+              android:animateLayoutChanges="true"
+              android:background="@color/whiteColor"
+              android:scrollbarFadeDuration="@integer/config_navAnimTime"
               />
         </LinearLayout>
-        <CalendarView
-            android:visibility="gone"
-            android:background="@color/whiteColor"
+
+        <devs.mulham.horizontalcalendar.HorizontalCalendarView
+            android:id="@+id/horizontal_calendarView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </CalendarView>
-      </LinearLayout>
+            android:layout_height="wrap_content"
+            app:sizeBottomText="14sp"
+            app:sizeMiddleText="20sp"
+            app:textColorSelected="#FFFF"
+            />
 
-  </com.google.android.material.appbar.CollapsingToolbarLayout>
+      </com.google.android.material.appbar.AppBarLayout>
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:id="@+id/appBar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@color/colorPrimaryDark"
-      android:elevation="@dimen/size_5dp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/collapsingToolbarLayout">
+      <include layout="@layout/content_calendar_view" />
 
-    <devs.mulham.horizontalcalendar.HorizontalCalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:textColorSelected="#FFFF"
-        app:sizeBottomText="14sp"
-        app:sizeMiddleText="20sp"/>
-
-  </com.google.android.material.appbar.AppBarLayout>
-
-  <LinearLayout
-      android:id="@+id/sample_content"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:orientation="vertical"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/appBar"
-      app:layout_constraintBottom_toBottomOf="parent">
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/sample_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-      <com.linkedin.android.tachyon.DayView
-          android:id="@+id/sample_day"
-          android:layout_width="match_parent"
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/fab_list_view"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:padding="@dimen/large_padding"
-          app:dividerHeight="@dimen/divider_height"
-          app:endHour="@integer/end_hour"
-          app:eventMargin="@dimen/small_padding"
-          app:halfHourDividerColor="@color/half_hour_divider"
-          app:halfHourHeight="@dimen/half_hour_height"
-          app:hourDividerColor="@color/hour_divider"
-          app:hourLabelMarginEnd="@dimen/large_padding"
-          app:hourLabelWidth="@dimen/hour_label_width"
-          app:startHour="@integer/start_hour" />
-    </androidx.core.widget.NestedScrollView>
-  </LinearLayout>
+          android:layout_gravity="end|bottom"
+          android:layout_margin="16dp"
+          android:backgroundTint="@color/colorPrimaryDark"
+          android:contentDescription="@string/list"
+          android:src="@drawable/ic_list"
+          app:tint="@color/white"
+          />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/size_10dp"
+        android:background="@drawable/progressbar_background"
+        />
+</FrameLayout>
