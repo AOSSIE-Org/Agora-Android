@@ -19,7 +19,7 @@ buildscript {
     retrofitVersion = '2.6.0'
     retrofitConverterScalarsVersion = '2.1.0'
     retrofitConverterGsonVersion = '2.6.0'
-    gsonVersion = '2.8.5'
+    gsonVersion = '2.8.6'
     navFragmentVersion = '2.2.1'
     navUiVersion = '2.2.1'
     facebookShimmerVersion = '0.5.0'

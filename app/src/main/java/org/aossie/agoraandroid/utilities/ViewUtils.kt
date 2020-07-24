@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.utilities
 import android.R.string
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.CalendarView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -37,21 +38,24 @@ fun View.snackbar(message: String) {
       .also { snackbar ->
         snackbar.setAction(AppConstants.ok, View.OnClickListener {
           snackbar.dismiss()
-        }).show()
+        })
+            .show()
       }
 }
 
-fun View.errorDialog(message: String){
+fun View.errorDialog(message: String) {
   AlertDialog.Builder(context)
       .setTitle("Alert ! ! !")
       .setMessage(message)
       .setCancelable(false)
       .setPositiveButton(string.ok) { dialog, which ->
         dialog.cancel()
-      }.create().show()
+      }
+      .create()
+      .show()
 }
 
-fun View.shortSnackbar(message: String){
+fun View.shortSnackbar(message: String) {
   Snackbar
       .make(this, message, Snackbar.LENGTH_SHORT)
       .show()
@@ -69,4 +73,14 @@ fun BottomNavigationView.animGone() {
     visibility = View.GONE
     animation = AnimationUtils.loadAnimation(context, R.anim.slide_down)
   }
+}
+
+fun CalendarView.animVisible() {
+  visibility = View.VISIBLE
+  animation = AnimationUtils.loadAnimation(context, R.anim.slide_down)
+}
+
+fun CalendarView.animGone() {
+  animation = AnimationUtils.loadAnimation(context, R.anim.slide_up)
+  visibility = View.GONE
 }
