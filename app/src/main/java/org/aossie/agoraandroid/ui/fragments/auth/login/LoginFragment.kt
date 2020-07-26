@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.facebook.CallbackManager
@@ -45,7 +46,7 @@ class LoginFragment
   constructor(
     private val viewModelFactory: ViewModelProvider.Factory,
       private val prefs: PreferenceProvider
-  ): Fragment(), AuthListener {
+  ): Fragment(), AuthListener, LoginListener {
 
   private val loginViewModel : LoginViewModel by viewModels {
     viewModelFactory
@@ -80,6 +81,7 @@ class LoginFragment
     rootView = inflater.inflate(R.layout.fragment_login, container, false)
 
     loginViewModel.authListener = this
+    loginViewModel.loginListener = this
 
     callbackManager = Factory.create()
 
@@ -172,6 +174,18 @@ class LoginFragment
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+  }
+
+  override fun onTwoFactorAuthentication(password: String, crypto: String) {
+    loginViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer {
+      if(it != null) {
+        if (it.twoFactorAuthentication!!) {
+          val action = LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(password, crypto)
+          Navigation.findNavController(rootView)
+              .navigate(action)
+        }
+      }
+    })
   }
 
 }

@@ -24,7 +24,6 @@ import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.shortSnackbar
 import org.aossie.agoraandroid.utilities.show
@@ -35,11 +34,11 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class SettingsFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory,
-      private val prefs: PreferenceProvider
-  ): Fragment(), AuthListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory,
+  private val prefs: PreferenceProvider
+) : Fragment(), AuthListener {
 
   private lateinit var rootView: View
   private val homeViewModel: HomeViewModel by viewModels {
@@ -62,13 +61,13 @@ class SettingsFragment
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
     rootView = binding.root
-    Coroutines.main {
-      val user = viewModel.user.await()
-      user.observe(viewLifecycleOwner, Observer {
-        binding.user = it
-        mUser = it
-      })
-    }
+
+    val user = viewModel.user
+    user.observe(viewLifecycleOwner, Observer {
+      binding.user = it
+      mUser = it
+    })
+
 
     homeViewModel.authListener = this
 
@@ -107,8 +106,9 @@ class SettingsFragment
 
   override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
-    if(prefs.getIsFacebookUser()){
-      LoginManager.getInstance().logOut()
+    if (prefs.getIsFacebookUser()) {
+      LoginManager.getInstance()
+          .logOut()
     }
     homeViewModel.deleteUserData()
     rootView.shortSnackbar("Logged Out")
@@ -117,6 +117,7 @@ class SettingsFragment
             SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
         )
   }
+
   override fun onStarted() {
     rootView.progress_bar.show()
   }

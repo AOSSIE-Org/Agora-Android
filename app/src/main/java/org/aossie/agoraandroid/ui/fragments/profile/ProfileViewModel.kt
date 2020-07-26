@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.ApiException
@@ -23,9 +24,7 @@ constructor(
   private val userRepository: UserRepository
 ) : ViewModel() {
 
-  val user by lazyDeferred {
-    userRepository.getUser()
-  }
+  val user = userRepository.getUser()
 
   private val _passwordRequestCode = MutableLiveData<ResponseResults>()
 
@@ -36,6 +35,11 @@ constructor(
 
   val userUpdateResponse: LiveData<ResponseResults>
     get() = _userUpdateResponse
+
+  private val _toggleTwoFactorAuthResponse = MutableLiveData<ResponseResults>()
+
+  val toggleTwoFactorAuthResponse: LiveData<ResponseResults>
+    get() = _toggleTwoFactorAuthResponse
 
   sealed class ResponseResults {
     class Success(text: String? = null) : ResponseResults() {
@@ -70,25 +74,38 @@ constructor(
     }
   }
 
+  fun toggleTwoFactorAuth() {
+    Coroutines.main {
+      try {
+        val response = userRepository.toggleTwoFactorAuth()
+        Log.d("friday", response[1])
+        _toggleTwoFactorAuthResponse.value = Success(response[1])
+      } catch (e: ApiException) {
+        _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
+      } catch (e: SessionExpirationException) {
+        _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
+      }catch (e: NoInternetException) {
+        _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
+      } catch (e: Exception) {
+        _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
+      }
+    }
+  }
+
   fun updateUser(
-    userName: String,
-    userEmail: String,
-    firstName: String,
-    lastName: String,
-    token: String,
-    expiresOn: String
+    user: User
   ) {
-    //authListener.onStarted()
     val jsonObject = JSONObject()
     val tokenObject = JSONObject()
     try {
-      jsonObject.put("username", userName)
-      jsonObject.put("firstName", firstName)
-      jsonObject.put("lastName", lastName)
-      jsonObject.put("email", userEmail)
-      jsonObject.put("twoFactorAuthentication", false)
-      tokenObject.put("token", token)
-      tokenObject.put("expiresOn", expiresOn)
+
+      jsonObject.put("username", user.username)
+      jsonObject.put("firstName", user.firstName)
+      jsonObject.put("lastName", user.lastName)
+      jsonObject.put("email", user.email)
+      jsonObject.put("twoFactorAuthentication", user.twoFactorAuthentication)
+      tokenObject.put("token", user.token)
+      tokenObject.put("expiresOn", user.expiredAt)
       jsonObject.put("token", tokenObject)
     } catch (e: JSONException) {
       e.printStackTrace()
@@ -97,6 +114,7 @@ constructor(
       try {
         val response = userRepository.updateUser(jsonObject.toString())
         Log.d("friday", response[1])
+        userRepository.saveUser(user)
         _userUpdateResponse.value = Success(response[1])
       } catch (e: ApiException) {
         _userUpdateResponse.value = Error(e.message.toString())

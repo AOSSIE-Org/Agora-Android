@@ -33,6 +33,10 @@ interface Api {
   @POST("auth/login")
   suspend fun logIn(@Body body: String): Response<AuthResponse>
 
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("verifyOtp")
+  suspend fun verifyOTP(@Body body: String): Response<AuthResponse>
+
   @POST("auth/forgotPassword/send/{userName}")
   suspend fun sendForgotPassword(@Path("userName") userName: String?): Response<String>
 
@@ -85,6 +89,11 @@ interface Api {
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("user/changePassword")
   suspend fun changePassword(@Body body: String?, @Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
+
+  //GET
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("toggleTwoFactorAuth")
+  suspend fun toggleTwoFactorAuth(@Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
 
   //GET request to log in via facebook Access Token
   @Headers("Accept: application/json", "Content-Type: application/json")

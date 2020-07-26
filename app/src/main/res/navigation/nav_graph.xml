@@ -52,6 +52,13 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_loginFragment_to_twoFactorAuthFragment"
+        app:destination="@id/twoFactorAuthFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
   </fragment>
   <fragment
       android:id="@+id/signUpFragment"
@@ -123,8 +130,12 @@
       android:label="Account Settings"
       tools:layout="@layout/fragment_profile" >
     <action
-        android:id="@+id/action_profileFragment_to_settingsFragment"
-        app:destination="@id/settingsFragment" />
+        android:id="@+id/action_profileFragment_to_welcomeFragment"
+        app:destination="@id/welcomeFragment"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left"/>
   </fragment>
   <fragment
       android:id="@+id/settingsFragment"
@@ -334,5 +345,24 @@
         app:exitAnim="@anim/fade_out"
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/fade_out"/>
+  </fragment>
+  <fragment
+      android:id="@+id/twoFactorAuthFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment"
+      android:label="Two Factor Authentication"
+      tools:layout="@layout/fragment_two_factor_auth" >
+    <argument
+        android:name="password"
+        app:argType="string"/>
+    <argument
+        android:name="crypto"
+        app:argType="string"/>
+    <action
+        android:id="@+id/action_twoFactorAuthFragment_to_homeFragment"
+        app:destination="@id/homeFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
   </fragment>
 </navigation>
