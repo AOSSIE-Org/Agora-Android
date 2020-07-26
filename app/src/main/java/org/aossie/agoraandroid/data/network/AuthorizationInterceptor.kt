@@ -37,14 +37,15 @@ class AuthorizationInterceptor(
             val jsonObject = JSONObject()
             jsonObject.put("identifier", user.username)
             jsonObject.put("password", user.password)
+            jsonObject.put("password", user.trustedDevice)
             val loginResponse = client.api.logIn(jsonObject.toString())
             if (loginResponse.isSuccessful) {
               val authResponse: AuthResponse? = loginResponse.body()
               authResponse.let {
                 user = User(
                     it?.username, it?.email, it?.firstName, it?.lastName,
-                    it?.towFactorAuthentication,
-                    it?.token?.token, it?.token?.expiresOn, user.password
+                    it?.crypto, it?.twoFactorAuthentication,
+                    it?.token?.token, it?.token?.expiresOn, user.password, user.trustedDevice
                 )
                 Log.d("friday", authResponse.toString())
               }

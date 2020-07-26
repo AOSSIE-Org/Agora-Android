@@ -10,6 +10,7 @@ import org.aossie.agoraandroid.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
+import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment
@@ -106,6 +107,11 @@ abstract class FragmentModule{
   @IntoMap
   @FragmentKey(CalendarViewElectionFragment::class)
   abstract fun bindsCalendarViewElectionFragment(calendarViewElectionFragment: CalendarViewElectionFragment): Fragment
+
+  @Binds
+  @IntoMap
+  @FragmentKey(TwoFactorAuthFragment::class)
+  abstract fun bindsTwoFactorAuthenticationFragment(twoFactorAuthFragment: TwoFactorAuthFragment): Fragment
 
 
   @Binds

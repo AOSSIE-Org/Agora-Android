@@ -102,7 +102,7 @@ constructor(
                 if (preferenceProvider.getIsFacebookUser()) {
                   loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
                 } else {
-                  loginViewModel.logInRequest(user.username!!, user.password!!)
+                  loginViewModel.logInRequest(user.username!!, user.password!!, user.trustedDevice)
                 }
               }
             }

@@ -12,10 +12,12 @@ data class User(
   var email: String? = null,
   var firstName: String? = null,
   var lastName: String? = null,
+  var crypto: String? = null,
   var twoFactorAuthentication: Boolean? = null,
   var token: String? = null,
   var expiredAt: String? = null,
-  var password: String? = null
+  var password: String? = null,
+  var trustedDevice: String? = null
 ){
   @PrimaryKey(autoGenerate = false)
   var uid : Int = CURRENT_USER_ID

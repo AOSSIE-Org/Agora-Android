@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.ui.fragments.auth.login
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.facebook.login.Login
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
@@ -23,12 +24,14 @@ constructor(
 ) : ViewModel() {
 
   var authListener: AuthListener? = null
+  var loginListener: LoginListener? = null
 
   fun getLoggedInUser() = userRepository.getUser()
 
   fun logInRequest(
     identifier: String,
-    password: String
+    password: String,
+    trustedDevice: String? =null
   ) {
     authListener?.onStarted()
     if (identifier.isEmpty() || password.isEmpty()) {
@@ -37,15 +40,19 @@ constructor(
     }
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val authResponse = userRepository.userLogin(identifier, password)
+        val authResponse = userRepository.userLogin(identifier, password, trustedDevice)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.towFactorAuthentication,
+              it.username, it.email, it.firstName, it.lastName, it.crypto, it.twoFactorAuthentication,
               it.token?.token, it.token?.expiresOn, password
           )
           userRepository.saveUser(user)
           Log.d("friday", user.toString())
-          authListener?.onSuccess()
+          if(!it.twoFactorAuthentication!!){
+            authListener?.onSuccess()
+          }else{
+            loginListener?.onTwoFactorAuthentication(password, user.crypto!!)
+          }
         }
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
@@ -84,7 +91,7 @@ constructor(
         val authResponse = userRepository.getUserData(token.token!!)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.towFactorAuthentication,
+              it.username, it.email, it.firstName, it.lastName, it.crypto, it.twoFactorAuthentication,
               token.token, token.expiresOn
           )
           userRepository.saveUser(user)

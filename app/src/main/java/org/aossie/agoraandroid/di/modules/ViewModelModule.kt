@@ -10,6 +10,7 @@ import org.aossie.agoraandroid.di.utils.ViewModelKey
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel
 import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.displayelections.DisplayElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionViewModel
@@ -67,4 +68,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
     internal abstract fun bindsProfileViewModel(viewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TwoFactorAuthViewModel::class)
+    internal abstract fun bindsTwoFactorAuthViewModel(viewModel: TwoFactorAuthViewModel): ViewModel
 }

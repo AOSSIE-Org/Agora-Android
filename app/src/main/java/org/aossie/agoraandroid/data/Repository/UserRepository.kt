@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.data.Repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -45,12 +46,27 @@ class UserRepository(
 
   suspend fun userLogin(
     identifier: String,
-    password: String
+    password: String,
+    trustedDevice: String ?= null
   ): AuthResponse {
+
     val jsonObject = JSONObject()
     jsonObject.put("identifier", identifier)
     jsonObject.put("password", password)
+    jsonObject.put("trustedDevice", trustedDevice)
     return apiRequest { api.logIn(jsonObject.toString()) }
+  }
+
+  suspend fun verifyOTP(
+    otp: String,
+    trustedDevice: Boolean,
+    crypto: String
+  ): AuthResponse {
+    val jsonObject = JSONObject()
+    jsonObject.put("crypto", crypto)
+    jsonObject.put("otp", otp)
+    jsonObject.put("trustedDevice", trustedDevice)
+    return apiRequest { api.verifyOTP(jsonObject.toString()) }
   }
 
   suspend fun fbLogin(
@@ -68,8 +84,11 @@ class UserRepository(
   suspend fun saveUser(user: User) {
     appDatabase.getUserDao().removeUser()
     appDatabase.getUserDao().insert(user)
-    preferenceProvider.setIsLoggedIn(true)
-    preferenceProvider.setCurrentToken(user.token)
+    if(user.token != null) {
+      Log.d("friday", "saved")
+      preferenceProvider.setIsLoggedIn(true)
+      preferenceProvider.setCurrentToken(user.token)
+    }
   }
 
   suspend fun logout(): String {
@@ -100,6 +119,10 @@ class UserRepository(
 
   suspend fun changePassword(body: String): ArrayList<String>{
     return apiRequest { api.changePassword(body, preferenceProvider.getCurrentToken()) }
+  }
+
+  suspend fun toggleTwoFactorAuth(): ArrayList<String> {
+    return apiRequest { api.toggleTwoFactorAuth(preferenceProvider.getCurrentToken()) }
   }
 
 }

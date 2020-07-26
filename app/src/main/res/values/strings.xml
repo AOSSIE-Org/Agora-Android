@@ -226,6 +226,12 @@
   <string name="drop_down_for_calendar">drop down for calendar</string>
   <string name="july">July</string>
   <string name="list">List</string>
+  <string name="two_factor_authentication">Two Factor Authentication</string>
+  <string name="please_enter_the_one_time_password_we_have_sent_to_your_registered_email_address">Please enter the One-Time Password we have sent to your registered email address</string>
+  <string name="resend_otp">Resend OTP</string>
+  <string name="one_time_password">One-Time Password</string>
+  <string name="do_you_trust_this_device">Do you trust this Device ?</string>
+  <string name="toggle_two_factor_authentication">Toggle Two Factor Authentication</string>
 
 </resources>
 
