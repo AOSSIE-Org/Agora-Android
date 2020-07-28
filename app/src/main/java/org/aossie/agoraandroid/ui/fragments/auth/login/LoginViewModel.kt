@@ -44,7 +44,7 @@ constructor(
         authResponse.let {
           val user = User(
               it.username, it.email, it.firstName, it.lastName, it.crypto, it.twoFactorAuthentication,
-              it.token?.token, it.token?.expiresOn, password
+              it.token?.token, it.token?.expiresOn, password, trustedDevice
           )
           userRepository.saveUser(user)
           Log.d("friday", user.toString())

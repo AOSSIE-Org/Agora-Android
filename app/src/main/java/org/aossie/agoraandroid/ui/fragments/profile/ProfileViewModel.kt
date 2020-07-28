@@ -107,6 +107,7 @@ constructor(
       tokenObject.put("token", user.token)
       tokenObject.put("expiresOn", user.expiredAt)
       jsonObject.put("token", tokenObject)
+      Log.d("update user", user.toString())
     } catch (e: JSONException) {
       e.printStackTrace()
     }
