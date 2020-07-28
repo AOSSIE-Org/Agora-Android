@@ -1,13 +1,11 @@
 package org.aossie.agoraandroid.data.network
 
 import okhttp3.OkHttpClient
-import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
 import org.aossie.agoraandroid.data.network.responses.Token
 import org.aossie.agoraandroid.data.network.responses.Voters
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

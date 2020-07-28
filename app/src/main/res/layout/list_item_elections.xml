@@ -38,7 +38,7 @@
               android:layout_weight="3"
               android:hint="@string/election_name"
               android:text="@{election.name}"
-              android:textSize="@dimen/size_24sp" />
+              android:textSize="@dimen/size_18sp" />
 
           <TextView
               android:id="@+id/label"
@@ -60,9 +60,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5dp"
+            android:drawableStart="@drawable/ic_menu"
+            android:drawablePadding="@dimen/size_8dp"
             android:text="@string/description"
             android:textStyle="bold"
-            android:textSize="@dimen/size_24sp" />
+            android:textSize="@dimen/size_16sp" />
 
 
         <TextView
@@ -76,8 +79,11 @@
             android:id="@+id/tv_candidate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5dp"
+            android:drawableStart="@drawable/ic_candidates"
+            android:drawablePadding="@dimen/size_8dp"
             android:text="@string/candidates"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             />
 
@@ -99,8 +105,10 @@
               android:layout_height="wrap_content"
               android:layout_weight="1"
               android:text="@string/start_at"
+              android:drawableStart="@drawable/ic_clock"
+              android:drawablePadding="@dimen/size_8dp"
               android:textStyle="bold"
-              android:textSize="@dimen/size_18sp" />
+              android:textSize="@dimen/size_16sp" />
 
           <TextView
               android:id="@+id/tv_start_date"
@@ -122,8 +130,10 @@
               android:layout_height="wrap_content"
               android:layout_weight="1"
               android:text="@string/end_at"
+              android:drawableStart="@drawable/ic_clock"
+              android:drawablePadding="@dimen/size_8dp"
               android:textStyle="bold"
-              android:textSize="@dimen/size_18sp" />
+              android:textSize="@dimen/size_16sp" />
 
           <TextView
               android:id="@+id/tv_end_date"

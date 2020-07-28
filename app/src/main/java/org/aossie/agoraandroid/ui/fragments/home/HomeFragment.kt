@@ -86,28 +86,32 @@ constructor(
 
     loginViewModel.getLoggedInUser()
         .observe(viewLifecycleOwner, Observer { user ->
-          val formatter =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-          val currentDate = Calendar.getInstance()
-              .time
-          val expireOn = user?.expiredAt
-          Log.d("friday", user.toString())
-          Log.d("expiresOn", expireOn.toString())
-          try {
-            if (expireOn != null) {
-              val expiresOn = formatter.parse(expireOn)
-              //If the token is expired, get a new one to continue login session of user
-              if (currentDate.after(expiresOn)) {
-                Log.d("expired", expireOn.toString())
-                if (preferenceProvider.getIsFacebookUser()) {
-                  loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
-                } else {
-                  loginViewModel.logInRequest(user.username!!, user.password!!, user.trustedDevice)
+          if(user != null) {
+            val formatter =
+              SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            val currentDate = Calendar.getInstance()
+                .time
+            val expireOn = user.expiredAt
+            Log.d("friday", user.toString())
+            Log.d("expiresOn", expireOn.toString())
+            try {
+              if (expireOn != null) {
+                val expiresOn = formatter.parse(expireOn)
+                //If the token is expired, get a new one to continue login session of user
+                if (currentDate.after(expiresOn)) {
+                  Log.d("expired", expireOn.toString())
+                  if (preferenceProvider.getIsFacebookUser()) {
+                    loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
+                  } else {
+                    loginViewModel.logInRequest(
+                        user.username!!, user.password!!, user.trustedDevice
+                    )
+                  }
                 }
               }
+            } catch (e: ParseException) {
+              e.printStackTrace()
             }
-          } catch (e: ParseException) {
-            e.printStackTrace()
           }
         })
     Coroutines.main {

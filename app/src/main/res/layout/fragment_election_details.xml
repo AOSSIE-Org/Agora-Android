@@ -45,35 +45,26 @@
               android:layout_height="match_parent"
               >
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_delete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="@dimen/size_50dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="#F44336"
+                style="@style/MainButtonStyle"
+                android:layout_marginHorizontal="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:backgroundTint="@color/red_active_elections"
                 android:text="@string/delete_election"
-                android:textColor="@android:color/white"
                 android:textStyle="bold"
+                android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_invite_voters"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                style="@style/MainButtonStyle"
+                android:layout_marginHorizontal="@dimen/size_8dp"
+                android:backgroundTint="@color/green_gradient_color"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/rounded_button"
                 android:text="@string/invite_voter"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -83,16 +74,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_delete"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_voters"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                style="@style/MainButtonStyle"
+                android:layout_marginHorizontal="@dimen/size_8dp"
+                android:backgroundTint="@color/green_gradient_color"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/rounded_button"
                 android:text="@string/voters"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -102,16 +89,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_invite_voters"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_ballot"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                style="@style/MainButtonStyle"
+                android:layout_marginHorizontal="@dimen/size_8dp"
+                android:backgroundTint="@color/green_gradient_color"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/rounded_button"
                 android:text="@string/ballot"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -121,18 +104,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_voters"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_result"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                style="@style/MainButtonStyle"
+                android:layout_marginHorizontal="@dimen/size_8dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="#00BCD4"
+                android:backgroundTint="@color/blue_finished_elections"
                 android:text="@string/result"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -172,6 +150,7 @@
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:orientation="horizontal"
+                      tools:ignore="TooDeepLayout"
                       >
 
                     <TextView
@@ -180,7 +159,7 @@
                         android:layout_weight="3"
                         android:hint="@string/election_name"
                         android:text="@{election.name}"
-                        android:textSize="@dimen/size_24sp"
+                        android:textSize="@dimen/size_18sp"
                         android:textStyle="bold"
                         />
 
@@ -205,8 +184,11 @@
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:layout_marginTop="@dimen/size_5dp"
+                      android:drawableStart="@drawable/ic_menu"
+                      android:drawablePadding="@dimen/size_8dp"
                       android:text="@string/description"
-                      android:textSize="@dimen/size_24sp"
+                      android:textSize="@dimen/size_16sp"
                       android:textStyle="bold"
                       />
 
@@ -223,8 +205,11 @@
                       android:id="@+id/tv_candidate"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
+                      android:layout_marginTop="@dimen/size_5dp"
+                      android:drawableStart="@drawable/ic_candidates"
+                      android:drawablePadding="@dimen/size_8dp"
                       android:text="@string/candidates"
-                      android:textSize="20sp"
+                      android:textSize="@dimen/size_16sp"
                       android:textStyle="bold"
                       />
 
@@ -243,11 +228,12 @@
                       >
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_clock"
+                        android:drawablePadding="@dimen/size_8dp"
                         android:text="@string/start_at"
-                        android:textSize="@dimen/size_18sp"
+                        android:textSize="@dimen/size_16sp"
                         android:textStyle="bold"
                         />
 
@@ -255,7 +241,7 @@
                         android:id="@+id/tv_start_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="1"
                         android:hint="@string/fri_jan_24_12_00_04"
                         android:textSize="@dimen/size_18sp"
                         android:textStyle="bold"
@@ -269,11 +255,12 @@
                       >
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_clock"
+                        android:drawablePadding="@dimen/size_8dp"
                         android:text="@string/end_at"
-                        android:textSize="@dimen/size_18sp"
+                        android:textSize="@dimen/size_16sp"
                         android:textStyle="bold"
                         />
 
@@ -281,7 +268,7 @@
                         android:id="@+id/tv_end_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="1"
                         android:hint="@string/fri_jan_24_12_00_04"
                         android:textSize="@dimen/size_18sp"
                         android:textStyle="bold"
