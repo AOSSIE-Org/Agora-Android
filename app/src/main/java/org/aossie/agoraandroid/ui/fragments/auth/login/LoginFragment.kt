@@ -180,6 +180,7 @@ class LoginFragment
     loginViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer {
       if(it != null) {
         if (it.twoFactorAuthentication!!) {
+          rootView.snackbar("OTP is sent to your registered email address")
           val action = LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(password, crypto)
           Navigation.findNavController(rootView)
               .navigate(action)
