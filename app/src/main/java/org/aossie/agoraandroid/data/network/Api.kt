@@ -35,6 +35,9 @@ interface Api {
   @POST("verifyOtp")
   suspend fun verifyOTP(@Body body: String): Response<AuthResponse>
 
+  @GET("resendOtp/{userName}")
+  suspend fun resendOTP(@Path("userName") userName: String?): Response<AuthResponse>
+
   @POST("auth/forgotPassword/send/{userName}")
   suspend fun sendForgotPassword(@Path("userName") userName: String?): Response<String>
 
