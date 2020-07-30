@@ -70,7 +70,7 @@ class TwoFactorAuthFragment
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
         if(rootView.cb_trusted_device.isChecked) {
-          viewModel.verifyOTP(otp, rootView.cb_trusted_device.isChecked, password!!, crypto!!)
+          viewModel.verifyOTP(otp, rootView.cb_trusted_device.isChecked, password!!, user!!.crypto!!)
         }else{
           rootView.progress_bar.hide()
           rootView.snackbar("Please, tap on the checkbox to proceed")
