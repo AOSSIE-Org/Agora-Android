@@ -125,4 +125,8 @@ class UserRepository(
     return apiRequest { api.toggleTwoFactorAuth(preferenceProvider.getCurrentToken()) }
   }
 
+  suspend fun resendOTP(username: String?): AuthResponse {
+    return apiRequest { api.resendOTP(username) }
+  }
+
 }
