@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.forgotpassword.ForgotPasswordSend;
+import org.aossie.agoraandroid.home.HomeActivity;
+import org.aossie.agoraandroid.homelogin.HomeLoginActivity;
 import org.aossie.agoraandroid.utilities.HideKeyboard;
 
 @SuppressWarnings("ConstantConditions")
@@ -54,5 +56,11 @@ public class LoginActivity extends AppCompatActivity {
         }
       }
     });
+  }
+
+  @Override public void onBackPressed() {
+    Intent intent = new Intent(this, HomeLoginActivity.class);
+    startActivity(intent);
+    super.onBackPressed();
   }
 }
