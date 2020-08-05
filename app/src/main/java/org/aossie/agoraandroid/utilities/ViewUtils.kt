@@ -3,18 +3,12 @@ package org.aossie.agoraandroid.utilities
 import android.R.string
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.CalendarView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import org.aossie.agoraandroid.R
-
-fun Fragment.hideActionBar() = (activity as AppCompatActivity).supportActionBar!!.hide()
-fun Fragment.showActionBar() = (activity as AppCompatActivity).supportActionBar!!.show()
 
 fun ProgressBar.show() {
   visibility = ProgressBar.VISIBLE
@@ -36,9 +30,9 @@ fun View.snackbar(message: String) {
   Snackbar
       .make(this, message, Snackbar.LENGTH_INDEFINITE)
       .also { snackbar ->
-        snackbar.setAction(AppConstants.ok, View.OnClickListener {
+        snackbar.setAction(AppConstants.ok) {
           snackbar.dismiss()
-        })
+        }
             .show()
       }
 }
@@ -48,7 +42,7 @@ fun View.errorDialog(message: String) {
       .setTitle("Alert ! ! !")
       .setMessage(message)
       .setCancelable(false)
-      .setPositiveButton(string.ok) { dialog, which ->
+      .setPositiveButton(string.ok) { dialog, _ ->
         dialog.cancel()
       }
       .create()
@@ -73,14 +67,4 @@ fun BottomNavigationView.animGone() {
     visibility = View.GONE
     animation = AnimationUtils.loadAnimation(context, R.anim.slide_down)
   }
-}
-
-fun CalendarView.animVisible() {
-  visibility = View.VISIBLE
-  animation = AnimationUtils.loadAnimation(context, R.anim.slide_down)
-}
-
-fun CalendarView.animGone() {
-  animation = AnimationUtils.loadAnimation(context, R.anim.slide_up)
-  visibility = View.GONE
 }

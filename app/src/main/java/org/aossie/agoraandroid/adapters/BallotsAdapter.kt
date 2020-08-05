@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import org.aossie.agoraandroid.R.id
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.adapters.BallotsAdapter.BallotsViewHolder
 import org.aossie.agoraandroid.data.db.model.Ballot
@@ -20,7 +20,7 @@ class BallotsAdapter(private val ballots: List<Ballot>) : Adapter<BallotsViewHol
   ): BallotsViewHolder {
     val li = parent.context
         .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    val view = li.inflate(layout.list_item_voter_details, parent, false)
+    val view = li.inflate(layout.list_item_ballot_details, parent, false)
     return BallotsViewHolder(view)
   }
 
@@ -36,10 +36,9 @@ class BallotsAdapter(private val ballots: List<Ballot>) : Adapter<BallotsViewHol
     return ballots.size
   }
 
-  class BallotsViewHolder(itemView: View) :
-      ViewHolder(itemView) {
-    val voteBallot: TextView = itemView.findViewById(id.text_view_vote_ballot)
-    val voterEmail: TextView = itemView.findViewById(id.text_view_voter_email)
+  class BallotsViewHolder(itemView: View) : ViewHolder(itemView) {
+    val voteBallot: TextView = itemView.findViewById(R.id.text_view_vote_ballot)
+    val voterEmail: TextView = itemView.findViewById(R.id.text_view_voter_email)
   }
 
 }

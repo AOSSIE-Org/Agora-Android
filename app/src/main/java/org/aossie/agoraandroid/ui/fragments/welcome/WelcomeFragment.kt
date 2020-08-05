@@ -9,7 +9,6 @@ import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_welcome.view.btn_login
 import kotlinx.android.synthetic.main.fragment_welcome.view.btn_signup
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.utilities.hideActionBar
 
 /**
  * A simple [Fragment] subclass.

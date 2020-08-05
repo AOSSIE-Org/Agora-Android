@@ -35,7 +35,6 @@ import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.showActionBar
 import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
