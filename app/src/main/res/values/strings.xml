@@ -232,6 +232,7 @@
   <string name="one_time_password">One-Time Password</string>
   <string name="do_you_trust_this_device">Do you trust this Device ?</string>
   <string name="toggle_two_factor_authentication">Toggle Two Factor Authentication</string>
+  <string name="asset_statements" translatable="false">[{ \"include\": \"https://agora-frontend.herokuapp.com/.well-known/assetlinks.json\" }]</string>
 
 </resources>
 

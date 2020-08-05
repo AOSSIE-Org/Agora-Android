@@ -88,9 +88,9 @@ class ActiveElectionsFragment
     }
   }
 
-  override fun onItemClicked(id: String) {
+  override fun onItemClicked(_id: String) {
     val action =
-      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(id)
+      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(_id)
     Navigation.findNavController(rootView)
         .navigate(action)
   }

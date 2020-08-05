@@ -8,10 +8,11 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.Ballots
+import org.aossie.agoraandroid.data.network.responses.ElectionResponse
+import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -22,99 +23,110 @@ import javax.inject.Inject
 class ElectionsRepository
 @Inject
 constructor(
-  private val api : Api,
-  private val db : AppDatabase,
+  private val api: Api,
+  private val db: AppDatabase,
   private val prefs: PreferenceProvider
-): ApiRequest() {
+) : ApiRequest() {
 
   private val elections = MutableLiveData<List<Election>>()
 
   init {
-    elections.observeForever{
+    elections.observeForever {
       saveElections(it)
     }
   }
 
-  suspend fun getElections() : LiveData<List<Election>> {
-    return withContext(Dispatchers.IO){
+  suspend fun getElections(): LiveData<List<Election>> {
+    return withContext(Dispatchers.IO) {
       fetchElections()
-      db.getElectionDao().getElections()
+      db.getElectionDao()
+          .getElections()
     }
   }
 
   suspend fun getFinishedElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getFinishedElectionsCount(currentDate)
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getFinishedElectionsCount(currentDate)
     }
   }
 
   suspend fun getPendingElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getPendingElectionsCount(currentDate)
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getPendingElectionsCount(currentDate)
     }
   }
 
   suspend fun getTotalElectionsCount(): LiveData<Int> {
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getTotalElectionsCount()
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getTotalElectionsCount()
     }
   }
 
   suspend fun getActiveElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getActiveElectionsCount(currentDate)
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getActiveElectionsCount(currentDate)
     }
   }
 
-  private fun saveElections(elections : List<Election>) {
+  private fun saveElections(elections: List<Election>) {
     Coroutines.io {
       prefs.setUpdateNeeded(false)
-      db.getElectionDao().deleteAllElections()
-      db.getElectionDao().saveElections(elections)
+      db.getElectionDao()
+          .deleteAllElections()
+      db.getElectionDao()
+          .saveElections(elections)
     }
   }
 
   suspend fun getPendingElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getPendingElections(currentDate)
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getPendingElections(currentDate)
     }
   }
 
-  private suspend fun fetchElections(){
+  private suspend fun fetchElections() {
     val isNeeded = prefs.getUpdateNeeded()
-    if(isNeeded){
+    if (isNeeded) {
       try {
         val response = apiRequest { api.getAllElections(prefs.getCurrentToken()) }
         elections.postValue(response.elections)
         Log.d("friday", isNeeded.toString())
         Log.d("friday", response.toString())
-      }catch (e: NoInternetException){
+      } catch (e: NoInternetException) {
 
-      }catch (e: ApiException){
+      } catch (e: ApiException) {
 
-      }catch (e: SessionExpirationException){
+      } catch (e: SessionExpirationException) {
 
-      }catch (e: IOException){
+      } catch (e: IOException) {
 
       }
     }
   }
 
   suspend fun getFinishedElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getFinishedElections(currentDate)
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getFinishedElections(currentDate)
     }
   }
 
   suspend fun getActiveElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getActiveElections(currentDate)
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getActiveElections(currentDate)
     }
   }
 
-  suspend fun getElectionById(id: String): LiveData<Election>{
-    return withContext(Dispatchers.IO){
-      db.getElectionDao().getElectionById(id)
+  suspend fun getElectionById(id: String): LiveData<Election> {
+    return withContext(Dispatchers.IO) {
+      db.getElectionDao()
+          .getElectionById(id)
     }
   }
 
@@ -139,13 +151,20 @@ constructor(
   suspend fun sendVoters(
     id: String,
     body: String
-  ): ArrayList<String>{
+  ): ArrayList<String> {
     return apiRequest { api.sendVoters(prefs.getCurrentToken(), id, body) }
   }
 
   suspend fun createElection(
     body: String
-  ): ArrayList<String>{
+  ): ArrayList<String> {
     return apiRequest { api.createElection(body, prefs.getCurrentToken()) }
+  }
+
+  suspend fun verifyVoter(
+    id: String,
+    pass: String
+  ) : ElectionResponse{
+    return apiRequest { api.verifyVoter(id, pass)}
   }
 }

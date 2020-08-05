@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.data.network
 import okhttp3.OkHttpClient
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
+import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
 import org.aossie.agoraandroid.data.network.responses.Token
 import org.aossie.agoraandroid.data.network.responses.Voters
@@ -102,8 +103,13 @@ interface Api {
   suspend fun facebookLogin(@Header("Access-Token") accessToken: String?): Response<Token>
 
   //GET request to get user's data
-  @Headers("Accept: application/json", "Content-Type: application/json") @GET("user")
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("user")
   suspend fun getUserData(@Header("X-Auth-Token") authToken: String?): Response<AuthResponse>
+
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("voter/verify/{id}/{pass}")
+  suspend fun verifyVoter(@Path("id") id: String?, @Path("pass") pass: String?): Response<ElectionResponse>
 
   companion object{
     operator fun invoke(

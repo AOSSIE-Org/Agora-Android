@@ -251,7 +251,6 @@ constructor(
     }
   }
   private fun validateInputs(): Boolean{
-    var isValid : Boolean
     if (mElectionName!!.isEmpty()) {
       rootView.election_name_til.error = "Please enter Election Name"
     } else {
@@ -272,7 +271,7 @@ constructor(
     }else{
       rootView.end_date_til.error = null
     }
-    isValid = if(calendar3!!.before(calendar2)){
+    val isValid : Boolean = if(calendar3!!.before(calendar2)){
       rootView.errorDialog("End date should be after starting date and time i.e. $mStartDate")
       false
     }else{
@@ -296,7 +295,7 @@ constructor(
         sYear = year
       }, YEAR, MONTH, DATE)
     val timePickerDialog = TimePickerDialog(context,
-        TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           mStartDate = if (hourOfDay < 10 && minute < 10) "$mStartDate at 0$hourOfDay:0$minute"
           else if (hourOfDay < 10) "$mStartDate at 0$hourOfDay:$minute"
           else if (minute < 10) "$mStartDate at $hourOfDay:0$minute"
@@ -335,7 +334,7 @@ constructor(
         eDay = dayOfMonth
       }, YEAR, MONTH, DATE)
     val timePickerDialog = TimePickerDialog(context!!,
-        TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           //Formatting the ending date in Date-Time format
           mEndDate = if (hourOfDay < 10 && minute < 10) "$mEndDate at 0$hourOfDay:0$minute"
           else if (hourOfDay < 10) "$mEndDate at 0$hourOfDay:$minute"
