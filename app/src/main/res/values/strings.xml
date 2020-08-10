@@ -191,9 +191,9 @@
   <string name="unauthenticated">Unauthenticated</string>
   <string name="invalid_credentials">Invalid Credentials</string>
   <string name="active">ACTIVE</string>
-  <string name="start_at">Start At : </string>
+  <string name="start_at">Start At  :  </string>
   <string name="fri_jan_24_12_00_04">Fri Jan 24 12:00:04</string>
-  <string name="end_at">End At : </string>
+  <string name="end_at">End At  :  </string>
   <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_ut_aliquam">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam</string>
   <string name="no_voters_for_this_election">No Voters for this Election</string>
   <string name="empty_ballots">Empty Ballots</string>
@@ -233,6 +233,10 @@
   <string name="do_you_trust_this_device">Do you trust this Device ?</string>
   <string name="toggle_two_factor_authentication">Toggle Two Factor Authentication</string>
   <string name="asset_statements" translatable="false">[{ \"include\": \"https://agora-frontend.herokuapp.com/.well-known/assetlinks.json\" }]</string>
+  <string name="candidate">Candidate</string>
+  <string name="please_select_candidate">Please Select Candidate</string>
+  <string name="cast_vote">Cast Vote</string>
+  <string name="selected_candidates">Selected Candidates</string>
 
 </resources>
 

@@ -17,6 +17,8 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 import javax.inject.Inject
 
@@ -166,5 +168,20 @@ constructor(
     pass: String
   ) : ElectionResponse{
     return apiRequest { api.verifyVoter(id, pass)}
+  }
+
+  suspend fun castVote(
+    id: String,
+    ballotInput: String,
+    passCode: String
+  ) : ArrayList<String>{
+    val jsonObject = JSONObject()
+    try {
+      jsonObject.put("ballotInput", ballotInput)
+      jsonObject.put("passCode", passCode)
+    } catch (e: JSONException) {
+      e.printStackTrace()
+    }
+    return apiRequest { api.castVote(id, jsonObject.toString()) }
   }
 }

@@ -1,5 +1,7 @@
 package org.aossie.agoraandroid.utilities
 
+import android.widget.TextView
+
 interface ElectionAdapterCallback{
   fun onItemClicked(electionName: String,
     electionDesc: String,
@@ -13,5 +15,13 @@ interface ElectionAdapterCallback{
 interface ElectionRecyclerAdapterCallback{
   fun onItemClicked(
     _id: String
+  )
+}
+
+interface CandidateRecyclerAdapterCallback{
+  fun onItemClicked(
+    name: String,
+    itemView: TextView,
+    requestCode: Int
   )
 }

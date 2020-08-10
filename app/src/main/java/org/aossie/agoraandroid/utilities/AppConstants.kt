@@ -10,4 +10,6 @@ object AppConstants {
   const val UNAUTHENTICATED_MESSAGE = "Unauthenticated"
   const val INVALID_CREDENTIALS_MESSAGE = "Invalid Credentials"
   const val INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error. Please enter valid input"
+  const val CANDIDATE_ITEM_CLICKED = 0
+  const val UPVOTED_CANDIDATE_ITEM_CLICKED = 1
 }
