@@ -111,6 +111,10 @@ interface Api {
   @GET("voter/verify/{id}/{pass}")
   suspend fun verifyVoter(@Path("id") id: String?, @Path("pass") pass: String?): Response<ElectionResponse>
 
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("vote/{id}")
+  suspend fun castVote(@Path("id") id: String?, @Body body: String?): Response<ArrayList<String>>
+
   companion object{
     operator fun invoke(
       networkInterceptor: NetworkInterceptor,

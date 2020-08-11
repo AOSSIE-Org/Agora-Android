@@ -18,7 +18,8 @@
 
     <activity
         android:name=".ui.activities.castVote.CastVoteActivity"
-        android:configChanges="orientation|screenSize">
+        android:configChanges="orientation|screenSize"
+        android:windowSoftInputMode="adjustPan">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />

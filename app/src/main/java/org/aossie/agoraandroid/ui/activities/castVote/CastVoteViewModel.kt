@@ -23,6 +23,11 @@ constructor(
   val verifyVoterResponse: LiveData<ResponseResults>
     get() = mVerifyVoterResponse
 
+  private val mCastVoteResponse = MutableLiveData<ResponseResults>()
+
+  val castVoteResponse: LiveData<ResponseResults>
+    get() = mCastVoteResponse
+
   private val mElection = MutableLiveData<ElectionResponse>()
 
   val election: LiveData<ElectionResponse>
@@ -51,6 +56,21 @@ constructor(
       mVerifyVoterResponse.value = Error(e.message.toString())
     }catch (e: Exception){
       mVerifyVoterResponse.value = Error(e.message.toString())
+    }
+  }
+
+  fun castVote(id: String, ballotInput: String, passCode: String){
+    try {
+      Coroutines.main {
+        val response = electionsRepository.castVote(id, ballotInput, passCode)
+        mCastVoteResponse.value = Success(response[1])
+      }
+    }catch (e: ApiException){
+      mCastVoteResponse.value = Error(e.message.toString())
+    }catch (e: NoInternetException){
+      mCastVoteResponse.value = Error(e.message.toString())
+    }catch (e: Exception){
+      mCastVoteResponse.value = Error(e.message.toString())
     }
   }
 

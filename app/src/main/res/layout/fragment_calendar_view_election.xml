@@ -54,6 +54,7 @@
                 android:layout_width="@dimen/size_40dp"
                 android:layout_height="@dimen/size_40dp"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/size_10dp"
                 android:background="@color/colorPrimaryDark"
                 android:contentDescription="@string/drop_down_for_calendar"
                 android:src="@drawable/ic_down_arrow"

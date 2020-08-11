@@ -70,6 +70,27 @@
     <item name="android:textAlignment">textStart</item>
   </style>
 
+  <style name="AddCandidateTextStyle" parent="Widget.AppCompat.TextView">
+    <item name="android:background">@drawable/green_stroke_background</item>
+    <item name="android:textSize">@dimen/size_14sp</item>
+    <item name="android:height">@dimen/size_58dp</item>
+    <item name="android:drawableRight">@drawable/ic_plus</item>
+    <item name="android:paddingStart">@dimen/size_30dp</item>
+    <item name="android:paddingEnd">@dimen/size_10dp</item>
+    <item name="android:textAlignment">textStart</item>
+  </style>
+
+  <style name="UpVotedCandidateTextStyle" parent="Widget.AppCompat.TextView">
+    <item name="android:background">@drawable/green_stroke_background</item>
+    <item name="backgroundTint">@color/colorPrimary</item>
+    <item name="android:textSize">@dimen/size_14sp</item>
+    <item name="android:height">@dimen/size_58dp</item>
+    <item name="android:drawableRight">@drawable/ic_close</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:paddingStart">@dimen/size_30dp</item>
+    <item name="android:paddingEnd">@dimen/size_10dp</item>
+    <item name="android:textAlignment">textStart</item>
+  </style>
 
   <dimen name="size_40dp">40dp</dimen>
   <dimen name="size_58dp">58dp</dimen>
