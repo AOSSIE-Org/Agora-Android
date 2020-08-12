@@ -3,7 +3,7 @@ package org.aossie.agoraandroid.apitesting
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
-import org.aossie.agoraandroid.remote.APIService
+import org.aossie.agoraandroid.data.network.Api
 import org.junit.After
 import org.junit.Before
 import retrofit2.Retrofit
@@ -14,7 +14,7 @@ import java.io.IOException
 open class BaseTest {
 
   lateinit var mockWebServer: MockWebServer
-  lateinit var apiService: APIService
+  lateinit var apiService: Api
 
   @Before
   @Throws(IOException::class)
@@ -29,7 +29,7 @@ open class BaseTest {
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
-        .create(APIService::class.java)
+        .create(Api::class.java)
   }
 
   @After

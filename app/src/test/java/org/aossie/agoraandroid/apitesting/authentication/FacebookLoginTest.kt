@@ -1,5 +1,8 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okio.IOException
 import org.aossie.agoraandroid.apitesting.BaseTest
@@ -17,8 +20,11 @@ class FacebookLoginTest : BaseTest() {
     val facebookLoginResponse:String= MockFileParser("responses/auth_responses/facebook_login_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(facebookLoginResponse))
-    val response: Response<*> = apiService.facebookLogin("authToken")
-        .execute()
-    Assert.assertEquals(response.body(), facebookLoginResponse)
+    runBlocking {
+      GlobalScope.launch {
+        val response: Response<*> = apiService.facebookLogin("authToken")
+        Assert.assertEquals(response.body(), facebookLoginResponse)
+      }
+    }
   }
 }

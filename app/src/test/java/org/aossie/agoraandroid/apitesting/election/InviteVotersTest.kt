@@ -1,5 +1,8 @@
 package org.aossie.agoraandroid.apitesting.election
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.utilities.MockFileParser
@@ -20,13 +23,16 @@ class InviteVotersTest : BaseTest() {
       MockFileParser("requests/election_requests/invite_voter_request.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(invitationResponse))
-    val response: Response<*> = apiService.sendVoters(
+    runBlocking {
+      GlobalScope.launch {
+        val response: Response<*> = apiService.sendVoters(
             "authToken",
             "id",
             invitationRequest
         )
-        .execute()
-    Assert.assertEquals(response.body(), invitationResponse)
+        Assert.assertEquals(response.body(), invitationResponse)
+      }
+    }
   }
 }
 
