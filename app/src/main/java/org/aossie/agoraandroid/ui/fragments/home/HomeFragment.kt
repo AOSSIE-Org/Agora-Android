@@ -89,6 +89,7 @@ constructor(
           if(user != null) {
             val formatter =
               SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            Log.d("friday", user.token!!)
             val currentDate = Calendar.getInstance()
                 .time
             val expireOn = user.expiredAt

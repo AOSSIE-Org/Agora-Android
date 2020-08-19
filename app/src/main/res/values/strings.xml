@@ -237,6 +237,10 @@
   <string name="please_select_candidate">Please Select Candidate</string>
   <string name="cast_vote">Cast Vote</string>
   <string name="selected_candidates">Selected Candidates</string>
+  <string name="camera">Camera</string>
+  <string name="camera_option">Camera Option</string>
+  <string name="gallery_option">Gallery Option</string>
+  <string name="gallery">Gallery</string>
 
 </resources>
 

@@ -43,7 +43,7 @@ class AuthorizationInterceptor(
               val authResponse: AuthResponse? = loginResponse.body()
               authResponse.let {
                 user = User(
-                    it?.username, it?.email, it?.firstName, it?.lastName,
+                    it?.username, it?.email, it?.firstName, it?.lastName, it?.avatarURL,
                     it?.crypto, it?.twoFactorAuthentication,
                     it?.token?.token, it?.token?.expiresOn, user.password, user.trustedDevice
                 )

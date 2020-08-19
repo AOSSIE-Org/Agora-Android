@@ -13,7 +13,7 @@ import org.aossie.agoraandroid.utilities.Converters
 
 @Database(
     entities = [User::class, Election::class],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

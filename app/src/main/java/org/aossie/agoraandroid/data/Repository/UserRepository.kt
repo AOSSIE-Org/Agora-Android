@@ -75,10 +75,8 @@ class UserRepository(
     return apiRequest { api.facebookLogin(accessToken) }
   }
 
-  suspend fun getUserData(
-    token: String
-  ): AuthResponse {
-    return apiRequest { api.getUserData(token) }
+  suspend fun getUserData(): AuthResponse {
+    return apiRequest { api.getUserData(preferenceProvider.getCurrentToken()) }
   }
 
   suspend fun saveUser(user: User) {
@@ -115,6 +113,10 @@ class UserRepository(
 
   suspend fun updateUser(body: String): ArrayList<String>{
     return apiRequest { api.updateUser(preferenceProvider.getCurrentToken(), body) }
+  }
+
+  suspend fun changeAvatar(body: String): ArrayList<String>{
+    return apiRequest { api.changeAvatar(preferenceProvider.getCurrentToken(), body) }
   }
 
   suspend fun changePassword(body: String): ArrayList<String>{

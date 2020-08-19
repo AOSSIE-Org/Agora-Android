@@ -36,13 +36,13 @@
 
           <androidx.cardview.widget.CardView
               android:id="@+id/iv_profile_pic"
-              android:layout_width="@dimen/size_80dp"
-              android:layout_height="@dimen/size_80dp"
+              android:layout_width="@dimen/size_100dp"
+              android:layout_height="@dimen/size_100dp"
               android:layout_centerInParent="true"
               android:layout_marginStart="@dimen/size_15dp"
               android:layout_marginTop="@dimen/size_75dp"
               android:contentDescription="@string/agora"
-              app:cardCornerRadius="@dimen/size_40dp"
+              app:cardCornerRadius="@dimen/size_50dp"
               android:background="@android:color/transparent"
               android:layout_centerHorizontal="true"
               android:innerRadius="0dp"
@@ -53,8 +53,11 @@
               >
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_user"
                 android:background="@android:color/transparent"
                 />

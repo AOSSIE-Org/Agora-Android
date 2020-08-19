@@ -12,6 +12,7 @@ data class User(
   var email: String? = null,
   var firstName: String? = null,
   var lastName: String? = null,
+  var avatarURL: String? = null,
   var crypto: String? = null,
   var twoFactorAuthentication: Boolean? = null,
   var token: String? = null,

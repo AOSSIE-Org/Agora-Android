@@ -43,7 +43,7 @@ constructor(
         val authResponse = userRepository.userLogin(identifier, password, trustedDevice)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.crypto, it.twoFactorAuthentication,
+              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
               it.token?.token, it.token?.expiresOn, password, trustedDevice
           )
           userRepository.saveUser(user)
@@ -88,10 +88,10 @@ constructor(
   private fun getUserData(token: Token) {
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val authResponse = userRepository.getUserData(token.token!!)
+        val authResponse = userRepository.getUserData()
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.crypto, it.twoFactorAuthentication,
+              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
               token.token, token.expiresOn
           )
           userRepository.saveUser(user)
