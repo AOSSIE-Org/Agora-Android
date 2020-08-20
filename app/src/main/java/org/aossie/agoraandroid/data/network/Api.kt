@@ -87,6 +87,11 @@ interface Api {
   @POST("user/update")
   suspend fun updateUser(@Header("X-Auth-Token") authToken: String?, @Body body: String?): Response<ArrayList<String>>
 
+  //change avatar
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @POST("user/changeAvatar")
+  suspend fun changeAvatar(@Header("X-Auth-Token") authToken: String?, @Body body: String?): Response<ArrayList<String>>
+
   //POST request to change password
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("user/changePassword")

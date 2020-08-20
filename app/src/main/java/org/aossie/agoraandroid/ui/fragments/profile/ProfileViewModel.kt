@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +12,6 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
-import org.aossie.agoraandroid.utilities.lazyDeferred
 import org.json.JSONException
 import org.json.JSONObject
 import javax.inject.Inject
@@ -40,6 +38,11 @@ constructor(
 
   val toggleTwoFactorAuthResponse: LiveData<ResponseResults>
     get() = _toggleTwoFactorAuthResponse
+
+  private val _changeAvatarResponse = MutableLiveData<ResponseResults>()
+
+  val changeAvatarResponse: LiveData<ResponseResults>
+    get() = _changeAvatarResponse
 
   sealed class ResponseResults {
     class Success(text: String? = null) : ResponseResults() {
@@ -74,6 +77,43 @@ constructor(
     }
   }
 
+  fun changeAvatar(
+    url: String,
+    user: User) {
+    val jsonObject = JSONObject()
+    try {
+      jsonObject.put("url", url)
+      Log.d("change avatar", jsonObject.toString())
+    } catch (e: JSONException) {
+      e.printStackTrace()
+    }
+    Coroutines.main {
+      try {
+        val response = userRepository.changeAvatar(jsonObject.toString())
+        val authResponse = userRepository.getUserData()
+        Log.d("friday", authResponse.toString())
+        authResponse.let {
+          val mUser = User(
+              it.username, it.email, it.firstName, it.lastName, it.avatarURL,
+              it.crypto, it.twoFactorAuthentication, user.token,
+              user.expiredAt, user.password, user.trustedDevice
+          )
+          userRepository.saveUser(mUser)
+        }
+        Log.d("friday", response.toString())
+        _changeAvatarResponse.value = Success(response[1])
+      } catch (e: ApiException) {
+        _changeAvatarResponse.value = Error(e.message.toString())
+      } catch (e: SessionExpirationException) {
+        _changeAvatarResponse.value = Error(e.message.toString())
+      }catch (e: NoInternetException) {
+        _changeAvatarResponse.value = Error(e.message.toString())
+      } catch (e: Exception) {
+        _changeAvatarResponse.value = Error(e.message.toString())
+      }
+    }
+  }
+
   fun toggleTwoFactorAuth() {
     Coroutines.main {
       try {
@@ -98,7 +138,6 @@ constructor(
     val jsonObject = JSONObject()
     val tokenObject = JSONObject()
     try {
-
       jsonObject.put("username", user.username)
       jsonObject.put("firstName", user.firstName)
       jsonObject.put("lastName", user.lastName)

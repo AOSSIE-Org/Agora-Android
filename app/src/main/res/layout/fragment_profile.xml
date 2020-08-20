@@ -56,19 +56,45 @@
             app:layout_constraintTop_toBottomOf="@id/change_password_btn"
             />
 
-        <ImageView
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/profile_iv"
-            android:layout_width="@dimen/size_100dp"
-            android:layout_height="@dimen/size_100dp"
-            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:contentDescription="@string/content_description_for_agora_logo"
-            android:src="@drawable/ic_user"
-            app:elevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="@dimen/size_130dp"
+              android:layout_height="@dimen/size_130dp"
+              app:cardCornerRadius="@dimen/size_60dp"
+              android:layout_margin="@dimen/size_15dp"
+              app:elevation="2dp">
+
+            <ImageView
+                android:id="@+id/iv_profile_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/content_description_for_agora_logo"
+                android:src="@drawable/ic_user"
+                />
+
+          </androidx.cardview.widget.CardView>
+
+          <com.google.android.material.floatingactionbutton.FloatingActionButton
+              android:id="@+id/fab_edit_profile_pic"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="bottom|end"
+              android:src="@drawable/ic_edit"
+              android:backgroundTint="@color/com_facebook_messenger_blue"
+              app:tint="@color/white"
+              />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <TextView
             android:id="@+id/user_name_tv"

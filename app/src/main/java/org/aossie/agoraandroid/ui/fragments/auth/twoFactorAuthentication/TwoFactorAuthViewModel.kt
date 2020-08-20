@@ -62,7 +62,7 @@ constructor(
         val authResponse = userRepository.verifyOTP(otp, trustedDevice, crypto)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.crypto,
+              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
               it.twoFactorAuthentication,
               it.token?.token, it.token?.expiresOn, password, it.trustedDevice
           )
@@ -92,7 +92,7 @@ constructor(
         val authResponse = userRepository.resendOTP(username)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.crypto,
+              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
               it.twoFactorAuthentication,
               it.token?.token, it.token?.expiresOn, password, it.trustedDevice
           )

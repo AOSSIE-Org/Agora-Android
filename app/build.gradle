@@ -97,6 +97,8 @@ dependencies {
 
   implementation 'com.linkedin.android.tachyon:tachyon:1.0.2'
 
+  implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
 repositories {
   mavenCentral()
