@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.data.network
+package org.aossie.agoraandroid.data.network.interceptors
 
 import android.content.Context
 import android.net.ConnectivityManager

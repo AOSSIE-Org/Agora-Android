@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.elections
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_elections.view.rv_total_elections
 import kotlinx.android.synthetic.main.fragment_elections.view.tv_empty_election
 import kotlinx.android.synthetic.main.fragment_elections.view.tv_something_went_wrong
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
 

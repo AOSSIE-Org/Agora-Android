@@ -42,10 +42,10 @@ constructor(
     }
   }
 
-  fun verifyVoter(id: String, pass: String){
+  fun verifyVoter(id: String){
     try {
       Coroutines.main {
-        val electionResponse = electionsRepository.verifyVoter(id, pass)
+        val electionResponse = electionsRepository.verifyVoter(id)
         electionResponse._id = id
         mVerifyVoterResponse.value = Success("Success")
         mElection.value = electionResponse

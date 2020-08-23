@@ -88,10 +88,10 @@ constructor(
     }
   }
 
-  override fun onItemClicked(id: String) {
+  override fun onItemClicked(_id: String) {
     val action = PendingElectionsFragmentDirections
-        .actionPendingElectionsFragmentToElectionDetailsFragment(id)
-    Navigation.findNavController(rootView!!)
+        .actionPendingElectionsFragmentToElectionDetailsFragment(_id)
+    Navigation.findNavController(rootView)
         .navigate(action)
   }
 

@@ -1,17 +1,14 @@
 package org.aossie.agoraandroid.adapters
 
 import android.content.Context
-import android.os.Build.VERSION_CODES
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.ListItemElectionsBinding
-import java.lang.StringBuilder
+import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar

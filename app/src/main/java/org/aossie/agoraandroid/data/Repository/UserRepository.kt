@@ -49,11 +49,14 @@ class UserRepository(
     password: String,
     trustedDevice: String ?= null
   ): AuthResponse {
-
     val jsonObject = JSONObject()
-    jsonObject.put("identifier", identifier)
-    jsonObject.put("password", password)
-    jsonObject.put("trustedDevice", trustedDevice)
+    try {
+      jsonObject.put("identifier", identifier)
+      jsonObject.put("password", password)
+      jsonObject.put("trustedDevice", trustedDevice)
+    }catch (e: JSONException){
+      e.printStackTrace()
+    }
     return apiRequest { api.logIn(jsonObject.toString()) }
   }
 
@@ -63,9 +66,13 @@ class UserRepository(
     crypto: String
   ): AuthResponse {
     val jsonObject = JSONObject()
-    jsonObject.put("crypto", crypto)
-    jsonObject.put("otp", otp)
-    jsonObject.put("trustedDevice", trustedDevice)
+    try {
+      jsonObject.put("crypto", crypto)
+      jsonObject.put("otp", otp)
+      jsonObject.put("trustedDevice", trustedDevice)
+    }catch (e: JSONException){
+      e.printStackTrace()
+    }
     return apiRequest { api.verifyOTP(jsonObject.toString()) }
   }
 
@@ -95,10 +102,6 @@ class UserRepository(
 
   fun getUser(): LiveData<User>{
     return appDatabase.getUserDao().getUser()
-  }
-
-  fun getUserInfo(): User{
-    return appDatabase.getUserDao().getUserInfo()
   }
 
   suspend fun deleteUser(){

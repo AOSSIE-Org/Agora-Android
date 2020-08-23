@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.data.network
+package org.aossie.agoraandroid.data.network.interceptors
 
 import android.util.Log
 import okhttp3.Interceptor
@@ -6,6 +6,8 @@ import okhttp3.Response
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.network.ApiRequest
+import org.aossie.agoraandroid.data.network.Client
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SessionExpirationException

@@ -141,6 +141,7 @@ constructor(
       jsonObject.put("username", user.username)
       jsonObject.put("firstName", user.firstName)
       jsonObject.put("lastName", user.lastName)
+      jsonObject.put("avatarURL", user.avatarURL)
       jsonObject.put("email", user.email)
       jsonObject.put("twoFactorAuthentication", user.twoFactorAuthentication)
       tokenObject.put("token", user.token)

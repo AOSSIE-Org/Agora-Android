@@ -10,11 +10,9 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Error
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import javax.inject.Inject

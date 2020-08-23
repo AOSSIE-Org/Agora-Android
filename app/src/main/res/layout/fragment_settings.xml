@@ -32,6 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_200dp"
             android:background="@drawable/mountain"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             >
 
           <androidx.cardview.widget.CardView
@@ -124,6 +127,8 @@
             android:gravity="center"
             android:text="@string/account_settings"
             android:textSize="@dimen/size_16sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             />
 
         <TextView
@@ -137,6 +142,8 @@
             android:gravity="center"
             android:text="@string/about_us"
             android:textSize="@dimen/size_16sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             />
 
         <TextView
@@ -150,6 +157,8 @@
             android:gravity="center"
             android:text="@string/share_with_others"
             android:textSize="@dimen/size_16sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             />
 
         <TextView
@@ -163,6 +172,8 @@
             android:gravity="center"
             android:text="@string/contact_us"
             android:textSize="@dimen/size_16sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             />
 
         <TextView
@@ -176,6 +187,8 @@
             android:gravity="center"
             android:text="@string/logout"
             android:textSize="@dimen/size_16sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             />
       </RelativeLayout>
       <ProgressBar
@@ -192,87 +205,5 @@
           />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>
-</layout><!--    <RelativeLayout-->
-    <!--        android:id="@+id/relativeLayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        >-->
-    <!--      <TextView-->
-    <!--          android:id="@+id/tv_dashboard"-->
-    <!--          style="@style/MoreFragmentsTextViewStyle"-->
-    <!--          android:layout_alignParentStart="true"-->
-    <!--          android:layout_alignParentLeft="true"-->
-    <!--          android:layout_alignParentTop="true"-->
-    <!--          android:layout_alignParentEnd="true"-->
-    <!--          android:layout_alignParentRight="true"-->
-    <!--          android:drawableStart="@drawable/ic_view_carousel_black_24dp"-->
-    <!--          android:drawableLeft="@drawable/ic_view_carousel_black_24dp"-->
-    <!--          android:text="@string/dashboard"-->
-    <!--          />-->
-    <!--      <TextView-->
-    <!--          android:id="@+id/tv_about"-->
-    <!--          style="@style/MoreFragmentsTextViewStyle"-->
-    <!--          android:layout_below="@+id/tv_dashboard"-->
-    <!--          android:layout_alignParentStart="true"-->
-    <!--          android:layout_alignParentLeft="true"-->
-    <!--          android:layout_alignParentEnd="true"-->
-    <!--          android:layout_alignParentRight="true"-->
-    <!--          android:drawableStart="@drawable/ic_code_black_24dp"-->
-    <!--          android:drawableLeft="@drawable/ic_code_black_24dp"-->
-    <!--          android:text="@string/about_agora"-->
-    <!--          />-->
-    <!--      <TextView-->
-    <!--          android:id="@+id/tv_report"-->
-    <!--          style="@style/MoreFragmentsTextViewStyle"-->
-    <!--          android:layout_below="@+id/tv_about"-->
-    <!--          android:layout_alignParentStart="true"-->
-    <!--          android:layout_alignParentLeft="true"-->
-    <!--          android:layout_alignParentEnd="true"-->
-    <!--          android:layout_alignParentRight="true"-->
-    <!--          android:drawableStart="@drawable/ic_bug_report_black_24dp"-->
-    <!--          android:drawableLeft="@drawable/ic_bug_report_black_24dp"-->
-    <!--          android:text="@string/report_a_bug"-->
-    <!--          />-->
-    <!--      <TextView-->
-    <!--          android:id="@+id/tv_share"-->
-    <!--          style="@style/MoreFragmentsTextViewStyle"-->
-    <!--          android:layout_below="@id/tv_report"-->
-    <!--          android:layout_alignParentStart="true"-->
-    <!--          android:layout_alignParentLeft="true"-->
-    <!--          android:layout_alignParentEnd="true"-->
-    <!--          android:layout_alignParentRight="true"-->
-    <!--          android:drawableStart="@drawable/ic_share_black_24dp"-->
-    <!--          android:drawableLeft="@drawable/ic_share_black_24dp"-->
-    <!--          android:text="@string/share_with_others"-->
-    <!--          />-->
-    <!--      <TextView-->
-    <!--          android:id="@+id/tv_contact_us"-->
-    <!--          style="@style/MoreFragmentsTextViewStyle"-->
-    <!--          android:layout_below="@+id/tv_share"-->
-    <!--          android:layout_alignParentStart="true"-->
-    <!--          android:layout_alignParentLeft="true"-->
-    <!--          android:layout_alignParentEnd="true"-->
-    <!--          android:layout_alignParentRight="true"-->
-    <!--          android:drawableStart="@drawable/ic_local_post_office_black_24dp"-->
-    <!--          android:drawableLeft="@drawable/ic_local_post_office_black_24dp"-->
-    <!--          android:text="@string/contact_us"-->
-    <!--          />-->
-
-    <!--      <TextView-->
-    <!--          android:id="@+id/tv_logout"-->
-    <!--          style="@style/MoreFragmentsTextViewStyle"-->
-    <!--          android:layout_below="@+id/tv_contact_us"-->
-    <!--          android:layout_alignParentStart="true"-->
-    <!--          android:layout_alignParentLeft="true"-->
-    <!--          android:layout_alignParentEnd="true"-->
-    <!--          android:layout_alignParentRight="true"-->
-    <!--          android:drawableStart="@android:drawable/ic_lock_power_off"-->
-    <!--          android:drawableLeft="@android:drawable/ic_lock_power_off"-->
-    <!--          android:text="@string/logout"-->
-    <!--          />-->
-    <!--    </RelativeLayout>-->
-
+</layout>
 

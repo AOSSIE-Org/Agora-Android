@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.data.network
 
-import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import retrofit2.Retrofit
 
 import retrofit2.converter.gson.GsonConverterFactory

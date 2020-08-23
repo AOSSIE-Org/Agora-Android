@@ -8,9 +8,9 @@ import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
-import org.aossie.agoraandroid.data.network.AuthorizationInterceptor
+import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.Client
-import org.aossie.agoraandroid.data.network.NetworkInterceptor
+import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 
 @Module
@@ -29,8 +29,10 @@ class AppModule {
   }
 
   @Provides
-  fun providesNetworkInterceptor(context: Context): NetworkInterceptor{
-    return NetworkInterceptor(context)
+  fun providesNetworkInterceptor(context: Context): NetworkInterceptor {
+    return NetworkInterceptor(
+        context
+    )
   }
 
   @Provides
@@ -44,13 +46,17 @@ class AppModule {
   }
 
   @Provides
-  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, client: Client): AuthorizationInterceptor{
-    return AuthorizationInterceptor(preferenceProvider, appDatabase , client)
+  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, client: Client): AuthorizationInterceptor {
+    return AuthorizationInterceptor(
+        preferenceProvider, appDatabase, client
+    )
   }
 
   @Provides
-  fun providesApi(networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): Api{
-    return Api(networkInterceptor, authorizationInterceptor)
+  fun providesApi(networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): Api {
+    return Api(
+        networkInterceptor, authorizationInterceptor
+    )
   }
 
   @Provides
