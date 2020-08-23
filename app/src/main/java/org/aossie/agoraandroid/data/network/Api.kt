@@ -1,6 +1,8 @@
 package org.aossie.agoraandroid.data.network
 
 import okhttp3.OkHttpClient
+import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
+import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
@@ -113,8 +115,8 @@ interface Api {
   suspend fun getUserData(@Header("X-Auth-Token") authToken: String?): Response<AuthResponse>
 
   @Headers("Accept: application/json", "Content-Type: application/json")
-  @GET("voter/verify/{id}/{pass}")
-  suspend fun verifyVoter(@Path("id") id: String?, @Path("pass") pass: String?): Response<ElectionResponse>
+  @GET("voter/verifyPoll/{id}")
+  suspend fun verifyVoter(@Path("id") id: String?): Response<ElectionResponse>
 
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("vote/{id}")

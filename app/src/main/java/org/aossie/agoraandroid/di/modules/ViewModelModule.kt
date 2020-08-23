@@ -14,6 +14,7 @@ import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel
 import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.displayelections.DisplayElectionViewModel
+import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsViewModel
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
@@ -79,4 +80,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CastVoteViewModel::class)
     internal abstract fun bindsCastVoteViewModel(viewModel: CastVoteViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ElectionDetailsViewModel::class)
+    internal abstract fun bindsElectionDetailsViewModel(viewModel: ElectionDetailsViewModel): ViewModel
 }

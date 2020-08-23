@@ -13,11 +13,11 @@ import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment
-import org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment
-import org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment
+import org.aossie.agoraandroid.ui.fragments.electionDetails.BallotFragment
+import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFragment
-import org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment
+import org.aossie.agoraandroid.ui.fragments.electionDetails.VotersFragment
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
@@ -60,17 +60,20 @@ abstract class FragmentModule{
 
   @Binds
   @IntoMap
-  @FragmentKey(ElectionDetailsFragment::class)
+  @FragmentKey(
+      ElectionDetailsFragment::class)
   abstract fun bindsElectionDetailsFragment(electionDetailsFragment: ElectionDetailsFragment): Fragment
 
   @Binds
   @IntoMap
-  @FragmentKey(VotersFragment::class)
+  @FragmentKey(
+      VotersFragment::class)
   abstract fun bindsVotersFragment(votersFragment: VotersFragment): Fragment
 
   @Binds
   @IntoMap
-  @FragmentKey(BallotFragment::class)
+  @FragmentKey(
+      BallotFragment::class)
   abstract fun bindsBallotFragment(ballotFragment: BallotFragment): Fragment
 
   @Binds

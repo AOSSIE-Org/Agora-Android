@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.fragments.displayelections
+package org.aossie.agoraandroid.ui.fragments.electionDetails
 
 interface DisplayElectionListener {
   fun onDeleteElectionSuccess()

@@ -111,7 +111,7 @@ class  CastVoteActivity : AppCompatActivity(),
           val strings = path.split("/")
           passCode = strings[3]
           id = strings[2]
-          viewModel.verifyVoter(strings[2], strings[3])
+          viewModel.verifyVoter(strings[2])
           Log.d("App Link", resolvedURL.path.toString())
         } catch (ex: MalformedURLException) {
           Log.e("App Link", Log.getStackTraceString(ex))

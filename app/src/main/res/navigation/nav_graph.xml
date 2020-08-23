@@ -246,7 +246,7 @@
   </fragment>
   <fragment
       android:id="@+id/electionDetailsFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ElectionDetailsFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsFragment"
       android:label="Election Details"
       tools:layout="@layout/fragment_election_details">
     <argument
@@ -283,7 +283,7 @@
   </fragment>
   <fragment
       android:id="@+id/votersFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.VotersFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.electionDetails.VotersFragment"
       android:label="Voters"
       tools:layout="@layout/fragment_voters">
     <argument
@@ -292,7 +292,7 @@
   </fragment>
   <fragment
       android:id="@+id/ballotFragment"
-      android:name="org.aossie.agoraandroid.ui.fragments.displayelections.BallotFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.electionDetails.BallotFragment"
       android:label="Ballot Fragment"
       tools:layout="@layout/fragment_ballot">
     <argument

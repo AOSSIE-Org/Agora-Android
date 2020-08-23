@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.fragments.displayelections
+package org.aossie.agoraandroid.ui.fragments.electionDetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,16 +30,16 @@ class BallotFragment
   @Inject
   constructor(
     private val viewModelFactory: ViewModelProvider.Factory
-  ) : Fragment(), DisplayElectionListener {
+  ) : Fragment(),
+    DisplayElectionListener {
 
   private lateinit var rootView: View
 
-  private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
+  private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
   }
 
   private var id: String? = null
-  private var token: String? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -50,7 +50,7 @@ class BallotFragment
     rootView = inflater.inflate(R.layout.fragment_ballot, container, false)
 
     rootView.tv_empty_ballots.hide()
-    displayElectionViewModel.displayElectionListener = this
+    electionDetailsViewModel.displayElectionListener = this
 
     rootView.recycler_view_ballots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -58,8 +58,10 @@ class BallotFragment
       adapter = BallotsAdapter(arr)
     }
 
-    id = VotersFragmentArgs.fromBundle(arguments!!).id
-    displayElectionViewModel.getBallot(id)
+    id = VotersFragmentArgs.fromBundle(
+        arguments!!
+    ).id
+    electionDetailsViewModel.getBallot(id)
 
     return rootView
   }
@@ -67,7 +69,7 @@ class BallotFragment
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
-      displayElectionViewModel.ballotResponse.observe(
+      electionDetailsViewModel.ballotResponse.observe(
           requireActivity(), Observer {
         if(it != null) {
           initRecyclerView(it)
@@ -76,7 +78,7 @@ class BallotFragment
           rootView.tv_empty_ballots.show()
         }
       })
-      displayElectionViewModel.notConnected.observe(
+      electionDetailsViewModel.notConnected.observe(
           requireActivity(), Observer {
         if(it){
           getBallotsFromDb()
@@ -98,7 +100,7 @@ class BallotFragment
 
   private fun getBallotsFromDb(){
     Coroutines.main {
-      displayElectionViewModel.getElectionById(id!!).observe(requireActivity(), Observer {
+      electionDetailsViewModel.getElectionById(id!!).observe(requireActivity(), Observer {
         initRecyclerView(it.ballot as List<Ballot>)
         rootView.progress_bar.hide()
       })

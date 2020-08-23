@@ -164,10 +164,9 @@ constructor(
   }
 
   suspend fun verifyVoter(
-    id: String,
-    pass: String
-  ) : ElectionResponse{
-    return apiRequest { api.verifyVoter(id, pass)}
+    id: String
+  ) : ElectionResponse {
+    return apiRequest { api.verifyVoter(id)}
   }
 
   suspend fun castVote(
