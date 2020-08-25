@@ -20,11 +20,11 @@ import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.android.synthetic.main.content_calendar_view.view.swipe_refresh
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.calendarView
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.fab_list_view
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.img_btn_month
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_home.view.swipe_refresh
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
@@ -32,7 +32,6 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Calendar
@@ -188,14 +187,10 @@ constructor(
     return rootView
   }
 
-  override fun onResume() {
-    super.onResume()
-    rootView.progress_bar.show()
-  }
+  override fun onDestroyView() {
+    rootView.swipe_refresh.setOnRefreshListener(null)
 
-  override fun onPause() {
-    rootView.progress_bar.hide()
-    super.onPause()
+    super.onDestroyView()
   }
 
   private fun doYourUpdate() {

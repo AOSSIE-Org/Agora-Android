@@ -164,7 +164,7 @@ constructor(
     }
 
     algorithmsAdapter = ArrayAdapter.createFromResource(
-        context!!, array.algorithms,
+        requireContext(), array.algorithms,
         android.R.layout.simple_spinner_item
     )
     algorithmsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -188,7 +188,7 @@ constructor(
     }
 
     ballotVisibilityAdapter = ArrayAdapter.createFromResource(
-        context!!, array.ballot_visibility,
+        requireContext(), array.ballot_visibility,
         android.R.layout.simple_spinner_item
     )
     ballotVisibilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -288,7 +288,7 @@ constructor(
     val HOUR = calendar[Calendar.HOUR]
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
-      DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+      DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         mStartDate = "$year/$month/$dayOfMonth"
         sDay = dayOfMonth
         sMonth = month
@@ -327,13 +327,13 @@ constructor(
     val HOUR = calendar[Calendar.HOUR]
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
-      DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+      DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         mEndDate = "$year/$month/$dayOfMonth"
         eYear = year
         eMonth = month
         eDay = dayOfMonth
       }, YEAR, MONTH, DATE)
-    val timePickerDialog = TimePickerDialog(context!!,
+    val timePickerDialog = TimePickerDialog(requireContext(),
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           //Formatting the ending date in Date-Time format
           mEndDate = if (hourOfDay < 10 && minute < 10) "$mEndDate at 0$hourOfDay:0$minute"

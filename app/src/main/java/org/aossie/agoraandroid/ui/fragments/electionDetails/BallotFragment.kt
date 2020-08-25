@@ -59,7 +59,7 @@ class BallotFragment
     }
 
     id = VotersFragmentArgs.fromBundle(
-        arguments!!
+        requireArguments()
     ).id
     electionDetailsViewModel.getBallot(id)
 

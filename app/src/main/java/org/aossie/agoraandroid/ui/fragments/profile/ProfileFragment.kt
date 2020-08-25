@@ -117,8 +117,13 @@ constructor(
       binding.root.progress_bar.show()
       if (binding.firstNameTil.error == null && binding.lastNameTil.error == null) {
         hideKeyboardInFrag(this@ProfileFragment)
+        val updatedUser = mUser
+        updatedUser.let{
+          it.firstName = binding.firstNameTiet.text.toString()
+          it.lastName = binding.lastNameTiet.text.toString()
+        }
         viewModel.updateUser(
-            mUser
+            updatedUser
         )
       } else binding.root.progress_bar.hide()
 
@@ -126,7 +131,7 @@ constructor(
 
     binding.switchWidget.setOnClickListener {
       if (binding.switchWidget.isChecked) {
-        AlertDialog.Builder(context!!)
+        AlertDialog.Builder(requireContext())
             .setTitle("Please Confirm")
             .setMessage("Are you sure you want to enable two factor authentication")
             .setCancelable(false)
@@ -141,7 +146,7 @@ constructor(
             .create()
             .show()
       } else {
-        AlertDialog.Builder(context!!)
+        AlertDialog.Builder(requireContext())
             .setTitle("Please Confirm")
             .setMessage("Are you sure you want to disable two factor authentication")
             .setCancelable(false)
@@ -165,7 +170,7 @@ constructor(
     mAvatar.observe(viewLifecycleOwner, Observer {
       Picasso.get()
           .load(it)
-          .placeholder(ContextCompat.getDrawable(context!!, drawable.ic_user)!!)
+          .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
           .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
           .into(binding.root.iv_profile_pic)
     })
@@ -215,14 +220,14 @@ constructor(
   private fun showChangeProfileDialog() {
     val dialogView = layoutInflater.inflate(R.layout.dialog_change_avatar, null)
 
-    val dialog = AlertDialog.Builder(context!!)
+    val dialog = AlertDialog.Builder(requireContext())
         .setView(dialogView)
         .create()
 
     dialogView.camera_view.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
-              context!!, Manifest.permission.CAMERA
+              requireContext(), Manifest.permission.CAMERA
           ) == PackageManager.PERMISSION_GRANTED
       ) {
         openCamera()
@@ -234,7 +239,7 @@ constructor(
     dialogView.gallery_view.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
-              context!!, Manifest.permission.READ_EXTERNAL_STORAGE
+              requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
           ) == PackageManager.PERMISSION_GRANTED
       ) {
         openGallery()

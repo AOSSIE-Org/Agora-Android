@@ -20,7 +20,7 @@ constructor(
   private val electionsRepository: ElectionsRepository,
   private val userRepository: UserRepository
 ) : ViewModel() {
-  lateinit var authListener: AuthListener
+  var authListener: AuthListener ?= null
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
   private val currentDate: Date = Calendar.getInstance()
       .time
@@ -49,19 +49,19 @@ constructor(
   }
 
   fun doLogout() {
-    authListener.onStarted()
+    authListener?.onStarted()
     Coroutines.main {
       try {
         userRepository.logout()
-        authListener.onSuccess()
+        authListener?.onSuccess()
       } catch (e: ApiException) {
-        authListener.onFailure(e.message!!)
+        authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        authListener.onFailure(e.message!!)
+        authListener?.onFailure(e.message!!)
       }catch (e: NoInternetException) {
-        authListener.onFailure(e.message!!)
+        authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
-        authListener.onFailure(e.message!!)
+        authListener?.onFailure(e.message!!)
       }
     }
   }

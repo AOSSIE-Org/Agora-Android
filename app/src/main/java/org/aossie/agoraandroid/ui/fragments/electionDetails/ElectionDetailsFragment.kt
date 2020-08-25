@@ -64,11 +64,11 @@ class ElectionDetailsFragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_election_details, container, false)
     val args =
       ElectionDetailsFragmentArgs.fromBundle(
-          arguments!!
+          requireArguments()
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
-    resultViewModel = ResultViewModel(activity!!.application, context)
+    resultViewModel = ResultViewModel(requireActivity().application, context)
     token = prefs.getCurrentToken()
     Log.d("friday", token.toString())
     binding.root.button_ballot.setOnClickListener {

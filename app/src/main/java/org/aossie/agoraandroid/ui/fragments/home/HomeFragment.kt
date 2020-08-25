@@ -155,6 +155,13 @@ constructor(
     super.onPause()
   }
 
+  override fun onDestroyView() {
+    rootView.swipe_refresh.setOnRefreshListener(null)
+    homeViewModel.authListener = null
+    loginViewModel.authListener = null
+    super.onDestroyView()
+  }
+
   private fun doYourUpdate() {
     preferenceProvider.setUpdateNeeded(true)
     Navigation.findNavController(rootView)
