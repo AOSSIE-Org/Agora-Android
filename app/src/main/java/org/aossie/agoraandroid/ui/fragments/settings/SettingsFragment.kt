@@ -92,7 +92,7 @@ constructor(
     mAvatar.observe(viewLifecycleOwner, Observer {
       Picasso.get()
           .load(it)
-          .placeholder(ContextCompat.getDrawable(context!!, drawable.ic_user)!!)
+          .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
           .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
           .into(rootView.image_view)
     })

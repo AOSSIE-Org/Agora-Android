@@ -49,8 +49,8 @@ class TwoFactorAuthFragment
   ): View? {
     rootView = inflater.inflate(R.layout.fragment_two_factor_auth, container, false)
 
-    password = TwoFactorAuthFragmentArgs.fromBundle(arguments!!).password
-    crypto = TwoFactorAuthFragmentArgs.fromBundle(arguments!!).crypto
+    password = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).password
+    crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
 
     viewModel.user.observe(viewLifecycleOwner, Observer {
       if(it != null) {

@@ -63,7 +63,7 @@ class ForgotPasswordFragment
 
   override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
-    rootView.snackbar(context!!.getString(R.string.link_sent_please_check_your_email))
+    rootView.snackbar(requireContext().getString(R.string.link_sent_please_check_your_email))
   }
 
   override fun onStarted() {

@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     if (hostFragment is NavHostFragment) {
       when (hostFragment.childFragmentManager.fragments.first()) {
         is HomeFragment,
-        is WelcomeFragment -> moveTaskToBack(true)
+        is WelcomeFragment -> finish()
         is SettingsFragment,
         is CalendarViewElectionFragment -> navController.navigate(R.id.homeFragment)
        else -> super.onBackPressed()

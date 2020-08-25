@@ -116,7 +116,7 @@ class InviteVotersFragment
 
     rootView.button_invite_voter.setOnClickListener {
       try {
-        val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(arguments!!)
+        val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(requireArguments())
         val id : String = inviteVotersFragmentArgs.id
         inviteVotersViewModel.inviteVoters(mVoterNames, mVoterEmails, id)
 

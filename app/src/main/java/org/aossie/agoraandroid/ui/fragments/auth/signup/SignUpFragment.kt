@@ -70,7 +70,7 @@ class SignUpFragment
     }
 
     val adapter = ArrayAdapter.createFromResource(
-        context!!, array.security_questions,
+        requireContext(), array.security_questions,
         android.R.layout.simple_spinner_item
     )
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

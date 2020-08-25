@@ -55,22 +55,6 @@ class LoginFragment
 
   private var callbackManager: CallbackManager? = null
 
-  //  var accessTokenTracker: AccessTokenTracker = object : AccessTokenTracker() {
-//    override fun onCurrentAccessTokenChanged(
-//      oldAccessToken: AccessToken,
-//      currentAccessToken: AccessToken?
-//    ) {
-//      if (currentAccessToken == null) {
-//        Toast.makeText(context, "User Logged Out", Toast.LENGTH_SHORT)
-//            .show()
-//      } else {
-//        val facebookAccessToken = currentAccessToken.token
-//        Log.d("friday", facebookAccessToken)
-//        loginViewModel.facebookLogInRequest(facebookAccessToken)
-//      }
-//    }
-//  }
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
