@@ -44,6 +44,12 @@ public class LoginActivity extends AppCompatActivity {
         } else {
           mLoginUserName.setError(null);
         }
+        if (userPass.length() < 6) {
+          mLoginPassword.setError("Password Must be >= 6 Character");
+          return;
+        }  else {
+          mLoginUserName.setError(null);
+        }
 
         if (userPass.isEmpty()) {
           mLoginPassword.setError("Please enter password");
