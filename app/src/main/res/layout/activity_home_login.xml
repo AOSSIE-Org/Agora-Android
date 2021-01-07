@@ -4,24 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".homelogin.HomeLoginActivity"
     >
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:padding="16dp"
       >
+
+    <ImageView
+        android:id="@+id/main_logo_iv"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="64dp"
+        android:contentDescription="@string/content_description_for_agora_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/agora"
+        />
+
+    <TextView
+        android:id="@+id/agora_label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:fontFamily="cursive"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_logo_iv"
+        />
 
     <Button
         android:id="@+id/signup_btn"
         style="@style/MainButtonStyle"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="150dp"
         android:text="@string/sign_up"
         app:backgroundTint="@color/greenTint"
         app:layout_constraintBottom_toTopOf="@+id/fb_login_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/agora_label_tv"
+        app:layout_constraintVertical_bias="0.992"
         />
-
     <Button
         android:id="@+id/fb_login_btn"
         style="@style/MainButtonStyle"
@@ -44,31 +74,8 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <ImageView
-        android:id="@+id/main_logo_iv"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="64dp"
-        android:contentDescription="@string/content_description_for_agora_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/agora"
-        />
 
-    <TextView
-        android:id="@+id/agora_label_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:fontFamily="cursive"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_logo_iv"
-        android:gravity="center_horizontal"
-        />
+
   </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </layout>
