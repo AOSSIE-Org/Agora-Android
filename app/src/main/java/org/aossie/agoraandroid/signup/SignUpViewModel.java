@@ -25,7 +25,7 @@ class SignUpViewModel extends AndroidViewModel {
     this.context = context;
   }
 
-  public void signUpRequest(final String userName, String userPassword, String userEmail,
+  public void signUpRequest(final String userName, String userPassword,String userConfirmPass,String userPhone, String userEmail,
       String firstName, String lastName, String securityQuestion, String securityAnswer) {
     JSONObject jsonObject = new JSONObject();
     JSONObject securityJsonObject = new JSONObject();
@@ -36,6 +36,8 @@ class SignUpViewModel extends AndroidViewModel {
 
       jsonObject.put("identifier", userName);
       jsonObject.put("password", userPassword);
+      jsonObject.put("confirm password", userConfirmPass);
+      jsonObject.put("Phone Number", userPhone);
       jsonObject.put("email", userEmail);
       jsonObject.put("firstName", firstName);
       jsonObject.put("lastName", lastName);

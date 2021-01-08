@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.signup;
+ package org.aossie.agoraandroid.signup;
 
 import android.os.Bundle;
 import android.util.Patterns;
@@ -15,7 +15,7 @@ import org.aossie.agoraandroid.utilities.HideKeyboard;
 @SuppressWarnings("ConstantConditions")
 public class SignUpActivity extends AppCompatActivity {
   private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText,
-      mPasswordEditText, mSecurityAnswer;
+      mPasswordEditText, mSecurityAnswer,mConfirmPasswordEditText,mPhoneNumberEditText;
   private SignUpViewModel signUpViewModel;
   private AppCompatSpinner appCompatSpinner;
   private String securityQuestionOfSignUp;
@@ -33,6 +33,8 @@ public class SignUpActivity extends AppCompatActivity {
     mPasswordEditText = findViewById(R.id.signup_password);
     appCompatSpinner = findViewById(R.id.sign_up_security_question);
     mSecurityAnswer = findViewById(R.id.security_answer);
+    mConfirmPasswordEditText=findViewById(R.id.confirm_pass);
+    mPhoneNumberEditText=findViewById(R.id.phone);
     Button mSignUpButton = findViewById(R.id.signup_btn);
 
     mSignUpButton.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +70,8 @@ public class SignUpActivity extends AppCompatActivity {
     String userEmail = mEmailEditText.getEditText().getText().toString();
     String userPass = mPasswordEditText.getEditText().getText().toString();
     String securityQuestionAnswer = mSecurityAnswer.getEditText().getText().toString();
+    String userConfirmPass =mConfirmPasswordEditText.getEditText().getText().toString();
+    String userPhone = mPhoneNumberEditText.getEditText().getText().toString();
     String securityQuestion = securityQuestionOfSignUp;
 
     validateUsername(userName);
@@ -84,6 +88,17 @@ public class SignUpActivity extends AppCompatActivity {
       mLastNameEditText.setError(null);
     }
 
+    if (userConfirmPass.isEmpty()) {
+      mConfirmPasswordEditText.setError("Please enter password");
+    } else {
+      mConfirmPasswordEditText.setError(null);
+    }
+
+    if (userPhone.isEmpty()) {
+      mPhoneNumberEditText.setError("Please enter Phone Number");
+    } else {
+      mConfirmPasswordEditText.setError(null);
+    }
     if (userEmail.isEmpty()) {
       mEmailEditText.setError("Please enter Email Address");
     } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
@@ -98,17 +113,22 @@ public class SignUpActivity extends AppCompatActivity {
       mSecurityAnswer.setError(null);
     }
 
-    validatePassword(userName, firstName, lastName, userEmail, userPass, securityQuestionAnswer,
+    validatePassword(userName, firstName, lastName, userEmail,userConfirmPass,userPhone, userPass, securityQuestionAnswer,
         securityQuestion);
   }
 
   private void validatePassword(String userName, String firstName, String lastName,
-      String userEmail, String userPass, String securityQuestionAnswer, String securityQuestion) {
+      String userEmail,String userConfirmPass,String userPhone, String userPass, String securityQuestionAnswer, String securityQuestion) {
     if (userPass.isEmpty()) {
       mPasswordEditText.setError("Please enter password");
+      if (userPass != userConfirmPass)
+      {
+        mPasswordEditText.setError("Password doesn't match");
+        mConfirmPasswordEditText.setError("Password doesn't match");
+      }
     } else {
       mPasswordEditText.setError(null);
-      signUpViewModel.signUpRequest(userName, userPass, userEmail, firstName, lastName,
+      signUpViewModel.signUpRequest(userName, userPass,userConfirmPass, userPhone,userEmail, firstName, lastName,
           securityQuestion, securityQuestionAnswer);
     }
   }
