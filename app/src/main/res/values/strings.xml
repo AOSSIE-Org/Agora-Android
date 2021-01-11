@@ -155,6 +155,7 @@
   <string name="email_changed">Email cannot be changed</string>
   <string name="username_changed">Username cannot be changed</string>
   <string name="phone_number">Phone Number</string>
+  <string name="app_version">version 1.0.0</string>
 
 </resources>
 
