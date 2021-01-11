@@ -1,21 +1,25 @@
  package org.aossie.agoraandroid.signup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import com.google.android.material.textfield.TextInputLayout;
 import org.aossie.agoraandroid.R;
+import org.aossie.agoraandroid.login.LoginActivity;
 import org.aossie.agoraandroid.utilities.HideKeyboard;
 
 @SuppressWarnings("ConstantConditions")
 public class SignUpActivity extends AppCompatActivity {
   private TextInputLayout mUserNameEditText, mFirstNameEditText, mLastNameEditText, mEmailEditText,
       mPasswordEditText, mSecurityAnswer,mConfirmPasswordEditText,mPhoneNumberEditText;
+  private TextView mAlreadyText;
   private SignUpViewModel signUpViewModel;
   private AppCompatSpinner appCompatSpinner;
   private String securityQuestionOfSignUp;
@@ -36,12 +40,21 @@ public class SignUpActivity extends AppCompatActivity {
     mConfirmPasswordEditText=findViewById(R.id.confirm_pass);
     mPhoneNumberEditText=findViewById(R.id.phone);
     Button mSignUpButton = findViewById(R.id.signup_btn);
-
+ mAlreadyText = findViewById(R.id.mAlready);
     mSignUpButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         HideKeyboard.INSTANCE.hideKeyboardInActivity(SignUpActivity.this);
         validateAllFields();
+      }
+    });
+
+    mAlreadyText.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+        startActivity(i);
+        finish();
       }
     });
 

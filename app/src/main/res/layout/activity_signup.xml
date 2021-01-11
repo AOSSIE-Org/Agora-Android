@@ -25,10 +25,24 @@
           app:backgroundTint="@color/yellowTint"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.187"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/security_answer"
+          app:layout_constraintVertical_bias="0.0"
           />
 
+      <TextView
+          android:id="@+id/mAlready"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:gravity="center"
+          android:text="@string/already_account"
+          android:textSize="20sp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/signup_btn"
+          />
       <ImageView
           android:id="@+id/app_logo_iv"
           android:layout_width="120dp"
