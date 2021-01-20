@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#008751</color>
-  <color name="colorPrimaryDark">#FF01643D</color>
+  <color name="colorPrimary">#53D69F</color>
+  <color name="colorPrimaryDark">#29A47F</color>
   <color name="colorAccent">#F3B63A</color>
   <color name="whiteColor">#FFFFFF</color>
   <color name="ic_launcher_background">@color/white</color>
@@ -11,10 +11,14 @@
   <color name="logo_yellow">#fcd116</color>
 
   //election colors for reference
-  <color name="red_active_elections">#e20b0b</color>
+  <color name="red_active_elections">#FF4155</color>
   <color name="blue_finished_elections">#05b0c5</color>
   <color name="orange_total_elections">#fe9d18</color>
   <color name="green_pending_elections">#4ba64f</color>
+
+  <color name="transparent_red_active_elections">#80FF4155</color>
+  <color name="transparent_blue_finished_elections">#8005b0c5</color>
+  <color name="transparent_green_pending_elections">#804ba64f</color>
 
 
   //main screen tint colors
@@ -61,4 +65,23 @@
   <color name="darkgreyforavatarbg">#989898</color>
   <color name="gray_holo_dark">#ff000000</color>
   <color name="gray_holo_light">#fff3f3f3</color>
+
+  <color name="bottomNav">#F2F2F2</color>
+  <color name="grey">#808080</color>
+  <color name="splash_status_bar">#FFFFFF</color>
+  <color name="splash_navigation_bar">#FFFFFF</color>
+  <color name="splash_background">#FFFFFF</color>
+  <color name="yellow_color">#F3CF40</color>
+  <color name="yellow_gradient_color">#F3CF40</color>
+  <color name="green_gradient_color">#29A47F</color>
+  <color name="button_white_color">#FFFFFF</color>
+  <color name="black_text_color">#000000</color>
+  <color name="grey_background">#A9A9A9</color>
+  <color name="grey_color">#F6F6F6</color>
+  <color name="black_color">#000000</color>
+  <color name="mainButtonColor">#F3B63A</color>
+  <color name="darkSlateColor">#30363d</color>
+
+  <color name="hour_divider">#b0b0b0</color>
+  <color name="half_hour_divider">#e0e0e0</color>
 </resources>

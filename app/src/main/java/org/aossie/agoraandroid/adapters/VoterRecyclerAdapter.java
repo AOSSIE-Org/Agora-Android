@@ -23,8 +23,7 @@ public class VoterRecyclerAdapter
   @NonNull
   @Override
   public VoterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    LayoutInflater li = (LayoutInflater) parent.getContext()
-        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    LayoutInflater li = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     View voterView = li.inflate(R.layout.list_item_voter_details, parent, false);
     return new VoterRecyclerAdapter.VoterViewHolder(voterView);
   }

@@ -1,5 +1,8 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.utilities.MockFileParser
@@ -19,8 +22,11 @@ class ForgotPasswordTest : BaseTest() {
       MockFileParser("responses/auth_responses/send_forgot_password_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(forgotPasswordResponse))
-    val response: Response<*> = apiService.sendForgotPassword("test_name")
-        .execute()
-    Assert.assertEquals(response.body(), forgotPasswordResponse)
+    runBlocking {
+      GlobalScope.launch {
+        val response: Response<*> = apiService.sendForgotPassword("test_name")
+        Assert.assertEquals(response.body(), forgotPasswordResponse)
+      }
+    }
   }
 }
