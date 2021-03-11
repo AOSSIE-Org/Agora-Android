@@ -1,5 +1,8 @@
 package org.aossie.agoraandroid.apitesting.election
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.utilities.MockFileParser
@@ -17,9 +20,12 @@ class CreateElectionTest : BaseTest() {
     val createElectionResponse:String=MockFileParser("responses/election_responses/create_election_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(createElectionResponse))
-    val responseFromRequest: Response<*> =
-      apiService.createElection(createElectionRequest, "authtoken")
-          .execute()
-    Assert.assertEquals(responseFromRequest.body(), createElectionResponse)
+    runBlocking {
+      GlobalScope.launch {
+        val responseFromRequest: Response<*> =
+          apiService.createElection(createElectionRequest, "authtoken")
+        Assert.assertEquals(responseFromRequest.body(), createElectionResponse)
+      }
+    }
   }
 }

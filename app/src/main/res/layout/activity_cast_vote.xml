@@ -1,0 +1,272 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activities.castVote.CastVoteActivity"
+    >
+
+  <data>
+    <variable
+        name="election"
+        type="org.aossie.agoraandroid.data.network.responses.ElectionResponse"
+        />
+  </data>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:background="@color/grey_color"
+      >
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        app:title="Cast Vote"
+        app:titleTextColor="@color/white"
+        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+      <ScrollView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.488"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            >
+
+          <RelativeLayout
+              android:id="@+id/relativeLayout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whiteColor"
+                android:layout_margin="@dimen/size_8dp"
+                android:elevation="@dimen/size_5dp"
+                app:cardCornerRadius="@dimen/size_4dp"
+                >
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="@dimen/size_8dp"
+                  tools:ignore="TooDeepLayout"
+                  >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="3"
+                      android:hint="@string/election_name"
+                      android:text="@{election.name}"
+                      android:textSize="@dimen/size_18sp"
+                      android:textStyle="bold"
+                      />
+
+                  <TextView
+                      android:id="@+id/label"
+                      android:layout_width="0dp"
+                      android:layout_height="@dimen/size_22dp"
+                      android:layout_gravity="center"
+                      android:layout_weight="1"
+                      android:background="@drawable/active_election_label"
+                      android:gravity="center"
+                      android:hint="@string/active"
+                      android:text="@string/active"
+                      android:textColor="@color/white"
+                      android:textColorHint="@color/white"
+                      android:textSize="@dimen/size_12sp"
+                      android:textStyle="bold"
+                      />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_5dp"
+                    android:drawableStart="@drawable/ic_menu"
+                    android:drawablePadding="@dimen/size_16dp"
+                    android:text="@string/description"
+                    android:textSize="@dimen/size_14sp"
+                    android:textStyle="bold"
+                    />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/election_description"
+                    android:text="@{election.description}"
+                    android:textSize="@dimen/size_18sp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:drawableStart="@drawable/ic_clock"
+                      android:drawablePadding="@dimen/size_16dp"
+                      android:paddingEnd="@dimen/size_8dp"
+                      android:text="@string/start_at"
+                      android:textSize="@dimen/size_16sp"
+                      android:textStyle="bold"
+                      tools:ignore="RtlSymmetry"
+                      />
+
+                  <TextView
+                      android:id="@+id/tv_start_date"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:hint="@string/fri_jan_24_12_00_04"
+                      android:textSize="@dimen/size_18sp"
+                      android:textStyle="bold"
+                      />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:drawableStart="@drawable/ic_clock"
+                      android:drawablePadding="@dimen/size_16dp"
+                      android:paddingEnd="@dimen/size_8dp"
+                      android:text="@string/end_at"
+                      android:textSize="@dimen/size_16sp"
+                      android:textStyle="bold"
+                      tools:ignore="RtlSymmetry"
+                      />
+
+                  <TextView
+                      android:id="@+id/tv_end_date"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:hint="@string/fri_jan_24_12_00_04"
+                      android:textSize="@dimen/size_18sp"
+                      android:textStyle="bold"
+                      />
+                </LinearLayout>
+              </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_select_candidate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_view"
+                android:layout_margin="@dimen/size_8dp"
+                android:text="@string/please_select_candidate"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/size_18sp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_candidates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_select_candidate"
+                android:layout_margin="@dimen/size_8dp"
+                android:padding="@dimen/size_8dp"
+                android:background="@drawable/white_cornered_background"
+                tools:listitem="@layout/list_item_add_candidate"
+                />
+
+            <TextView
+                android:id="@+id/tv_selected_candidate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rv_candidates"
+                android:layout_margin="@dimen/size_8dp"
+                android:text="@string/selected_candidates"
+                android:textColor="@color/black_color"
+                android:textSize="@dimen/size_18sp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_selected_candidates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_selected_candidate"
+                android:layout_margin="@dimen/size_8dp"
+                android:padding="@dimen/size_8dp"
+                android:background="@drawable/white_cornered_background"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cast_vote"
+                style="@style/MainButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/rv_selected_candidates"
+                android:layout_margin="@dimen/size_10dp"
+                android:text="@string/cast_vote"
+                />
+          </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+      </ScrollView>
+
+      <ProgressBar
+          android:id="@+id/progress_bar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:background="@drawable/progressbar_background"
+          android:padding="@dimen/size_10dp"
+          android:visibility="invisible"
+          />
+
+    </FrameLayout>
+
+  </LinearLayout>
+
+</layout>
