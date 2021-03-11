@@ -141,6 +141,7 @@ class SignUpFragment
             .matches()
     ) {
       signup_email.error = "Enter a valid email address!!!"
+      return
     } else {
       signup_email.error = null
     }
