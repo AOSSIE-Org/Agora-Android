@@ -42,20 +42,14 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class SignUpFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
-  ): Fragment(), AuthListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory
+): Fragment(), AuthListener {
 
   private var securityQuestionOfSignUp: String? = null
 
   private lateinit var rootView: View
-  private var usernameInput = "";
-  var firstNameInput = "";
-  var lastNameInput = "";
-  var answerInput = "";
-  var emailInput = "";
-  var passwordInput = ""
 
   private val signUpViewModel: SignUpViewModel by viewModels {
     viewModelFactory
@@ -72,15 +66,7 @@ class SignUpFragment
 
     rootView.signup_btn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-      if (!Patterns.EMAIL_ADDRESS.matcher(emailInput)
-              .matches()
-      )
-        signup_email.error = "Enter a valid email address!!!"
-      else signUpViewModel.signUpRequest(
-          usernameInput, passwordInput, emailInput, firstNameInput, lastNameInput,
-          securityQuestionOfSignUp!!, answerInput
-      )
-
+      validateAllFields()
     }
 
     val adapter = ArrayAdapter.createFromResource(
@@ -118,39 +104,60 @@ class SignUpFragment
     return rootView
   }
 
-  private val signUpTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(
-      s: CharSequence,
-      start: Int,
-      count: Int,
-      after: Int
+  private fun validateAllFields() {
+    val userName = signup_user_name.editText
+        ?.text
+        .toString()
+    val firstName = signup_first_name.editText
+        ?.text
+        .toString()
+    val lastName = signup_last_name.editText
+        ?.text
+        .toString()
+    val userEmail = signup_email.editText
+        ?.text
+        .toString()
+    val userPass = signup_password.editText
+        ?.text
+        .toString()
+    val securityQuestionAnswer = security_answer.editText
+        ?.text
+        .toString()
+    val securityQuestion = securityQuestionOfSignUp
+    if (!Patterns.EMAIL_ADDRESS.matcher(userEmail)
+            .matches()
     ) {
+      signup_email.error = "Enter a valid email address!!!"
+    } else {
+      signup_email.error = null
+      signUpViewModel.signUpRequest(
+          userName, userPass, userEmail, firstName, lastName,
+          securityQuestion!!, securityQuestionAnswer
+      )
     }
+  }
 
+  private val signUpTextWatcher: TextWatcher = object : TextWatcher {
+    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
     override fun afterTextChanged(s: Editable) {}
 
-    override fun onTextChanged(
-      s: CharSequence,
-      start: Int,
-      before: Int,
-      count: Int
-    ) {
-      usernameInput = rootView.et_username.text
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+      val usernameInput: String = rootView.et_username.text
           .toString()
           .trim()
-      passwordInput = rootView.et_password.text
+      val passwordInput: String = rootView.et_password.text
           .toString()
           .trim()
-      firstNameInput = rootView.et_first_name.text
+      val firstNameInput: String = rootView.et_first_name.text
           .toString()
           .trim()
-      lastNameInput = rootView.et_last_name.text
+      val lastNameInput: String = rootView.et_last_name.text
           .toString()
           .trim()
-      emailInput = rootView.et_email.text
+      val emailInput: String = rootView.et_email.text
           .toString()
           .trim()
-      answerInput = rootView.et_answer.text
+      val answerInput: String = rootView.et_answer.text
           .toString()
           .trim()
       rootView.signup_btn.isEnabled = usernameInput.isNotEmpty()
