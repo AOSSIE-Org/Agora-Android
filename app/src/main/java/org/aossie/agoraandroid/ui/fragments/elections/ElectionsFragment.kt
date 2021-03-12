@@ -60,17 +60,15 @@ constructor(
   }
 
   private fun bindUI() {
-    Coroutines.main {
-      try {
-        val elections = electionViewModel.elections.await()
-        elections.observe(requireActivity(), Observer {
-          if (it != null) {
-            addElections(it)
-          }
-        })
-      } catch (e: IllegalStateException) {
-        rootView.tv_something_went_wrong.show()
-      }
+    try {
+      electionViewModel.getElections()
+          .observe(requireActivity(), Observer {
+            if (it != null) {
+              addElections(it)
+            }
+          })
+    } catch (e: IllegalStateException) {
+      rootView.tv_something_went_wrong.show()
     }
   }
 

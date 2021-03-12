@@ -116,13 +116,12 @@ constructor(
           }
         })
     Coroutines.main {
-      val elections = homeViewModel.elections.await()
       val totalElectionCount = homeViewModel.totalElectionsCount.await()
       val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
       val activeElectionCount = homeViewModel.activeElectionsCount.await()
       val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
       if (view != null) {
-        elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        homeViewModel.getElections().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
           totalElectionCount.observe(viewLifecycleOwner, Observer {
             rootView.text_view_total_count.text = it.toString()
             pendingElectionCount.observe(viewLifecycleOwner, Observer { pending ->

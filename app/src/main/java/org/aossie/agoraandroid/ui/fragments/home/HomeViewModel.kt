@@ -1,8 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.*
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -26,9 +29,6 @@ constructor(
       .time
   private val date: String = formatter.format(currentDate)
 
-  val elections by lazyDeferred {
-    electionsRepository.getElections()
-  }
   val totalElectionsCount by lazyDeferred {
     electionsRepository.getTotalElectionsCount()
   }
@@ -40,6 +40,13 @@ constructor(
   }
   val activeElectionsCount by lazyDeferred {
     electionsRepository.getActiveElectionsCount(date)
+  }
+
+  fun getElections(): LiveData<List<Election>> {
+    GlobalScope.launch{
+      electionsRepository.fetchAndSaveElections()
+    }
+    return electionsRepository.getElections()
   }
 
   fun deleteUserData(){
