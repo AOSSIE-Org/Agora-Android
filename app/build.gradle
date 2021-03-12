@@ -91,7 +91,7 @@ dependencies {
   implementation "androidx.room:room-ktx:$roomVersion"
   // coroutine
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8"
   //horizontal calendar
   implementation "devs.mulham.horizontalcalendar:horizontalcalendar:$calendarVersion"
   //day view lib
