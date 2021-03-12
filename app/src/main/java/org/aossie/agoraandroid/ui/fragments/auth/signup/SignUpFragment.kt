@@ -42,10 +42,10 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class SignUpFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
-  ): Fragment(), AuthListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory
+): Fragment(), AuthListener {
 
   private var securityQuestionOfSignUp: String? = null
 
@@ -124,62 +124,16 @@ class SignUpFragment
         ?.text
         .toString()
     val securityQuestion = securityQuestionOfSignUp
-    validateUsername(userName)
-    if (firstName.isEmpty()) {
-      signup_first_name.error = "Please enter First Name"
-    } else {
-      signup_first_name.error = null
-    }
-    if (lastName.isEmpty()) {
-      signup_last_name.error = "Please enter Last Name"
-    } else {
-      signup_last_name.error = null
-    }
-    if (userEmail.isEmpty()) {
-      signup_email.error = "Please enter Email Address"
-    } else if (!Patterns.EMAIL_ADDRESS.matcher(userEmail)
+    if (!Patterns.EMAIL_ADDRESS.matcher(userEmail)
             .matches()
     ) {
       signup_email.error = "Enter a valid email address!!!"
     } else {
       signup_email.error = null
-    }
-    if (securityQuestionAnswer.isEmpty()) {
-      security_answer.error = "Please enter Security Answer"
-    } else {
-      security_answer.error = null
-    }
-    validatePassword(
-        userName, firstName, lastName, userEmail, userPass, securityQuestionAnswer,
-        securityQuestion
-    )
-  }
-
-  private fun validatePassword(
-    userName: String,
-    firstName: String,
-    lastName: String,
-    userEmail: String,
-    userPass: String,
-    securityQuestionAnswer: String,
-    securityQuestion: String?
-  ) {
-    if (userPass.isEmpty()) {
-      signup_password.error = "Please enter password"
-    } else {
-      signup_password.error = null
       signUpViewModel.signUpRequest(
           userName, userPass, userEmail, firstName, lastName,
           securityQuestion!!, securityQuestionAnswer
       )
-    }
-  }
-
-  private fun validateUsername(userName: String) {
-    if (userName.isEmpty()) {
-      signup_user_name.error = "Please enter User Name"
-    } else {
-      signup_user_name.error = null
     }
   }
 
