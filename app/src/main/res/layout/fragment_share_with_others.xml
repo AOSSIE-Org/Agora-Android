@@ -20,6 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         android:background="@drawable/white_cornered_background"
         android:padding="@dimen/size_20dp"
         >
