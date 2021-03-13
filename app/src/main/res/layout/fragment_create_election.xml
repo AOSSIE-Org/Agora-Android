@@ -13,12 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey_color"
-        android:padding="16dp"
         >
 
       <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:padding="16dp"
+          android:clipToPadding="false"
+          android:clipChildren="false"
           >
 
         <!--      <Button-->

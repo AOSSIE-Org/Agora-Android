@@ -12,6 +12,7 @@
       android:background="@color/grey_color"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:fillViewport="true"
       >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,6 +28,8 @@
           app:layout_constraintTop_toTopOf="parent"
           android:padding="@dimen/size_8dp"
           android:layout_margin="@dimen/size_8dp"
+          android:clipToPadding="false"
+          android:clipChildren="false"
           >
         <TextView
             android:id="@+id/tv_dashboard"
