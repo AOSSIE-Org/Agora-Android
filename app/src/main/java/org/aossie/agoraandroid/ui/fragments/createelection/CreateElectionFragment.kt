@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import kotlinx.android.synthetic.main.fragment_create_election.candidate_til
 import kotlinx.android.synthetic.main.fragment_create_election.view.add_candidate_btn
 import kotlinx.android.synthetic.main.fragment_create_election.view.btn_end_date
 import kotlinx.android.synthetic.main.fragment_create_election.view.btn_start_date
@@ -113,7 +114,11 @@ constructor(
 
     rootView.btn_start_date.setOnClickListener { handleStartDateTime() }
 
+    rootView.et_start_date.setOnClickListener { handleStartDateTime() }
+
     rootView.btn_end_date.setOnClickListener { handleEndDateTime() }
+
+    rootView.et_end_date.setOnClickListener { handleEndDateTime() }
 
     rootView.et_election_name.addTextChangedListener(textWatcher)
 
@@ -160,7 +165,15 @@ constructor(
 
     rootView.add_candidate_btn.setOnClickListener {
       val name = rootView.candidate_til.editText?.text.toString().trim { it <= ' ' }
-      addCandidate(name)
+      if(name.isEmpty())
+      {
+        candidate_til.error = "Candidate name field is empty"
+      }
+      else
+      {
+        addCandidate(name)
+        candidate_til.error = null
+      }
     }
 
     algorithmsAdapter = ArrayAdapter.createFromResource(
@@ -240,14 +253,23 @@ constructor(
   }
 
   private val candidateTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+    override fun beforeTextChanged(
+      s: CharSequence,
+      start: Int,
+      count: Int,
+      after: Int
+    ) {}
     override fun afterTextChanged(s: Editable) {}
 
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+    override fun onTextChanged(
+      s: CharSequence,
+      start: Int,
+      before: Int,
+      count: Int
+    ) {
       val candidateNameInput: String = rootView.et_candidate_name.text
           .toString()
           .trim()
-      rootView.add_candidate_btn.isEnabled = candidateNameInput.isNotEmpty()
     }
   }
   private fun validateInputs(): Boolean{
@@ -288,13 +310,16 @@ constructor(
     val HOUR = calendar[Calendar.HOUR]
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
-      DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+      DatePickerDialog(
+          requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         mStartDate = "$year/$month/$dayOfMonth"
         sDay = dayOfMonth
         sMonth = month
         sYear = year
-      }, YEAR, MONTH, DATE)
-    val timePickerDialog = TimePickerDialog(context,
+      }, YEAR, MONTH, DATE
+      )
+    val timePickerDialog = TimePickerDialog(
+        context,
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           mStartDate = if (hourOfDay < 10 && minute < 10) "$mStartDate at 0$hourOfDay:0$minute"
           else if (hourOfDay < 10) "$mStartDate at 0$hourOfDay:$minute"
@@ -314,7 +339,8 @@ constructor(
             val charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2)
             electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
           }
-        }, HOUR, MINUTE, true)
+        }, HOUR, MINUTE, true
+    )
     timePickerDialog.show()
     datePickerDialog.show()
   }
@@ -327,13 +353,16 @@ constructor(
     val HOUR = calendar[Calendar.HOUR]
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
-      DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+      DatePickerDialog(
+          requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         mEndDate = "$year/$month/$dayOfMonth"
         eYear = year
         eMonth = month
         eDay = dayOfMonth
-      }, YEAR, MONTH, DATE)
-    val timePickerDialog = TimePickerDialog(requireContext(),
+      }, YEAR, MONTH, DATE
+      )
+    val timePickerDialog = TimePickerDialog(
+        requireContext(),
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           //Formatting the ending date in Date-Time format
           mEndDate = if (hourOfDay < 10 && minute < 10) "$mEndDate at 0$hourOfDay:0$minute"
@@ -353,16 +382,27 @@ constructor(
             val charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3)
             electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
           }
-        }, HOUR, MINUTE, true)
+        }, HOUR, MINUTE, true
+    )
     timePickerDialog.show()
     datePickerDialog.show()
   }
 
   private val textWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+    override fun beforeTextChanged(
+      s: CharSequence,
+      start: Int,
+      count: Int,
+      after: Int
+    ) {}
     override fun afterTextChanged(s: Editable) {}
 
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+    override fun onTextChanged(
+      s: CharSequence,
+      start: Int,
+      before: Int,
+      count: Int
+    ) {
       val electionNameInput: String = rootView.et_election_name.text
           .toString()
           .trim()
