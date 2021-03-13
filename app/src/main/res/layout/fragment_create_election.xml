@@ -179,7 +179,7 @@
               android:background="@drawable/grey_cornered_background"
               />
 
-          <LinearLayout
+          <androidx.constraintlayout.widget.ConstraintLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               >
@@ -192,10 +192,9 @@
                 android:layout_weight="3"
                 android:hint="@string/name_of_candidate"
                 app:boxStrokeColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/add_candidate_btn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/enter_candidate_name_label_tv"
+                app:layout_constraintTop_toTopOf="parent"
                 >
 
               <com.google.android.material.textfield.TextInputEditText
@@ -212,18 +211,22 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add_candidate_btn"
-                android:layout_width="0dp"
-                android:layout_height="38dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/yellow_color"
                 android:enabled="false"
                 android:text="@string/add"
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 />
 
-          </LinearLayout>
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
           <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/names_rv"
