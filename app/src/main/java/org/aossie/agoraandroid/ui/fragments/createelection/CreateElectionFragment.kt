@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import kotlinx.android.synthetic.main.fragment_create_election.candidate_til
 import kotlinx.android.synthetic.main.fragment_create_election.view.add_candidate_btn
 import kotlinx.android.synthetic.main.fragment_create_election.view.btn_end_date
 import kotlinx.android.synthetic.main.fragment_create_election.view.btn_start_date
@@ -113,7 +114,11 @@ constructor(
 
     rootView.btn_start_date.setOnClickListener { handleStartDateTime() }
 
+    rootView.et_start_date.setOnClickListener { handleStartDateTime() }
+
     rootView.btn_end_date.setOnClickListener { handleEndDateTime() }
+
+    rootView.et_end_date.setOnClickListener { handleEndDateTime() }
 
     rootView.et_election_name.addTextChangedListener(textWatcher)
 
@@ -160,7 +165,15 @@ constructor(
 
     rootView.add_candidate_btn.setOnClickListener {
       val name = rootView.candidate_til.editText?.text.toString().trim { it <= ' ' }
-      addCandidate(name)
+      if(name.isEmpty())
+      {
+        candidate_til.error="Candidate name field is empty"
+      }
+      else
+      {
+        addCandidate(name)
+        candidate_til.error=null
+      }
     }
 
     algorithmsAdapter = ArrayAdapter.createFromResource(
@@ -247,7 +260,6 @@ constructor(
       val candidateNameInput: String = rootView.et_candidate_name.text
           .toString()
           .trim()
-      rootView.add_candidate_btn.isEnabled = candidateNameInput.isNotEmpty()
     }
   }
   private fun validateInputs(): Boolean{
