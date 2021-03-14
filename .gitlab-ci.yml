@@ -8,6 +8,7 @@ variables:
   ANDROID_COMPILE_SDK: "28"
   ANDROID_BUILD_TOOLS: "28.0.2"
   ANDROID_SDK_TOOLS: "4333796"
+  APPETIZE_API: "tok_nfdgvqnkbyzf4uz7hxyhunzbcc"
 
 before_script:
   - apt-get --quiet update --yes
