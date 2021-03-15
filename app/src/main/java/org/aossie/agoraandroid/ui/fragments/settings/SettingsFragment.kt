@@ -202,5 +202,4 @@ constructor(
       rootView.snackbar("Error while loading the image")
     }
   }
-
 }
