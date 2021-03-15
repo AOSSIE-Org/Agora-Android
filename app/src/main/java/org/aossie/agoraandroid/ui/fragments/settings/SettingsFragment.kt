@@ -16,9 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
-import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy.OFFLINE
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_settings.view.image_view
 import kotlinx.android.synthetic.main.fragment_settings.view.progress_bar
@@ -36,7 +34,6 @@ import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
 import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.shortSnackbar
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -86,12 +83,8 @@ constructor(
         binding.user = it
         mUser = it
         if (it.avatarURL != null) {
-          if(it.avatarURL!!.isUrl())
-            cacheAndSaveImage(it.avatarURL!!)
-          else {
-            val bitmap = decodeBitmap(it.avatarURL!!)
-            setAvatar(bitmap)
-          }
+          val bitmap = decodeBitmap(it.avatarURL!!)
+          setAvatar(bitmap)
         }
       }
     })
@@ -137,22 +130,6 @@ constructor(
     }
 
     return rootView
-  }
-
-  private fun cacheAndSaveImage(url:String) {
-    Picasso.get().load(url)
-        .networkPolicy(OFFLINE)
-        .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-        .into(rootView.image_view,object :Callback{
-          override fun onSuccess() {
-            println()
-          }
-          override fun onError(e: Exception?) {
-            Picasso.get().load(url)
-                .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-                .into(rootView.image_view)
-          }
-        })
   }
 
   override fun onSuccess(message: String?) {
