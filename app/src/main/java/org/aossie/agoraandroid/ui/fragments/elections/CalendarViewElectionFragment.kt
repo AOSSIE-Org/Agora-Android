@@ -115,6 +115,7 @@ constructor(
       hourLabelViews.add(hourLabelView)
     }
     dayView!!.setHourLabelViews(hourLabelViews)
+    dateTextView!!.text = dateFormat!!.format(day!!.time)
 
     val startDate = Calendar.getInstance()
     startDate.add(Calendar.YEAR, -10)
