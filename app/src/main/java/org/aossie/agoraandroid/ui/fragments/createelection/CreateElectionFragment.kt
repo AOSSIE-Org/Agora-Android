@@ -251,31 +251,16 @@ constructor(
     }
   }
   private fun validateInputs(): Boolean{
-    if (mElectionName!!.isEmpty()) {
-      rootView.election_name_til.error = "Please enter Election Name"
-    } else {
-      rootView.election_name_til.error = null
-    }
-    if (mElectionDescription!!.isEmpty()) {
-      rootView.election_description_til.error = "Please enter description"
-    } else {
-      rootView.election_description_til.error = null
-    }
-    if (mStartDate!!.isEmpty()) {
-      rootView.start_date_til.error = "Please enter start date"
-    } else {
-      rootView.start_date_til.error = null
-    }
-    if (mEndDate!!.isEmpty()) {
-      rootView.end_date_til.error = "Please enter end date"
-    }else{
-      rootView.end_date_til.error = null
-    }
-    val isValid : Boolean = if(calendar3!!.before(calendar2)){
-      rootView.errorDialog("End date should be after starting date and time i.e. $mStartDate")
+    val isValid : Boolean = if(calendar2 == null || calendar3 == null){
+      rootView.errorDialog("Please enter all the details")
       false
-    }else{
-      true
+    } else{
+      if(calendar3!!.before(calendar2)){
+        rootView.errorDialog("End date should be after starting date and time i.e. $mStartDate")
+        false
+      }else{
+        true
+      }
     }
     return isValid
   }
