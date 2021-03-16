@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.ui.fragments.createelection
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -113,7 +114,11 @@ constructor(
 
     rootView.btn_start_date.setOnClickListener { handleStartDateTime() }
 
+    rootView.et_start_date.setOnClickListener { handleStartDateTime() }
+
     rootView.btn_end_date.setOnClickListener { handleEndDateTime() }
+
+    rootView.et_end_date.setOnClickListener { handleEndDateTime() }
 
     rootView.et_election_name.addTextChangedListener(textWatcher)
 
@@ -248,6 +253,14 @@ constructor(
           .toString()
           .trim()
       rootView.add_candidate_btn.isEnabled = candidateNameInput.isNotEmpty()
+      if(rootView.add_candidate_btn.isEnabled)
+      {
+        rootView.add_candidate_btn.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.yellow_color)));
+      }
+      else
+      {
+        rootView.add_candidate_btn.setBackgroundTintList(ColorStateList.valueOf(resources.getColor(R.color.grey_background)));
+      }
     }
   }
   private fun validateInputs(): Boolean{
