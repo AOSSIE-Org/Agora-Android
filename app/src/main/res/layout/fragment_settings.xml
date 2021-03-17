@@ -42,15 +42,15 @@
               android:layout_width="@dimen/size_100dp"
               android:layout_height="@dimen/size_100dp"
               android:layout_centerInParent="true"
+              android:layout_centerHorizontal="true"
               android:layout_marginStart="@dimen/size_15dp"
               android:layout_marginTop="@dimen/size_75dp"
-              android:contentDescription="@string/agora"
-              app:cardCornerRadius="@dimen/size_50dp"
               android:background="@android:color/transparent"
-              android:layout_centerHorizontal="true"
+              android:contentDescription="@string/agora"
               android:innerRadius="0dp"
               android:shape="ring"
               android:thicknessRatio="1.9"
+              app:cardCornerRadius="@dimen/size_50dp"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent"
               >
@@ -60,9 +60,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_user"
-                android:background="@android:color/transparent"
                 />
 
 
@@ -70,15 +70,19 @@
 
           <TextView
               android:id="@+id/tv_email_id"
-              android:layout_width="wrap_content"
+              android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_centerVertical="true"
               android:layout_marginStart="@dimen/size_15dp"
+              android:ellipsize="end"
+              android:hint="@string/agora_example_com"
+              android:text="@{user.email}"
+              android:autoSizeTextType="uniform"
+              android:autoSizeMinTextSize="12sp"
+              android:autoSizeMaxTextSize="100sp"
+              android:autoSizeStepGranularity="2sp"
               android:textColor="@color/black_text_color"
               android:textColorHint="@color/black_text_color"
-              android:text="@{user.email}"
-              android:hint="@string/agora_example_com"
-              android:textSize="@dimen/size_18sp"
               app:layout_constraintStart_toEndOf="@+id/iv_profile_pic"
               app:layout_constraintTop_toBottomOf="@+id/tv_name"
               />
@@ -99,7 +103,7 @@
               app:layout_constraintStart_toEndOf="@+id/iv_profile_pic"
               app:layout_constraintTop_toTopOf="parent"
               />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_settings"
