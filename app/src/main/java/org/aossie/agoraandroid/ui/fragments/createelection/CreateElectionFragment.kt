@@ -298,7 +298,7 @@ constructor(
         sDay = dayOfMonth
         sMonth = month
         sYear = year
-      }, YEAR, MONTH, DATE)
+      }, YEAR, MONTH, DATE).apply { datePicker.minDate = System.currentTimeMillis() - 1000 }
     val timePickerDialog = TimePickerDialog(context,
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           mStartDate = if (hourOfDay < 10 && minute < 10) "$mStartDate at 0$hourOfDay:0$minute"
@@ -337,7 +337,7 @@ constructor(
         eYear = year
         eMonth = month
         eDay = dayOfMonth
-      }, YEAR, MONTH, DATE)
+      }, YEAR, MONTH, DATE).apply { datePicker.minDate = System.currentTimeMillis() - 1000 }
     val timePickerDialog = TimePickerDialog(requireContext(),
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           //Formatting the ending date in Date-Time format
