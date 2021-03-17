@@ -31,6 +31,7 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_change_avatar.view.camera_view
 import kotlinx.android.synthetic.main.dialog_change_avatar.view.gallery_view
+import kotlinx.android.synthetic.main.fragment_profile.switchWidget
 import kotlinx.android.synthetic.main.fragment_profile.view.fab_edit_profile_pic
 import kotlinx.android.synthetic.main.fragment_profile.view.iv_profile_pic
 import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
@@ -141,6 +142,7 @@ constructor(
               dialog.cancel()
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+              switchWidget.isChecked = false;
               dialog.cancel()
             }
             .create()
