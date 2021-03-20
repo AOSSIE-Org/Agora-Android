@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_contact_us.view.btn_gitlab
 import kotlinx.android.synthetic.main.fragment_contact_us.view.btn_gitter
 import kotlinx.android.synthetic.main.fragment_contact_us.view.btn_report
 import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.utilities.browse
 
 /**
  * A simple [Fragment] subclass.
@@ -23,19 +24,13 @@ class ContactUsFragment : Fragment() {
   ): View? {
     val view = inflater.inflate(layout.fragment_contact_us, container, false)
     view.btn_gitter.setOnClickListener {
-      startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse("https://gitter.im/aossie/home"))
-      )
+      context?.browse("https://gitter.im/aossie/home")
     }
     view.btn_gitlab.setOnClickListener {
-      startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse("https://gitlab.com/aossie"))
-      )
+      context?.browse("https://gitlab.com/aossie")
     }
     view.btn_report.setOnClickListener {
-      startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse("https://gitlab.com/aossie/agora-android/issues/new"))
-      )
+      context?.browse("https://gitlab.com/aossie/agora-android/issues/new")
     }
     return view
   }
