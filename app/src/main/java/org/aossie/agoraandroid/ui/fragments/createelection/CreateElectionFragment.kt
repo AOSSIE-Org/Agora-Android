@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.ui.fragments.createelection
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -320,8 +321,14 @@ constructor(
             electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
           }
         }, HOUR, MINUTE, true)
-    timePickerDialog.show()
     datePickerDialog.show()
+    datePickerDialog.setButton(
+        DialogInterface.BUTTON_POSITIVE, "OK"
+    ) { dialog, which ->
+      if (which == DialogInterface.BUTTON_POSITIVE) {
+        timePickerDialog.show()
+      }
+    }
   }
 
   private fun handleEndDateTime() {
@@ -359,8 +366,14 @@ constructor(
             electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
           }
         }, HOUR, MINUTE, true)
-    timePickerDialog.show()
     datePickerDialog.show()
+    datePickerDialog.setButton(
+        DialogInterface.BUTTON_POSITIVE, "OK"
+    ) { dialog, which ->
+      if (which == DialogInterface.BUTTON_POSITIVE) {
+        timePickerDialog.show()
+      }
+    }
   }
 
   private val textWatcher: TextWatcher = object : TextWatcher {
