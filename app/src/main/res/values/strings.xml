@@ -241,6 +241,7 @@
   <string name="camera_option">Camera Option</string>
   <string name="gallery_option">Gallery Option</string>
   <string name="gallery">Gallery</string>
+  <string name="no_browser">It seems you don\'t have any browser installed.</string>
 
 </resources>
 
