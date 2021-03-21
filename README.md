@@ -12,6 +12,7 @@ To run the development environment for this frontend, you need [Git](https://git
 
 - [Agora-Web Frontend](#agora-web-frontend)
     - [Readme](#readme)
+    - [CONTRIBUTING](CONTRIBUTING.md)
     - [Table of contents](#table-of-contents)
     - [Installation](#installation)
     - [Running the application](#running-the-application)
@@ -53,28 +54,31 @@ Follow these steps to deploy your app to appetize.io:-
 2. Create a CI/CD variable for api token named "APPETIZE_API".     
     Follow this guide to learn how to add CI/CD variables to your gitlab repository: https://docs.gitlab.com/ee/ci/variables/#creating-a-custom-environment-variable  
 3. Run the following command once to upload the app.    
-    ```curl https://APITOKEN@api.appetize.io/v1/apps -F "file=@file_to_upload.apk" -F "platform=android"```    
+    ```curl https://API_TOKEN@api.appetize.io/v1/apps -F "file=@path_of_file_to_be_uploaded.apk" -F "platform=android"```    
     Replace API_TOKEN with the api token you got in step 1.  
-    Replace file_to_upload.apk with your apk file.   
-4. Command in step 3 will return a response. Note the public key from your response and add  a CI/CD varible named "APPETIZE_KEY" and enter this public key as value.  
-    Make sure to make both the varibales protected and make your branch protected too. Follow this guide: https://docs.gitlab.com/ee/user/project/protected_branches.html#configuring-protected-branches  
+    Replace path_of_file_to_be_uploaded.apk with your apk file.   
+4. Command in step 3 will return a response. Note the public key from your response and add  a CI/CD variable named "APPETIZE_KEY" and enter this public key as value.  
+    Make sure to make both the variables protected and make your branch protected too. Follow this guide: https://docs.gitlab.com/ee/user/project/protected_branches.html#configuring-protected-branches  
     
     This is a one time setup, subsequent changes you make in your repository will be reflected in your link you got in the response automatically.  
 
 ## Best practices
 
-1. Try to do a root cause analysis for the issue, if applicable.
-2. Reference the issue being fixed in the corresponding PR.
-3. Use meaningful commit messages in a PR.
-4. Use one commit per task. Do not over commit (add unnecessary commits for a single task) or under commit (merge 2 or more tasks in one commit).
-5. Add screenshot/short video in case the changes made in the PR, are being reflected in the UI of the application.
-6. Close the issue as soon as the corresponding PR is accepted/closed.
-  
+1. Go through the [CONTRIBUTING](CONTRIBUTING.md) before contributing.
+2. Try to do a root cause analysis for the issue, if applicable.
+3. Reference the issue being fixed in the corresponding MR.
+4. Use meaningful commit messages in a MR.
+5. Use one commit per task. Do not over commit (add unnecessary commits for a single task) or under commit (merge 2 or more tasks in one commit).
+6. Add screenshot(s)/a short video in case the changes made in the MR result in change in the UI of the application (Video Rec./GIF/Screenshot should of resolution around 360-540pixels).
+7. The author must follow the templates defined by the maintainers of the repository while opening any issue/MR.
+8. Adhere to the code styles of the project (we use Square Android for our project coding style).
+9. Close the issue as soon as the corresponding MR is merged.
+10. Adherence to best practices 😊
 
 ## Some don'ts
 
 1. Send a MR without an existing issue.
-2. Fix an issue assigned to somebody else and submit a PR before the assignee does.
+2. Fix an issue that is assigned to someone else and submit a MR before the assignee does.
 3. Report issues which are previously reported by others. (Please check both the open and closed issues).
 4. Suggest unnecessary or completely new features in the issue list.
 5. Add unnecessary spacing or indentation to the code.
