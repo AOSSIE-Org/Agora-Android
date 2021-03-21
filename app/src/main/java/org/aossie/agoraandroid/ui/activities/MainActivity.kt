@@ -66,6 +66,10 @@ class MainActivity : AppCompatActivity() {
     if (prefs.getIsLoggedIn()) {
       navController.navigate(R.id.homeFragment)
     }
+
+    bottom_navigation.setOnNavigationItemReselectedListener {
+      println()
+    }
   }
 
   private fun setToolbar(destination: NavDestination) {
