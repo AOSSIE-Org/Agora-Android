@@ -321,13 +321,10 @@ constructor(
             electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
           }
         }, HOUR, MINUTE, true)
+    timePickerDialog.show();
     datePickerDialog.show()
-    datePickerDialog.setButton(
-        DialogInterface.BUTTON_POSITIVE, "OK"
-    ) { dialog, which ->
-      if (which == DialogInterface.BUTTON_POSITIVE) {
-        timePickerDialog.show()
-      }
+    datePickerDialog.setOnCancelListener {
+      timePickerDialog.hide();
     }
   }
 
@@ -366,13 +363,10 @@ constructor(
             electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
           }
         }, HOUR, MINUTE, true)
+    timePickerDialog.show();
     datePickerDialog.show()
-    datePickerDialog.setButton(
-        DialogInterface.BUTTON_POSITIVE, "OK"
-    ) { dialog, which ->
-      if (which == DialogInterface.BUTTON_POSITIVE) {
-        timePickerDialog.show()
-      }
+    datePickerDialog.setOnCancelListener {
+      timePickerDialog.hide();
     }
   }
 
