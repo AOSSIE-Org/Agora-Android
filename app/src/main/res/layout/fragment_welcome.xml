@@ -7,6 +7,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="bottom"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         android:paddingBottom="@dimen/size_40dp"
         >
       <ImageView
