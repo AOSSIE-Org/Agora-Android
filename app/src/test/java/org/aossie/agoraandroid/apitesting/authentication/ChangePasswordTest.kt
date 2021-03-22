@@ -25,7 +25,7 @@ class ChangePasswordTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> =
-          apiService.changePassword(changePasswordRequest, "authtoken")
+          apiService.changePassword(changePasswordRequest)
         Assert.assertEquals(response.body(), changePasswordResponse)
       }
     }

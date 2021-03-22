@@ -22,10 +22,7 @@ class DeleteElectionTest : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(deleteElectionResponse))
     runBlocking {
       GlobalScope.launch {
-        val response: Response<*> = apiService.deleteElection(
-            "authToken",
-            "id"
-        )
+        val response: Response<*> = apiService.deleteElection("id")
         Assert.assertEquals(response.body(), deleteElectionResponse)
       }
     }

@@ -95,7 +95,7 @@ constructor(
     val isNeeded = prefs.getUpdateNeeded()
     if (isNeeded) {
       try {
-        val response = apiRequest { api.getAllElections(prefs.getCurrentToken()) }
+        val response = apiRequest { api.getAllElections() }
         elections.postValue(response.elections)
         Log.d("friday", isNeeded.toString())
         Log.d("friday", response.toString())

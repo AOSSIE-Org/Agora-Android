@@ -26,7 +26,6 @@ class InviteVotersTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> = apiService.sendVoters(
-            "authToken",
             "id",
             invitationRequest
         )

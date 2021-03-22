@@ -42,11 +42,7 @@ interface Api {
   suspend fun sendForgotPassword(@Path("userName") userName: String?): Response<String>
 
   @GET("election")
-  suspend fun getAllElections(
-    @Header(
-        "X-Auth-Token"
-    ) authToken: String?
-  ): Response<ElectionsResponse>
+  suspend fun getAllElections(): Response<ElectionsResponse>
 
   //DELETE election with specified id
   @DELETE("election/{id}")

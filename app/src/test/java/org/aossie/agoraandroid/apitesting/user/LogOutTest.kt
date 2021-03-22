@@ -22,7 +22,7 @@ class LogOutTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> =
-          apiService.logout("authtoken")
+          apiService.logout()
         Assert.assertEquals(response.body(), logOutResponse)
       }
     }

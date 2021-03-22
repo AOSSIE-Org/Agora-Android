@@ -23,7 +23,7 @@ class CreateElectionTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val responseFromRequest: Response<*> =
-          apiService.createElection(createElectionRequest, "authtoken")
+          apiService.createElection(createElectionRequest)
         Assert.assertEquals(responseFromRequest.body(), createElectionResponse)
       }
     }

@@ -23,10 +23,7 @@ class UpdateUserTest : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(updateUserRequest))
     runBlocking {
       GlobalScope.launch {
-        val response: Response<*> = apiService.updateUser(
-            "authToken",
-            updateUserResponse
-        )
+        val response: Response<*> = apiService.updateUser(updateUserResponse)
         Assert.assertEquals(response.body(), updateUserRequest)
       }
     }
