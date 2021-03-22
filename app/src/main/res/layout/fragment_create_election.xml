@@ -214,11 +214,11 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add_candidate_btn"
+                style="@style/MainButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_gravity="top"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:backgroundTint="@color/yellow_color"
                 android:enabled="false"
                 android:text="@string/add"
                 android:textColor="@color/white"
@@ -243,9 +243,9 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/submit_details_btn"
             style="@style/MainButtonStyle"
+            android:enabled="false"
             android:layout_marginTop="@dimen/size_20dp"
             android:text="@string/Create_Election"
-            app:backgroundTint="@color/greenTint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
