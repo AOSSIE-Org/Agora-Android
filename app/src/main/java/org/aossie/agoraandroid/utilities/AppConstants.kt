@@ -12,5 +12,9 @@ object AppConstants {
   const val INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error. Please enter valid input"
   const val CANDIDATE_ITEM_CLICKED = 0
   const val UPVOTED_CANDIDATE_ITEM_CLICKED = 1
+  const val ACCEPT = "Accept"
+  const val APPLICATION_JSON = "application/json"
+  const val CONTENT_TYPE = "Content-Type"
+  const val X_AUTH_TOKEN = "X-Auth-Token"
   const val URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$"
 }

@@ -83,7 +83,7 @@ class UserRepository(
   }
 
   suspend fun getUserData(): AuthResponse {
-    return apiRequest { api.getUserData(preferenceProvider.getCurrentToken()) }
+    return apiRequest { api.getUserData() }
   }
 
   suspend fun saveUser(user: User) {
@@ -97,7 +97,7 @@ class UserRepository(
   }
 
   suspend fun logout(): String {
-    return apiRequest{ api.logout(preferenceProvider.getCurrentToken()) }
+    return apiRequest{ api.logout() }
   }
 
   fun getUser(): LiveData<User>{
@@ -115,19 +115,19 @@ class UserRepository(
   }
 
   suspend fun updateUser(body: String): ArrayList<String>{
-    return apiRequest { api.updateUser(preferenceProvider.getCurrentToken(), body) }
+    return apiRequest { api.updateUser(body) }
   }
 
   suspend fun changeAvatar(body: String): ArrayList<String>{
-    return apiRequest { api.changeAvatar(preferenceProvider.getCurrentToken(), body) }
+    return apiRequest { api.changeAvatar(body) }
   }
 
   suspend fun changePassword(body: String): ArrayList<String>{
-    return apiRequest { api.changePassword(body, preferenceProvider.getCurrentToken()) }
+    return apiRequest { api.changePassword(body) }
   }
 
   suspend fun toggleTwoFactorAuth(): ArrayList<String> {
-    return apiRequest { api.toggleTwoFactorAuth(preferenceProvider.getCurrentToken()) }
+    return apiRequest { api.toggleTwoFactorAuth() }
   }
 
   suspend fun resendOTP(username: String?): AuthResponse {

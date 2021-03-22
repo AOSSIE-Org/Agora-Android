@@ -135,32 +135,32 @@ constructor(
   suspend fun deleteElection(
     id: String
   ): ArrayList<String> {
-    return apiRequest { api.deleteElection(prefs.getCurrentToken(), id) }
+    return apiRequest { api.deleteElection( id) }
   }
 
   suspend fun getVoters(
     id: String
   ): Voters {
-    return apiRequest { api.getVoters(prefs.getCurrentToken(), id) }
+    return apiRequest { api.getVoters( id) }
   }
 
   suspend fun getBallots(
     id: String
   ): Ballots {
-    return apiRequest { api.getBallot(prefs.getCurrentToken(), id) }
+    return apiRequest { api.getBallot( id) }
   }
 
   suspend fun sendVoters(
     id: String,
     body: String
   ): ArrayList<String> {
-    return apiRequest { api.sendVoters(prefs.getCurrentToken(), id, body) }
+    return apiRequest { api.sendVoters( id, body) }
   }
 
   suspend fun createElection(
     body: String
   ): ArrayList<String> {
-    return apiRequest { api.createElection(body, prefs.getCurrentToken()) }
+    return apiRequest { api.createElection(body) }
   }
 
   suspend fun verifyVoter(
