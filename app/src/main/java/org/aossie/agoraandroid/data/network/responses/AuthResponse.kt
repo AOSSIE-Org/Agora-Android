@@ -1,5 +1,7 @@
 package org.aossie.agoraandroid.data.network.responses
 
+import com.google.gson.annotations.SerializedName
+
 data class AuthResponse(
   var username: String?,
   var email: String?,
@@ -8,6 +10,6 @@ data class AuthResponse(
   var avatarURL: String,
   var twoFactorAuthentication: Boolean?,
   var crypto: String?,
-  var token: Token?,
+  @SerializedName("authToken") var authToken: AuthToken?,
   var trustedDevice: String?
 )

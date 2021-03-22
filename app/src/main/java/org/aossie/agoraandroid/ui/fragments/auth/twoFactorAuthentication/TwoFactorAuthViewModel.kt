@@ -62,7 +62,7 @@ constructor(
           val user = User(
               it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
               it.twoFactorAuthentication,
-              it.token?.token, it.token?.expiresOn, password, it.trustedDevice
+              it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
           Log.d("friday", user.toString())
@@ -92,7 +92,7 @@ constructor(
           val user = User(
               it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
               it.twoFactorAuthentication,
-              it.token?.token, it.token?.expiresOn, password, it.trustedDevice
+              it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
           mResendOtpResponse.value = Success()
