@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.network.interceptors
 
-import android.util.Log
+import timber.log.Timber
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.aossie.agoraandroid.data.db.AppDatabase
@@ -9,6 +9,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.Client
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONObject
@@ -24,7 +25,11 @@ class AuthorizationInterceptor(
 
 
       // if response code is 401 or 403, network call has encountered authentication error
-      if (mainResponse.code() == 401 || mainResponse.code() == 403) {
+      // if response code is 400, user has not verified his account
+    if (mainResponse.code() == AppConstants.BAD_REQUEST_CODE ||
+        mainResponse.code() == AppConstants.UNAUTHENTICATED_CODE ||
+        mainResponse.code() == AppConstants.INVALID_CREDENTIALS_CODE
+    ) {
         if (prefs.getIsLoggedIn()){
         Coroutines.io{
           var user = appDatabase.getUserDao().getUserInfo()
@@ -50,7 +55,7 @@ class AuthorizationInterceptor(
                     it?.crypto, it?.twoFactorAuthentication,
                     it?.authToken?.token, it?.authToken?.expiresOn, user.password, user.trustedDevice
                 )
-                Log.d("friday", authResponse.toString())
+                Timber.d(authResponse.toString())
               }
             }
           }

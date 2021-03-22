@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
 import android.os.Bundle
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +25,7 @@ import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -70,7 +71,7 @@ class ElectionDetailsFragment
     electionDetailsViewModel.displayElectionListener = this
     resultViewModel = ResultViewModel(requireActivity().application, context)
     token = prefs.getCurrentToken()
-    Log.d("friday", token.toString())
+    Timber.d(token.toString())
     binding.root.button_ballot.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToBallotFragment(
@@ -118,7 +119,7 @@ class ElectionDetailsFragment
     Coroutines.main {
       electionDetailsViewModel.getElectionById(id!!).observe(
           viewLifecycleOwner, Observer {
-        Log.d("friday", it.toString())
+        Timber.d(it.toString())
         binding.election = it
         try {
           val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
@@ -180,15 +181,18 @@ class ElectionDetailsFragment
   override fun onSuccess(message: String?) {
     if(message!=null) binding.root.snackbar(message)
     binding.root.progress_bar.hide()
+    binding.root.button_delete.toggleIsEnable()
   }
 
   override fun onStarted() {
     binding.root.progress_bar.show()
+    binding.root.button_delete.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     binding.root.snackbar(message)
     binding.root.progress_bar.hide()
+    binding.root.button_delete.toggleIsEnable()
   }
 }
 

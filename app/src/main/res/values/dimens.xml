@@ -40,6 +40,7 @@
   <dimen name="size_90dp">90dp</dimen>
   <dimen name="size_16sp">16sp</dimen>
   <dimen name="size_2dp">2dp</dimen>
+  <dimen name="size_2sp">2sp</dimen>
   <dimen name="size_14sp">14sp</dimen>
   <dimen name="size_200dp">200dp</dimen>
   <dimen name="size_175dp">175dp</dimen>

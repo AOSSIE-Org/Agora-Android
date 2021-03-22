@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +35,7 @@ import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import javax.inject.Inject
 
 /**
@@ -72,7 +73,7 @@ class LoginFragment
         .registerCallback(callbackManager,
             object : FacebookCallback<LoginResult?> {
               override fun onSuccess(loginResult: LoginResult?) {
-                Log.d("friday", "Success")
+                Timber.d("Success")
                 prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
                 loginViewModel.facebookLogInRequest(loginResult.accessToken.token)
               }
@@ -140,11 +141,12 @@ class LoginFragment
     resultCode: Int,
     data: Intent?
   ) {
-    Log.d("friday", "Activity result")
+    Timber.d("Activity result")
     callbackManager!!.onActivityResult(requestCode, resultCode, data)
   }
 
   override fun onSuccess(message: String?) {
+    rootView.login_btn.toggleIsEnable()
     rootView.progress_bar.hide()
     Navigation.findNavController(rootView)
         .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
@@ -152,11 +154,13 @@ class LoginFragment
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.login_btn.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+    rootView.login_btn.toggleIsEnable()
   }
 
   override fun onTwoFactorAuthentication(password: String, crypto: String) {

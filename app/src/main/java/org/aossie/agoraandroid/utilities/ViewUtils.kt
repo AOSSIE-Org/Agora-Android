@@ -68,3 +68,8 @@ fun BottomNavigationView.animGone() {
     animation = AnimationUtils.loadAnimation(context, R.anim.slide_down)
   }
 }
+
+fun View.toggleIsEnable() {
+  isEnabled = !isEnabled
+
+}

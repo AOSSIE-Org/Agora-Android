@@ -11,7 +11,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +51,7 @@ import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -99,7 +100,7 @@ constructor(
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
     viewModel.user.observe(viewLifecycleOwner, Observer {
       if (it != null) {
-        Log.d("friday", it.toString())
+        Timber.d(it.toString())
         binding.user = it
         mUser = it
         if (it.avatarURL != null) {
@@ -115,6 +116,7 @@ constructor(
 
     binding.updateProfileBtn.setOnClickListener {
       binding.root.progress_bar.show()
+      toggleIsEnable()
       if (binding.firstNameTil.error == null && binding.lastNameTil.error == null) {
         hideKeyboardInFrag(this@ProfileFragment)
         val updatedUser = mUser
@@ -125,7 +127,10 @@ constructor(
         viewModel.updateUser(
             updatedUser
         )
-      } else binding.root.progress_bar.hide()
+      } else {
+        binding.root.progress_bar.hide()
+        toggleIsEnable()
+      }
 
     }
 
@@ -137,6 +142,7 @@ constructor(
             .setCancelable(false)
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
               binding.root.progress_bar.show()
+              toggleIsEnable()
               viewModel.toggleTwoFactorAuth()
               dialog.cancel()
             }
@@ -152,6 +158,7 @@ constructor(
             .setCancelable(false)
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
               binding.root.progress_bar.show()
+              toggleIsEnable()
               viewModel.toggleTwoFactorAuth()
               dialog.cancel()
             }
@@ -187,11 +194,15 @@ constructor(
             getString(string.password_not_match_warn)
           else -> {
             binding.root.progress_bar.show()
+            toggleIsEnable()
             hideKeyboardInFrag(this@ProfileFragment)
             viewModel.changePassword(binding.newPasswordTiet.text.toString())
           }
         }
-      } else binding.root.progress_bar.hide()
+      } else {
+        binding.root.progress_bar.hide()
+        toggleIsEnable()
+      }
     }
 
     viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
@@ -265,10 +276,12 @@ constructor(
   private fun handleChangeAvatar(response: ResponseResults) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
+      toggleIsEnable()
       binding.root.snackbar(response.message.toString())
     }
     is Error -> {
       binding.root.progress_bar.hide()
+      toggleIsEnable()
       binding.root.snackbar(response.message)
     }
   }
@@ -276,11 +289,13 @@ constructor(
   private fun handleUser(response: ResponseResults) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
+      toggleIsEnable()
       binding.root.snackbar(response.message.toString())
       loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
     }
     is Error -> {
       binding.root.progress_bar.hide()
+      toggleIsEnable()
       binding.root.snackbar(response.message)
     }
   }
@@ -288,9 +303,11 @@ constructor(
   private fun handleTwoFactorAuthentication(response: ResponseResults) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
+      toggleIsEnable()
       binding.root.snackbar(response.message.toString() + ", Please login again")
     }
     is Error -> {
+      toggleIsEnable()
       binding.root.progress_bar.hide()
       binding.root.snackbar(response.message)
     }
@@ -299,6 +316,7 @@ constructor(
   private fun handlePassword(response: ResponseResults) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
+      toggleIsEnable()
       binding.root.snackbar(response.message.toString())
       loginViewModel.logInRequest(
           mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
@@ -306,6 +324,7 @@ constructor(
     }
     is Error -> {
       binding.root.progress_bar.hide()
+      toggleIsEnable()
       binding.root.snackbar(response.message)
     }
   }
@@ -363,6 +382,7 @@ constructor(
 
   override fun onSuccess(message: String?) {
     binding.root.progress_bar.hide()
+    toggleIsEnable()
     if (prefs.getIsFacebookUser()) {
       LoginManager.getInstance()
           .logOut()
@@ -376,11 +396,13 @@ constructor(
 
   override fun onStarted() {
     binding.root.progress_bar.show()
+    toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     binding.root.progress_bar.hide()
     binding.root.snackbar(message)
+    toggleIsEnable()
   }
 
   override fun onActivityResult(
@@ -398,6 +420,7 @@ constructor(
         encodedImage = encodeJpegImage(bitmap!!)
         val url = encodedImage!!.toUri()
         binding.root.progress_bar.show()
+        toggleIsEnable()
         viewModel.changeAvatar(
             url.toString(),
             mUser
@@ -411,6 +434,7 @@ constructor(
         encodedImage = encodePngImage(bitmap)
         val url = encodedImage!!.toUri()
         binding.root.progress_bar.show()
+        toggleIsEnable()
         viewModel.changeAvatar(
             url.toString(),
             mUser
@@ -484,5 +508,10 @@ constructor(
       e.printStackTrace()
       binding.root.snackbar("Error while loading the image")
     }
+  }
+
+  private fun toggleIsEnable(){
+    binding.updateProfileBtn.toggleIsEnable()
+    binding.changePasswordBtn.toggleIsEnable()
   }
 }

@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.ui.fragments.createelection
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -52,6 +53,7 @@ import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
@@ -300,8 +302,11 @@ constructor(
             electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
           }
         }, HOUR, MINUTE, true)
-    timePickerDialog.show()
+    timePickerDialog.show();
     datePickerDialog.show()
+    datePickerDialog.setOnCancelListener {
+      timePickerDialog.hide();
+    }
   }
 
   private fun handleEndDateTime() {
@@ -339,8 +344,11 @@ constructor(
             electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
           }
         }, HOUR, MINUTE, true)
-    timePickerDialog.show()
+    timePickerDialog.show();
     datePickerDialog.show()
+    datePickerDialog.setOnCancelListener {
+      timePickerDialog.hide();
+    }
   }
 
   private val textWatcher: TextWatcher = object : TextWatcher {
@@ -369,10 +377,12 @@ constructor(
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.submit_details_btn.toggleIsEnable()
   }
 
   override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
+    rootView.submit_details_btn.toggleIsEnable()
     if(message!=null) rootView.snackbar(message)
     prefs.setUpdateNeeded(true)
     electionDetailsSharedPrefs.clearElectionData()
@@ -383,6 +393,7 @@ constructor(
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+    rootView.submit_details_btn.toggleIsEnable()
   }
 
 }
