@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.network.responses
 
-data class Token(
+data class AuthToken(
   var token: String?,
   var expiresOn: String?
 )

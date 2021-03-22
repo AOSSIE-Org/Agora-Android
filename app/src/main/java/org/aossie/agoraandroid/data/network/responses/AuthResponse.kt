@@ -10,6 +10,6 @@ data class AuthResponse(
   var avatarURL: String,
   var twoFactorAuthentication: Boolean?,
   var crypto: String?,
-  @SerializedName("authToken") var token: Token?,
+  @SerializedName("authToken") var authToken: AuthToken?,
   var trustedDevice: String?
 )
