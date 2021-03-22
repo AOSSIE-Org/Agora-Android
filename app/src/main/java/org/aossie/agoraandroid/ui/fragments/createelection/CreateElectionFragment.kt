@@ -270,7 +270,7 @@ constructor(
     val YEAR = calendar[Calendar.YEAR]
     val MONTH = calendar[Calendar.MONTH]
     val DATE = calendar[Calendar.DATE]
-    val HOUR = calendar[Calendar.HOUR]
+    val HOUR = calendar[Calendar.HOUR_OF_DAY]
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
       DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -309,7 +309,7 @@ constructor(
     val YEAR = calendar[Calendar.YEAR]
     val MONTH = calendar[Calendar.MONTH]
     val DATE = calendar[Calendar.DATE]
-    val HOUR = calendar[Calendar.HOUR]
+    val HOUR = calendar[Calendar.HOUR_OF_DAY]
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
       DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
