@@ -82,9 +82,9 @@
               app:layout_constraintStart_toEndOf="@+id/iv_profile_pic"
               app:layout_constraintTop_toBottomOf="@+id/tv_name"
               android:autoSizeTextType="uniform"
-              android:autoSizeMinTextSize="12sp"
+              android:autoSizeMinTextSize="@dimen/size_12sp"
               android:autoSizeMaxTextSize="100sp"
-              android:autoSizeStepGranularity="2sp"/>
+              android:autoSizeStepGranularity="@dimen/size_2sp"/>
 
           <TextView
               android:id="@+id/tv_name"
