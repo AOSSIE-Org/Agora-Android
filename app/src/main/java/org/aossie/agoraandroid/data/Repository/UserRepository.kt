@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.Repository
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -90,7 +90,7 @@ class UserRepository(
     appDatabase.getUserDao().removeUser()
     appDatabase.getUserDao().insert(user)
     if(user.token != null) {
-      Log.d("friday", "saved")
+      Timber.d("saved")
       preferenceProvider.setIsLoggedIn(true)
       preferenceProvider.setCurrentToken(user.token)
     }
