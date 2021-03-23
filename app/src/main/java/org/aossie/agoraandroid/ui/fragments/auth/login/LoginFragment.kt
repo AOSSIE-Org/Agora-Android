@@ -35,6 +35,7 @@ import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import javax.inject.Inject
 
 /**
@@ -145,6 +146,7 @@ class LoginFragment
   }
 
   override fun onSuccess(message: String?) {
+    rootView.login_btn.toggleIsEnable()
     rootView.progress_bar.hide()
     Navigation.findNavController(rootView)
         .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
@@ -152,11 +154,13 @@ class LoginFragment
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.login_btn.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+    rootView.login_btn.toggleIsEnable()
   }
 
   override fun onTwoFactorAuthentication(password: String, crypto: String) {

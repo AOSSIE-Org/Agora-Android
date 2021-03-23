@@ -25,6 +25,7 @@ import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -180,15 +181,18 @@ class ElectionDetailsFragment
   override fun onSuccess(message: String?) {
     if(message!=null) binding.root.snackbar(message)
     binding.root.progress_bar.hide()
+    binding.root.button_delete.toggleIsEnable()
   }
 
   override fun onStarted() {
     binding.root.progress_bar.show()
+    binding.root.button_delete.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     binding.root.snackbar(message)
     binding.root.progress_bar.hide()
+    binding.root.button_delete.toggleIsEnable()
   }
 }
 
