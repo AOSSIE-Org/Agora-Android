@@ -62,7 +62,7 @@ constructor(
   private fun bindUI() {
     try {
       electionViewModel.getElections()
-          .observe(requireActivity(), Observer {
+          .observe(viewLifecycleOwner, Observer {
             if (it != null) {
               addElections(it)
             }

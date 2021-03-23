@@ -166,16 +166,14 @@ constructor(
 
     rootView.swipe_refresh.setOnRefreshListener { doYourUpdate() }
 
-    lifecycleScope.launch {
-      electionViewModel.getElections().observe(requireActivity(), Observer {
-        if (it != null) {
-          for (election in it) {
-            addEvent(election)
-            onDayChange()
-          }
+    electionViewModel.getElections().observe(viewLifecycleOwner, Observer {
+      if (it != null) {
+        for (election in it) {
+          addEvent(election)
+          onDayChange()
         }
-      })
-    }
+      }
+    })
 
     rootView.fab_list_view.setOnClickListener {
       Navigation
