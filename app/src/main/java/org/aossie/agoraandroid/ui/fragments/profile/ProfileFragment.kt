@@ -142,7 +142,7 @@ constructor(
               dialog.cancel()
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-              switchWidget.isChecked = false;
+              switchWidget.isChecked = false
               dialog.cancel()
             }
             .create()
