@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +72,7 @@ class LoginFragment
         .registerCallback(callbackManager,
             object : FacebookCallback<LoginResult?> {
               override fun onSuccess(loginResult: LoginResult?) {
-                Log.d("friday", "Success")
+                Timber.d("Success")
                 prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
                 loginViewModel.facebookLogInRequest(loginResult.accessToken.token)
               }
@@ -140,7 +140,7 @@ class LoginFragment
     resultCode: Int,
     data: Intent?
   ) {
-    Log.d("friday", "Activity result")
+    Timber.d("Activity result")
     callbackManager!!.onActivityResult(requestCode, resultCode, data)
   }
 

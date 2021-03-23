@@ -91,6 +91,8 @@ dependencies {
   implementation "com.linkedin.android.tachyon:tachyon:$tachyonVersion"
   //picasso
   implementation "com.squareup.picasso:picasso:$picassoVersion"
+  //timber
+  implementation "com.jakewharton.timber:timber:$timberVersion"
 }
 repositories {
   mavenCentral()

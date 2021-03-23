@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
 import android.os.Bundle
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,18 +89,18 @@ constructor(
           if(user != null) {
             val formatter =
               SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            //Log.d("friday", user.token!!)
+            //Timber.d(user.token!!)
             val currentDate = Calendar.getInstance()
                 .time
             val expireOn = user.expiredAt
-            Log.d("friday", user.toString())
-            Log.d("expiresOn", expireOn.toString())
+            Timber.d(user.toString())
+            Timber.tag("expiresOn").d(expireOn.toString())
             try {
               if (expireOn != null) {
                 val expiresOn = formatter.parse(expireOn)
                 //If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
-                  Log.d("expired", expireOn.toString())
+                  Timber.tag("expired").d(expireOn.toString())
                   if (preferenceProvider.getIsFacebookUser()) {
                     loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
                   } else {

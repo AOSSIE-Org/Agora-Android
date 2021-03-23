@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.signup
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +40,7 @@ constructor(
             securityQuestion,
             securityAnswer
         )
-        Log.d("friday", call)
+        Timber.d(call)
         authListener.onSuccess()
       }catch (e: ApiException){
         if(e.message == "409"){
