@@ -27,13 +27,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
+import com.squareup.picasso.Callback
 import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy.OFFLINE
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_change_avatar.view.camera_view
 import kotlinx.android.synthetic.main.dialog_change_avatar.view.gallery_view
 import kotlinx.android.synthetic.main.fragment_profile.view.fab_edit_profile_pic
 import kotlinx.android.synthetic.main.fragment_profile.view.iv_profile_pic
 import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
+import kotlinx.android.synthetic.main.fragment_settings.view.image_view
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
@@ -49,6 +52,7 @@ import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseRes
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import java.io.ByteArrayOutputStream
@@ -103,8 +107,12 @@ constructor(
         binding.user = it
         mUser = it
         if (it.avatarURL != null) {
-          val bitmap = decodeBitmap(it.avatarURL!!)
-          encodedImage = encodePngImage(bitmap)
+          if(it.avatarURL!!.isUrl())
+            cacheAndSaveImage(it.avatarURL!!)
+          else {
+            val bitmap = decodeBitmap(it.avatarURL!!)
+            encodedImage = encodePngImage(bitmap)
+          }
         }
       }
     })
@@ -469,6 +477,21 @@ constructor(
     return Base64.encodeToString(bytes, Base64.NO_WRAP)
   }
 
+  private fun cacheAndSaveImage(url:String) {
+    Picasso.get().load(url)
+        .networkPolicy(OFFLINE)
+        .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
+        .into(binding.root.iv_profile_pic,object : Callback {
+          override fun onSuccess() {
+            println()
+          }
+          override fun onError(e: Exception?) {
+            Picasso.get().load(url)
+                .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
+                .into(binding.root.iv_profile_pic)
+          }
+        })
+  }
   private fun setAvatarFile(bytes: ByteArray) {
     try {
       val avatar = File(context?.cacheDir, "avatar")
