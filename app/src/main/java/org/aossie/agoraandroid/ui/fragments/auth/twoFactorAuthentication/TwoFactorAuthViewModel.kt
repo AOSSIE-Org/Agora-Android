@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -65,7 +65,7 @@ constructor(
               it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
-          Log.d("friday", user.toString())
+          Timber.d(user.toString())
           mVerifyOtpResponse.value = Success()
         }
       } catch (e: ApiException) {

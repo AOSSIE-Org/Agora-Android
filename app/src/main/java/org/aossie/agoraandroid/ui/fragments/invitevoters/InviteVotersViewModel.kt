@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.invitevoters
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.utilities.ApiException
@@ -33,7 +33,7 @@ constructor(
       jsonObject.put("name", mVoterNames[i])
       jsonObject.put("hash", mVoterEmails[i])
       jsonArray.put(jsonObject)
-      Log.d("TAG", "inviteVoters: $jsonArray")
+      Timber.tag("TAG").d("inviteVoters: $jsonArray")
       sendVoters(id, jsonArray.toString())
     }
   }
@@ -46,7 +46,7 @@ constructor(
     Coroutines.main {
       try {
         val response = electionsRepository.sendVoters(id, body)
-        Log.d("friday", response.toString())
+        Timber.d(response.toString())
         inviteVoterListener.onSuccess(response[1])
       }catch (e: ApiException) {
         inviteVoterListener.onFailure(e.message!!)
