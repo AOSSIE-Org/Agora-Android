@@ -24,7 +24,6 @@ buildscript {
     navUiVersion = '2.3.0'
     facebookShimmerVersion = '0.5.0'
     facebookLoginVersion = '5.2.0'
-    loadToastVersion = '1.0.12'
     robolectricVersion = '4.3'
     mockWebServerVersion = '4.3.1'
     mockitoCoreVersion = '3.3.1'
