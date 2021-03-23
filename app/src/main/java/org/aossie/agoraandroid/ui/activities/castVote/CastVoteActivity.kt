@@ -2,7 +2,8 @@ package org.aossie.agoraandroid.ui.activities.castVote
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.util.Log.getStackTraceString
+import timber.log.Timber
 import android.view.View
 import android.view.WindowManager.LayoutParams
 import android.widget.TextView
@@ -98,7 +99,7 @@ class  CastVoteActivity : AppCompatActivity(),
     }
 
     val encodedURL = intent?.data
-    Log.d("friday", encodedURL.toString())
+    Timber.d(encodedURL.toString())
     if (encodedURL != null) {
       Thread(Runnable {
         try {
@@ -112,12 +113,12 @@ class  CastVoteActivity : AppCompatActivity(),
           passCode = strings[3]
           id = strings[2]
           viewModel.verifyVoter(strings[2])
-          Log.d("App Link", resolvedURL.path.toString())
+          Timber.d(resolvedURL.path.toString())
         } catch (ex: MalformedURLException) {
-          Log.e("App Link", Log.getStackTraceString(ex))
+          Timber.e(getStackTraceString(ex))
           progress_bar.hide()
         } catch (ex: IOException) {
-          Log.e("App Link", Log.getStackTraceString(ex))
+          Timber.e(getStackTraceString(ex))
           progress_bar.hide()
         }
       }).start()
@@ -189,7 +190,7 @@ class  CastVoteActivity : AppCompatActivity(),
   private fun handleVerifyVoter(response: ResponseResults) = when(response) {
     is Success -> {
       viewModel.election.observe(this, Observer {
-        Log.d("friday", it.toString())
+        Timber.d(it.toString())
         binding.election = it
         candidates.clear()
         candidates.addAll(it.candidates!!)

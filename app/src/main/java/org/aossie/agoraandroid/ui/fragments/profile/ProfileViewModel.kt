@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -63,7 +63,7 @@ constructor(
     Coroutines.main {
       try {
         val response = userRepository.changePassword(jsonObject.toString())
-        Log.d("friday", response[1])
+        Timber.d(response[1])
         _passwordRequestCode.value = Success(response[1])
       } catch (e: ApiException) {
         _passwordRequestCode.value = Error(e.message.toString())
@@ -83,7 +83,7 @@ constructor(
     val jsonObject = JSONObject()
     try {
       jsonObject.put("url", url)
-      Log.d("change avatar", jsonObject.toString())
+      Timber.tag("change avatar").d(jsonObject.toString())
     } catch (e: JSONException) {
       e.printStackTrace()
     }
@@ -91,7 +91,7 @@ constructor(
       try {
         val response = userRepository.changeAvatar(jsonObject.toString())
         val authResponse = userRepository.getUserData()
-        Log.d("friday", authResponse.toString())
+        Timber.d(authResponse.toString())
         authResponse.let {
           val mUser = User(
               it.username, it.email, it.firstName, it.lastName, it.avatarURL,
@@ -100,7 +100,7 @@ constructor(
           )
           userRepository.saveUser(mUser)
         }
-        Log.d("friday", response.toString())
+        Timber.d(response.toString())
         _changeAvatarResponse.value = Success(response[1])
       } catch (e: ApiException) {
         _changeAvatarResponse.value = Error(e.message.toString())
@@ -118,7 +118,7 @@ constructor(
     Coroutines.main {
       try {
         val response = userRepository.toggleTwoFactorAuth()
-        Log.d("friday", response[1])
+        Timber.d(response[1])
         _toggleTwoFactorAuthResponse.value = Success(response[1])
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
@@ -147,20 +147,20 @@ constructor(
       tokenObject.put("token", user.token)
       tokenObject.put("expiresOn", user.expiredAt)
       jsonObject.put("token", tokenObject)
-      Log.d("update user", user.toString())
+      Timber.d(user.toString())
     } catch (e: JSONException) {
       e.printStackTrace()
     }
     Coroutines.main {
       try {
         val response = userRepository.updateUser(jsonObject.toString())
-        Log.d("friday", response[1])
+        Timber.d(response[1])
         userRepository.saveUser(user)
         _userUpdateResponse.value = Success(response[1])
       } catch (e: ApiException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        Log.d("friday", "Session Expired")
+        Timber.d("Session Expired")
         _userUpdateResponse.value = Error(e.message.toString())
       }catch (e: NoInternetException) {
         _userUpdateResponse.value = Error(e.message.toString())
