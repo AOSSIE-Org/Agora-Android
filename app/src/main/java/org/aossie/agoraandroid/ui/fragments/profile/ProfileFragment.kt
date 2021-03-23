@@ -11,7 +11,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,7 +99,7 @@ constructor(
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
     viewModel.user.observe(viewLifecycleOwner, Observer {
       if (it != null) {
-        Log.d("friday", it.toString())
+        Timber.d(it.toString())
         binding.user = it
         mUser = it
         if (it.avatarURL != null) {
