@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -62,10 +62,10 @@ constructor(
           val user = User(
               it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
               it.twoFactorAuthentication,
-              it.token?.token, it.token?.expiresOn, password, it.trustedDevice
+              it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
-          Log.d("friday", user.toString())
+          Timber.d(user.toString())
           mVerifyOtpResponse.value = Success()
         }
       } catch (e: ApiException) {
@@ -92,7 +92,7 @@ constructor(
           val user = User(
               it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
               it.twoFactorAuthentication,
-              it.token?.token, it.token?.expiresOn, password, it.trustedDevice
+              it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
           mResendOtpResponse.value = Success()

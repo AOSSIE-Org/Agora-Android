@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,7 +40,7 @@ constructor(
     Coroutines.main {
       try {
         val response = electionsRepository.getBallots(id!!).ballots
-        Log.d("friday", response.toString())
+        Timber.d(response.toString())
         mBallotResponse.postValue(response)
         displayElectionListener.onSuccess()
       } catch (e: ApiException) {
@@ -62,7 +62,7 @@ constructor(
     Coroutines.main {
       try {
         val response = electionsRepository.getVoters(id!!).voters
-        Log.d("friday", response.toString())
+        Timber.d(response.toString())
         mVoterResponse.postValue(response)
         displayElectionListener.onSuccess()
       } catch (e: ApiException) {
@@ -84,7 +84,7 @@ constructor(
     Coroutines.main {
       try {
         val response = electionsRepository.deleteElection(id!!)
-        Log.d("friday", response.toString())
+        Timber.d(response.toString())
         displayElectionListener.onSuccess(response[1])
         displayElectionListener.onDeleteElectionSuccess()
       } catch (e: ApiException) {

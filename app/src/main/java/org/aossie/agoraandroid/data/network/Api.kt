@@ -7,7 +7,7 @@ import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
-import org.aossie.agoraandroid.data.network.responses.Token
+import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.data.network.responses.Voters
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -107,7 +107,7 @@ interface Api {
   //GET request to log in via facebook Access Token
   @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("auth/authenticate/facebook")
-  suspend fun facebookLogin(@Header("Access-Token") accessToken: String?): Response<Token>
+  suspend fun facebookLogin(@Header("Access-Token") accessToken: String?): Response<AuthToken>
 
   //GET request to get user's data
   @Headers("Accept: application/json", "Content-Type: application/json")
