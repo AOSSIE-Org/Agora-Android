@@ -24,7 +24,7 @@ class AuthorizationInterceptor(
 
 
       // if response code is 401 or 403, network call has encountered authentication error
-      if (mainResponse.code() == 401 || mainResponse.code() == 403) {
+      if (mainResponse.code == 401 || mainResponse.code == 403) {
         if (prefs.getIsLoggedIn()){
         Coroutines.io{
           var user = appDatabase.getUserDao().getUserInfo()

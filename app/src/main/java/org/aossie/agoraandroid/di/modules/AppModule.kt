@@ -41,8 +41,8 @@ class AppModule {
   }
 
   @Provides
-  fun providesClient(networkInterceptor: NetworkInterceptor): Client{
-    return Client(networkInterceptor)
+  fun providesClient(context: Context, networkInterceptor: NetworkInterceptor): Client{
+    return Client(context, networkInterceptor)
   }
 
   @Provides
@@ -53,9 +53,9 @@ class AppModule {
   }
 
   @Provides
-  fun providesApi(networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): Api {
+  fun providesApi(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): Api {
     return Api(
-        networkInterceptor, authorizationInterceptor
+        context, networkInterceptor, authorizationInterceptor
     )
   }
 

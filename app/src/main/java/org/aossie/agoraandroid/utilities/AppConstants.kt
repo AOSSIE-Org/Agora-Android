@@ -1,5 +1,7 @@
 package org.aossie.agoraandroid.utilities
 
+import okhttp3.logging.HttpLoggingInterceptor.Level
+
 object AppConstants {
   const val ok = "OK"
   const val BAD_REQUEST_CODE = 400
@@ -13,4 +15,5 @@ object AppConstants {
   const val CANDIDATE_ITEM_CLICKED = 0
   const val UPVOTED_CANDIDATE_ITEM_CLICKED = 1
   const val URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$"
+  val HTTP_INTERCEPTOR_LEVEL = Level.BASIC
 }

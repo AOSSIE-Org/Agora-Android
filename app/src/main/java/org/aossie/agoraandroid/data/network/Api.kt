@@ -1,6 +1,9 @@
 package org.aossie.agoraandroid.data.network
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
@@ -9,6 +12,7 @@ import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
 import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.data.network.responses.Voters
+import org.aossie.agoraandroid.utilities.AppConstants.HTTP_INTERCEPTOR_LEVEL
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -124,12 +128,22 @@ interface Api {
 
   companion object{
     operator fun invoke(
+      context: Context,
       networkInterceptor: NetworkInterceptor,
       authorizationInterceptor: AuthorizationInterceptor
     ): Api {
 
+      val httpInterceptor = HttpLoggingInterceptor()
+      httpInterceptor.level = HTTP_INTERCEPTOR_LEVEL
+
+      val chuckerInterceptor = ChuckerInterceptor.Builder(context)
+          .alwaysReadResponseBody(true)
+          .build()
+
       val okHttpClient = OkHttpClient.Builder()
           .addInterceptor(networkInterceptor)
+          .addInterceptor(httpInterceptor)
+          .addInterceptor(chuckerInterceptor)
           .addInterceptor(authorizationInterceptor)
           .build()
 

@@ -24,7 +24,7 @@ public class ResultViewModel extends AndroidViewModel {
   }
 
   public void getResult(String token, String id) {
-    APIService apiService = RetrofitClient.getAPIService();
+    APIService apiService = RetrofitClient.getAPIService(context);
     Call<String> getResultResponse = apiService.getResult(token, id);
     getResultResponse.enqueue(new Callback<String>() {
       @Override
