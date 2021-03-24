@@ -269,8 +269,7 @@ constructor(
   }
 
   private fun isDialogsVisible(): Boolean {
-    return datePickerDialog != null && datePickerDialog?.isShowing == true &&
-        timePickerDialog != null && timePickerDialog?.isShowing == true
+    return datePickerDialog?.isShowing == true && timePickerDialog?.isShowing == true
   }
 
   private fun handleStartDateTime() {
