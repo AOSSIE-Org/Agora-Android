@@ -2,7 +2,7 @@ package org.aossie.agoraandroid.ui.fragments.elections
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -211,7 +211,7 @@ constructor(
     var eventTimeRanges: MutableList<EventTimeRange?>? = null
     val events = allEvents!![day!!.timeInMillis]
     val gson = Gson()
-    Log.d("on Event Change", gson.toJson(events) + " , day time in millis : " + day!!.timeInMillis)
+    Timber.tag("on Event Change").d(gson.toJson(events) + " , day time in millis : " + day!!.timeInMillis)
     if (events != null) {
       Collections.sort(
           events
@@ -297,7 +297,7 @@ constructor(
       events.add(Event(id, title, description, status, hour, minute, duration, eventColor))
       allEvents!![sDate.timeInMillis] = events
       val gson = Gson()
-      Log.d("all Events", gson.toJson(allEvents))
+      Timber.tag("all Events").d(gson.toJson(allEvents))
       startCalendar.add(Calendar.DATE, 1)
       startCalendar.set(Calendar.HOUR, 0)
       startCalendar.set(Calendar.MINUTE, 0)

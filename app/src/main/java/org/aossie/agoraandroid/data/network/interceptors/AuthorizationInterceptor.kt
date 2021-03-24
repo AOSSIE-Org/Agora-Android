@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.network.interceptors
 
-import android.util.Log
+import timber.log.Timber
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.aossie.agoraandroid.data.db.AppDatabase
@@ -48,9 +48,9 @@ class AuthorizationInterceptor(
                 user = User(
                     it?.username, it?.email, it?.firstName, it?.lastName, it?.avatarURL,
                     it?.crypto, it?.twoFactorAuthentication,
-                    it?.token?.token, it?.token?.expiresOn, user.password, user.trustedDevice
+                    it?.authToken?.token, it?.authToken?.expiresOn, user.password, user.trustedDevice
                 )
-                Log.d("friday", authResponse.toString())
+                Timber.d(authResponse.toString())
               }
             }
           }

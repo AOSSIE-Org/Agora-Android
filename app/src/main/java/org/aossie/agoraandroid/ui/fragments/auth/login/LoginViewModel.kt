@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.Token
+import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -43,10 +43,10 @@ constructor(
         authResponse.let {
           val user = User(
               it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
-              it.token?.token, it.token?.expiresOn, password, trustedDevice
+              it.authToken?.token, it.authToken?.expiresOn, password, trustedDevice
           )
           userRepository.saveUser(user)
-          Log.d("friday", user.toString())
+          Timber.d(user.toString())
           if(!it.twoFactorAuthentication!!){
             authListener?.onSuccess()
           }else{
@@ -71,7 +71,7 @@ constructor(
       try {
         val authResponse = userRepository.fbLogin(accessToken!!)
         getUserData(authResponse)
-        Log.d("friday", authResponse.toString())
+        Timber.d(authResponse.toString())
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
@@ -84,7 +84,7 @@ constructor(
     }
   }
 
-  private fun getUserData(token: Token) {
+  private fun getUserData(token: AuthToken) {
     viewModelScope.launch(Dispatchers.Main) {
       try {
         val authResponse = userRepository.getUserData()
@@ -94,7 +94,7 @@ constructor(
               token.token, token.expiresOn
           )
           userRepository.saveUser(user)
-          Log.d("friday", authResponse.toString())
+          Timber.d(authResponse.toString())
           prefs.setIsFacebookUser(true)
           authListener?.onSuccess()
         }

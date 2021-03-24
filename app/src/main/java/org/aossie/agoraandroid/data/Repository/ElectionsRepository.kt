@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.Repository
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
@@ -100,8 +100,8 @@ constructor(
       try {
         val response = apiRequest { api.getAllElections(prefs.getCurrentToken()) }
         elections.postValue(response.elections)
-        Log.d("friday", isNeeded.toString())
-        Log.d("friday", response.toString())
+        Timber.d(isNeeded.toString())
+        Timber.d(response.toString())
       } catch (e: NoInternetException) {
 
       } catch (e: ApiException) {

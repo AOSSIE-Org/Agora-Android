@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
 import android.os.Bundle
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,7 +70,7 @@ class ElectionDetailsFragment
     electionDetailsViewModel.displayElectionListener = this
     resultViewModel = ResultViewModel(requireActivity().application, context)
     token = prefs.getCurrentToken()
-    Log.d("friday", token.toString())
+    Timber.d(token.toString())
     binding.root.button_ballot.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToBallotFragment(
@@ -118,7 +118,7 @@ class ElectionDetailsFragment
     Coroutines.main {
       electionDetailsViewModel.getElectionById(id!!).observe(
           viewLifecycleOwner, Observer {
-        Log.d("friday", it.toString())
+        Timber.d(it.toString())
         binding.election = it
         try {
           val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)

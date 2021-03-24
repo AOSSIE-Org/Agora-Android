@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.Repository
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -8,7 +8,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
-import org.aossie.agoraandroid.data.network.responses.Token
+import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -78,7 +78,7 @@ class UserRepository(
 
   suspend fun fbLogin(
     accessToken: String
-  ): Token {
+  ): AuthToken {
     return apiRequest { api.facebookLogin(accessToken) }
   }
 
@@ -90,7 +90,7 @@ class UserRepository(
     appDatabase.getUserDao().removeUser()
     appDatabase.getUserDao().insert(user)
     if(user.token != null) {
-      Log.d("friday", "saved")
+      Timber.d("saved")
       preferenceProvider.setIsLoggedIn(true)
       preferenceProvider.setCurrentToken(user.token)
     }
