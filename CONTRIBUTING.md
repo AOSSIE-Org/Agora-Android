@@ -2,22 +2,18 @@
 
 All contributions to the project should follow the following procedure:
 
-- Create an issue. Check out [best practices](#best-practices) and [some don'ts](#some-donts)
-- Create a merge request (MR). Check out [best practices](#best-practices) and [some don'ts](#some-donts)
-
 ## Table of Contents
 
 - [Installation](#installation)
 - [Creating an issue](#creating-an-issue)
 - [Creating a merge request](#creating-a-merge-request)
 - [Set up instructions](#set-up-instructions)
-- [Sync instructions - local repository with upstream](#sync-instructions)
 - [Best practices](#best-practices)
 - [Some don'ts](#some-donts)
 
 ## Installation
 
-Make sure you have the latest version of [Android Studio](https://developer.android.com/studio) and [JavaSE](https://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. We strongly recommend you to update all the libraries and sync the project (might take a minute).
+Make sure you have the latest version of [Android Studio](https://developer.android.com/studio) installed.
 
 ## Creating an issue
 
@@ -27,7 +23,7 @@ For creating an issue, it is very **important** to follow the [best practices](#
 
 ## Creating a Merge Request
 
-If you’re able to patch a bug or add a feature, make a merge request (to the develop branch) with the code! Once you’ve submitted a merge request (to the develop branch) the maintainer(s) can compare your branch to the existing one and decide whether or not to incorporate (pull in) your changes.
+If you’re able to patch a bug or add a feature, make a merge request (to the develop branch) with the code! Once you’ve submitted a merge request (to the develop branch)
 
 Once you’ve opened a merge request a discussion will start around your proposed changes. Other contributors and users may comment on the merge request, but ultimately the decision is made by the maintainer(s). You may be asked to make some changes to your merge request, if so, add more commits to your branch and push them – they’ll automatically go into the existing merge request.
 
@@ -38,11 +34,8 @@ For creating a merge request, it is very **important** to follow the [best pract
 1. Fork the repo
 2. Clone your fork
 3. Sync your fork with 'upstream' by following these [instructions](#sync-instructions-local-repository-with-upstream)
-4. Create a branch
-5. Push your changes to your fork with `git push`
-6. Create a merge request.
-7. Iterate on the solution.
-8. Get merged! 🎉 🎊
+4. Add facebook login [configuration](#Running-the-application)
+5. Setup your [appetize](#Setting-up-appetize.io)
 
 ## Sync Instructions local repository with upstream
 
@@ -56,7 +49,7 @@ For creating a merge request, it is very **important** to follow the [best pract
 3. Use meaningful commit messages in a MR.
 4. Use one commit per task. Do not over commit (add unnecessary commits for a single task) or under commit (merge 2 or more tasks in one commit).
 5. Add screenshot/short video in case the changes made in the MR, are being reflected in the UI of the application.
-6. Close the issue as soon as the corresponding MR is accepted/closed.
+6. add appetize link to MRs
   
 ## Some don'ts
 
@@ -67,3 +60,31 @@ For creating a merge request, it is very **important** to follow the [best pract
 5. Add unnecessary spacing or indentation to the code.
 
 If you face **any** problems, feel free to ask our community at [Gitter](https://gitter.im/AOSSIE/Agora-Android) 
+
+## Running the application
+To use Facebook login you will need to change "XXXXXXXXXXXXXXX" with your app id in app/src/main/res/values/string.xml
+    here
+    ```  <string name="facebook_app_id">XXXXXXXXXXXXXXX</string> 
+    ``` and here
+    ```
+         <string name="fb_login_protocol_scheme">fbXXXXXXXXXXXXXXX</string>
+    ```
+
+**Note:** Don't forget to add "fb" before your fb_login_protocol_scheme. 
+
+## Setting up appetize.io
+
+Follow these steps to deploy your app to appetize.io:-
+
+1. Get an API token from here: https://appetize.io/docs#request-api-token.   
+2. Create a CI/CD variable for api token named "APPETIZE_API".     
+    Follow this guide to learn how to add CI/CD variables to your gitlab repository: https://docs.gitlab.com/ee/ci/variables/#creating-a-custom-environment-variable  
+3. Run the following command once to upload the app.    
+    ```curl https://APITOKEN@api.appetize.io/v1/apps -F "file=@file_to_upload.apk" -F "platform=android"```    
+    Replace API_TOKEN with the api token you got in step 1.  
+    Replace file_to_upload.apk with your apk file.   
+4. Command in step 3 will return a response. Note the public key from your response and add  a CI/CD varible named "APPETIZE_KEY" and enter this public key as value.  
+    Make sure to make both the variables protected and make your branch protected too. Follow this guide: https://docs.gitlab.com/ee/user/project/protected_branches.html#configuring-protected-branches  
+    
+    This is a one time setup, subsequent changes you make in your repository will be reflected in your link you got in the response automatically.  
+
