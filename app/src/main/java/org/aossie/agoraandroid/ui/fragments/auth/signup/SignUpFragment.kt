@@ -36,6 +36,7 @@ import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import javax.inject.Inject
 
 /**
@@ -172,15 +173,18 @@ constructor(
   override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
     rootView.snackbar("An activation link has been sent to registered email id to verify your account")
+    rootView.signup_btn.toggleIsEnable()
   }
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.signup_btn.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     rootView.snackbar(message)
     rootView.progress_bar.hide()
+    rootView.signup_btn.toggleIsEnable()
   }
 
 }

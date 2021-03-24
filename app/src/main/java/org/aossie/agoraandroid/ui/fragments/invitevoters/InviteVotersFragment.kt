@@ -29,6 +29,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import org.json.JSONException
 import java.util.ArrayList
 import javax.inject.Inject
@@ -155,10 +156,12 @@ class InviteVotersFragment
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.button_invite_voter.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
+    rootView.button_invite_voter.toggleIsEnable()
     val mMessage = StringBuilder()
     mMessage.append(message)
     rootView.snackbar(mMessage.toString())
@@ -166,6 +169,7 @@ class InviteVotersFragment
 
   override fun onSuccess(message: String) {
     rootView.progress_bar.hide()
+    rootView.button_invite_voter.toggleIsEnable()
     prefs.setUpdateNeeded(true)
     rootView.snackbar(message)
     Navigation.findNavController(rootView)
