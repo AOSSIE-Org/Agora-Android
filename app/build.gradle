@@ -94,6 +94,8 @@ dependencies {
   implementation "com.squareup.picasso:picasso:$picassoVersion"
   //timber
   implementation "com.jakewharton.timber:timber:$timberVersion"
+  //leakcanary
+  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
 }
 repositories {
   mavenCentral()
