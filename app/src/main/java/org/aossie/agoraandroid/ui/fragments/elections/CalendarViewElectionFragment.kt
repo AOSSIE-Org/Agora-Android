@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.google.gson.Gson
 import com.linkedin.android.tachyon.DayView
@@ -26,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.calen
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.fab_list_view
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.img_btn_month
 import kotlinx.android.synthetic.main.fragment_calendar_view_election.view.progress_bar
-import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
