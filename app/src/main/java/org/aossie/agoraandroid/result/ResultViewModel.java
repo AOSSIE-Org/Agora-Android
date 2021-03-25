@@ -3,11 +3,14 @@ package org.aossie.agoraandroid.result;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.utilities.AppConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +26,7 @@ public class ResultViewModel extends AndroidViewModel {
     this.context = context;
   }
 
-  public void getResult(String token, String id) {
+  public void getResult(String token, String id, final View rootView) {
     APIService apiService = RetrofitClient.getAPIService();
     Call<String> getResultResponse = apiService.getResult(token, id);
     getResultResponse.enqueue(new Callback<String>() {
@@ -49,7 +52,14 @@ public class ResultViewModel extends AndroidViewModel {
             e.printStackTrace();
           }
         } else if (response.message().equals("No Content")) {
-          Toast.makeText(getApplication(), "Nothing to show here", Toast.LENGTH_SHORT).show();
+          final Snackbar s = Snackbar.make(rootView, "Nothing to show here", Snackbar.LENGTH_INDEFINITE);
+          s.setAction(AppConstants.ok, new View.OnClickListener() {
+            @Override public void onClick(View view) {
+              s.dismiss();
+            }
+          });
+          s.show();
+          //Toast.makeText(getApplication(), "Nothing to show here", Toast.LENGTH_SHORT).show();
         }
       }
 

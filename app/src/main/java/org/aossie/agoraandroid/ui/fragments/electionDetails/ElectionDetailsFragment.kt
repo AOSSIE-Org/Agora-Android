@@ -104,7 +104,7 @@ class ElectionDetailsFragment
       if (status == "PENDING") {
         binding.root.snackbar("Election is not started yet")
       } else {
-        resultViewModel?.getResult(token, id)
+        resultViewModel?.getResult(token, id, binding.root)
       }
     }
 
