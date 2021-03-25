@@ -23,7 +23,6 @@ public class RetrofitClient {
     httpInterceptor.level(HTTP_INTERCEPTOR_LEVEL);
 
     ChuckerInterceptor chuckerInterceptor = new ChuckerInterceptor.Builder(context)
-        .alwaysReadResponseBody(true)
         .build();
 
     OkHttpClient client = new OkHttpClient.Builder()

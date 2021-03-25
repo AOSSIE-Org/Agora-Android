@@ -25,7 +25,6 @@ constructor(
       httpInterceptor.level = HTTP_INTERCEPTOR_LEVEL
 
       val chuckerInterceptor = ChuckerInterceptor.Builder(context)
-          .alwaysReadResponseBody(true)
           .build()
 
       val okHttpClient = OkHttpClient.Builder()
