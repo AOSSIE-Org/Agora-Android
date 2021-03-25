@@ -2,6 +2,8 @@ package org.aossie.agoraandroid.ui.fragments.invitevoters
 
 import timber.log.Timber
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -43,7 +45,7 @@ constructor(
     body: String
   ) {
     inviteVoterListener.onStarted()
-    Coroutines.main {
+   viewModelScope.launch {
       try {
         val response = electionsRepository.sendVoters(id, body)
         Timber.d(response.toString())

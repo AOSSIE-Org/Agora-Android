@@ -53,6 +53,7 @@ import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
@@ -376,10 +377,12 @@ constructor(
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.submit_details_btn.toggleIsEnable()
   }
 
   override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
+    rootView.submit_details_btn.toggleIsEnable()
     if(message!=null) rootView.snackbar(message)
     prefs.setUpdateNeeded(true)
     electionDetailsSharedPrefs.clearElectionData()
@@ -390,6 +393,7 @@ constructor(
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+    rootView.submit_details_btn.toggleIsEnable()
   }
 
 }
