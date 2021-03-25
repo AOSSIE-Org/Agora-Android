@@ -1,3 +1,4 @@
+
 package org.aossie.agoraandroid.data.network.interceptors
 
 import timber.log.Timber
@@ -25,9 +26,7 @@ class AuthorizationInterceptor(
 
 
       // if response code is 401 or 403, network call has encountered authentication error
-      // if response code is 400, user has not verified his account
-    if (mainResponse.code() == AppConstants.BAD_REQUEST_CODE ||
-        mainResponse.code() == AppConstants.UNAUTHENTICATED_CODE ||
+    if (mainResponse.code() == AppConstants.UNAUTHENTICATED_CODE ||
         mainResponse.code() == AppConstants.INVALID_CREDENTIALS_CODE
     ) {
         if (prefs.getIsLoggedIn()){
@@ -40,12 +39,15 @@ class AuthorizationInterceptor(
               prefs.setCurrentToken(response.body()!!.token)
               user.token = response.body()!!.token
               user.expiredAt = response.body()!!.expiresOn
+            } else {
+              prefs.setIsLoggedIn(false)
+              throw SessionExpirationException("Your session was expired. Please login again!")
             }
           } else {
             val jsonObject = JSONObject()
             jsonObject.put("identifier", user.username)
             jsonObject.put("password", user.password)
-            jsonObject.put("password", user.trustedDevice)
+            jsonObject.put("trustedDevice", user.trustedDevice)
             val loginResponse = client.api.logIn(jsonObject.toString())
             if (loginResponse.isSuccessful) {
               val authResponse: AuthResponse? = loginResponse.body()
@@ -57,17 +59,16 @@ class AuthorizationInterceptor(
                 )
                 Timber.d(authResponse.toString())
               }
+            } else {
+              prefs.setIsLoggedIn(false)
+              throw SessionExpirationException("Your session was expired. Please login again!")
             }
           }
           appDatabase.getUserDao().replace(user)
-          prefs.setIsLoggedIn(true)
           prefs.setCurrentToken(user.token)
         }
-        throw SessionExpirationException("Your session was expired. Please try again")}
       }
-      else
-        prefs.setIsLoggedIn(true)
-
+    }
     return mainResponse
   }
 }
