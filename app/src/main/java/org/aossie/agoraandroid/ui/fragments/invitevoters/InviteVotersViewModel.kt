@@ -5,10 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.Coroutines
-import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -22,6 +18,8 @@ constructor(
 ) : ViewModel() {
   lateinit var inviteVoterListener: InviteVoterListener
 
+  data class Response (val isSuccessful: Boolean=true, val msg: String="")
+
   @Throws(
       JSONException::class
   ) fun inviteVoters(
@@ -29,36 +27,36 @@ constructor(
     mVoterEmails: ArrayList<String>,
     id: String
   ) {
-    val jsonArray = JSONArray()
-    for (i in mVoterEmails.indices) {
-      val jsonObject = JSONObject()
-      jsonObject.put("name", mVoterNames[i])
-      jsonObject.put("hash", mVoterEmails[i])
-      jsonArray.put(jsonObject)
-      Timber.tag("TAG").d("inviteVoters: $jsonArray")
-      sendVoters(id, jsonArray.toString())
+    viewModelScope.launch {
+      val jsonArray = JSONArray()
+      var response = Response()
+      for (i in mVoterEmails.indices) {
+        val jsonObject = JSONObject()
+        jsonObject.put("name", mVoterNames[i])
+        jsonObject.put("hash", mVoterEmails[i])
+        jsonArray.put(jsonObject)
+        Timber.tag("TAG").d("inviteVoters: $jsonArray")
+        response = sendVoters(id, jsonArray.toString())
+        if (!response.isSuccessful) {
+          inviteVoterListener.onFailure(response.msg)
+          return@launch
+        }
+      }
+      inviteVoterListener.onSuccess(response.msg)
     }
   }
 
-  private fun sendVoters(
+  private suspend fun sendVoters(
     id: String,
     body: String
-  ) {
+  ): Response {
     inviteVoterListener.onStarted()
-   viewModelScope.launch {
-      try {
-        val response = electionsRepository.sendVoters(id, body)
-        Timber.d(response.toString())
-        inviteVoterListener.onSuccess(response[1])
-      }catch (e: ApiException) {
-        inviteVoterListener.onFailure(e.message!!)
-      } catch (e: SessionExpirationException) {
-        inviteVoterListener.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
-        inviteVoterListener.onFailure(e.message!!)
-      } catch (e: Exception) {
-        inviteVoterListener.onFailure(e.message!!)
-      }
+    return try {
+      val response = electionsRepository.sendVoters(id, body)
+      Timber.d(response.toString())
+      Response(true, response[1])
+    } catch (e: Exception) {
+      Response(false, e.message!!)
     }
   }
 
