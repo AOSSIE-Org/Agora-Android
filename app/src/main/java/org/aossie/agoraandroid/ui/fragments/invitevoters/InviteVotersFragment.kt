@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_add_voter
 import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_invite_voter
@@ -26,6 +27,7 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -68,6 +70,12 @@ class InviteVotersFragment
         viewHolder: ViewHolder,
         direction: Int
       ) {
+        val lastName=mVoterNames[viewHolder.adapterPosition]
+        val lastEmail=mVoterEmails[viewHolder.adapterPosition]
+        Snackbar.make(rootView,"Voter removed",Snackbar.LENGTH_LONG)
+            .setAction(AppConstants.undo) {
+              addCandidate(lastName,lastEmail)
+            }.show()
         mVoterNames.removeAt(viewHolder.adapterPosition)
         mVoterEmails.removeAt(viewHolder.adapterPosition)
         voterRecyclerAdapter!!.notifyDataSetChanged()
