@@ -276,7 +276,8 @@ constructor(
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
       DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        mStartDate = "$year/$month/$dayOfMonth"
+        val startMonth = month+1
+        mStartDate = "$year/$startMonth/$dayOfMonth"
         sDay = dayOfMonth
         sMonth = month
         sYear = year
@@ -318,7 +319,8 @@ constructor(
     val MINUTE = calendar[Calendar.MINUTE]
     val datePickerDialog =
       DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        mEndDate = "$year/$month/$dayOfMonth"
+        val endMonth = month+1
+        mEndDate = "$year/$endMonth/$dayOfMonth"
         eYear = year
         eMonth = month
         eDay = dayOfMonth
