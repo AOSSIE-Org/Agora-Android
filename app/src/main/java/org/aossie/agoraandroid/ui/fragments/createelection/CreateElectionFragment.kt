@@ -81,6 +81,8 @@ constructor(
   private var mEndDate: String? = null
   private var calendar2: Calendar? = null
   private var calendar3: Calendar? = null
+  private var datePickerDialog: DatePickerDialog? = null
+  private var timePickerDialog: TimePickerDialog? = null
 
   private val mCandidates = ArrayList<String>()
   private var candidateRecyclerAdapter: CandidateRecyclerAdapter? = null
@@ -267,21 +269,27 @@ constructor(
     return isValid
   }
 
+  private fun isDialogsVisible(): Boolean {
+    return datePickerDialog?.isShowing == true && timePickerDialog?.isShowing == true
+  }
+
   private fun handleStartDateTime() {
+    if (isDialogsVisible()) return
     val calendar = Calendar.getInstance()
     val YEAR = calendar[Calendar.YEAR]
     val MONTH = calendar[Calendar.MONTH]
     val DATE = calendar[Calendar.DATE]
     val HOUR = calendar[Calendar.HOUR]
     val MINUTE = calendar[Calendar.MINUTE]
-    val datePickerDialog =
+    datePickerDialog =
       DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         mStartDate = "$year/${month+1}/$dayOfMonth"
         sDay = dayOfMonth
         sMonth = month
         sYear = year
       }, YEAR, MONTH, DATE)
-    val timePickerDialog = TimePickerDialog(context,
+    timePickerDialog = TimePickerDialog(
+        context,
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           mStartDate = if (hourOfDay < 10 && minute < 10) "$mStartDate at 0$hourOfDay:0$minute"
           else if (hourOfDay < 10) "$mStartDate at 0$hourOfDay:$minute"
@@ -302,28 +310,29 @@ constructor(
             electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
           }
         }, HOUR, MINUTE, true)
-    timePickerDialog.show();
-    datePickerDialog.show()
-    datePickerDialog.setOnCancelListener {
-      timePickerDialog.hide();
+    timePickerDialog?.show()
+    datePickerDialog?.show()
+    datePickerDialog?.setOnCancelListener {
+      timePickerDialog?.dismiss()
     }
   }
 
   private fun handleEndDateTime() {
+    if (isDialogsVisible()) return
     val calendar = Calendar.getInstance()
     val YEAR = calendar[Calendar.YEAR]
     val MONTH = calendar[Calendar.MONTH]
     val DATE = calendar[Calendar.DATE]
     val HOUR = calendar[Calendar.HOUR]
     val MINUTE = calendar[Calendar.MINUTE]
-    val datePickerDialog =
+    datePickerDialog =
       DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         mEndDate = "$year/${month+1}/$dayOfMonth"
         eYear = year
         eMonth = month
         eDay = dayOfMonth
       }, YEAR, MONTH, DATE)
-    val timePickerDialog = TimePickerDialog(requireContext(),
+    timePickerDialog = TimePickerDialog(requireContext(),
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
           //Formatting the ending date in Date-Time format
           mEndDate = if (hourOfDay < 10 && minute < 10) "$mEndDate at 0$hourOfDay:0$minute"
@@ -344,10 +353,10 @@ constructor(
             electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
           }
         }, HOUR, MINUTE, true)
-    timePickerDialog.show();
-    datePickerDialog.show()
-    datePickerDialog.setOnCancelListener {
-      timePickerDialog.hide();
+    timePickerDialog?.show()
+    datePickerDialog?.show()
+    datePickerDialog?.setOnCancelListener {
+      timePickerDialog?.dismiss()
     }
   }
 
