@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.aossie.agoraandroid.BuildConfig;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -19,20 +20,29 @@ public class RetrofitClient {
 
     Gson gson = new GsonBuilder().setLenient().create();
 
-    HttpLoggingInterceptor httpInterceptor = new HttpLoggingInterceptor();
-    httpInterceptor.level(HTTP_INTERCEPTOR_LEVEL);
+    if (BuildConfig.DEBUG) {
+      HttpLoggingInterceptor httpInterceptor = new HttpLoggingInterceptor();
+      httpInterceptor.level(HTTP_INTERCEPTOR_LEVEL);
 
-    ChuckerInterceptor chuckerInterceptor = new ChuckerInterceptor.Builder(context)
-        .build();
+      ChuckerInterceptor chuckerInterceptor = new ChuckerInterceptor.Builder(context)
+          .build();
 
-    OkHttpClient client = new OkHttpClient.Builder()
-        .addInterceptor(httpInterceptor)
-        .addInterceptor(chuckerInterceptor)
-        .build();
+      OkHttpClient client = new OkHttpClient.Builder()
+          .addInterceptor(httpInterceptor)
+          .addInterceptor(chuckerInterceptor)
+          .build();
+
+      return new Retrofit.Builder()
+          .baseUrl(BASE_URL)
+          .client(client)
+          .addConverterFactory(ScalarsConverterFactory.create())
+          .addConverterFactory(GsonConverterFactory
+              .create(gson))
+          .build();
+    }
 
     return new Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(client)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory
             .create(gson))
