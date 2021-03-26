@@ -62,7 +62,7 @@ For creating a merge request, it is very **important** to follow the [best pract
 If you face **any** problems, feel free to ask our community at [Gitter](https://gitter.im/AOSSIE/Agora-Android) 
 
 ## Running the application
-To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https://developers.facebook.com/apps/).And then add the following variables.
+To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https://developers.facebook.com/apps/).And then add these following variables.
    1) Update your local.properties with these two variables
       1.1) "fbApiKey" and enter your fb api key
       1.2) "fbApiScheme" and enter your fb api scheme
