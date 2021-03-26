@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import com.google.android.material.snackbar.Snackbar;
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.remote.APIService;
 import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.aossie.agoraandroid.utilities.AppConstants;
@@ -52,7 +53,8 @@ public class ResultViewModel extends AndroidViewModel {
             e.printStackTrace();
           }
         } else if (response.message().equals("No Content")) {
-          final Snackbar s = Snackbar.make(rootView, "Nothing to show here", Snackbar.LENGTH_INDEFINITE);
+          final Snackbar s = Snackbar.make(rootView, getApplication().getString(R.string.nothing_to_show_here),
+              Snackbar.LENGTH_INDEFINITE);
           s.setAction(AppConstants.ok, new View.OnClickListener() {
             @Override public void onClick(View view) {
               s.dismiss();

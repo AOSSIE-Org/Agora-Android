@@ -125,6 +125,7 @@
   <string name="random_ballot">RandomBallot</string>
   <string name="contingent_method">Contingent</string>
   <string name="instant_runoff_2_round">InstantRunoff2Round</string>
+  <string name="nothing_to_show_here">Nothing to show here</string>
 
 
   //string-array for security questions
