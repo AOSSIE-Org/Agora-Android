@@ -55,13 +55,10 @@ public class ResultViewModel extends AndroidViewModel {
         } else if (response.message().equals("No Content")) {
           final Snackbar s = Snackbar.make(rootView, getApplication().getString(R.string.nothing_to_show_here),
               Snackbar.LENGTH_INDEFINITE);
-          s.setAction(AppConstants.ok, new View.OnClickListener() {
-            @Override public void onClick(View view) {
+          s.setAction(AppConstants.ok, v -> {
               s.dismiss();
-            }
           });
           s.show();
-          //Toast.makeText(getApplication(), "Nothing to show here", Toast.LENGTH_SHORT).show();
         }
       }
 
