@@ -62,15 +62,16 @@ For creating a merge request, it is very **important** to follow the [best pract
 If you face **any** problems, feel free to ask our community at [Gitter](https://gitter.im/AOSSIE/Agora-Android) 
 
 ## Running the application
-To use Facebook login you will need to change "XXXXXXXXXXXXXXX" with your app id in app/src/main/res/values/string.xml
-    here
-    ```  <string name="facebook_app_id">XXXXXXXXXXXXXXX</string> 
-    ``` and here
-    ```
-         <string name="fb_login_protocol_scheme">fbXXXXXXXXXXXXXXX</string>
-    ```
+To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https://developers.facebook.com/apps/).And then add these following variables.
+   1) Update your local.properties with these two variables
+      1.1) "fbApiKey" and enter your fb api key
+      1.2) "fbApiScheme" and enter your fb api scheme
 
-**Note:** Don't forget to add "fb" before your fb_login_protocol_scheme. 
+   2) CI/CD variables
+      2.1) "FB_API_KEY"  and enter your fb api key
+      2.2) "FB_API_SCHEME"  and enter your fb api scheme
+
+**Note:** Don't forget to add "fb" before your fb_login_protocol_scheme.
 
 ## Setting up appetize.io
 

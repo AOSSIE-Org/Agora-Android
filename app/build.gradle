@@ -4,9 +4,16 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def fbApiScheme = properties.getProperty('fbApiScheme')
+def fbApiKey = properties.getProperty('fbApiKey')
+
 android {
   compileSdkVersion compileSdk
   defaultConfig {
+    resValue("string", "fbApiKey", fbApiKey)
+    resValue("string", "fbApiScheme", fbApiScheme)
     vectorDrawables.useSupportLibrary = true
     applicationId "org.aossie.agoraandroid"
     minSdkVersion minSdk
