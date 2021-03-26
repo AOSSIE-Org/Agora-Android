@@ -1,22 +1,12 @@
 package org.aossie.agoraandroid.data.network
 
-import android.content.Context
-import com.chuckerteam.chucker.api.ChuckerInterceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
-import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
 import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.data.network.responses.Voters
-import org.aossie.agoraandroid.utilities.AppConstants.HTTP_INTERCEPTOR_LEVEL
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -24,9 +14,6 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
-
-private const val BASE_URL = "https://agora-rest-api.herokuapp.com/api/v1/"
-
 
 interface Api {
 
@@ -125,35 +112,4 @@ interface Api {
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("vote/{id}")
   suspend fun castVote(@Path("id") id: String?, @Body body: String?): Response<ArrayList<String>>
-
-  companion object{
-    operator fun invoke(
-      context: Context,
-      networkInterceptor: NetworkInterceptor,
-      authorizationInterceptor: AuthorizationInterceptor
-    ): Api {
-
-      val httpInterceptor = HttpLoggingInterceptor()
-      httpInterceptor.level = HTTP_INTERCEPTOR_LEVEL
-
-      val chuckerInterceptor = ChuckerInterceptor.Builder(context)
-          .build()
-
-      val okHttpClient = OkHttpClient.Builder()
-          .addInterceptor(networkInterceptor)
-          .addInterceptor(httpInterceptor)
-          .addInterceptor(chuckerInterceptor)
-          .addInterceptor(authorizationInterceptor)
-          .build()
-
-      return Retrofit.Builder()
-          .client(okHttpClient)
-          .baseUrl(BASE_URL)
-          .addConverterFactory(ScalarsConverterFactory.create())
-          .addConverterFactory(GsonConverterFactory.create())
-          .build()
-          .create(Api::class.java)
-
-    }
-  }
 }
