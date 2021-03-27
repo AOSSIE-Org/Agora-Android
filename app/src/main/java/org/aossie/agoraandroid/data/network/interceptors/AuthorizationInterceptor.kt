@@ -36,9 +36,9 @@ class AuthorizationInterceptor(
             val response = client.api.facebookLogin(prefs.getFacebookAccessToken())
             if (response.isSuccessful) {
               // save new access token
-              prefs.setCurrentToken(response.body()!!.token)
-              user.token = response.body()!!.token
-              user.expiredAt = response.body()!!.expiresOn
+              prefs.setCurrentToken(response.body()!!.authToken?.token)
+              user.token = response.body()!!.authToken?.token
+              user.expiredAt = response.body()!!.authToken?.expiresOn
             } else {
               prefs.setIsLoggedIn(false)
               throw SessionExpirationException("Your session was expired. Please login again!")
