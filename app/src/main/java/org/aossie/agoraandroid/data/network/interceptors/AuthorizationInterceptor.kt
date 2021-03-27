@@ -1,9 +1,11 @@
 
 package org.aossie.agoraandroid.data.network.interceptors
 
+import android.content.Context
 import timber.log.Timber
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
@@ -16,6 +18,7 @@ import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONObject
 
 class AuthorizationInterceptor(
+  private val context: Context,
   private val prefs: PreferenceProvider,
   private val appDatabase: AppDatabase,
   private val client: Client
@@ -41,7 +44,7 @@ class AuthorizationInterceptor(
               user.expiredAt = response.body()!!.authToken?.expiresOn
             } else {
               prefs.setIsLoggedIn(false)
-              throw SessionExpirationException("Your session was expired. Please login again!")
+              throw SessionExpirationException(context.resources.getString(R.string.token_expired))
             }
           } else {
             val jsonObject = JSONObject()
@@ -61,7 +64,7 @@ class AuthorizationInterceptor(
               }
             } else {
               prefs.setIsLoggedIn(false)
-              throw SessionExpirationException("Your session was expired. Please login again!")
+              throw SessionExpirationException(context.resources.getString(R.string.token_expired))
             }
           }
           appDatabase.getUserDao().replace(user)
