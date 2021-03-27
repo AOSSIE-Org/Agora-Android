@@ -1,8 +1,12 @@
 package org.aossie.agoraandroid.ui.fragments.elections
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import javax.inject.Inject
 
@@ -13,7 +17,10 @@ class ElectionViewModel
     private val prefs: PreferenceProvider
   ): ViewModel(){
 
-  val elections by lazyDeferred {
-    electionsRepository.getElections()
+  fun getElections(): LiveData<List<Election>> {
+    GlobalScope.launch{
+      electionsRepository.fetchAndSaveElections()
+    }
+    return electionsRepository.getElections()
   }
 }

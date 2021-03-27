@@ -38,12 +38,15 @@ constructor(
     }
   }
 
-  suspend fun getElections(): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO) {
+  suspend fun fetchAndSaveElections(){
+    withContext(Dispatchers.IO){
       fetchElections()
-      db.getElectionDao()
-          .getElections()
     }
+  }
+
+  fun getElections(): LiveData<List<Election>> {
+    return db.getElectionDao()
+        .getElections()
   }
 
   suspend fun getFinishedElectionsCount(currentDate: String): LiveData<Int> {
