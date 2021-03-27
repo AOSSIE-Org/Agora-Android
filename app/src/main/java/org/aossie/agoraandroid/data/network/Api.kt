@@ -6,6 +6,7 @@ import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
 import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.data.network.responses.Voters
+import org.aossie.agoraandroid.data.network.responses.Winners
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -112,4 +113,9 @@ interface Api {
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("vote/{id}")
   suspend fun castVote(@Path("id") id: String?, @Body body: String?): Response<ArrayList<String>>
+
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("result/{id}")
+  suspend fun getResult(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<Winners>
+
 }

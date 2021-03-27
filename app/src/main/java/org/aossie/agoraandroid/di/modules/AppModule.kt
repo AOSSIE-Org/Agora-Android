@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level
 import org.aossie.agoraandroid.BuildConfig
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
@@ -14,6 +15,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
+import org.aossie.agoraandroid.remote.APIService
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
@@ -28,11 +30,13 @@ class AppModule {
   //TODO provide App level dependencies in here using @Provides
 
   @Provides
+  @Singleton
   fun providesPreferenceProvider(context: Context): PreferenceProvider{
     return PreferenceProvider(context)
   }
 
   @Provides
+  @Singleton
   fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs{
     return ElectionDetailsSharedPrefs(context)
   }
@@ -53,11 +57,16 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, @Named("apiWithoutAuthorization") api: Api): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase,  @Named("apiWithoutAuthorization") api: Api): AuthorizationInterceptor {
     return AuthorizationInterceptor(
         preferenceProvider, appDatabase, api
     )
   }
+
+  @Provides
+  @Singleton
+  fun providesAPIService(retrofit: Retrofit): APIService =
+    retrofit.create(APIService::class.java)
 
   @Provides
   @Singleton
@@ -79,7 +88,7 @@ class AppModule {
           if (BuildConfig.DEBUG) {
             addInterceptor(
                 HttpLoggingInterceptor().apply {
-                  level = AppConstants.HTTP_INTERCEPTOR_LEVEL
+                  level = Level.BASIC
                 }
             )
             addInterceptor(
@@ -102,7 +111,7 @@ class AppModule {
           if (BuildConfig.DEBUG) {
             addInterceptor(
                 HttpLoggingInterceptor().apply {
-                  level = AppConstants.HTTP_INTERCEPTOR_LEVEL
+                  level = Level.BASIC
                 }
             )
             addInterceptor(
@@ -119,7 +128,7 @@ class AppModule {
   fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .client(okHttpClient)
-        .baseUrl(AppConstants.BASE_URL)
+        .baseUrl("https://agora-rest-api.herokuapp.com/api/v1/")
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -131,13 +140,14 @@ class AppModule {
   fun provideRetrofitWithoutAuthorization(@Named("okHttpWithoutAuthorization") okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .client(okHttpClient)
-        .baseUrl(AppConstants.BASE_URL)
+        .baseUrl("https://agora-rest-api.herokuapp.com/api/v1/")
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
   }
 
   @Provides
+  @Singleton
   fun providesUserRepository(
     api: Api,
     appDatabase: AppDatabase,
@@ -147,6 +157,7 @@ class AppModule {
   }
 
   @Provides
+  @Singleton
   fun providesElectionsRepository(
     api: Api,
     appDatabase: AppDatabase,
