@@ -195,8 +195,8 @@ class ElectionDetailsFragment
     binding.root.button_delete.toggleIsEnable()
   }
 
-  override fun onResultFetchMessage(message: String) {
-    binding.root.snackbar(message)
+  override fun onResultFetchMessage(messageRef: Int) {
+    binding.root.snackbar(getString(messageRef))
   }
 }
 

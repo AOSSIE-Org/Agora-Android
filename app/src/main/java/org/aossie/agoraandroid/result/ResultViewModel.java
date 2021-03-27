@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.result;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import org.aossie.agoraandroid.R;
@@ -19,12 +18,12 @@ import retrofit2.Response;
 
 public class ResultViewModel extends AndroidViewModel {
   private final Context context;
-  private ResultFetchFailureListener resultFetchFailureListener;
+  private ResultFetchFailureListener electionResultListener;
 
   public ResultViewModel(@NonNull Application application, Context context, ResultFetchFailureListener failureListener) {
     super(application);
     this.context = context;
-    this.resultFetchFailureListener = failureListener;
+    this.electionResultListener = failureListener;
   }
 
   public void getResult(String token, String id) {
@@ -53,14 +52,13 @@ public class ResultViewModel extends AndroidViewModel {
             e.printStackTrace();
           }
         } else if (response.message().equals("No Content")) {
-          resultFetchFailureListener.onResultFetchMessage(context.getString(R.string.nothing_to_show_here));
+          electionResultListener.onResultFetchMessage(R.string.nothing_to_show_here);
         }
       }
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
-        Toast.makeText(getApplication(), "Something Went Wrong Please Try Again Later",
-            Toast.LENGTH_SHORT).show();
+        electionResultListener.onResultFetchMessage(R.string.something_went_wrong_please_try_again_later);
       }
     });
   }
