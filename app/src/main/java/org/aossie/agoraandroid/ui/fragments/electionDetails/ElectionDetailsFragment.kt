@@ -47,7 +47,7 @@ class ElectionDetailsFragment
     private val viewModelFactory: ViewModelProvider.Factory,
     private val prefs: PreferenceProvider
   ): Fragment(),
-    DisplayElectionListener {
+    DisplayElectionListener, ResultFetchFailureListener {
   lateinit var binding: FragmentElectionDetailsBinding
   private var id: String? = null
   private var status: String? = null
@@ -69,7 +69,7 @@ class ElectionDetailsFragment
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
-    resultViewModel = ResultViewModel(requireActivity().application, context)
+    resultViewModel = ResultViewModel(requireActivity().application, context, this)
     token = prefs.getCurrentToken()
     Timber.d(token.toString())
     binding.root.button_ballot.setOnClickListener {
@@ -104,7 +104,7 @@ class ElectionDetailsFragment
       if (status == "PENDING") {
         binding.root.snackbar("Election is not started yet")
       } else {
-        resultViewModel?.getResult(token, id, binding.root)
+        resultViewModel?.getResult(token, id)
       }
     }
 
@@ -193,6 +193,10 @@ class ElectionDetailsFragment
     binding.root.snackbar(message)
     binding.root.progress_bar.hide()
     binding.root.button_delete.toggleIsEnable()
+  }
+
+  override fun onResultFetchMessage(message: String) {
+    binding.root.snackbar(message)
   }
 }
 
