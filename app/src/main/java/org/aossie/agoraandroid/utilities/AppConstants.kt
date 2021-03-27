@@ -4,6 +4,7 @@ import okhttp3.logging.HttpLoggingInterceptor.Level
 
 object AppConstants {
   const val ok = "OK"
+  const val undo = "UNDO"
   const val BAD_REQUEST_CODE = 400
   const val UNAUTHENTICATED_CODE = 401
   const val INVALID_CREDENTIALS_CODE = 403

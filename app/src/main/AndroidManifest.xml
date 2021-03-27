@@ -31,12 +31,12 @@
             android:scheme="https"
             android:host="u6898803.ct.sendgrid.net"
             android:pathPattern="/.*/.*"
-             />
+            />
         <data
             android:scheme="http"
             android:host="u6898803.ct.sendgrid.net"
             android:pathPattern="/.*/.*"
-             />
+            />
       </intent-filter>
     </activity>
     <activity android:name=".result.ResultActivity" />
@@ -64,14 +64,14 @@
         <category android:name="android.intent.category.BROWSABLE" />
 
         <data
-            android:scheme="@string/fb_login_protocol_scheme"
+            android:scheme="@string/fbApiScheme"
             tools:ignore="AppLinkUrlError" />
       </intent-filter>
     </activity>
 
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
-        android:value="@string/facebook_app_id" />
+        android:value="@string/fbApiKey" />
   </application>
 
 </manifest>
