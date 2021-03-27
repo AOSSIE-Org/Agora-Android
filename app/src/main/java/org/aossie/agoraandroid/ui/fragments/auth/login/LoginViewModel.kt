@@ -88,7 +88,8 @@ constructor(
   private fun getUserData(authResponse: AuthResponse) {
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val user = User(authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName, authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
+        val user = User(authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName,
+                        authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
                         authResponse.authToken?.token, authResponse.authToken?.expiresOn)
           userRepository.saveUser(user)
           Timber.d(authResponse.toString())
