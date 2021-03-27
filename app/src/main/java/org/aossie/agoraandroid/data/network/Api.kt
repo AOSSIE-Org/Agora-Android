@@ -107,7 +107,7 @@ interface Api {
   //GET request to log in via facebook Access Token
   @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("auth/authenticate/facebook")
-  suspend fun facebookLogin(@Header("Access-Token") accessToken: String?): Response<AuthToken>
+  suspend fun facebookLogin(@Header("Access-Token") accessToken: String?): Response<AuthResponse>
 
   //GET request to get user's data
   @Headers("Accept: application/json", "Content-Type: application/json")

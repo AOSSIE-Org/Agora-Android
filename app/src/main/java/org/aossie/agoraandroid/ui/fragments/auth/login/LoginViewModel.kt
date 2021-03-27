@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
@@ -84,20 +85,15 @@ constructor(
     }
   }
 
-  private fun getUserData(token: AuthToken) {
+  private fun getUserData(authResponse: AuthResponse) {
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val authResponse = userRepository.getUserData()
-        authResponse.let {
-          val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
-              token.token, token.expiresOn
-          )
+        val user = User(authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName, authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
+                        authResponse.authToken?.token, authResponse.authToken?.expiresOn)
           userRepository.saveUser(user)
           Timber.d(authResponse.toString())
           prefs.setIsFacebookUser(true)
           authListener?.onSuccess()
-        }
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
