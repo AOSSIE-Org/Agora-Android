@@ -242,6 +242,7 @@
   <string name="gallery_option">Gallery Option</string>
   <string name="gallery">Gallery</string>
   <string name="no_browser">It seems you don\'t have any browser installed.</string>
+  <string name="voter_removed">Voter removed</string>
 
 </resources>
 

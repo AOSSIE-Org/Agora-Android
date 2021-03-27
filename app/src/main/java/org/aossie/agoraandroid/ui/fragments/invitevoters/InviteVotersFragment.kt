@@ -72,7 +72,7 @@ class InviteVotersFragment
       ) {
         val lastName = mVoterNames[viewHolder.adapterPosition]
         val lastEmail = mVoterEmails[viewHolder.adapterPosition]
-        Snackbar.make(rootView, "Voter removed", Snackbar.LENGTH_LONG)
+        Snackbar.make(rootView, R.string.voter_removed, Snackbar.LENGTH_LONG)
             .setAction(AppConstants.undo) {
               addCandidate(lastName, lastEmail)
             }.show()
