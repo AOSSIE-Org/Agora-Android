@@ -78,7 +78,7 @@ class UserRepository(
 
   suspend fun fbLogin(
     accessToken: String
-  ): AuthToken {
+  ): AuthResponse {
     return apiRequest { api.facebookLogin(accessToken) }
   }
 
