@@ -176,6 +176,6 @@ constructor(
   }
 
   override fun onFailure(message: String) {
-    rootView.snackbar("$message - Token Expired, Swipe refresh to update) ")
+    rootView.snackbar("$message - " + context?.resources?.getString(R.string.token_expired))
   }
 }
