@@ -17,7 +17,6 @@ import org.aossie.agoraandroid.data.network.interceptors.AuthorizationIntercepto
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.remote.APIService
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
-import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -57,7 +56,7 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase,  @Named("apiWithoutAuthorization") api: Api): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase,  @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
     return AuthorizationInterceptor(
         preferenceProvider, appDatabase, api
     )
@@ -75,8 +74,8 @@ class AppModule {
 
   @Provides
   @Singleton
-  @Named("apiWithoutAuthorization")
-  fun providesApiWithoutAuthorization(@Named("retrofitWithoutAuthorization") retrofit: Retrofit): Api =
+  @Named("apiWithoutAuth")
+  fun providesApiWithoutAuth(@Named("retrofitWithoutAuth") retrofit: Retrofit): Api =
     retrofit.create(Api::class.java)
 
   @Provides
@@ -103,8 +102,8 @@ class AppModule {
 
   @Provides
   @Singleton
-  @Named("okHttpWithoutAuthorization")
-  fun provideOkHttpClientWithoutAuthorization(context: Context,networkInterceptor: NetworkInterceptor): OkHttpClient {
+  @Named("okHttpWithoutAuth")
+  fun provideOkHttpClientWithoutAuth(context: Context,networkInterceptor: NetworkInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
         .apply {
           addInterceptor(networkInterceptor)
@@ -136,8 +135,8 @@ class AppModule {
 
   @Provides
   @Singleton
-  @Named("retrofitWithoutAuthorization")
-  fun provideRetrofitWithoutAuthorization(@Named("okHttpWithoutAuthorization") okHttpClient: OkHttpClient): Retrofit {
+  @Named("retrofitWithoutAuth")
+  fun provideRetrofitWithoutAuth(@Named("okHttpWithoutAuth") okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl("https://agora-rest-api.herokuapp.com/api/v1/")

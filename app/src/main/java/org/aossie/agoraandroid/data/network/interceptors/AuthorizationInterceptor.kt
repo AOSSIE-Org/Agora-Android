@@ -17,7 +17,7 @@ import javax.inject.Named
 class AuthorizationInterceptor(
   private val prefs: PreferenceProvider,
   private val appDatabase: AppDatabase,
-  @Named("apiWithoutAuthorization") private val api: Api
+  @Named("apiWithoutAuth") private val api: Api
 ) : Interceptor, ApiRequest() {
 
   override fun intercept(chain: Interceptor.Chain): Response {
