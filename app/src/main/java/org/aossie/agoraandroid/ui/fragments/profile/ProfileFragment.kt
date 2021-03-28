@@ -104,7 +104,7 @@ constructor(
         binding.user = it
         mUser = it
         if (it.avatarURL != null) {
-          val bitmap = decodeBitmap(it.avatarURL!!)
+          val bitmap = decodeBitmap(it.avatarURL)
           encodedImage = encodePngImage(bitmap)
         }
       }
