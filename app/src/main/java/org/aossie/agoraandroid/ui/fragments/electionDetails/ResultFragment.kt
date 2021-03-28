@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -97,7 +98,7 @@ constructor(
 
     val description = Description()
     description.text = getString(R.string.election_result)
-    description.textColor = resources.getColor(R.color.colorPrimary, context?.theme)
+    description.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
     pieChart.description = description
 
     val value: ArrayList<PieEntry> = ArrayList()
@@ -110,7 +111,7 @@ constructor(
     val pieData = PieData(pieDataSet)
     pieChart.data = pieData
     val legend = pieChart.legend
-    legend.textColor = resources.getColor(R.color.colorPrimary, context?.theme)
+    legend.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
     pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
     pieChart.animateXY(1400, 1400)
     rootView.text_view_winner_name.text = winner.candidate?.name
