@@ -56,9 +56,9 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase,  @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(context: Context, preferenceProvider: PreferenceProvider, appDatabase: AppDatabase,  @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
     return AuthorizationInterceptor(
-        preferenceProvider, appDatabase, api
+        context, preferenceProvider, appDatabase, api
     )
   }
 

@@ -8,7 +8,6 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
-import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -78,7 +77,7 @@ class UserRepository(
 
   suspend fun fbLogin(
     accessToken: String
-  ): AuthToken {
+  ): AuthResponse {
     return apiRequest { api.facebookLogin(accessToken) }
   }
 

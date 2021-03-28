@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.db.model
 
 data class VoterList(
-  var name: String? = null,
-  var hash: String? = null
+  val name: String? = null,
+  val hash: String? = null
 )

@@ -86,10 +86,10 @@ constructor(
         binding.user = it
         mUser = it
         if (it.avatarURL != null) {
-          if(it.avatarURL!!.isUrl())
-            cacheAndSaveImage(it.avatarURL!!)
+          if(it.avatarURL.isUrl())
+            cacheAndSaveImage(it.avatarURL)
           else {
-            val bitmap = decodeBitmap(it.avatarURL!!)
+            val bitmap = decodeBitmap(it.avatarURL)
             setAvatar(bitmap)
           }
         }

@@ -104,7 +104,7 @@ constructor(
         binding.user = it
         mUser = it
         if (it.avatarURL != null) {
-          val bitmap = decodeBitmap(it.avatarURL!!)
+          val bitmap = decodeBitmap(it.avatarURL)
           encodedImage = encodePngImage(bitmap)
         }
       }
@@ -147,6 +147,7 @@ constructor(
               dialog.cancel()
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+              binding.switchWidget.isChecked = false
               dialog.cancel()
             }
             .create()
@@ -163,6 +164,7 @@ constructor(
               dialog.cancel()
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+              binding.switchWidget.isChecked = true
               dialog.cancel()
             }
             .create()
