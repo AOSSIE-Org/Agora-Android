@@ -22,6 +22,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.remote.APIService
 import org.aossie.agoraandroid.result.ResultViewModel
+import org.aossie.agoraandroid.result.ResultViewModelFactory
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -57,7 +58,8 @@ class ElectionDetailsFragment
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels{
     viewModelFactory
   }
-  private var resultViewModel: ResultViewModel? = null
+  private lateinit var resultViewModel: ResultViewModel
+  private lateinit var resultViewModelFactory: ResultViewModelFactory
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -71,7 +73,8 @@ class ElectionDetailsFragment
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
-    resultViewModel = ResultViewModel(requireActivity().application, context, apiService)
+    resultViewModelFactory = ResultViewModelFactory(requireActivity().application, context, apiService)
+    resultViewModel = ViewModelProvider(this, resultViewModelFactory).get(ResultViewModel::class.java)
     token = prefs.getCurrentToken()
     Timber.d(token.toString())
     binding.root.button_ballot.setOnClickListener {
@@ -106,7 +109,7 @@ class ElectionDetailsFragment
       if (status == "PENDING") {
         binding.root.snackbar("Election is not started yet")
       } else {
-        resultViewModel?.getResult(token, id)
+        resultViewModel.getResult(token, id)
       }
     }
 

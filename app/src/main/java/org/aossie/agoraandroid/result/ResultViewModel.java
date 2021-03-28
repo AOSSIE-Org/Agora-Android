@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import javax.inject.Inject;
 import org.aossie.agoraandroid.remote.APIService;
 import org.json.JSONArray;
 import org.json.JSONException;
