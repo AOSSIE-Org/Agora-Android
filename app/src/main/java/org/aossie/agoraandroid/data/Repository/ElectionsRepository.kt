@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.data.Repository
 
-import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
@@ -8,6 +7,7 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.data.db.model.Winner
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.Ballots
@@ -20,6 +20,7 @@ import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONException
 import org.json.JSONObject
+import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
@@ -190,7 +191,12 @@ constructor(
 
   suspend fun getResult(
     id: String
-  ): Winners {
-    return apiRequest { api.getResult(prefs.getCurrentToken(), id) }
+  ): ArrayList<Winner>? {
+    val response = api.getResult(prefs.getCurrentToken(), id)
+    return if (response.message() == "OK") {
+      apiRequest { response }
+    } else {
+      null
+    }
   }
 }

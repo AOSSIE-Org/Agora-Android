@@ -241,6 +241,14 @@
   <string name="gallery">Gallery</string>
   <string name="no_browser">It seems you don\'t have any browser installed.</string>
   <string name="voter_removed">Voter removed</string>
-
+  <string name="no_result">Nothing to show here</string>
+  <string name="fetch_result_failed">Unable to fetch result</string>
+  <string name="no_network">Please check your network connection</string>
+  <string name="others">Others</string>
+  <string name="election_not_started">Election is not started yet</string>
+  <string name="election_finished">Election is Finished</string>
+  <string name="active_elections_not_started">Active Elections Cannot Be Deleted</string>
+  <string name="election_result">Election Result in percentage</string>
+  <string name="winner_is">Winner is</string>
 </resources>
 

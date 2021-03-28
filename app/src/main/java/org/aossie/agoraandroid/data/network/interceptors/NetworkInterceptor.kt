@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.utilities.NoInternetException
 import javax.inject.Inject
 
@@ -17,7 +18,7 @@ constructor(
   private val applicationContext = context.applicationContext
   override fun intercept(chain: Interceptor.Chain): Response {
     if (!isConnected())
-      throw NoInternetException("Please check your network connection")
+      throw NoInternetException(applicationContext.resources.getString(R.string.no_network))
     return chain.proceed(chain.request())
   }
 

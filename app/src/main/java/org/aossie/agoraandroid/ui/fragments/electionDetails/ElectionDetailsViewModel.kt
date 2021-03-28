@@ -8,6 +8,7 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.data.db.model.Ballot
 import org.aossie.agoraandroid.data.db.model.VoterList
+import org.aossie.agoraandroid.data.db.model.Winner
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -26,6 +27,8 @@ constructor(
   var notConnected: LiveData<Boolean> = mNotConnected
   private val mBallotResponse = MutableLiveData<List<Ballot>>()
   var ballotResponse: LiveData<List<Ballot>> = mBallotResponse
+  private val mResultResponse = MutableLiveData<Winner>()
+  var resultResponse: LiveData<Winner> = mResultResponse
 
   lateinit var displayElectionListener: DisplayElectionListener
 
@@ -92,6 +95,32 @@ constructor(
       } catch (e: SessionExpirationException) {
         displayElectionListener.onFailure(e.message!!)
       }catch (e: NoInternetException) {
+        displayElectionListener.onFailure(e.message!!)
+      } catch (e: Exception) {
+        displayElectionListener.onFailure(e.message!!)
+      }
+    }
+  }
+
+  fun getResult(
+    id: String?
+  ) {
+    displayElectionListener.onStarted()
+    Coroutines.main {
+      try {
+        val response = electionsRepository.getResult(id!!)
+        if (!response.isNullOrEmpty()) {
+          mResultResponse.postValue(response[0])
+        } else {
+          mResultResponse.postValue(null)
+        }
+        displayElectionListener.onSuccess()
+      } catch (e: ApiException) {
+        displayElectionListener.onFailure(e.message!!)
+      } catch (e: SessionExpirationException) {
+        displayElectionListener.onFailure(e.message!!)
+      }catch (e: NoInternetException) {
+        mNotConnected.postValue(true)
         displayElectionListener.onFailure(e.message!!)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)
