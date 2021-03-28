@@ -27,11 +27,8 @@ class AuthorizationInterceptor(
   override fun intercept(chain: Interceptor.Chain): Response {
     val mainResponse = chain.proceed(chain.request())
 
-
       // if response code is 401 or 403, network call has encountered authentication error
-    if (mainResponse.code() == AppConstants.UNAUTHENTICATED_CODE ||
-        mainResponse.code() == AppConstants.INVALID_CREDENTIALS_CODE
-    ) {
+    if (mainResponse.code() == AppConstants.UNAUTHENTICATED_CODE || mainResponse.code() == AppConstants.INVALID_CREDENTIALS_CODE) {
         if (prefs.getIsLoggedIn()){
         Coroutines.io{
           var user = appDatabase.getUserDao().getUserInfo()
