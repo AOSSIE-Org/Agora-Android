@@ -155,6 +155,7 @@ constructor(
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
               binding.root.progress_bar.show()
               viewModel.toggleTwoFactorAuth()
+              switchWidget.isChecked = true
               dialog.cancel()
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
