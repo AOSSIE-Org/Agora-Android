@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_add_voter
 import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_invite_voter
@@ -26,9 +27,11 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import org.json.JSONException
 import java.util.ArrayList
 import javax.inject.Inject
@@ -67,6 +70,13 @@ class InviteVotersFragment
         viewHolder: ViewHolder,
         direction: Int
       ) {
+        val lastName = mVoterNames[viewHolder.adapterPosition]
+        val lastEmail = mVoterEmails[viewHolder.adapterPosition]
+        Snackbar.make(rootView, R.string.voter_removed, Snackbar.LENGTH_LONG)
+            .setAction(AppConstants.undo) {
+              addCandidate(lastName, lastEmail)
+            }.show()
+
         mVoterNames.removeAt(viewHolder.adapterPosition)
         mVoterEmails.removeAt(viewHolder.adapterPosition)
         voterRecyclerAdapter!!.notifyDataSetChanged()
@@ -155,10 +165,12 @@ class InviteVotersFragment
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.button_invite_voter.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
+    rootView.button_invite_voter.toggleIsEnable()
     val mMessage = StringBuilder()
     mMessage.append(message)
     rootView.snackbar(mMessage.toString())
@@ -166,6 +178,7 @@ class InviteVotersFragment
 
   override fun onSuccess(message: String) {
     rootView.progress_bar.hide()
+    rootView.button_invite_voter.toggleIsEnable()
     prefs.setUpdateNeeded(true)
     rootView.snackbar(message)
     Navigation.findNavController(rootView)

@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
 import android.os.Bundle
-import android.util.Log
+import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,18 +89,18 @@ constructor(
           if(user != null) {
             val formatter =
               SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            //Log.d("friday", user.token!!)
+            //Timber.d(user.token!!)
             val currentDate = Calendar.getInstance()
                 .time
             val expireOn = user.expiredAt
-            Log.d("friday", user.toString())
-            Log.d("expiresOn", expireOn.toString())
+            Timber.d(user.toString())
+            Timber.tag("expiresOn").d(expireOn.toString())
             try {
               if (expireOn != null) {
                 val expiresOn = formatter.parse(expireOn)
                 //If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
-                  Log.d("expired", expireOn.toString())
+                  Timber.tag("expired").d(expireOn.toString())
                   if (preferenceProvider.getIsFacebookUser()) {
                     loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
                   } else {
@@ -116,13 +116,12 @@ constructor(
           }
         })
     Coroutines.main {
-      val elections = homeViewModel.elections.await()
       val totalElectionCount = homeViewModel.totalElectionsCount.await()
       val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
       val activeElectionCount = homeViewModel.activeElectionsCount.await()
       val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
       if (view != null) {
-        elections.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        homeViewModel.getElections().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
           totalElectionCount.observe(viewLifecycleOwner, Observer {
             rootView.text_view_total_count.text = it.toString()
             pendingElectionCount.observe(viewLifecycleOwner, Observer { pending ->
@@ -177,6 +176,6 @@ constructor(
   }
 
   override fun onFailure(message: String) {
-    rootView.snackbar("$message - Token Expired, Swipe refresh to update) ")
+    rootView.snackbar("$message - " + context?.resources?.getString(R.string.token_expired))
   }
 }

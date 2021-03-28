@@ -17,7 +17,6 @@ import retrofit2.Response;
 
 public class ResultViewModel extends AndroidViewModel {
   private final Context context;
-  //private LoadToast loadToast;
 
   public ResultViewModel(@NonNull Application application, Context context) {
     super(application);
