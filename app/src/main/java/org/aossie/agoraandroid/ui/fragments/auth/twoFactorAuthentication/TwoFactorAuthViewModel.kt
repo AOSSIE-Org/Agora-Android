@@ -10,8 +10,9 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -35,15 +36,6 @@ constructor(
 
   val resendOtpResponse: LiveData<ResponseResults>
     get() = mResendOtpResponse
-
-  sealed class ResponseResults {
-    class Success(text: String? = null) : ResponseResults() {
-      val message = text
-    }
-    class Error(errorText: String) : ResponseResults() {
-      val message = errorText
-    }
-  }
 
   fun verifyOTP(
     otp: String,

@@ -27,9 +27,9 @@ import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
 import org.aossie.agoraandroid.adapters.UpvotedCandidateAdapter
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.MainActivity
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show

@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show

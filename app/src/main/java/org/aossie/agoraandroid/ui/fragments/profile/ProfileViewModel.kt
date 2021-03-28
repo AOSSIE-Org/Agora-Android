@@ -6,8 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -43,15 +44,6 @@ constructor(
 
   val changeAvatarResponse: LiveData<ResponseResults>
     get() = _changeAvatarResponse
-
-  sealed class ResponseResults {
-    class Success(text: String? = null) : ResponseResults() {
-      val message = text
-    }
-    class Error(errorText: String) : ResponseResults() {
-      val message = errorText
-    }
-  }
 
   fun changePassword(password: String) {
     val jsonObject = JSONObject()

@@ -43,9 +43,9 @@ import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.hide

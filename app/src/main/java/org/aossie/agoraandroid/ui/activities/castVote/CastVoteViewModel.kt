@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -32,15 +33,6 @@ constructor(
 
   val election: LiveData<ElectionResponse>
     get() = mElection
-
-  sealed class ResponseResults {
-    class Success(text: String? = null) : ResponseResults() {
-      val message = text
-    }
-    class Error(errorText: String) : ResponseResults() {
-      val message = errorText
-    }
-  }
 
   fun verifyVoter(id: String){
     try {
