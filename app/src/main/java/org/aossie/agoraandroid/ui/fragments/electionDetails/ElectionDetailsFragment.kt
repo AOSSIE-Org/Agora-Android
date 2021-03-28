@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_election_details.view.progress_ba
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
+import org.aossie.agoraandroid.remote.APIService
 import org.aossie.agoraandroid.result.ResultViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
@@ -45,7 +46,8 @@ class ElectionDetailsFragment
   @Inject
   constructor(
     private val viewModelFactory: ViewModelProvider.Factory,
-    private val prefs: PreferenceProvider
+    private val prefs: PreferenceProvider,
+    private val apiService: APIService
   ): Fragment(),
     DisplayElectionListener {
   lateinit var binding: FragmentElectionDetailsBinding
@@ -69,7 +71,7 @@ class ElectionDetailsFragment
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
-    resultViewModel = ResultViewModel(requireActivity().application, context)
+    resultViewModel = ResultViewModel(requireActivity().application, context, apiService)
     token = prefs.getCurrentToken()
     Timber.d(token.toString())
     binding.root.button_ballot.setOnClickListener {
