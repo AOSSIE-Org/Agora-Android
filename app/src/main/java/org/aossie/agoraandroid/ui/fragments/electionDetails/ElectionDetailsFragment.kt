@@ -73,7 +73,7 @@ class ElectionDetailsFragment
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
-    resultViewModelFactory = ResultViewModelFactory(requireActivity().application, context, apiService, this);
+    resultViewModelFactory = ResultViewModelFactory(requireActivity().application, requireContext(), apiService, this);
     resultViewModel = ViewModelProvider(this, resultViewModelFactory).get(ResultViewModel::class.java)
     token = prefs.getCurrentToken()
     Timber.d(token.toString())
