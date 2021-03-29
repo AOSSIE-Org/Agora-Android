@@ -187,23 +187,18 @@ constructor(
     binding.changePasswordBtn.setOnClickListener {
       val newPass = binding.newPasswordTiet.text.toString()
       val conPass = binding.confirmPasswordTiet.text.toString()
-      if (binding.newPasswordTil.error == null && binding.confirmPasswordTil.error == null) {
-        when {
-          newPass.isEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
-          conPass.isEmpty() -> binding.confirmPasswordTil.error =
-            getString(string.password_empty_warn)
-          newPass != conPass -> binding.confirmPasswordTil.error =
-            getString(string.password_not_match_warn)
-          else -> {
-            binding.root.progress_bar.show()
-            toggleIsEnable()
-            hideKeyboardInFrag(this@ProfileFragment)
-            viewModel.changePassword(binding.newPasswordTiet.text.toString())
-          }
+      when {
+        newPass.isEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
+        conPass.isEmpty() -> binding.confirmPasswordTil.error =
+          getString(string.password_empty_warn)
+        newPass != conPass -> binding.confirmPasswordTil.error =
+          getString(string.password_not_match_warn)
+        else -> {
+          binding.root.progress_bar.show()
+          toggleIsEnable()
+          hideKeyboardInFrag(this@ProfileFragment)
+          viewModel.changePassword(binding.newPasswordTiet.text.toString())
         }
-      } else {
-        binding.root.progress_bar.hide()
-        toggleIsEnable()
       }
     }
 
