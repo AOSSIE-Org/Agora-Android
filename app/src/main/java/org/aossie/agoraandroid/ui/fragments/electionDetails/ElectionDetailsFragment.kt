@@ -104,6 +104,7 @@ class ElectionDetailsFragment
       if (status == "PENDING") {
         binding.root.snackbar("Election is not started yet")
       } else {
+        binding.root.button_result.toggleIsEnable()
         resultViewModel?.getResult(token, id)
       }
     }
@@ -196,7 +197,15 @@ class ElectionDetailsFragment
   }
 
   override fun onResultFetchMessage(messageRef: Int) {
+    binding.root.button_result.toggleIsEnable()
     binding.root.snackbar(getString(messageRef))
+  }
+
+  override fun onResume() {
+    if (!binding.root.button_result.isEnabled) {
+      binding.root.button_result.toggleIsEnable()
+    }
+    super.onResume()
   }
 }
 
