@@ -55,8 +55,6 @@ constructor(
         }
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
-      }catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
       } catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
@@ -74,9 +72,7 @@ constructor(
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
-      } catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
         authListener?.onFailure(e.message!!)
@@ -97,7 +93,10 @@ constructor(
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
+        if (e.message.toString()
+                .toBoolean()
+        ) getUserData(authResponse)
+        else authListener?.onSessionExpired()
       }catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {

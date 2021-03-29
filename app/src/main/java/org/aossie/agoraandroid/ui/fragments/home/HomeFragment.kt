@@ -26,6 +26,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -177,5 +178,9 @@ constructor(
 
   override fun onFailure(message: String) {
     rootView.snackbar("$message - " + context?.resources?.getString(R.string.token_expired))
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 }

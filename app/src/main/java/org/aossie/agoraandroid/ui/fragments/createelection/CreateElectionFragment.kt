@@ -48,6 +48,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
@@ -405,4 +406,7 @@ constructor(
     rootView.submit_details_btn.toggleIsEnable()
   }
 
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
+  }
 }

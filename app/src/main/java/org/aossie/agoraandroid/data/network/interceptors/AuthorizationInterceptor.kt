@@ -1,11 +1,10 @@
 
 package org.aossie.agoraandroid.data.network.interceptors
 
-import android.content.Context
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
@@ -18,7 +17,6 @@ import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONObject
 
 class AuthorizationInterceptor(
-  private val context: Context,
   private val prefs: PreferenceProvider,
   private val appDatabase: AppDatabase,
   private val client: Client
@@ -30,7 +28,7 @@ class AuthorizationInterceptor(
       // if response code is 401 or 403, network call has encountered authentication error
     if (mainResponse.code() == AppConstants.UNAUTHENTICATED_CODE || mainResponse.code() == AppConstants.INVALID_CREDENTIALS_CODE) {
         if (prefs.getIsLoggedIn()){
-        Coroutines.io{
+        runBlocking {
           var user = appDatabase.getUserDao().getUserInfo()
           if (prefs.getIsFacebookUser()) {
             val response = client.api.facebookLogin(prefs.getFacebookAccessToken())
@@ -41,9 +39,10 @@ class AuthorizationInterceptor(
               user.expiredAt = response.body()!!.authToken?.expiresOn
             } else {
               prefs.setIsLoggedIn(false)
-              throw SessionExpirationException(context.resources.getString(R.string.token_expired))
+              throw SessionExpirationException(false)
             }
-          } else {
+          }
+          else {
             val jsonObject = JSONObject()
             jsonObject.put("identifier", user.username)
             jsonObject.put("password", user.password)
@@ -61,11 +60,12 @@ class AuthorizationInterceptor(
               }
             } else {
               prefs.setIsLoggedIn(false)
-              throw SessionExpirationException(context.resources.getString(R.string.token_expired))
+              throw SessionExpirationException(false)
             }
           }
           appDatabase.getUserDao().replace(user)
           prefs.setCurrentToken(user.token)
+          throw SessionExpirationException(retry = true)
         }
       }
     }

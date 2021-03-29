@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_ballot.view.tv_empty_ballots
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.BallotsAdapter
 import org.aossie.agoraandroid.data.db.model.Ballot
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -123,6 +124,10 @@ class BallotFragment
   override fun onFailure(message: String) {
     rootView.snackbar(message)
     rootView.progress_bar.hide()
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 
 }

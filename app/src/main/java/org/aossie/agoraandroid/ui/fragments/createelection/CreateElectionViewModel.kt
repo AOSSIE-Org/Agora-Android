@@ -8,6 +8,7 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.model.Ballot
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -51,6 +52,11 @@ constructor(
          createElectionListener.onSuccess(response[1])
       }catch (e : ApiException){
         createElectionListener.onFailure(e.message!!)
+      }catch (e : SessionExpirationException){
+        if (e.message.toString()
+                .toBoolean()
+        ) createElection()
+        else createElectionListener.onSessionExpired()
       }catch (e : NoInternetException){
         createElectionListener.onFailure(e.message!!)
       }catch (e : Exception){

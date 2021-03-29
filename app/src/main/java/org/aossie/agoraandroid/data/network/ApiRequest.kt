@@ -24,7 +24,6 @@ abstract class ApiRequest {
       }
       when(response.code()){
         AppConstants.BAD_REQUEST_CODE -> message.append(AppConstants.BAD_REQUEST_MESSAGE)
-        AppConstants.UNAUTHENTICATED_CODE -> message.append(AppConstants.UNAUTHENTICATED_MESSAGE)
         AppConstants.INVALID_CREDENTIALS_CODE -> message.append(AppConstants.INVALID_CREDENTIALS_MESSAGE)
         AppConstants.INTERNAL_SERVER_ERROR_CODE -> message.append(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE)
       }

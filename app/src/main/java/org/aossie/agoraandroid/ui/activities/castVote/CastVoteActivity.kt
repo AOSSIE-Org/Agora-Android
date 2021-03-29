@@ -13,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.facebook.login.LoginManager
 import kotlinx.android.synthetic.main.activity_cast_vote.btn_cast_vote
 import kotlinx.android.synthetic.main.activity_cast_vote.constraintLayout
 import kotlinx.android.synthetic.main.activity_cast_vote.progress_bar
@@ -25,10 +27,12 @@ import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
 import org.aossie.agoraandroid.adapters.UpvotedCandidateAdapter
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
-import org.aossie.agoraandroid.ui.activities.MainActivity
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Error
+import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.SessionExpired
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
@@ -66,6 +70,9 @@ class  CastVoteActivity : AppCompatActivity(),
 
   private lateinit var selectedCandidates: ArrayList<String>
   private lateinit var upvotedCandidateAdapter: UpvotedCandidateAdapter
+
+  @Inject
+  lateinit var prefs: PreferenceProvider
 
   private val viewModel: CastVoteViewModel by viewModels {
     viewModelFactory
@@ -185,6 +192,7 @@ class  CastVoteActivity : AppCompatActivity(),
       binding.root.snackbar(response.message)
       progress_bar.hide()
     }
+    is SessionExpired -> logout()
   }
 
   private fun handleVerifyVoter(response: ResponseResults) = when(response) {
@@ -229,6 +237,7 @@ class  CastVoteActivity : AppCompatActivity(),
       binding.root.snackbar(response.message)
       progress_bar.hide()
     }
+    is SessionExpired -> logout()
   }
 
   override fun onItemClicked(
@@ -249,4 +258,13 @@ class  CastVoteActivity : AppCompatActivity(),
     }
   }
 
+  fun logout() {
+    binding.root.snackbar(resources.getString(R.string.token_expired))
+    viewModel.deleteUserData()
+    if (prefs.getIsFacebookUser()) {
+      LoginManager.getInstance()
+          .logOut()
+    }
+    Navigation.findNavController(binding.root).navigate(R.id.loginFragment)
+  }
 }

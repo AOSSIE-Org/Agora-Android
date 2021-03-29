@@ -46,9 +46,9 @@ class AppModule {
   }
 
   @Provides
-  fun providesAuthorizationInterceptor(context: Context, preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, client: Client): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, client: Client): AuthorizationInterceptor {
     return AuthorizationInterceptor(
-        context, preferenceProvider, appDatabase, client
+        preferenceProvider, appDatabase, client
     )
   }
 

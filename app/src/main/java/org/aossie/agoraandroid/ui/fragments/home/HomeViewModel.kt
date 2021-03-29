@@ -64,7 +64,10 @@ constructor(
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
+        if (e.message.toString()
+                .toBoolean()
+        ) doLogout()
+        else authListener?.onSessionExpired()
       }catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {

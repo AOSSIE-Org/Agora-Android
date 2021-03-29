@@ -187,4 +187,8 @@ constructor(
     rootView.signup_btn.toggleIsEnable()
   }
 
+  override fun onSessionExpired() {
+    //do nothing
+  }
+
 }

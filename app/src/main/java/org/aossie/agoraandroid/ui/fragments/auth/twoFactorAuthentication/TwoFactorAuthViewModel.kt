@@ -11,6 +11,7 @@ import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Error
+import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.SessionExpired
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -43,6 +44,7 @@ constructor(
     class Error(errorText: String) : ResponseResults() {
       val message = errorText
     }
+    object SessionExpired : ResponseResults()
   }
 
   fun verifyOTP(
@@ -71,7 +73,10 @@ constructor(
       } catch (e: ApiException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        mVerifyOtpResponse.value = Error(e.message.toString())
+        if (e.message.toString()
+                .toBoolean()
+        ) verifyOTP(otp, trustedDevice, password, crypto)
+        else mVerifyOtpResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -100,7 +105,10 @@ constructor(
       } catch (e: ApiException) {
         mResendOtpResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        mResendOtpResponse.value = Error(e.message.toString())
+        if (e.message.toString()
+                .toBoolean()
+        ) resendOTP(username, password)
+        else mResendOtpResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         mResendOtpResponse.value = Error(e.message.toString())
       } catch (e: Exception) {

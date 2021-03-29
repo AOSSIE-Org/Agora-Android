@@ -21,6 +21,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.result.ResultViewModel
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -193,6 +194,10 @@ class ElectionDetailsFragment
     binding.root.snackbar(message)
     binding.root.progress_bar.hide()
     binding.root.button_delete.toggleIsEnable()
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 
   override fun onResultFetchMessage(messageRef: Int) {

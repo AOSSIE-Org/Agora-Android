@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_forgot_password.view.button_send_
 import kotlinx.android.synthetic.main.fragment_forgot_password.view.edit_text_user_name
 import kotlinx.android.synthetic.main.fragment_forgot_password.view.progress_bar
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
@@ -73,6 +74,10 @@ class ForgotPasswordFragment
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+  }
+
+  override fun onSessionExpired() {
+    //do nothing
   }
 
 }

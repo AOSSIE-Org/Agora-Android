@@ -1,29 +1,36 @@
-package org.aossie.agoraandroid.ui.activities
+package org.aossie.agoraandroid.ui.activities.mainActivity
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavOptions.Builder
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.facebook.login.LoginManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.bottom_navigation
 import kotlinx.android.synthetic.main.activity_main.iv_back
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_main.tv_title
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.animGone
 import org.aossie.agoraandroid.utilities.animVisible
+import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -38,6 +45,13 @@ class MainActivity : AppCompatActivity() {
 
   @Inject
   lateinit var prefs: PreferenceProvider
+
+  @Inject
+  lateinit var userRepository: UserRepository
+
+  private val viewModel: MainActivityViewModel by viewModels {
+    viewModelFactory
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -128,7 +142,7 @@ class MainActivity : AppCompatActivity() {
       R.id.reportBugFragment,
       R.id.shareWithOthersFragment,
       R.id.contactUsFragment,
-      R.id.profileFragment-> iv_back.let {
+      R.id.profileFragment -> iv_back.let {
         it.visibility = View.VISIBLE
         it.setOnClickListener { onBackPressed() }
       }
@@ -144,6 +158,21 @@ class MainActivity : AppCompatActivity() {
     val navHostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     val childFragments = navHostFragment?.childFragmentManager?.fragments
     childFragments?.forEach { it.onActivityResult(requestCode, resultCode, data) }
+  }
+
+  fun logout() {
+    findViewById<View>(android.R.id.content).snackbar(resources.getString(R.string.token_expired))
+    viewModel.deleteUserData()
+    if (prefs.getIsFacebookUser()) {
+      LoginManager.getInstance()
+          .logOut()
+    }
+    val navBuilder = Builder()
+    navBuilder.setEnterAnim(R.anim.slide_in_left)
+        .setExitAnim(R.anim.slide_out_right)
+        .setPopEnterAnim(R.anim.slide_in_right)
+        .setPopExitAnim(R.anim.slide_out_left)
+    navController.navigate(R.id.welcomeFragment, null, navBuilder.build())
   }
 }
 

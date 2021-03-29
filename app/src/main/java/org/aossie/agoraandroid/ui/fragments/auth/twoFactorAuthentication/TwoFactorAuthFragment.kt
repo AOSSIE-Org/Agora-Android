@@ -17,8 +17,10 @@ import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Error
+import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.SessionExpired
 import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
@@ -107,6 +109,7 @@ class TwoFactorAuthFragment
       rootView.progress_bar.hide()
       rootView.snackbar(response.message)
     }
+    is SessionExpired -> (activity as MainActivity).logout()
   }
   private fun handleResendOtp(response: ResponseResults) = when(response) {
     is Success -> {
@@ -117,5 +120,6 @@ class TwoFactorAuthFragment
       rootView.progress_bar.hide()
       rootView.snackbar(response.message)
     }
+    is SessionExpired -> (activity as MainActivity).logout()
   }
 }

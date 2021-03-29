@@ -4,18 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Error
+import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.SessionExpired
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.SessionExpirationException
 import javax.inject.Inject
 
 class CastVoteViewModel
 @Inject
 constructor(
-  val electionsRepository: ElectionsRepository
+  val electionsRepository: ElectionsRepository,
+  val userRepository: UserRepository
 ): ViewModel() {
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseResults>()
@@ -40,6 +44,8 @@ constructor(
     class Error(errorText: String) : ResponseResults() {
       val message = errorText
     }
+
+    object SessionExpired : ResponseResults()
   }
 
   fun verifyVoter(id: String){
@@ -52,8 +58,13 @@ constructor(
       }
     }catch (e: ApiException){
       mVerifyVoterResponse.value = Error(e.message.toString())
+    }catch (e: SessionExpirationException) {
+      if (e.message.toString()
+              .toBoolean()
+      ) verifyVoter(id)
+      else mVerifyVoterResponse.value = SessionExpired
     }catch (e: NoInternetException){
-      mVerifyVoterResponse.value = Error(e.message.toString())
+        mVerifyVoterResponse.value = Error(e.message.toString())
     }catch (e: Exception){
       mVerifyVoterResponse.value = Error(e.message.toString())
     }
@@ -67,6 +78,11 @@ constructor(
       }
     }catch (e: ApiException){
       mCastVoteResponse.value = Error(e.message.toString())
+    }catch (e: SessionExpirationException) {
+      if (e.message.toString()
+              .toBoolean()
+      ) castVote(id, ballotInput, passCode)
+      else mVerifyVoterResponse.value = SessionExpired
     }catch (e: NoInternetException){
       mCastVoteResponse.value = Error(e.message.toString())
     }catch (e: Exception){
@@ -74,4 +90,9 @@ constructor(
     }
   }
 
+  fun deleteUserData() {
+    Coroutines.main {
+      userRepository.deleteUser()
+    }
+  }
 }

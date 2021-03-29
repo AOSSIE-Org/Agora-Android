@@ -46,7 +46,10 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onFailure(e.message!!)
+        if (e.message.toString()
+                .toBoolean()
+        ) getBallot(id)
+        else displayElectionListener.onSessionExpired()
       }catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
@@ -68,7 +71,10 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onFailure(e.message!!)
+        if (e.message.toString()
+                .toBoolean()
+        ) getVoter(id)
+        else displayElectionListener.onSessionExpired()
       }catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
@@ -90,7 +96,10 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onFailure(e.message!!)
+        if (e.message.toString()
+                .toBoolean()
+        ) deleteElection(id)
+        else displayElectionListener.onSessionExpired()
       }catch (e: NoInternetException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: Exception) {

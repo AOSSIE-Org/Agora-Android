@@ -11,7 +11,6 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,11 +39,13 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
+import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.SessionExpired
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
@@ -52,6 +53,7 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -286,6 +288,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.message)
     }
+    is SessionExpired -> (activity as MainActivity).logout()
   }
 
   private fun handleUser(response: ResponseResults) = when (response) {
@@ -300,6 +303,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.message)
     }
+    is SessionExpired -> (activity as MainActivity).logout()
   }
 
   private fun handleTwoFactorAuthentication(response: ResponseResults) = when (response) {
@@ -313,6 +317,7 @@ constructor(
       binding.root.progress_bar.hide()
       binding.root.snackbar(response.message)
     }
+    is SessionExpired -> (activity as MainActivity).logout()
   }
 
   private fun handlePassword(response: ResponseResults) = when (response) {
@@ -329,6 +334,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.message)
     }
+    is SessionExpired -> (activity as MainActivity).logout()
   }
 
   private fun getTextWatcher(code: Int): TextWatcher {
@@ -405,6 +411,10 @@ constructor(
     binding.root.progress_bar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 
   override fun onActivityResult(

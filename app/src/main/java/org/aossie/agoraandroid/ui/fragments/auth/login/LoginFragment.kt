@@ -163,6 +163,10 @@ class LoginFragment
     rootView.login_btn.toggleIsEnable()
   }
 
+  override fun onSessionExpired() {
+    //do nothing
+  }
+
   override fun onTwoFactorAuthentication(password: String, crypto: String) {
     loginViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer {
       if(it != null) {

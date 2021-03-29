@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
+import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.SessionExpired
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -51,6 +52,7 @@ constructor(
     class Error(errorText: String) : ResponseResults() {
       val message = errorText
     }
+    object SessionExpired : ResponseResults()
   }
 
   fun changePassword(password: String) {
@@ -68,7 +70,10 @@ constructor(
       } catch (e: ApiException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        _passwordRequestCode.value = Error(e.message.toString())
+        if (e.message.toString()
+                .toBoolean()
+        ) changePassword(password)
+        else _passwordRequestCode.value = SessionExpired
       }catch (e: NoInternetException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -105,7 +110,10 @@ constructor(
       } catch (e: ApiException) {
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        _changeAvatarResponse.value = Error(e.message.toString())
+        if (e.message.toString()
+                .toBoolean()
+        ) changeAvatar(url, user)
+        else _changeAvatarResponse.value = SessionExpired
       }catch (e: NoInternetException) {
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -123,7 +131,10 @@ constructor(
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
+        if (e.message.toString()
+                .toBoolean()
+        ) toggleTwoFactorAuth()
+        else _toggleTwoFactorAuthResponse.value = SessionExpired
       }catch (e: NoInternetException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -160,8 +171,10 @@ constructor(
       } catch (e: ApiException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        Timber.d("Session Expired")
-        _userUpdateResponse.value = Error(e.message.toString())
+        if (e.message.toString()
+                .toBoolean()
+        ) updateUser(user)
+        else _userUpdateResponse.value = SessionExpired
       }catch (e: NoInternetException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: Exception) {

@@ -32,6 +32,7 @@ import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
@@ -176,6 +177,10 @@ constructor(
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 
   private fun decodeBitmap(encodedBitmap: String): Bitmap {
