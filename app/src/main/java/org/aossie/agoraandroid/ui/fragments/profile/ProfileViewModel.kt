@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.ResponseResults
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -25,24 +25,24 @@ constructor(
 
   val user = userRepository.getUser()
 
-  private val _passwordRequestCode = MutableLiveData<ResponseResults>()
+  private val _passwordRequestCode = MutableLiveData<ResponseResult>()
 
-  val passwordRequestCode: LiveData<ResponseResults>
+  val passwordRequestCode: LiveData<ResponseResult>
     get() = _passwordRequestCode
 
-  private val _userUpdateResponse = MutableLiveData<ResponseResults>()
+  private val _userUpdateResponse = MutableLiveData<ResponseResult>()
 
-  val userUpdateResponse: LiveData<ResponseResults>
+  val userUpdateResponse: LiveData<ResponseResult>
     get() = _userUpdateResponse
 
-  private val _toggleTwoFactorAuthResponse = MutableLiveData<ResponseResults>()
+  private val _toggleTwoFactorAuthResponse = MutableLiveData<ResponseResult>()
 
-  val toggleTwoFactorAuthResponse: LiveData<ResponseResults>
+  val toggleTwoFactorAuthResponse: LiveData<ResponseResult>
     get() = _toggleTwoFactorAuthResponse
 
-  private val _changeAvatarResponse = MutableLiveData<ResponseResults>()
+  private val _changeAvatarResponse = MutableLiveData<ResponseResult>()
 
-  val changeAvatarResponse: LiveData<ResponseResults>
+  val changeAvatarResponse: LiveData<ResponseResult>
     get() = _changeAvatarResponse
 
   fun changePassword(password: String) {

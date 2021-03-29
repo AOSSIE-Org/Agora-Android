@@ -10,9 +10,9 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.ResponseResults
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -27,14 +27,14 @@ constructor(
 
   val user = userRepository.getUser()
 
-  private val mVerifyOtpResponse = MutableLiveData<ResponseResults>()
+  private val mVerifyOtpResponse = MutableLiveData<ResponseResult>()
 
-  val verifyOtpResponse: LiveData<ResponseResults>
+  val verifyOtpResponse: LiveData<ResponseResult>
     get() = mVerifyOtpResponse
 
-  private val mResendOtpResponse = MutableLiveData<ResponseResults>()
+  private val mResendOtpResponse = MutableLiveData<ResponseResult>()
 
-  val resendOtpResponse: LiveData<ResponseResults>
+  val resendOtpResponse: LiveData<ResponseResult>
     get() = mResendOtpResponse
 
   fun verifyOTP(

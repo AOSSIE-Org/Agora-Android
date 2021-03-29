@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.ResponseResults
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -97,7 +97,7 @@ class TwoFactorAuthFragment
     return rootView
   }
 
-  private fun handleVerifyOtp(response: ResponseResults) = when(response) {
+  private fun handleVerifyOtp(response: ResponseResult) = when(response) {
     is Success -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
@@ -108,7 +108,7 @@ class TwoFactorAuthFragment
       rootView.snackbar(response.message)
     }
   }
-  private fun handleResendOtp(response: ResponseResults) = when(response) {
+  private fun handleResendOtp(response: ResponseResult) = when(response) {
     is Success -> {
       rootView.progress_bar.hide()
       rootView.snackbar("OTP is sent to your registered email address")

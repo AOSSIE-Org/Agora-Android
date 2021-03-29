@@ -27,9 +27,9 @@ import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
 import org.aossie.agoraandroid.adapters.UpvotedCandidateAdapter
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.MainActivity
-import org.aossie.agoraandroid.data.network.responses.ResponseResults
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -165,7 +165,7 @@ class  CastVoteActivity : AppCompatActivity(),
     })
   }
 
-  private fun handleCastVote(response: ResponseResults) = when(response) {
+  private fun handleCastVote(response: ResponseResult) = when(response) {
     is Success -> {
       progress_bar.hide()
       AlertDialog.Builder(this)
@@ -187,7 +187,7 @@ class  CastVoteActivity : AppCompatActivity(),
     }
   }
 
-  private fun handleVerifyVoter(response: ResponseResults) = when(response) {
+  private fun handleVerifyVoter(response: ResponseResult) = when(response) {
     is Success -> {
       viewModel.election.observe(this, Observer {
         Timber.d(it.toString())

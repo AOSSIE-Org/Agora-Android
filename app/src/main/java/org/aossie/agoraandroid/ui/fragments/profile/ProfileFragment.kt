@@ -43,9 +43,9 @@ import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
-import org.aossie.agoraandroid.data.network.responses.ResponseResults
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Success
-import org.aossie.agoraandroid.data.network.responses.ResponseResults.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.hide
@@ -275,7 +275,7 @@ constructor(
     requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
   }
 
-  private fun handleChangeAvatar(response: ResponseResults) = when (response) {
+  private fun handleChangeAvatar(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
@@ -288,7 +288,7 @@ constructor(
     }
   }
 
-  private fun handleUser(response: ResponseResults) = when (response) {
+  private fun handleUser(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
@@ -302,7 +302,7 @@ constructor(
     }
   }
 
-  private fun handleTwoFactorAuthentication(response: ResponseResults) = when (response) {
+  private fun handleTwoFactorAuthentication(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
@@ -315,7 +315,7 @@ constructor(
     }
   }
 
-  private fun handlePassword(response: ResponseResults) = when (response) {
+  private fun handlePassword(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
