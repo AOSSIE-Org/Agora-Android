@@ -351,6 +351,14 @@ constructor(
                 getString(string.password_same_oldpassword_warn)
               else -> binding.newPasswordTil.error = null
             }
+            if (s.toString() == binding.confirmPasswordTiet.text.toString()) {
+              binding.confirmPasswordTil.error = null
+            } else {
+              if (!binding.confirmPasswordTiet.text.isNullOrEmpty()) {
+                binding.confirmPasswordTil.error =
+                  getString(string.password_not_match_warn)
+              }
+            }
           }
           4 -> {
             when {
