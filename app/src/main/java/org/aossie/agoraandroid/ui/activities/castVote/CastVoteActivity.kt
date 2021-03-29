@@ -166,10 +166,10 @@ class  CastVoteActivity : AppCompatActivity(),
   }
 
   private fun handleCastVote(response: ResponseResult) = when(response) {
-    is Success -> {
+    is Success<*> -> {
       progress_bar.hide()
       AlertDialog.Builder(this)
-          .setTitle(response.message!!)
+          .setTitle(response.data.toString())
           .setMessage("Do you want to move to Home Screen ?")
           .setPositiveButton("Yes") { _, _ ->
             startActivity(Intent(this, MainActivity::class.java))
@@ -181,14 +181,14 @@ class  CastVoteActivity : AppCompatActivity(),
           .create()
           .show()
     }
-    is Error -> {
-      binding.root.snackbar(response.message)
+    is Error<*> -> {
+      binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }
   }
 
   private fun handleVerifyVoter(response: ResponseResult) = when(response) {
-    is Success -> {
+    is Success<*> -> {
       viewModel.election.observe(this, Observer {
         Timber.d(it.toString())
         binding.election = it
@@ -225,8 +225,8 @@ class  CastVoteActivity : AppCompatActivity(),
         progress_bar.hide()
       })
     }
-    is Error -> {
-      binding.root.snackbar(response.message)
+    is Error<*> -> {
+      binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }
   }

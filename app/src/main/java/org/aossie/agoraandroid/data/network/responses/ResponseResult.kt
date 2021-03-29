@@ -1,10 +1,6 @@
 package org.aossie.agoraandroid.data.network.responses
 
 sealed class ResponseResult {
-  class Success(text: String? = null) : ResponseResult() {
-    val message = text
-  }
-  class Error(errorText: String) : ResponseResult() {
-    val message = errorText
-  }
+  data class Success<T>(val data: T? = null) : ResponseResult()
+  data class Error<T>(val error: T? = null) : ResponseResult()
 }

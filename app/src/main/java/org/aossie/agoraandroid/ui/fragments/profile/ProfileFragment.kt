@@ -276,58 +276,58 @@ constructor(
   }
 
   private fun handleChangeAvatar(response: ResponseResult) = when (response) {
-    is Success -> {
+    is Success<*> -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString())
+      binding.root.snackbar(response.data.toString())
     }
-    is Error -> {
+    is Error<*> -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 
   private fun handleUser(response: ResponseResult) = when (response) {
-    is Success -> {
+    is Success<*> -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString())
+      binding.root.snackbar(response.data.toString())
       loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
     }
-    is Error -> {
+    is Error<*> -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 
   private fun handleTwoFactorAuthentication(response: ResponseResult) = when (response) {
-    is Success -> {
+    is Success<*> -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString() + ", Please login again")
+      binding.root.snackbar(response.data.toString() + ", Please login again")
     }
-    is Error -> {
+    is Error<*> -> {
       toggleIsEnable()
       binding.root.progress_bar.hide()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 
   private fun handlePassword(response: ResponseResult) = when (response) {
-    is Success -> {
+    is Success<*> -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString())
+      binding.root.snackbar(response.data.toString())
       loginViewModel.logInRequest(
           mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
-    is Error -> {
+    is Error<*> -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 

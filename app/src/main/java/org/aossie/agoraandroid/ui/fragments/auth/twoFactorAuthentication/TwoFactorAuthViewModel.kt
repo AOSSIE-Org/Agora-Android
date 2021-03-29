@@ -58,7 +58,7 @@ constructor(
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
-          mVerifyOtpResponse.value = Success()
+          mVerifyOtpResponse.value = Success<String>()
         }
       } catch (e: ApiException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
@@ -87,7 +87,7 @@ constructor(
               it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
-          mResendOtpResponse.value = Success()
+          mResendOtpResponse.value = Success<String>()
         }
       } catch (e: ApiException) {
         mResendOtpResponse.value = Error(e.message.toString())

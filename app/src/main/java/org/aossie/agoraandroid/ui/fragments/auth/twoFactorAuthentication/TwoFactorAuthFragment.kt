@@ -98,24 +98,24 @@ class TwoFactorAuthFragment
   }
 
   private fun handleVerifyOtp(response: ResponseResult) = when(response) {
-    is Success -> {
+    is Success<*> -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
           .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
-    is Error -> {
+    is Error<*> -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.message)
+      rootView.snackbar(response.error.toString())
     }
   }
   private fun handleResendOtp(response: ResponseResult) = when(response) {
-    is Success -> {
+    is Success<*> -> {
       rootView.progress_bar.hide()
       rootView.snackbar("OTP is sent to your registered email address")
     }
-    is Error -> {
+    is Error<*> -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.message)
+      rootView.snackbar(response.error.toString())
     }
   }
 }
