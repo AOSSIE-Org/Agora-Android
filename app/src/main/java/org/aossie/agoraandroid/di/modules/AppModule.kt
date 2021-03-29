@@ -17,6 +17,7 @@ import org.aossie.agoraandroid.data.network.interceptors.AuthorizationIntercepto
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.remote.APIService
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
+import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -127,7 +128,7 @@ class AppModule {
   fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .client(okHttpClient)
-        .baseUrl("https://agora-rest-api.herokuapp.com/api/v1/")
+        .baseUrl(AppConstants.BASE_URL)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -139,7 +140,7 @@ class AppModule {
   fun provideRetrofitWithoutAuth(@Named("okHttpWithoutAuth") okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .client(okHttpClient)
-        .baseUrl("https://agora-rest-api.herokuapp.com/api/v1/")
+        .baseUrl(AppConstants.BASE_URL)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
