@@ -40,6 +40,7 @@ import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.shortSnackbar
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -171,11 +172,13 @@ constructor(
 
   override fun onStarted() {
     rootView.progress_bar.show()
+    rootView.tv_logout.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.snackbar(message)
+    rootView.tv_logout.toggleIsEnable()
   }
 
   private fun decodeBitmap(encodedBitmap: String): Bitmap {
