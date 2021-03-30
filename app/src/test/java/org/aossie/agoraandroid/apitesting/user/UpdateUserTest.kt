@@ -17,15 +17,15 @@ class UpdateUserTest : BaseTest() {
   @Throws(IOException::class)
   fun updateUserTest() {
 
-    val updateUserRequest:String=MockFileParser("requests/user_requests/update_user_request.json").content
-    val updateUserResponse:String=MockFileParser("responses/user_responses/update_user_response.json").content
+    val updateUserRequest: String = MockFileParser("requests/user_requests/update_user_request.json").content
+    val updateUserResponse: String = MockFileParser("responses/user_responses/update_user_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(updateUserRequest))
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> = apiService.updateUser(
-            "authToken",
-            updateUserResponse
+          "authToken",
+          updateUserResponse
         )
         Assert.assertEquals(response.body(), updateUserRequest)
       }

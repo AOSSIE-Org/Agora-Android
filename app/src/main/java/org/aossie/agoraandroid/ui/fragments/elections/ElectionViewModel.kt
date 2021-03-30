@@ -7,18 +7,17 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.utilities.lazyDeferred
 import javax.inject.Inject
 
 class ElectionViewModel
-  @Inject
-  constructor(
-    private val electionsRepository: ElectionsRepository,
-    private val prefs: PreferenceProvider
-  ): ViewModel(){
+@Inject
+constructor(
+  private val electionsRepository: ElectionsRepository,
+  private val prefs: PreferenceProvider
+) : ViewModel() {
 
   fun getElections(): LiveData<List<Election>> {
-    GlobalScope.launch{
+    GlobalScope.launch {
       electionsRepository.fetchAndSaveElections()
     }
     return electionsRepository.getElections()

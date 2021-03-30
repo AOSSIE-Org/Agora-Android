@@ -27,15 +27,15 @@ import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
 class TwoFactorAuthFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
-  ): Fragment() {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory
+) : Fragment() {
 
   private lateinit var rootView: View
 
-  private var password: String ?= null
-  private var crypto: String ?= null
+  private var password: String ? = null
+  private var crypto: String ? = null
   private var user: User ? = null
 
   private val viewModel: TwoFactorAuthViewModel by viewModels {
@@ -52,26 +52,29 @@ class TwoFactorAuthFragment
     password = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).password
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
 
-    viewModel.user.observe(viewLifecycleOwner, Observer {
-      if(it != null) {
-        user = it
+    viewModel.user.observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it != null) {
+          user = it
+        }
       }
-    })
+    )
 
     rootView.btn_verify_otp.setOnClickListener {
       rootView.progress_bar.show()
       val otp = rootView.otp_til.editText
-          ?.text
-          .toString()
-          .trim { it <= ' ' }
+        ?.text
+        .toString()
+        .trim { it <= ' ' }
       if (otp.isEmpty()) {
         rootView.snackbar("Please Enter OTP")
         rootView.progress_bar.hide()
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        if(rootView.cb_trusted_device.isChecked) {
+        if (rootView.cb_trusted_device.isChecked) {
           viewModel.verifyOTP(otp, rootView.cb_trusted_device.isChecked, password!!, user!!.crypto!!)
-        }else{
+        } else {
           rootView.progress_bar.hide()
           rootView.snackbar("Please, tap on the checkbox to proceed")
         }
@@ -79,36 +82,42 @@ class TwoFactorAuthFragment
     }
 
     rootView.tv_resend_otp.setOnClickListener {
-      if(user != null) {
+      if (user != null) {
         rootView.progress_bar.show()
         viewModel.resendOTP(user!!.username!!, user!!.password!!)
-      }else{
+      } else {
         rootView.snackbar("Please try again")
       }
     }
 
-    viewModel.verifyOtpResponse.observe(viewLifecycleOwner, Observer {
-      handleVerifyOtp(it)
-    })
-    viewModel.resendOtpResponse.observe(viewLifecycleOwner, Observer {
-      handleResendOtp(it)
-    })
+    viewModel.verifyOtpResponse.observe(
+      viewLifecycleOwner,
+      Observer {
+        handleVerifyOtp(it)
+      }
+    )
+    viewModel.resendOtpResponse.observe(
+      viewLifecycleOwner,
+      Observer {
+        handleResendOtp(it)
+      }
+    )
 
     return rootView
   }
 
-  private fun handleVerifyOtp(response: ResponseResults) = when(response) {
+  private fun handleVerifyOtp(response: ResponseResults) = when (response) {
     is Success -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
-          .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
+        .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
     is Error -> {
       rootView.progress_bar.hide()
       rootView.snackbar(response.message)
     }
   }
-  private fun handleResendOtp(response: ResponseResults) = when(response) {
+  private fun handleResendOtp(response: ResponseResults) = when (response) {
     is Success -> {
       rootView.progress_bar.hide()
       rootView.snackbar("OTP is sent to your registered email address")

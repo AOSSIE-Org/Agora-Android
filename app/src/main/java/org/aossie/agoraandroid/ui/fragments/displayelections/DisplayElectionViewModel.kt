@@ -17,7 +17,7 @@ constructor(
 
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
   private val currentDate: Date = Calendar.getInstance()
-      .time
+    .time
   private val date: String = formatter.format(currentDate)
 
   val activeElections by lazyDeferred {
@@ -29,5 +29,4 @@ constructor(
   val finishedElections by lazyDeferred {
     electionsRepository.getFinishedElections(date)
   }
-
 }
