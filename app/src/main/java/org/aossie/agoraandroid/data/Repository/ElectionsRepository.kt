@@ -13,7 +13,6 @@ import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.Voters
-import org.aossie.agoraandroid.data.network.responses.Winners
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
