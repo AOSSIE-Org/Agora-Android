@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
-import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +13,7 @@ import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONException
 import org.json.JSONObject
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProfileViewModel
@@ -69,7 +69,7 @@ constructor(
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
         _passwordRequestCode.value = Error(e.message.toString())
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: Exception) {
         _passwordRequestCode.value = Error(e.message.toString())
@@ -79,7 +79,8 @@ constructor(
 
   fun changeAvatar(
     url: String,
-    user: User) {
+    user: User
+  ) {
     val jsonObject = JSONObject()
     try {
       jsonObject.put("url", url)
@@ -94,9 +95,9 @@ constructor(
         Timber.d(authResponse.toString())
         authResponse.let {
           val mUser = User(
-              it.username, it.email, it.firstName, it.lastName, it.avatarURL,
-              it.crypto, it.twoFactorAuthentication, user.token,
-              user.expiredAt, user.password, user.trustedDevice
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL,
+            it.crypto, it.twoFactorAuthentication, user.token,
+            user.expiredAt, user.password, user.trustedDevice
           )
           userRepository.saveUser(mUser)
         }
@@ -106,7 +107,7 @@ constructor(
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
         _changeAvatarResponse.value = Error(e.message.toString())
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
         _changeAvatarResponse.value = Error(e.message.toString())
@@ -124,7 +125,7 @@ constructor(
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
@@ -162,7 +163,7 @@ constructor(
       } catch (e: SessionExpirationException) {
         Timber.d("Session Expired")
         _userUpdateResponse.value = Error(e.message.toString())
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
         _userUpdateResponse.value = Error(e.message.toString())

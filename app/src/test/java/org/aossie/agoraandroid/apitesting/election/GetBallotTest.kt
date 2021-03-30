@@ -11,7 +11,6 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 
-
 /** Test that checks getBallot Call that helps in retrieving ballot data */
 
 class GetBallotTest() : BaseTest() {
@@ -30,5 +29,4 @@ class GetBallotTest() : BaseTest() {
       }
     }
   }
-
 }

@@ -16,7 +16,7 @@ class LogOutTest : BaseTest() {
   @Throws(IOException::class)
   fun logOutTest() {
 
-    val logOutResponse:String=MockFileParser("responses/user_responses/logout_response.json").content
+    val logOutResponse: String = MockFileParser("responses/user_responses/logout_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(logOutResponse))
     runBlocking {

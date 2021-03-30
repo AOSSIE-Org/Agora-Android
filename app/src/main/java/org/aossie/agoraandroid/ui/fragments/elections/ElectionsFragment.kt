@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_elections.view.tv_something_went_
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
@@ -27,7 +26,7 @@ class ElectionsFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-    ElectionRecyclerAdapterCallback {
+  ElectionRecyclerAdapterCallback {
 
   private lateinit var rootView: View
 
@@ -62,11 +61,14 @@ constructor(
   private fun bindUI() {
     try {
       electionViewModel.getElections()
-          .observe(viewLifecycleOwner, Observer {
+        .observe(
+          viewLifecycleOwner,
+          Observer {
             if (it != null) {
               addElections(it)
             }
-          })
+          }
+        )
     } catch (e: IllegalStateException) {
       rootView.tv_something_went_wrong.show()
     }
@@ -84,8 +86,8 @@ constructor(
   override fun onItemClicked(_id: String) {
     val action =
       ElectionsFragmentDirections
-          .actionElectionsFragmentToElectionDetailsFragment(_id)
+        .actionElectionsFragmentToElectionDetailsFragment(_id)
     Navigation.findNavController(rootView)
-        .navigate(action)
+      .navigate(action)
   }
 }

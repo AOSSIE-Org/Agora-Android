@@ -27,11 +27,11 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class VotersFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
-  ): Fragment(),
-    DisplayElectionListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory
+) : Fragment(),
+  DisplayElectionListener {
 
   private lateinit var rootView: View
 
@@ -58,7 +58,7 @@ class VotersFragment
     }
 
     id = VotersFragmentArgs.fromBundle(
-        requireArguments()
+      requireArguments()
     ).id
     electionDetailsViewModel.getVoter(id)
 
@@ -69,25 +69,28 @@ class VotersFragment
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
       electionDetailsViewModel.voterResponse.observe(
-          requireActivity(), Observer {
-        if(it != null) {
-          initRecyclerView(it)
+        requireActivity(),
+        Observer {
+          if (it != null) {
+            initRecyclerView(it)
+          } else {
+            rootView.tv_no_voters_for_this_election.show()
+          }
         }
-        else{
-          rootView.tv_no_voters_for_this_election.show()
-        }
-      })
+      )
       electionDetailsViewModel.notConnected.observe(
-          requireActivity(), Observer {
-        if(it){
-          getVotersFromDb()
+        requireActivity(),
+        Observer {
+          if (it) {
+            getVotersFromDb()
+          }
         }
-      })
+      )
     }
   }
 
-  private fun initRecyclerView(voters: List<VoterList>){
-    if(voters.isEmpty()){
+  private fun initRecyclerView(voters: List<VoterList>) {
+    if (voters.isEmpty()) {
       rootView.tv_no_voters_for_this_election.show()
     }
     val votersAdapter = VotersAdapter(voters)
@@ -97,23 +100,26 @@ class VotersFragment
     }
   }
 
-  private fun getVotersFromDb(){
+  private fun getVotersFromDb() {
     Coroutines.main {
-      electionDetailsViewModel.getElectionById(id!!).observe(requireActivity(), Observer {
-        if(it != null ) {
-          initRecyclerView(it.voterList as List<VoterList>)
-          rootView.progress_bar.hide()
+      electionDetailsViewModel.getElectionById(id!!).observe(
+        requireActivity(),
+        Observer {
+          if (it != null) {
+            initRecyclerView(it.voterList as List<VoterList>)
+            rootView.progress_bar.hide()
+          }
         }
-      })
+      )
     }
   }
 
   override fun onDeleteElectionSuccess() {
-    //do nothing
+    // do nothing
   }
 
   override fun onSuccess(message: String?) {
-    if(message!=null) rootView.snackbar(message)
+    if (message != null) rootView.snackbar(message)
     rootView.progress_bar.hide()
   }
 
@@ -122,8 +128,7 @@ class VotersFragment
   }
 
   override fun onFailure(message: String) {
-      rootView.snackbar(message)
-      rootView.progress_bar.hide()
+    rootView.snackbar(message)
+    rootView.progress_bar.hide()
   }
-
 }
