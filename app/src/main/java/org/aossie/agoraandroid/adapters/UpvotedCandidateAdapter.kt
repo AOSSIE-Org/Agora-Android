@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 
 class UpvotedCandidateAdapter(
   private val candidates: ArrayList<String>,
@@ -22,7 +22,7 @@ class UpvotedCandidateAdapter(
     viewType: Int
   ): UpvotedCandidateViewHolder {
     val li = parent.context
-        .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+      .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     val candidateView = li.inflate(layout.list_item_selected_candidates, parent, false)
     return UpvotedCandidateViewHolder(candidateView)
   }
@@ -34,7 +34,7 @@ class UpvotedCandidateAdapter(
     position: Int
   ) = holder.instantiate(candidates[position], adapterCallback)
 
-  class UpvotedCandidateViewHolder(itemView: View): ViewHolder(itemView){
+  class UpvotedCandidateViewHolder(itemView: View) : ViewHolder(itemView) {
     fun instantiate(candidate: String, adapterCallback: CandidateRecyclerAdapterCallback) {
       val textView: TextView = itemView.findViewById(id.tv_selected_candidate_name)
       textView.text = candidate

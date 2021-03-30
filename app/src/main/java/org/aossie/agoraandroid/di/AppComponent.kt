@@ -20,7 +20,7 @@ interface AppComponent {
     fun create(@BindsInstance context: Context): AppComponent
   }
 
-  //TODO inject activities, fragments, starting points of graph in here
+  // TODO inject activities, fragments, starting points of graph in here
 
   fun inject(activity: MainActivity)
 

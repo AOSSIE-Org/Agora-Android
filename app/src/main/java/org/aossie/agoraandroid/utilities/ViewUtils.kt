@@ -35,24 +35,26 @@ fun View.snackbar(message: String) {
         }
             .show()
       }
+        .show()
+    }
 }
 
 fun View.errorDialog(message: String) {
   AlertDialog.Builder(context)
-      .setTitle("Alert ! ! !")
-      .setMessage(message)
-      .setCancelable(false)
-      .setPositiveButton(string.ok) { dialog, _ ->
-        dialog.cancel()
-      }
-      .create()
-      .show()
+    .setTitle("Alert ! ! !")
+    .setMessage(message)
+    .setCancelable(false)
+    .setPositiveButton(string.ok) { dialog, _ ->
+      dialog.cancel()
+    }
+    .create()
+    .show()
 }
 
 fun View.shortSnackbar(message: String) {
   Snackbar
-      .make(this, message, Snackbar.LENGTH_SHORT)
-      .show()
+    .make(this, message, Snackbar.LENGTH_SHORT)
+    .show()
 }
 
 fun BottomNavigationView.animVisible() {
@@ -71,5 +73,4 @@ fun BottomNavigationView.animGone() {
 
 fun View.toggleIsEnable() {
   isEnabled = !isEnabled
-
 }

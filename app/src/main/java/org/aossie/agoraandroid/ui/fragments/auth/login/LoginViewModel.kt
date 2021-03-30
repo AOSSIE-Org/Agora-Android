@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
-import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +12,7 @@ import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import timber.log.Timber
 import javax.inject.Inject
 
 class LoginViewModel
@@ -30,7 +30,7 @@ constructor(
   fun logInRequest(
     identifier: String,
     password: String,
-    trustedDevice: String? =null
+    trustedDevice: String? = null
   ) {
     authListener?.onStarted()
     if (identifier.isEmpty() || password.isEmpty()) {
@@ -42,20 +42,20 @@ constructor(
         val authResponse = userRepository.userLogin(identifier, password, trustedDevice)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
-              it.authToken?.token, it.authToken?.expiresOn, password, trustedDevice
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
+            it.authToken?.token, it.authToken?.expiresOn, password, trustedDevice
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
-          if(!it.twoFactorAuthentication!!){
+          if (!it.twoFactorAuthentication!!) {
             authListener?.onSuccess()
-          }else{
+          } else {
             loginListener?.onTwoFactorAuthentication(password, user.crypto!!)
           }
         }
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
-      }catch (e: SessionExpirationException) {
+      } catch (e: SessionExpirationException) {
         authListener?.onFailure(e.message!!)
       } catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
@@ -76,7 +76,7 @@ constructor(
         authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
         authListener?.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
         authListener?.onFailure(e.message!!)
@@ -87,23 +87,24 @@ constructor(
   private fun getUserData(authResponse: AuthResponse) {
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val user = User(authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName,
-                        authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
-                        authResponse.authToken?.token, authResponse.authToken?.expiresOn)
-          userRepository.saveUser(user)
-          Timber.d(authResponse.toString())
-          prefs.setIsFacebookUser(true)
-          authListener?.onSuccess()
+        val user = User(
+          authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName,
+          authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
+          authResponse.authToken?.token, authResponse.authToken?.expiresOn
+        )
+        userRepository.saveUser(user)
+        Timber.d(authResponse.toString())
+        prefs.setIsFacebookUser(true)
+        authListener?.onSuccess()
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
         authListener?.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
         authListener?.onFailure(e.message!!)
       }
     }
   }
-
 }

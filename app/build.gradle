@@ -10,13 +10,16 @@ def fbApiScheme = properties.getProperty('fbApiScheme')
 def fbApiKey = properties.getProperty('fbApiKey')
 
 android {
-  compileSdkVersion compileSdk
+  lintOptions {
+    baseline file("lint-baseline.xml")
+  }
+  compileSdkVersion  rootProject.ext.compileSdk
   defaultConfig {
     resValue("string", "fbApiKey", fbApiKey)
     resValue("string", "fbApiScheme", fbApiScheme)
     vectorDrawables.useSupportLibrary = true
     applicationId "org.aossie.agoraandroid"
-    minSdkVersion minSdk
+    minSdkVersion rootProject.ext.minSdk
     targetSdkVersion targetSdk
     versionCode 1
     versionName "1.0"
@@ -104,6 +107,12 @@ dependencies {
   implementation "com.squareup.picasso:picasso:$picassoVersion"
   //timber
   implementation "com.jakewharton.timber:timber:$timberVersion"
+  //httpLoggingInterceptor
+  implementation "com.squareup.okhttp3:logging-interceptor:$httpLoggingInterceptor"
+  //chucker
+  debugImplementation "com.github.chuckerteam.chucker:library:$chuckerVersion"
+  releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chuckerVersion"
+
   //leakcanary
   debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
 }

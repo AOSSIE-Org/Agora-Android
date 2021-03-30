@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.remote.APIService;
-import org.aossie.agoraandroid.remote.RetrofitClient;
 import org.aossie.agoraandroid.ui.fragments.electionDetails.ResultFetchFailureListener;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +19,16 @@ public class ResultViewModel extends AndroidViewModel {
   private final Context context;
   private ResultFetchFailureListener electionResultListener;
 
-  public ResultViewModel(@NonNull Application application, Context context, ResultFetchFailureListener failureListener) {
+  private APIService apiService;
+
+  public ResultViewModel(@NonNull Application application, Context context, APIService apiService, ResultFetchFailureListener failureListener) {
     super(application);
     this.context = context;
+    this.apiService = apiService;
     this.electionResultListener = failureListener;
   }
 
   public void getResult(String token, String id) {
-    APIService apiService = RetrofitClient.getAPIService();
     Call<String> getResultResponse = apiService.getResult(token, id);
     getResultResponse.enqueue(new Callback<String>() {
       @Override

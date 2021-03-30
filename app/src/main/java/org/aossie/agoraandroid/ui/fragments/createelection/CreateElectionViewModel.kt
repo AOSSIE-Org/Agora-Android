@@ -16,8 +16,8 @@ import javax.inject.Inject
 internal class CreateElectionViewModel
 @Inject
 constructor(
-    private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
-    private val electionsRepository: ElectionsRepository
+  private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
+  private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
   lateinit var createElectionListener: CreateElectionListener
@@ -45,18 +45,17 @@ constructor(
     } catch (e: JSONException) {
       e.printStackTrace()
     }
-    viewModelScope.launch(Dispatchers.Main){
-      try{
+    viewModelScope.launch(Dispatchers.Main) {
+      try {
         val response = electionsRepository.createElection(jsonObject.toString())
-         createElectionListener.onSuccess(response[1])
-      }catch (e : ApiException){
+        createElectionListener.onSuccess(response[1])
+      } catch (e: ApiException) {
         createElectionListener.onFailure(e.message!!)
-      }catch (e : NoInternetException){
+      } catch (e: NoInternetException) {
         createElectionListener.onFailure(e.message!!)
-      }catch (e : Exception){
+      } catch (e: Exception) {
         createElectionListener.onFailure(e.message!!)
       }
     }
   }
-
 }
