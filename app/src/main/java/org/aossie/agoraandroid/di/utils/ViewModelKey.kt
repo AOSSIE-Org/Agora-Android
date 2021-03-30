@@ -9,9 +9,9 @@ import kotlin.annotation.AnnotationTarget.PROPERTY_SETTER
 import kotlin.reflect.KClass
 
 @Target(
-    FUNCTION,
-    PROPERTY_GETTER,
-    PROPERTY_SETTER
+  FUNCTION,
+  PROPERTY_GETTER,
+  PROPERTY_SETTER
 )
 @kotlin.annotation.Retention(RUNTIME)
 @MapKey

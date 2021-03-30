@@ -22,14 +22,14 @@ open class BaseTest {
     mockWebServer = MockWebServer()
     mockWebServer.start()
     val gson = GsonBuilder().setLenient()
-        .create()
+      .create()
     apiService = Retrofit.Builder()
-        .baseUrl(mockWebServer.url("/"))
-        .client(OkHttpClient())
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .build()
-        .create(Api::class.java)
+      .baseUrl(mockWebServer.url("/"))
+      .client(OkHttpClient())
+      .addConverterFactory(ScalarsConverterFactory.create())
+      .addConverterFactory(GsonConverterFactory.create(gson))
+      .build()
+      .create(Api::class.java)
   }
 
   @After
@@ -37,5 +37,4 @@ open class BaseTest {
   fun teardown() {
     mockWebServer.shutdown()
   }
-
 }

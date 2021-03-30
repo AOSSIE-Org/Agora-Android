@@ -13,7 +13,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 interface UserDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(user : User) : Long
+  suspend fun insert(user: User): Long
 
   @Query("SELECT * FROM user WHERE uid = $CURRENT_USER_ID")
   fun getUser(): LiveData<User>
@@ -25,7 +25,7 @@ interface UserDao {
   suspend fun removeUser()
 
   @Transaction
-  suspend fun replace(user: User){
+  suspend fun replace(user: User) {
     removeUser()
     insert(user)
   }

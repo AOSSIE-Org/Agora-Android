@@ -16,22 +16,21 @@ constructor(
 
   lateinit var authListener: AuthListener
 
-  fun sendResetLink(userName: String?)= Coroutines.main {
+  fun sendResetLink(userName: String?) = Coroutines.main {
     authListener.onStarted()
-    try{
+    try {
       userRepository.sendForgotPasswordLink(userName)
       authListener.onSuccess()
-    }catch (e : ApiException){
-      if(e.message == "412"){
+    } catch (e: ApiException) {
+      if (e.message == "412") {
         authListener.onFailure("Invalid Username")
-      }else{
+      } else {
         authListener.onFailure(e.message!!)
       }
-    }catch (e : NoInternetException){
+    } catch (e: NoInternetException) {
       authListener.onFailure(e.message!!)
-    }catch (e : Exception){
+    } catch (e: Exception) {
       authListener.onFailure(e.message!!)
     }
   }
-
 }

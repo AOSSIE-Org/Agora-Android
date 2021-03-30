@@ -16,73 +16,73 @@ import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionViewMod
 import org.aossie.agoraandroid.ui.fragments.displayelections.DisplayElectionViewModel
 import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsViewModel
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionViewModel
-import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
+import org.aossie.agoraandroid.ui.fragments.invitevoters.InviteVotersViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
 
 @Module
 abstract class ViewModelModule {
 
-    @Binds
-    internal abstract fun bindsViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+  @Binds
+  internal abstract fun bindsViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(LoginViewModel::class)
-    internal abstract fun bindsLoginViewModel(viewModel: LoginViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(LoginViewModel::class)
+  internal abstract fun bindsLoginViewModel(viewModel: LoginViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(HomeViewModel::class)
-    internal abstract fun bindsHomeViewModel(viewModel: HomeViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(HomeViewModel::class)
+  internal abstract fun bindsHomeViewModel(viewModel: HomeViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(ElectionViewModel::class)
-    internal abstract fun bindsElectionViewModel(viewModel: ElectionViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(ElectionViewModel::class)
+  internal abstract fun bindsElectionViewModel(viewModel: ElectionViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(ForgotPasswordViewModel::class)
-    internal abstract fun bindsForgotPasswordViewModel(viewModel: ForgotPasswordViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(ForgotPasswordViewModel::class)
+  internal abstract fun bindsForgotPasswordViewModel(viewModel: ForgotPasswordViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(SignUpViewModel::class)
-    internal abstract fun bindsSignUpViewModel(viewModel: SignUpViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(SignUpViewModel::class)
+  internal abstract fun bindsSignUpViewModel(viewModel: SignUpViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(DisplayElectionViewModel::class)
-    internal abstract fun bindsDisplayElectionViewModel(viewModel: DisplayElectionViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(DisplayElectionViewModel::class)
+  internal abstract fun bindsDisplayElectionViewModel(viewModel: DisplayElectionViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(InviteVotersViewModel::class)
-    internal abstract fun bindsInviteVotersViewModel(viewModel: InviteVotersViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(InviteVotersViewModel::class)
+  internal abstract fun bindsInviteVotersViewModel(viewModel: InviteVotersViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(CreateElectionViewModel::class)
-    internal abstract fun bindsCreateElectionViewModel(viewModel: CreateElectionViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(CreateElectionViewModel::class)
+  internal abstract fun bindsCreateElectionViewModel(viewModel: CreateElectionViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(ProfileViewModel::class)
-    internal abstract fun bindsProfileViewModel(viewModel: ProfileViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(ProfileViewModel::class)
+  internal abstract fun bindsProfileViewModel(viewModel: ProfileViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(TwoFactorAuthViewModel::class)
-    internal abstract fun bindsTwoFactorAuthViewModel(viewModel: TwoFactorAuthViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(TwoFactorAuthViewModel::class)
+  internal abstract fun bindsTwoFactorAuthViewModel(viewModel: TwoFactorAuthViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(CastVoteViewModel::class)
-    internal abstract fun bindsCastVoteViewModel(viewModel: CastVoteViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(CastVoteViewModel::class)
+  internal abstract fun bindsCastVoteViewModel(viewModel: CastVoteViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(ElectionDetailsViewModel::class)
-    internal abstract fun bindsElectionDetailsViewModel(viewModel: ElectionDetailsViewModel): ViewModel
+  @Binds
+  @IntoMap
+  @ViewModelKey(ElectionDetailsViewModel::class)
+  internal abstract fun bindsElectionDetailsViewModel(viewModel: ElectionDetailsViewModel): ViewModel
 }

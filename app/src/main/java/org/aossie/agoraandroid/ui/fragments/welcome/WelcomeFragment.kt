@@ -13,7 +13,7 @@ import org.aossie.agoraandroid.R
 /**
  * A simple [Fragment] subclass.
  */
-class WelcomeFragment: Fragment(){
+class WelcomeFragment : Fragment() {
 
   private lateinit var rootView: View
 
@@ -28,15 +28,14 @@ class WelcomeFragment: Fragment(){
 
     rootView.btn_login.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToLoginFragment())
+        .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToLoginFragment())
     }
 
     rootView.btn_signup.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToSignUpFragment())
+        .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToSignUpFragment())
     }
 
     return rootView
   }
-
 }

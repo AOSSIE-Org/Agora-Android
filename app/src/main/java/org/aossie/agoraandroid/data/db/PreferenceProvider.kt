@@ -22,8 +22,8 @@ constructor(
 
   fun setIsLoggedIn(boolean: Boolean) {
     preferences.edit().putBoolean(
-        IS_LOGGED_IN,
-        boolean
+      IS_LOGGED_IN,
+      boolean
     ).apply()
   }
 
@@ -33,8 +33,8 @@ constructor(
 
   fun setIsFacebookUser(boolean: Boolean) {
     preferences.edit().putBoolean(
-        IS_FACEBOOK_USER,
-        boolean
+      IS_FACEBOOK_USER,
+      boolean
     ).apply()
   }
 
@@ -42,41 +42,41 @@ constructor(
     return preferences.getBoolean(IS_FACEBOOK_USER, false)
   }
 
-  fun setUpdateNeeded(isNeeded : Boolean){
+  fun setUpdateNeeded(isNeeded: Boolean) {
     preferences.edit().putBoolean(
-        IS_UPDATE_NEEDED,
-        isNeeded)
-        .apply()
+      IS_UPDATE_NEEDED,
+      isNeeded
+    )
+      .apply()
   }
 
-  fun getUpdateNeeded() : Boolean{
+  fun getUpdateNeeded(): Boolean {
     return preferences.getBoolean(IS_UPDATE_NEEDED, true)
   }
 
   fun setCurrentToken(token: String?) {
     preferences.edit().putString(
-        ACCESS_TOKEN,
-        token
+      ACCESS_TOKEN,
+      token
     ).apply()
-
   }
 
-  fun getCurrentToken() : String?{
+  fun getCurrentToken(): String? {
     return preferences.getString(ACCESS_TOKEN, null)
   }
 
   fun setFacebookAccessToken(accessToken: String?) {
     preferences.edit().putString(
-        FACEBOOK_ACCESS_TOKEN,
-        accessToken
+      FACEBOOK_ACCESS_TOKEN,
+      accessToken
     ).apply()
   }
 
-  fun getFacebookAccessToken() : String?{
+  fun getFacebookAccessToken(): String? {
     return preferences.getString(FACEBOOK_ACCESS_TOKEN, null)
   }
 
-  fun clearData(){
+  fun clearData() {
     preferences.edit().clear().apply()
   }
 }

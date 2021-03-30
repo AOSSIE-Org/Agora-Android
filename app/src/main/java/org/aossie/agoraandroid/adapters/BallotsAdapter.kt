@@ -19,7 +19,7 @@ class BallotsAdapter(private val ballots: List<Ballot>) : Adapter<BallotsViewHol
     viewType: Int
   ): BallotsViewHolder {
     val li = parent.context
-        .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+      .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     val view = li.inflate(layout.list_item_ballot_details, parent, false)
     return BallotsViewHolder(view)
   }
@@ -40,5 +40,4 @@ class BallotsAdapter(private val ballots: List<Ballot>) : Adapter<BallotsViewHol
     val voteBallot: TextView = itemView.findViewById(R.id.text_view_vote_ballot)
     val voterEmail: TextView = itemView.findViewById(R.id.text_view_voter_email)
   }
-
 }

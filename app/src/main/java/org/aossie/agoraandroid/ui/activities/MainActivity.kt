@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
       handleStatusBar(destination.id)
     }
 
-   NavigationUI.setupWithNavController(bottom_navigation, navController)
+    NavigationUI.setupWithNavController(bottom_navigation, navController)
     prefs.setUpdateNeeded(true)
     if (prefs.getIsLoggedIn()) {
       navController.navigate(R.id.homeFragment)
@@ -100,10 +100,10 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
       }
       else ->
-      {
-        window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        supportActionBar?.show()
-      }
+        {
+          window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+          supportActionBar?.show()
+        }
     }
   }
 
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         is WelcomeFragment -> finish()
         is SettingsFragment,
         is CalendarViewElectionFragment -> navController.navigate(R.id.homeFragment)
-       else -> super.onBackPressed()
+        else -> super.onBackPressed()
       }
     } else {
       super.onBackPressed()
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
       R.id.reportBugFragment,
       R.id.shareWithOthersFragment,
       R.id.contactUsFragment,
-      R.id.profileFragment-> iv_back.let {
+      R.id.profileFragment -> iv_back.let {
         it.visibility = View.VISIBLE
         it.setOnClickListener { onBackPressed() }
       }
@@ -146,4 +146,3 @@ class MainActivity : AppCompatActivity() {
     childFragments?.forEach { it.onActivityResult(requestCode, resultCode, data) }
   }
 }
-
