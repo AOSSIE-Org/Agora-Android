@@ -2,7 +2,6 @@
 package org.aossie.agoraandroid.data.network.interceptors
 
 import android.content.Context
-import timber.log.Timber
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.aossie.agoraandroid.R
@@ -16,6 +15,7 @@ import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONObject
+import timber.log.Timber
 import javax.inject.Named
 
 class AuthorizationInterceptor(
@@ -28,10 +28,10 @@ class AuthorizationInterceptor(
   override fun intercept(chain: Interceptor.Chain): Response {
     val mainResponse = chain.proceed(chain.request())
 
-      // if response code is 401 or 403, network call has encountered authentication error
+    // if response code is 401 or 403, network call has encountered authentication error
     if (mainResponse.code == AppConstants.UNAUTHENTICATED_CODE || mainResponse.code == AppConstants.INVALID_CREDENTIALS_CODE) {
-        if (prefs.getIsLoggedIn()){
-        Coroutines.io{
+      if (prefs.getIsLoggedIn()) {
+        Coroutines.io {
           var user = appDatabase.getUserDao().getUserInfo()
           if (prefs.getIsFacebookUser()) {
             val response = api.facebookLogin(prefs.getFacebookAccessToken())
@@ -54,9 +54,9 @@ class AuthorizationInterceptor(
               val authResponse: AuthResponse? = loginResponse.body()
               authResponse.let {
                 user = User(
-                    it?.username, it?.email, it?.firstName, it?.lastName, it?.avatarURL,
-                    it?.crypto, it?.twoFactorAuthentication,
-                    it?.authToken?.token, it?.authToken?.expiresOn, user.password, user.trustedDevice
+                  it?.username, it?.email, it?.firstName, it?.lastName, it?.avatarURL,
+                  it?.crypto, it?.twoFactorAuthentication,
+                  it?.authToken?.token, it?.authToken?.expiresOn, user.password, user.trustedDevice
                 )
                 Timber.d(authResponse.toString())
               }

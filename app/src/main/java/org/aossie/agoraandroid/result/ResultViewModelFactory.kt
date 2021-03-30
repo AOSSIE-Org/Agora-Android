@@ -13,7 +13,7 @@ class ResultViewModelFactory(
   private val apiService: APIService,
   private val electionResultListener: ResultFetchFailureListener
 ) :
-    Factory {
+  Factory {
   override fun <T : ViewModel?> create(modelClass: Class<T>): T {
     return ResultViewModel(application, context, apiService, electionResultListener) as T
   }
