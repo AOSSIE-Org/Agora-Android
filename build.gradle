@@ -6,7 +6,7 @@ buildscript {
     compileSdk = 29
     minSdk = 22
     targetSdk = 29
-    kotlinVersion = '1.3.61'
+    kotlinVersion = '1.4.0'
     appCompatVersion = '1.2.0'
     constraintLayoutVersion = '1.1.3'
     legacySupportVersion = '1.0.0'
@@ -36,6 +36,8 @@ buildscript {
     calendarVersion = '1.3.4'
     tachyonVersion = '1.0.2'
     timberVersion = '4.7.1'
+    httpLoggingInterceptor = '4.9.0'
+    chuckerVersion = '3.4.0'
     leakcanaryVersion = '2.6'
   }
 
