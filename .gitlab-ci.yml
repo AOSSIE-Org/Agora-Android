@@ -30,7 +30,7 @@ lintDebug:
   interruptible: true
   stage: build
   script:
-    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+    - ./gradlew ktlintCheck
 
 assembleDebug:
   interruptible: true
