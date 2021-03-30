@@ -1,5 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import javax.inject.Inject
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -52,12 +58,6 @@ import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import javax.inject.Inject
 
 const val CAMERA_PERMISSION_REQUEST_CODE = 1
 const val STORAGE_PERMISSION_REQUEST_CODE = 2

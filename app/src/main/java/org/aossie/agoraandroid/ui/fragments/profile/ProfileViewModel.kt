@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
+import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,6 @@ import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
-import javax.inject.Inject
 
 class ProfileViewModel
 @Inject

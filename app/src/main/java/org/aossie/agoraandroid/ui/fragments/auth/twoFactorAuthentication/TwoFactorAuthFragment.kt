@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
+import javax.inject.Inject
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +25,6 @@ import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
-import javax.inject.Inject
 
 class TwoFactorAuthFragment
 @Inject

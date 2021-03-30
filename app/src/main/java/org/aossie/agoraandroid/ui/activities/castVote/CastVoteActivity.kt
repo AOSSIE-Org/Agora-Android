@@ -1,5 +1,15 @@
 package org.aossie.agoraandroid.ui.activities.castVote
 
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log.getStackTraceString
@@ -34,16 +44,6 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import javax.inject.Inject
 
 private const val ACTIVE_ELECTION_LABEL = "ACTIVE"
 private const val PENDING_ELECTION_LABEL = "PENDING"
@@ -198,7 +198,9 @@ class CastVoteActivity :
 
   private fun handleVerifyVoter(response: ResponseResult) = when (response) {
     is Success<*> -> {
-      viewModel.election.observe(this, Observer {
+      viewModel.election.observe(
+        this,
+        Observer {
         Timber.d(it.toString())
         binding.election = it
         candidates.clear()

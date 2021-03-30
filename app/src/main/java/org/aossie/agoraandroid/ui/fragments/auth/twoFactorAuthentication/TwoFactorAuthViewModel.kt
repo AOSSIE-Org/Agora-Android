@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
+import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,6 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import timber.log.Timber
-import javax.inject.Inject
 
 class TwoFactorAuthViewModel
 @Inject
