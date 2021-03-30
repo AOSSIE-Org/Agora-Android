@@ -1,6 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.btn_verify_otp
+import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.cb_trusted_device
+import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.otp_til
+import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
+import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +16,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.btn_verify_otp
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.cb_trusted_device
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.otp_til
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
