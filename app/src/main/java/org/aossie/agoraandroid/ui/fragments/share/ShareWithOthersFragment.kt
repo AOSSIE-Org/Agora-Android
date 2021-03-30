@@ -25,9 +25,9 @@ class ShareWithOthersFragment : Fragment() {
     view.btn_share.setOnClickListener {
       val shareIntent = Intent(Intent.ACTION_SEND)
 
-      //Get the app link in the Play Store
+      // Get the app link in the Play Store
       val appPackageName = FacebookSdk.getApplicationContext()
-          .packageName
+        .packageName
       val strAppLink: String
       strAppLink = try {
         "https://play.google.com/store/apps/details?id=$appPackageName"

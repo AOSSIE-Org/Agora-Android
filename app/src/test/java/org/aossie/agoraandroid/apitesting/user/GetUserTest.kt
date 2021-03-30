@@ -11,7 +11,6 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
-
 /** Tests getUser call that retrieves user data from backend */
 
 class GetUserTest : BaseTest() {
@@ -19,7 +18,7 @@ class GetUserTest : BaseTest() {
   @Throws(IOException::class)
   fun getUserTest() {
 
-    val getUserResponse:String = MockFileParser("responses/user_responses/get_user_response.json").content
+    val getUserResponse: String = MockFileParser("responses/user_responses/get_user_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(getUserResponse))
     runBlocking {

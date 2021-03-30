@@ -29,7 +29,7 @@ object GetBitmapFromUri {
     val options = Options()
     options.inJustDecodeBounds = true
     var imageStream = context.contentResolver
-        .openInputStream(selectedImage)
+      .openInputStream(selectedImage)
     BitmapFactory.decodeStream(imageStream, null, options)
     imageStream!!.close()
 
@@ -39,7 +39,7 @@ object GetBitmapFromUri {
     // Decode bitmap with inSampleSize set
     options.inJustDecodeBounds = false
     imageStream = context.contentResolver
-        .openInputStream(selectedImage)
+      .openInputStream(selectedImage)
     var img = BitmapFactory.decodeStream(imageStream, null, options)
     img = rotateImageIfRequired(context, img, selectedImage)
     return img
@@ -87,7 +87,7 @@ object GetBitmapFromUri {
     selectedImage: Uri
   ): Bitmap? {
     val input = context.contentResolver
-        .openInputStream(selectedImage)
+      .openInputStream(selectedImage)
     val ei: ExifInterface
     ei = if (VERSION.SDK_INT > 23) {
       if (BuildConfig.DEBUG && input == null) {
@@ -95,20 +95,20 @@ object GetBitmapFromUri {
       }
       ExifInterface(input)
     } else ExifInterface(
-        Objects.requireNonNull(selectedImage.path)
+      Objects.requireNonNull(selectedImage.path)
     )
     val orientation = ei.getAttributeInt(
-        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
+      ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
     )
     return when (orientation) {
       ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(
-          img, 90
+        img, 90
       )
       ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(
-          img, 180
+        img, 180
       )
       ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(
-          img, 270
+        img, 270
       )
       else -> img
     }

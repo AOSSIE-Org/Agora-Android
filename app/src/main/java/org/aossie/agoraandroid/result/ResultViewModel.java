@@ -3,11 +3,11 @@ package org.aossie.agoraandroid.result;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import org.aossie.agoraandroid.R;
 import org.aossie.agoraandroid.remote.APIService;
-import org.aossie.agoraandroid.remote.RetrofitClient;
+import org.aossie.agoraandroid.ui.fragments.electionDetails.ResultFetchFailureListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,14 +17,18 @@ import retrofit2.Response;
 
 public class ResultViewModel extends AndroidViewModel {
   private final Context context;
+  private ResultFetchFailureListener electionResultListener;
 
-  public ResultViewModel(@NonNull Application application, Context context) {
+  private APIService apiService;
+
+  public ResultViewModel(@NonNull Application application, Context context, APIService apiService, ResultFetchFailureListener failureListener) {
     super(application);
     this.context = context;
+    this.apiService = apiService;
+    this.electionResultListener = failureListener;
   }
 
   public void getResult(String token, String id) {
-    APIService apiService = RetrofitClient.getAPIService();
     Call<String> getResultResponse = apiService.getResult(token, id);
     getResultResponse.enqueue(new Callback<String>() {
       @Override
@@ -49,14 +53,13 @@ public class ResultViewModel extends AndroidViewModel {
             e.printStackTrace();
           }
         } else if (response.message().equals("No Content")) {
-          Toast.makeText(getApplication(), "Nothing to show here", Toast.LENGTH_SHORT).show();
+          electionResultListener.onResultFetchMessage(R.string.nothing_to_show_here);
         }
       }
 
       @Override
       public void onFailure(Call<String> call, Throwable t) {
-        Toast.makeText(getApplication(), "Something Went Wrong Please Try Again Later",
-            Toast.LENGTH_SHORT).show();
+        electionResultListener.onResultFetchMessage(R.string.something_went_wrong_please_try_again_later);
       }
     });
   }

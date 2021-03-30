@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
-import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,13 +15,14 @@ import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import timber.log.Timber
 import javax.inject.Inject
 
 class TwoFactorAuthViewModel
 @Inject
 constructor(
   private val userRepository: UserRepository,
-    private val prefs: PreferenceProvider
+  private val prefs: PreferenceProvider
 ) : ViewModel() {
 
   val user = userRepository.getUser()
@@ -52,9 +52,9 @@ constructor(
         val authResponse = userRepository.verifyOTP(otp, trustedDevice, crypto)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
-              it.twoFactorAuthentication,
-              it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
+            it.twoFactorAuthentication,
+            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
@@ -82,9 +82,9 @@ constructor(
         val authResponse = userRepository.resendOTP(username)
         authResponse.let {
           val user = User(
-              it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
-              it.twoFactorAuthentication,
-              it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
+            it.twoFactorAuthentication,
+            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
           mResendOtpResponse.value = Success<String>()
@@ -100,5 +100,4 @@ constructor(
       }
     }
   }
-
 }

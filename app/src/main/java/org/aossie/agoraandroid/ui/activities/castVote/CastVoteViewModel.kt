@@ -17,7 +17,7 @@ class CastVoteViewModel
 @Inject
 constructor(
   val electionsRepository: ElectionsRepository
-): ViewModel() {
+) : ViewModel() {
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseResult>()
 
@@ -34,7 +34,16 @@ constructor(
   val election: LiveData<ElectionResponse>
     get() = mElection
 
-  fun verifyVoter(id: String){
+  sealed class ResponseResults {
+    class Success(text: String? = null) : ResponseResults() {
+      val message = text
+    }
+    class Error(errorText: String) : ResponseResults() {
+      val message = errorText
+    }
+  }
+
+  fun verifyVoter(id: String) {
     try {
       Coroutines.main {
         val electionResponse = electionsRepository.verifyVoter(id)
@@ -42,28 +51,27 @@ constructor(
         mVerifyVoterResponse.value = Success("Success")
         mElection.value = electionResponse
       }
-    }catch (e: ApiException){
+    } catch (e: ApiException) {
       mVerifyVoterResponse.value = Error(e.message.toString())
-    }catch (e: NoInternetException){
+    } catch (e: NoInternetException) {
       mVerifyVoterResponse.value = Error(e.message.toString())
-    }catch (e: Exception){
+    } catch (e: Exception) {
       mVerifyVoterResponse.value = Error(e.message.toString())
     }
   }
 
-  fun castVote(id: String, ballotInput: String, passCode: String){
+  fun castVote(id: String, ballotInput: String, passCode: String) {
     try {
       Coroutines.main {
         val response = electionsRepository.castVote(id, ballotInput, passCode)
         mCastVoteResponse.value = Success(response[1])
       }
-    }catch (e: ApiException){
+    } catch (e: ApiException) {
       mCastVoteResponse.value = Error(e.message.toString())
-    }catch (e: NoInternetException){
+    } catch (e: NoInternetException) {
       mCastVoteResponse.value = Error(e.message.toString())
-    }catch (e: Exception){
+    } catch (e: Exception) {
       mCastVoteResponse.value = Error(e.message.toString())
     }
   }
-
 }

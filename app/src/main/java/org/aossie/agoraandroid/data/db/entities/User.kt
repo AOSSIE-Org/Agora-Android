@@ -18,7 +18,7 @@ data class User(
   var expiredAt: String? = null,
   val password: String? = null,
   val trustedDevice: String? = null
-){
+) {
   @PrimaryKey(autoGenerate = false)
-  var uid : Int = CURRENT_USER_ID
+  var uid: Int = CURRENT_USER_ID
 }
