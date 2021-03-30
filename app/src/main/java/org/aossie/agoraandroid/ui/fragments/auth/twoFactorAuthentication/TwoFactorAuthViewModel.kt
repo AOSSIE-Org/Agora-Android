@@ -72,7 +72,10 @@ constructor(
     }
   }
 
-  fun resendOTP(username: String, password: String) {
+  fun resendOTP(
+    username: String,
+    password: String
+  ) {
     if (username.isEmpty()) {
       mResendOtpResponse.value = Error("Login Again")
       return

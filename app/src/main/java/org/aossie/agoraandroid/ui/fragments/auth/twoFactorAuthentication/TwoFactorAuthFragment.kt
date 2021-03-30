@@ -34,9 +34,9 @@ constructor(
 
   private lateinit var rootView: View
 
-  private var password: String ? = null
-  private var crypto: String ? = null
-  private var user: User ? = null
+  private var password: String? = null
+  private var crypto: String? = null
+  private var user: User? = null
 
   private val viewModel: TwoFactorAuthViewModel by viewModels {
     viewModelFactory
@@ -73,7 +73,9 @@ constructor(
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
         if (rootView.cb_trusted_device.isChecked) {
-          viewModel.verifyOTP(otp, rootView.cb_trusted_device.isChecked, password!!, user!!.crypto!!)
+          viewModel.verifyOTP(
+            otp, rootView.cb_trusted_device.isChecked, password!!, user!!.crypto!!
+          )
         } else {
           rootView.progress_bar.hide()
           rootView.snackbar("Please, tap on the checkbox to proceed")
@@ -106,7 +108,7 @@ constructor(
     return rootView
   }
 
-  private fun handleVerifyOtp(response: ResponseResult) = when(response) {
+  private fun handleVerifyOtp(response: ResponseResult) = when (response) {
     is Success<*> -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
@@ -117,7 +119,8 @@ constructor(
       rootView.snackbar(response.error.toString())
     }
   }
-  private fun handleResendOtp(response: ResponseResult) = when(response) {
+
+  private fun handleResendOtp(response: ResponseResult) = when (response) {
     is Success<*> -> {
       rootView.progress_bar.hide()
       rootView.snackbar("OTP is sent to your registered email address")

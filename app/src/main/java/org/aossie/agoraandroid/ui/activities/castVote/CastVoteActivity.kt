@@ -58,8 +58,8 @@ class CastVoteActivity :
 
   private lateinit var binding: ActivityCastVoteBinding
 
-  private var passCode: String ? = null
-  private var id: String ? = null
+  private var passCode: String? = null
+  private var id: String? = null
 
   private lateinit var candidates: ArrayList<String>
   private lateinit var hashMap: HashMap<String, Boolean>
@@ -174,21 +174,21 @@ class CastVoteActivity :
     )
   }
 
-  private fun handleCastVote(response: ResponseResult) = when(response) {
+  private fun handleCastVote(response: ResponseResult) = when (response) {
     is Success<*> -> {
       progress_bar.hide()
       AlertDialog.Builder(this)
-          .setTitle(response.data.toString())
-          .setMessage("Do you want to move to Home Screen ?")
-          .setPositiveButton("Yes") { _, _ ->
-            startActivity(Intent(this, MainActivity::class.java))
-          }
-          .setNegativeButton("No") { _, _ ->
-            android.os.Process.killProcess(android.os.Process.myPid())
-          }
-          .setCancelable(false)
-          .create()
-          .show()
+        .setTitle(response.data.toString())
+        .setMessage("Do you want to move to Home Screen ?")
+        .setPositiveButton("Yes") { _, _ ->
+          startActivity(Intent(this, MainActivity::class.java))
+        }
+        .setNegativeButton("No") { _, _ ->
+          android.os.Process.killProcess(android.os.Process.myPid())
+        }
+        .setCancelable(false)
+        .create()
+        .show()
     }
     is Error<*> -> {
       binding.root.snackbar(response.error.toString())
@@ -196,7 +196,7 @@ class CastVoteActivity :
     }
   }
 
-  private fun handleVerifyVoter(response: ResponseResult) = when(response) {
+  private fun handleVerifyVoter(response: ResponseResult) = when (response) {
     is Success<*> -> {
       viewModel.election.observe(this, Observer {
         Timber.d(it.toString())
@@ -204,34 +204,37 @@ class CastVoteActivity :
         candidates.clear()
         candidates.addAll(it.candidates!!)
         candidateAdapter.notifyDataSetChanged()
-        if(it != null) {
+        if (it != null) {
           try {
-              val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-              val formattedStartingDate: Date = formatter.parse(it.startingDate!!) as Date
-              val formattedEndingDate: Date = formatter.parse(it.endingDate!!) as Date
-              val currentDate = Calendar.getInstance().time
-              val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
-              // set end and start date
-              binding.tvEndDate.text = outFormat.format(formattedEndingDate)
-              binding.tvStartDate.text = outFormat.format(formattedStartingDate)
-              // set label color and election status
-              if (currentDate.before(formattedStartingDate)) {
-                binding.label.text = PENDING_ELECTION_LABEL
-                binding.label.setBackgroundResource(R.drawable.pending_election_label)
-              } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
-                binding.label.text = ACTIVE_ELECTION_LABEL
-                binding.label.setBackgroundResource(R.drawable.active_election_label)
-              } else if (currentDate.after(formattedEndingDate)) {
-                binding.label.text = FINISHED_ELECTION_LABEL
-                binding.label.setBackgroundResource(R.drawable.finished_election_label)
-              }
-            } catch (e: ParseException) {
-              e.printStackTrace()
+            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+            val formattedStartingDate: Date = formatter.parse(it.startingDate!!) as Date
+            val formattedEndingDate: Date = formatter.parse(it.endingDate!!) as Date
+            val currentDate = Calendar.getInstance().time
+            val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
+            // set end and start date
+            binding.tvEndDate.text = outFormat.format(formattedEndingDate)
+            binding.tvStartDate.text = outFormat.format(formattedStartingDate)
+            // set label color and election status
+            if (currentDate.before(formattedStartingDate)) {
+              binding.label.text = PENDING_ELECTION_LABEL
+              binding.label.setBackgroundResource(R.drawable.pending_election_label)
+            } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+                formattedEndingDate
+              )
+            ) {
+              binding.label.text = ACTIVE_ELECTION_LABEL
+              binding.label.setBackgroundResource(R.drawable.active_election_label)
+            } else if (currentDate.after(formattedEndingDate)) {
+              binding.label.text = FINISHED_ELECTION_LABEL
+              binding.label.setBackgroundResource(R.drawable.finished_election_label)
             }
+          } catch (e: ParseException) {
+            e.printStackTrace()
           }
-          constraintLayout.visibility = View.VISIBLE
-          progress_bar.hide()
         }
+        constraintLayout.visibility = View.VISIBLE
+        progress_bar.hide()
+      }
       )
     }
     is Error<*> -> {
