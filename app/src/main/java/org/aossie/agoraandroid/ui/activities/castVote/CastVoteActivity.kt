@@ -14,21 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import javax.inject.Inject
-import kotlinx.android.synthetic.main.activity_cast_vote.btn_cast_vote
-import kotlinx.android.synthetic.main.activity_cast_vote.constraintLayout
-import kotlinx.android.synthetic.main.activity_cast_vote.progress_bar
-import kotlinx.android.synthetic.main.activity_cast_vote.rv_candidates
-import kotlinx.android.synthetic.main.activity_cast_vote.rv_selected_candidates
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
@@ -44,6 +29,21 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
+import kotlinx.android.synthetic.main.activity_cast_vote.btn_cast_vote
+import kotlinx.android.synthetic.main.activity_cast_vote.constraintLayout
+import kotlinx.android.synthetic.main.activity_cast_vote.progress_bar
+import kotlinx.android.synthetic.main.activity_cast_vote.rv_candidates
+import kotlinx.android.synthetic.main.activity_cast_vote.rv_selected_candidates
 
 private const val ACTIVE_ELECTION_LABEL = "ACTIVE"
 private const val PENDING_ELECTION_LABEL = "PENDING"

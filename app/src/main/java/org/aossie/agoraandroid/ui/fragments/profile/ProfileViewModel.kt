@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.ui.fragments.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
@@ -16,6 +15,7 @@ import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
+import javax.inject.Inject
 
 class ProfileViewModel
 @Inject

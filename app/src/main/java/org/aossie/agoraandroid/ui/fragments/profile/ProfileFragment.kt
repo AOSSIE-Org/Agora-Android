@@ -28,17 +28,6 @@ import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import javax.inject.Inject
-import kotlinx.android.synthetic.main.dialog_change_avatar.view.camera_view
-import kotlinx.android.synthetic.main.dialog_change_avatar.view.gallery_view
-import kotlinx.android.synthetic.main.fragment_profile.view.fab_edit_profile_pic
-import kotlinx.android.synthetic.main.fragment_profile.view.iv_profile_pic
-import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
@@ -58,6 +47,17 @@ import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import javax.inject.Inject
+import kotlinx.android.synthetic.main.dialog_change_avatar.view.camera_view
+import kotlinx.android.synthetic.main.dialog_change_avatar.view.gallery_view
+import kotlinx.android.synthetic.main.fragment_profile.view.fab_edit_profile_pic
+import kotlinx.android.synthetic.main.fragment_profile.view.iv_profile_pic
+import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
 
 const val CAMERA_PERMISSION_REQUEST_CODE = 1
 const val STORAGE_PERMISSION_REQUEST_CODE = 2
