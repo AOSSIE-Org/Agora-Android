@@ -16,8 +16,8 @@ class CreateElectionTest : BaseTest() {
   @Throws(IOException::class)
   fun createElectionTest() {
 
-    val createElectionRequest:String=MockFileParser("requests/election_requests/create_election_request.json").content
-    val createElectionResponse:String=MockFileParser("responses/election_responses/create_election_response.json").content
+    val createElectionRequest: String = MockFileParser("requests/election_requests/create_election_request.json").content
+    val createElectionResponse: String = MockFileParser("responses/election_responses/create_election_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(createElectionResponse))
     runBlocking {

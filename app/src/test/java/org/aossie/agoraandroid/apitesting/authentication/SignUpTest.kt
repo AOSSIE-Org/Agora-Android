@@ -17,11 +17,11 @@ class SignUpTest : BaseTest() {
   @Throws(IOException::class)
   fun signUpTest() {
 
-    val signUpRequest:String=MockFileParser("requests/auth_requests/signUp_request.json").content
-    val signUpResponse:String=MockFileParser("responses/auth_responses/signUp_response.json").content
+    val signUpRequest: String = MockFileParser("requests/auth_requests/signUp_request.json").content
+    val signUpResponse: String = MockFileParser("responses/auth_responses/signUp_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(signUpResponse))
-    runBlocking{
+    runBlocking {
       GlobalScope.launch {
         val responseFromRequest: Response<*> = apiService.createUser(signUpRequest)
         Assert.assertEquals(responseFromRequest.body(), signUpResponse)

@@ -19,13 +19,13 @@ class ReportBugFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    val view = inflater.inflate(layout.fragment_report_bug, container,false)
+    val view = inflater.inflate(layout.fragment_report_bug, container, false)
     view.button_report_bug.setOnClickListener {
       startActivity(
-          Intent(
-              Intent.ACTION_VIEW,
-              Uri.parse("https://gitlab.com/aossie/agora-android/issues/new")
-          )
+        Intent(
+          Intent.ACTION_VIEW,
+          Uri.parse("https://gitlab.com/aossie/agora-android/issues/new")
+        )
       )
     }
     return view

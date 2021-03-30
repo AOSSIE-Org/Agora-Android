@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,19 +35,20 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
 class LoginFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory,
-      private val prefs: PreferenceProvider
-  ): Fragment(), AuthListener, LoginListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory,
+  private val prefs: PreferenceProvider
+) : Fragment(), AuthListener, LoginListener {
 
-  private val loginViewModel : LoginViewModel by viewModels {
+  private val loginViewModel: LoginViewModel by viewModels {
     viewModelFactory
   }
 
@@ -70,39 +70,41 @@ class LoginFragment
     callbackManager = Factory.create()
 
     LoginManager.getInstance()
-        .registerCallback(callbackManager,
-            object : FacebookCallback<LoginResult?> {
-              override fun onSuccess(loginResult: LoginResult?) {
-                Timber.d("Success")
-                prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
-                loginViewModel.facebookLogInRequest(loginResult.accessToken.token)
-              }
+      .registerCallback(
+        callbackManager,
+        object : FacebookCallback<LoginResult?> {
+          override fun onSuccess(loginResult: LoginResult?) {
+            Timber.d("Success")
+            prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
+            loginViewModel.facebookLogInRequest(loginResult.accessToken.token)
+          }
 
-              override fun onCancel() {
-                Toast.makeText(context, "Login Cancel", Toast.LENGTH_LONG)
-                    .show()
-              }
+          override fun onCancel() {
+            Toast.makeText(context, "Login Cancel", Toast.LENGTH_LONG)
+              .show()
+          }
 
-              override fun onError(exception: FacebookException) {
-                Toast.makeText(context, exception.message, Toast.LENGTH_LONG)
-                    .show()
-              }
-            })
+          override fun onError(exception: FacebookException) {
+            Toast.makeText(context, exception.message, Toast.LENGTH_LONG)
+              .show()
+          }
+        }
+      )
 
     rootView.forgot_password_tv.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
+        .navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
     }
 
     rootView.login_btn.setOnClickListener {
       val userName = rootView.login_user_name_til.editText
-          ?.text
-          .toString()
-          .trim { it <= ' ' }
+        ?.text
+        .toString()
+        .trim { it <= ' ' }
       val userPass = rootView.login_password_til.editText
-          ?.text
-          .toString()
-          .trim { it <= ' ' }
+        ?.text
+        .toString()
+        .trim { it <= ' ' }
       HideKeyboard.hideKeyboardInFrag(this)
       loginViewModel.logInRequest(userName, userPass)
     }
@@ -112,10 +114,10 @@ class LoginFragment
 
     rootView.btn_facebook_login.setOnClickListener {
       LoginManager.getInstance()
-          .logInWithReadPermissions(
-              activity,
-              listOf("email", "public_profile")
-          )
+        .logInWithReadPermissions(
+          activity,
+          listOf("email", "public_profile")
+        )
     }
 
     return rootView
@@ -127,11 +129,11 @@ class LoginFragment
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
       val usernameInput: String = rootView.username.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val passwordInput: String = rootView.password.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       rootView.login_btn.isEnabled = usernameInput.isNotEmpty() && passwordInput.isNotEmpty()
     }
   }
@@ -149,7 +151,7 @@ class LoginFragment
     rootView.login_btn.toggleIsEnable()
     rootView.progress_bar.hide()
     Navigation.findNavController(rootView)
-        .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+      .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
   }
 
   override fun onStarted() {
@@ -164,16 +166,18 @@ class LoginFragment
   }
 
   override fun onTwoFactorAuthentication(password: String, crypto: String) {
-    loginViewModel.getLoggedInUser().observe(viewLifecycleOwner, Observer {
-      if(it != null) {
-        if (it.twoFactorAuthentication!!) {
-          rootView.snackbar("OTP is sent to your registered email address")
-          val action = LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(password, crypto)
-          Navigation.findNavController(rootView)
+    loginViewModel.getLoggedInUser().observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it != null) {
+          if (it.twoFactorAuthentication!!) {
+            rootView.snackbar("OTP is sent to your registered email address")
+            val action = LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(password, crypto)
+            Navigation.findNavController(rootView)
               .navigate(action)
+          }
         }
       }
-    })
+    )
   }
-
 }

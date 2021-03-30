@@ -12,9 +12,9 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.utilities.Converters
 
 @Database(
-    entities = [User::class, Election::class],
-    version = 10,
-    exportSchema = false
+  entities = [User::class, Election::class],
+  version = 10,
+  exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -32,17 +32,16 @@ abstract class AppDatabase : RoomDatabase() {
 
     private fun buildDatabase(context: Context): AppDatabase {
       return Room.databaseBuilder(
-          context,
-          AppDatabase::class.java,
-          "AgoraAppDatabase.db"
+        context,
+        AppDatabase::class.java,
+        "AgoraAppDatabase.db"
       )
-          .fallbackToDestructiveMigration()
-          .build()
+        .fallbackToDestructiveMigration()
+        .build()
     }
   }
 
   abstract fun getUserDao(): UserDao
 
-  abstract fun getElectionDao() : ElectionsDao
-
+  abstract fun getElectionDao(): ElectionsDao
 }

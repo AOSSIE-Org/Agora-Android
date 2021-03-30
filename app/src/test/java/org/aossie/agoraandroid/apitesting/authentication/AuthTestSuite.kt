@@ -5,10 +5,10 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    ChangePasswordTest::class,
-    FacebookLoginTest::class,
-    ForgotPasswordTest::class,
-    LogInTest::class,
-    SignUpTest::class
+  ChangePasswordTest::class,
+  FacebookLoginTest::class,
+  ForgotPasswordTest::class,
+  LogInTest::class,
+  SignUpTest::class
 )
 class AuthTestSuite
