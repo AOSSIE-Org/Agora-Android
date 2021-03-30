@@ -107,6 +107,12 @@ dependencies {
   implementation "com.squareup.picasso:picasso:$picassoVersion"
   //timber
   implementation "com.jakewharton.timber:timber:$timberVersion"
+  //httpLoggingInterceptor
+   implementation "com.squareup.okhttp3:logging-interceptor:$httpLoggingInterceptor"
+  //chucker
+  debugImplementation "com.github.chuckerteam.chucker:library:$chuckerVersion"
+  releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chuckerVersion"
+
   //leakcanary
   debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
 }
