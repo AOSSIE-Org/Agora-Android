@@ -1,11 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import javax.inject.Inject
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -34,6 +28,12 @@ import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.dialog_change_avatar.view.camera_view
 import kotlinx.android.synthetic.main.dialog_change_avatar.view.gallery_view
 import kotlinx.android.synthetic.main.fragment_profile.view.fab_edit_profile_pic

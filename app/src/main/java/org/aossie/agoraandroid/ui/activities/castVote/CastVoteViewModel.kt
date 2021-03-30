@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.ui.activities.castVote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
@@ -11,7 +12,6 @@ import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
-import javax.inject.Inject
 
 class CastVoteViewModel
 @Inject

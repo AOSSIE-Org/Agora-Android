@@ -1,10 +1,10 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
-import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository

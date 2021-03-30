@@ -1,9 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
-import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
