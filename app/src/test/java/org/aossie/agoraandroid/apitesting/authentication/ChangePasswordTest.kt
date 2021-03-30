@@ -18,8 +18,8 @@ class ChangePasswordTest : BaseTest() {
   @Throws(IOException::class)
   fun changePasswordTest() {
 
-    val changePasswordResponse=MockFileParser("responses/auth_responses/change_password_response.json").content
-    val changePasswordRequest=MockFileParser("requests/auth_requests/change_password_request.json").content
+    val changePasswordResponse = MockFileParser("responses/auth_responses/change_password_response.json").content
+    val changePasswordRequest = MockFileParser("requests/auth_requests/change_password_request.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(changePasswordResponse))
     runBlocking {
