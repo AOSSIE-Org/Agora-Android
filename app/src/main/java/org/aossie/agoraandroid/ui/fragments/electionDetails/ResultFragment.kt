@@ -103,9 +103,7 @@ constructor(
 
     val value: ArrayList<PieEntry> = ArrayList()
     value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
-    value.add(
-        PieEntry(winner.score?.denominator?.toFloat()!!, resources.getString(R.string.others))
-    )
+    value.add(PieEntry(winner.score?.denominator?.toFloat()!!, resources.getString(R.string.others)))
 
     val pieDataSet = PieDataSet(value, "")
     val pieData = PieData(pieDataSet)

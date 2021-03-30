@@ -1,20 +1,25 @@
+
 package org.aossie.agoraandroid.data.network.interceptors
 
+import android.content.Context
 import timber.log.Timber
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.json.JSONObject
 import javax.inject.Named
 
 class AuthorizationInterceptor(
+  private val context: Context,
   private val prefs: PreferenceProvider,
   private val appDatabase: AppDatabase,
   @Named("apiWithoutAuth") private val api: Api
@@ -23,9 +28,8 @@ class AuthorizationInterceptor(
   override fun intercept(chain: Interceptor.Chain): Response {
     val mainResponse = chain.proceed(chain.request())
 
-
       // if response code is 401 or 403, network call has encountered authentication error
-      if (mainResponse.code == 401 || mainResponse.code == 403) {
+    if (mainResponse.code == AppConstants.UNAUTHENTICATED_CODE || mainResponse.code == AppConstants.INVALID_CREDENTIALS_CODE) {
         if (prefs.getIsLoggedIn()){
         Coroutines.io{
           var user = appDatabase.getUserDao().getUserInfo()
@@ -36,12 +40,15 @@ class AuthorizationInterceptor(
               prefs.setCurrentToken(response.body()!!.authToken?.token)
               user.token = response.body()!!.authToken?.token
               user.expiredAt = response.body()!!.authToken?.expiresOn
+            } else {
+              prefs.setIsLoggedIn(false)
+              throw SessionExpirationException(context.resources.getString(R.string.token_expired))
             }
           } else {
             val jsonObject = JSONObject()
             jsonObject.put("identifier", user.username)
             jsonObject.put("password", user.password)
-            jsonObject.put("password", user.trustedDevice)
+            jsonObject.put("trustedDevice", user.trustedDevice)
             val loginResponse = api.logIn(jsonObject.toString())
             if (loginResponse.isSuccessful) {
               val authResponse: AuthResponse? = loginResponse.body()
@@ -53,17 +60,16 @@ class AuthorizationInterceptor(
                 )
                 Timber.d(authResponse.toString())
               }
+            } else {
+              prefs.setIsLoggedIn(false)
+              throw SessionExpirationException(context.resources.getString(R.string.token_expired))
             }
           }
           appDatabase.getUserDao().replace(user)
-          prefs.setIsLoggedIn(true)
           prefs.setCurrentToken(user.token)
         }
-        throw SessionExpirationException("Your session was expired. Please try again")}
       }
-      else
-        prefs.setIsLoggedIn(true)
-
+    }
     return mainResponse
   }
 }

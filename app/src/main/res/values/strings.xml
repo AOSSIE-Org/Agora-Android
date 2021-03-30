@@ -123,6 +123,7 @@
   <string name="random_ballot">RandomBallot</string>
   <string name="contingent_method">Contingent</string>
   <string name="instant_runoff_2_round">InstantRunoff2Round</string>
+  <string name="nothing_to_show_here">Nothing to show here</string>
 
 
   //string-array for security questions
@@ -170,7 +171,7 @@
   <string name="password_not_match_warn">Passwords Not Matching</string>
   <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
   <string name="password_change_success">password changed successfully</string>
-  <string name="token_expired">Token expired, please login again!</string>
+  <string name="token_expired">Your session was expired. Please login again!</string>
 
   <string name="voter_same_email">Voter with same Email Id already added</string>
   <string name="user_updated">User updated successfully!</string>
