@@ -28,5 +28,4 @@ class GetVotersTest : BaseTest() {
       }
     }
   }
-
 }

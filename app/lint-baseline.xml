@@ -1,0 +1,2140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="5" by="lint 4.1">
+
+    <issue
+        id="CommitPrefEdits"
+        message="`SharedPreferences.edit()` without a corresponding `commit()` or `apply()` call">
+        <location
+            file="src/main/java/org/aossie/agoraandroid/ui/fragments/createelection/ElectionDetailsSharedPrefs.kt"
+            line="147"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/active_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/active_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/active_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="214"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="186"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/button_create_election, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/button_create_election, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/button_create_election]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="45"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="34"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/card_view_active_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/card_view_active_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/card_view_active_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="198"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="169"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/card_view_finished_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/card_view_finished_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/card_view_finished_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="268"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="230"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/card_view_pending_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/card_view_pending_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/card_view_pending_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="128"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="108"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/card_view_total_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/card_view_total_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/card_view_total_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="58"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="48"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/constraintLayout, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/constraintLayout, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/constraintLayout]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="24"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="15"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/constraintLayout1, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/constraintLayout1, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/constraintLayout1]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="103"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="94"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/constraintLayout2, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/constraintLayout2, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/constraintLayout2]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="173"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="154"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/constraintLayout3, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/constraintLayout3, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/constraintLayout3]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="243"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="215"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/constraintLayout4, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/constraintLayout4, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/constraintLayout4]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="313"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="277"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/finished_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/finished_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/finished_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="284"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="247"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/pending_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/pending_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/pending_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="144"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="125"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/text_view_active_count, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/text_view_active_count, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/text_view_active_count]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="228"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="200"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/text_view_finished_count, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/text_view_finished_count, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/text_view_finished_count]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="298"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="262"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/text_view_pending_count, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/text_view_pending_count, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/text_view_pending_count]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="158"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="139"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/text_view_total_count, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/text_view_total_count, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/text_view_total_count]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="89"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="79"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/total_elections, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/total_elections, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/total_elections]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="74"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="65"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/tv_dashboard, defined or included multiple times in layout/fragment_home.xml: [layout/fragment_home.xml defines @+id/tv_dashboard, layout/fragment_home.xml => layout/data_placeholder_shimmer_layout.xml defines @+id/tv_dashboard]">
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="347"/>
+        <location
+            file="src/main/res/layout/fragment_home.xml"
+            line="35"/>
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="23"/>
+    </issue>
+
+    <issue
+        id="ExifInterface"
+        message="Avoid using `android.media.ExifInterface`; use `android.support.media.ExifInterface` from the support library instead">
+        <location
+            file="src/main/java/org/aossie/agoraandroid/utilities/GetBitmapFromUri.kt"
+            line="10"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `autoSizeTextType` is only used in API level 26 and higher (current min is 22)">
+        <location
+            file="src/main/res/layout/fragment_settings.xml"
+            line="84"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `autoSizeMinTextSize` is only used in API level 26 and higher (current min is 22)">
+        <location
+            file="src/main/res/layout/fragment_settings.xml"
+            line="85"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `autoSizeMaxTextSize` is only used in API level 26 and higher (current min is 22)">
+        <location
+            file="src/main/res/layout/fragment_settings.xml"
+            line="86"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `autoSizeStepGranularity` is only used in API level 26 and higher (current min is 22)">
+        <location
+            file="src/main/res/layout/fragment_settings.xml"
+            line="87"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more">
+        <location
+            file="src/main/res/drawable/ic_drop_down.xml"
+            line="3"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more">
+        <location
+            file="src/main/res/drawable/ic_home.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more">
+        <location
+            file="src/main/res/drawable/ic_settings.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more">
+        <location
+            file="src/main/res/drawable/ic_user.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more">
+        <location
+            file="src/main/res/drawable/ic_vote.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.constraintlayout:constraintlayout than 1.1.3 is available: 2.0.4">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.3.1 is available: 1.3.2">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.2.0 is available: 2.3.1">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-fragment-ktx than 2.3.0 is available: 2.3.4">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-safe-args-gradle-plugin than 2.3.0 is available: 2.3.4">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-ui-ktx than 2.3.0 is available: 2.3.4">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.room:room-ktx than 2.2.5 is available: 2.2.6">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.room:room-runtime than 2.2.5 is available: 2.2.6">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test.espresso:espresso-core than 3.2.0 is available: 3.3.0">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.test:runner than 1.2.0 is available: 1.3.0">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.android.material:material than 1.2.1 is available: 1.3.0">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.squareup.retrofit2:converter-gson than 2.6.0 is available: 2.6.1">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.squareup.retrofit2:retrofit than 2.6.0 is available: 2.6.1">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of junit:junit than 4.13 is available: 4.13.1">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of org.jetbrains.kotlin:kotlin-stdlib-jdk7 than 1.3.72 is available: 1.4.30">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of org.jetbrains.kotlinx:kotlinx-coroutines-core than 1.3.8 is available: 1.4.0">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `ResourcesCompat.getDrawable()`">
+        <location
+            file="src/main/java/org/aossie/agoraandroid/ui/fragments/elections/CalendarViewElectionFragment.kt"
+            line="232"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `ResourcesCompat.getDrawable()`">
+        <location
+            file="src/main/java/org/aossie/agoraandroid/ui/fragments/elections/CalendarViewElectionFragment.kt"
+            line="232"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/activity_cast_vote.xml"
+            line="124"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/activity_cast_vote.xml"
+            line="149"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/activity_cast_vote.xml"
+            line="178"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableEndCompat` instead of `android:drawableEnd`">
+        <location
+            file="src/main/res/layout/fragment_contact_us.xml"
+            line="63"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableEndCompat` instead of `android:drawableEnd`">
+        <location
+            file="src/main/res/layout/fragment_contact_us.xml"
+            line="81"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableEndCompat` instead of `android:drawableEnd`">
+        <location
+            file="src/main/res/layout/fragment_contact_us.xml"
+            line="99"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/fragment_election_details.xml"
+            line="188"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/fragment_election_details.xml"
+            line="209"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/fragment_election_details.xml"
+            line="233"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/fragment_election_details.xml"
+            line="260"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/list_item_elections.xml"
+            line="64"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/list_item_elections.xml"
+            line="83"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/list_item_elections.xml"
+            line="108"/>
+    </issue>
+
+    <issue
+        id="UseCompatTextViewDrawableXml"
+        message="Use `app:drawableStartCompat` instead of `android:drawableStart`">
+        <location
+            file="src/main/res/layout/list_item_elections.xml"
+            line="133"/>
+    </issue>
+
+    <issue
+        id="BinaryOperationInTimber"
+        message="Replace String concatenation with Timber&apos;s string formatting">
+        <location
+            file="src/main/java/org/aossie/agoraandroid/ui/fragments/elections/CalendarViewElectionFragment.kt"
+            line="213"/>
+    </issue>
+
+    <issue
+        id="LifecycleAnnotationProcessorWithJava8"
+        message="Use the Lifecycle Java 8 API provided by the `lifecycle-common-java8` library instead of Lifecycle annotations for faster incremental build.">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="StaticFieldLeak"
+        message="This field leaks a context object">
+        <location
+            file="src/main/java/org/aossie/agoraandroid/result/ResultViewModel.java"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (1395 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_art.xml"
+            line="11"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (2253 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_candidates.xml"
+            line="10"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (1731 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_globe.xml"
+            line="7"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (997 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_home.xml"
+            line="8"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (1085 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_hourglass.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (993 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_invite.xml"
+            line="10"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (3611 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_register.xml"
+            line="7"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (3576 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_settings.xml"
+            line="8"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (3537 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_total.xml"
+            line="10"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (944 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector.">
+        <location
+            file="src/main/res/drawable/ic_vote.xml"
+            line="37"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/grey_color` with a theme that also paints a background (inferred theme is `@style/AppTheme`)">
+        <location
+            file="src/main/res/layout/calendar_view_shimmer_layout.xml"
+            line="7"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/grey_color` with a theme that also paints a background (inferred theme is `@style/AppTheme`)">
+        <location
+            file="src/main/res/layout/data_placeholder_shimmer_layout.xml"
+            line="6"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/grey_color` with a theme that also paints a background (inferred theme is `@style/AppTheme`)">
+        <location
+            file="src/main/res/layout/fragment_about.xml"
+            line="8"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/grey_color` with a theme that also paints a background (inferred theme is `@style/AppTheme`)">
+        <location
+            file="src/main/res/layout/fragment_calendar_view_election.xml"
+            line="7"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/grey_color` with a theme that also paints a background (inferred theme is `@style/AppTheme`)">
+        <location
+            file="src/main/res/layout/fragment_contact_us.xml"
+            line="7"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/grey_color` with a theme that also paints a background (inferred theme is `@style/AppTheme`)">
+        <location
+            file="src/main/res/layout/fragment_invite_voters.xml"
+            line="8"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/grey_color` with a theme that also paints a background (inferred theme is `@style/AppTheme`)">
+        <location
+            file="src/main/res/layout/fragment_share_with_others.xml"
+            line="7"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.calendar_view_shimmer_layout` appears to be unused">
+        <location
+            file="src/main/res/layout/calendar_view_shimmer_layout.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.orange_total_elections` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="16"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.transparent_red_active_elections` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.transparent_blue_finished_elections` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="20"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.transparent_green_pending_elections` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="21"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.greenTint` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="25"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.yellowTint` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="27"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.hint` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="30"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.teal100` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="32"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.teal400` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="33"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.teal600` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="34"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.teal500` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="35"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.teal700` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="36"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.teal900` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="37"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.red500` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="39"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.deepPurple500` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="40"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.blue500` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="41"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.green500` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="42"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.deeporange500` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="43"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.grey300` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="44"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.grey500` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="45"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.grey700` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="46"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.black_background` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="47"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.seventyBlack` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="48"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.black_transparent` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="49"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.dark_black_transparent` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="50"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.lightgreen800` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="51"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.indigo800` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="52"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.lightblue600` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="53"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.red400` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="54"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.yellow200` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="55"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.yellow700` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="56"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.red700` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="57"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.deeppurple700` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="58"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.deeppurple100` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="59"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.green700` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="60"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.dark_theme_surface` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="61"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.dark_theme_chat_layout` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="62"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.dark_theme_chat_bubble` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="63"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.placeholder_bg` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="64"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.darkgreyforavatarbg` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="65"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_holo_dark` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="66"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_holo_light` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="67"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.bottomNav` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="69"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.darkSlateColor` appears to be unused">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="83"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.size_18dp` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="23"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.size_500dp` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="27"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.size_80dp` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="39"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.size_32dp` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="48"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.add_event_button_foreground_size` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="56"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.add_event_button_background_size` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="57"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.add_event_button_background_bottom_margin` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="58"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.size_6dp` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="61"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.size_400dp` appears to be unused">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="62"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.drop_down` appears to be unused">
+        <location
+            file="src/main/res/drawable/drop_down.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_access_time` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_access_time.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_add_white_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_add_white_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_agora_logo` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_agora_logo.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_bug_report_black_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_bug_report_black_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_call_received_black_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_call_received_black_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_code_black_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_code_black_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_date_range_50dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_date_range_50dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_done_all` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_done_all.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_drop_down` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_drop_down.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_launcher_background` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_launcher_background.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_launcher_foreground` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_launcher_foreground.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_launcher_round` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_launcher_round.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_local_post_office_black_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_local_post_office_black_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_message_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_message_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_more_icon` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_more_icon.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_people_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_people_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_play_arrow` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_play_arrow.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_share_black_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_share_black_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_view_carousel_black_24dp` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_view_carousel_black_24dp.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_view_carousel_white` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_view_carousel_white.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.preloaded_fonts` appears to be unused">
+        <location
+            file="src/main/res/values/preloaded_fonts.xml"
+            line="3"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.rotate` appears to be unused">
+        <location
+            file="src/main/res/anim/rotate.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.log_in` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="4"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.user_login` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.user_sign_up` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.already_have_an_account` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="15"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sign_in` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="16"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.profile` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="18"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.communicate` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="20"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.about_agora` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="23"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.my_invitations` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="24"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.contact_us_desc` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="28"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.gitter_aossie` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="29"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.gitlab_aossie` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="30"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.active_nelections` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="36"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.pending_nelections` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="37"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.total_nelections` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="38"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.finished_nelections` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="39"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.invite_voters` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="40"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.get_real_time_results` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="41"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.how_secret_are_ballots` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="42"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.who_can_see_the_list_of_voters` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="43"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.only_me` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="44"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.everyone_with_access_to_election` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="45"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.some_more_options` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="46"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.next` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="47"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.add_candidate` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="48"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.enter_candidate_s_name` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="50"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.enter_details` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="55"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.datePicker` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="56"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.baldwin` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="58"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.exhaustive_ballot` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="59"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.testemail` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="61"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.user_email_id` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="63"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.developed_with_by_aossie` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="65"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.image_button` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="76"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ballots` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="89"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.swipe_to_delete_candidate_s_name` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="97"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.security_dropdown` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="101"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.invalid_username` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="104"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ballots_are_completely_secret` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="106"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ballots_visible_only_to_me` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="107"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ballots_visible_to_everyone` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="108"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.oklahoma` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="109"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.rangevoting` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="110"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.rankedpairs` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="111"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.satisfaction_approval_voting` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="112"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.smithset` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="113"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sequential_proportional_approval_voting` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="114"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.approval` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="115"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.exhaustive_ballot_with_dropoff` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="116"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.copeland` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="117"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.uncovered_set` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="118"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.borda` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="119"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.minimax_condorcet` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="120"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.nanson` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="121"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.kemeny_young` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="122"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.random_ballot` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="123"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.contingent_method` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="124"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.instant_runoff_2_round` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="125"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.email_id_label` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="165"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.user_name_label` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="166"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.password_change_success` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="173"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.user_updated` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="177"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.email_changed` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="180"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.username_changed` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="181"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.hello_blank_fragment` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="184"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.more` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="186"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.bad_request` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="189"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.unauthenticated` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="190"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.invalid_credentials` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="191"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_ut_aliquam` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="196"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.let_s_get_the_ball_rolling` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="217"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.july` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="226"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.asset_statements` appears to be unused">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="234"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.MoreFragmentsTextViewStyle` appears to be unused">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="53"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.visible_slide_down` appears to be unused">
+        <location
+            file="src/main/res/anim/visible_slide_down.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.visible_slide_up` appears to be unused">
+        <location
+            file="src/main/res/anim/visible_slide_up.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.welcom_tree` appears to be unused">
+        <location
+            file="src/main/res/drawable/welcom_tree.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.white_text_style` appears to be unused">
+        <location
+            file="src/main/res/drawable/white_text_style.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/agora.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/agora.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/annoyed.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/annoyed.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/boy_ship.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/boy_ship.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_launcher_round.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_launcher_round.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/mountain.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/mountain.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/tree.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/tree.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/welcom_tree.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/welcom_tree.png"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image">
+        <location
+            file="src/main/res/layout/fragment_profile.xml"
+            line="87"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Winner is&quot;, should use `@string` resource">
+        <location
+            file="src/main/res/layout/activity_result.xml"
+            line="66"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginLeft`; already defining `layout_marginStart` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_candidate_name.xml"
+            line="27"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginLeft`; already defining `layout_marginStart` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="99"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginLeft`; already defining `layout_marginStart` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="114"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginRight`; already defining `layout_marginEnd` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="116"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginLeft`; already defining `layout_marginStart` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="131"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginLeft`; already defining `layout_marginStart` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="146"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginRight`; already defining `layout_marginEnd` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="148"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginLeft`; already defining `layout_marginStart` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="163"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginLeft`; already defining `layout_marginStart` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="177"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Redundant attribute `layout_marginRight`; already defining `layout_marginEnd` with `targetSdkVersion` 22">
+        <location
+            file="src/main/res/layout/list_item_election_details.xml"
+            line="179"/>
+    </issue>
+
+</issues>

@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.auth.signup
 
-import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +9,7 @@ import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import timber.log.Timber
 import javax.inject.Inject
 
 class SignUpViewModel
@@ -29,33 +29,32 @@ constructor(
     securityAnswer: String
   ) {
     authListener.onStarted()
-    viewModelScope.launch(Dispatchers.Main){
+    viewModelScope.launch(Dispatchers.Main) {
       try {
         val call = userRepository.userSignup(
-            userName,
-            userPassword,
-            userEmail,
-            firstName,
-            lastName,
-            securityQuestion,
-            securityAnswer
+          userName,
+          userPassword,
+          userEmail,
+          firstName,
+          lastName,
+          securityQuestion,
+          securityAnswer
         )
         Timber.d(call)
         authListener.onSuccess()
-      }catch (e: ApiException){
-        if(e.message == "409"){
+      } catch (e: ApiException) {
+        if (e.message == "409") {
           authListener.onFailure("User with this username already exists")
-        }else {
+        } else {
           authListener.onFailure(e.message!!)
         }
-      }catch (e: SessionExpirationException){
+      } catch (e: SessionExpirationException) {
         authListener.onFailure(e.message!!)
-      }catch (e: NoInternetException){
+      } catch (e: NoInternetException) {
         authListener.onFailure(e.message!!)
-      }catch (e: Exception){
+      } catch (e: Exception) {
         authListener.onFailure(e.message!!)
       }
     }
   }
-
 }
