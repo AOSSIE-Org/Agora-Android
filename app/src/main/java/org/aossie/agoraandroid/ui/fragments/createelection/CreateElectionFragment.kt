@@ -2,7 +2,6 @@ package org.aossie.agoraandroid.ui.fragments.createelection
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -67,14 +66,14 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
-): Fragment(), CreateElectionListener {
+) : Fragment(), CreateElectionListener {
 
   private var sDay = 0
-  private  var sMonth:Int = 0
-  private  var sYear:Int = 0
+  private var sMonth: Int = 0
+  private var sYear: Int = 0
   private var eDay = 0
-  private  var eMonth:Int = 0
-  private  var eYear:Int = 0
+  private var eMonth: Int = 0
+  private var eYear: Int = 0
   private var mElectionName: String? = null
   private var mElectionDescription: String? = null
   private var mStartDate: String? = null
@@ -86,7 +85,6 @@ constructor(
 
   private val mCandidates = ArrayList<String>()
   private var candidateRecyclerAdapter: CandidateRecyclerAdapter? = null
-
 
   lateinit var algorithmsAdapter: ArrayAdapter<CharSequence>
   private var votingAlgorithm: String? = null
@@ -100,8 +98,6 @@ constructor(
   private var mFinalIsInvite: Boolean? = null
   private var mFinalIsRealTime: Boolean? = null
   private var voterListVisibility: Boolean? = null
-
-
 
   private lateinit var rootView: View
 
@@ -132,7 +128,7 @@ constructor(
       mElectionDescription = rootView.election_description_til.editText?.text.toString()
       mStartDate = rootView.start_date_til.editText?.text.toString()
       mEndDate = rootView.end_date_til.editText?.text.toString()
-      if(validateInputs()){
+      if (validateInputs()) {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
         rootView.end_date_til.error = null
         electionDetailsSharedPrefs.saveElectionName(mElectionName)
@@ -168,8 +164,8 @@ constructor(
     }
 
     algorithmsAdapter = ArrayAdapter.createFromResource(
-        requireContext(), array.algorithms,
-        android.R.layout.simple_spinner_item
+      requireContext(), array.algorithms,
+      android.R.layout.simple_spinner_item
     )
     algorithmsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -183,7 +179,7 @@ constructor(
         l: Long
       ) {
         votingAlgorithm = adapterView.getItemAtPosition(i)
-            .toString()
+          .toString()
       }
 
       override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -192,8 +188,8 @@ constructor(
     }
 
     ballotVisibilityAdapter = ArrayAdapter.createFromResource(
-        requireContext(), array.ballot_visibility,
-        android.R.layout.simple_spinner_item
+      requireContext(), array.ballot_visibility,
+      android.R.layout.simple_spinner_item
     )
     ballotVisibilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -207,7 +203,7 @@ constructor(
         l: Long
       ) {
         ballotVisibility = adapterView.getItemAtPosition(i)
-            .toString()
+          .toString()
       }
 
       override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -249,20 +245,20 @@ constructor(
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
       val candidateNameInput: String = rootView.et_candidate_name.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       rootView.add_candidate_btn.isEnabled = candidateNameInput.isNotEmpty()
     }
   }
-  private fun validateInputs(): Boolean{
-    val isValid : Boolean = if(calendar2 == null || calendar3 == null){
+  private fun validateInputs(): Boolean {
+    val isValid: Boolean = if (calendar2 == null || calendar3 == null) {
       rootView.errorDialog("Please enter all the details")
       false
-    } else{
-      if(calendar3!!.before(calendar2)){
+    } else {
+      if (calendar3!!.before(calendar2)) {
         rootView.errorDialog("End date should be after starting date and time i.e. $mStartDate")
         false
-      }else{
+      } else {
         true
       }
     }
@@ -282,33 +278,40 @@ constructor(
     val HOUR = calendar[Calendar.HOUR_OF_DAY]
     val MINUTE = calendar[Calendar.MINUTE]
     datePickerDialog =
-      DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        mStartDate = "$year/${month+1}/$dayOfMonth"
-        sDay = dayOfMonth
-        sMonth = month
-        sYear = year
-      }, YEAR, MONTH, DATE).apply { datePicker.minDate = System.currentTimeMillis() - 1000 }
-    val timePickerDialog = TimePickerDialog(context,
-        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-          mStartDate = if (hourOfDay < 10 && minute < 10) "$mStartDate at 0$hourOfDay:0$minute"
-          else if (hourOfDay < 10) "$mStartDate at 0$hourOfDay:$minute"
-          else if (minute < 10) "$mStartDate at $hourOfDay:0$minute"
-          else "$mStartDate at $hourOfDay:$minute"
-          //Formatting the starting date in Date-Time format
-          calendar2 = Calendar.getInstance()
-          calendar2?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-          calendar2?.set(Calendar.MINUTE, minute)
-          calendar2?.set(Calendar.YEAR, sYear)
-          calendar2?.set(Calendar.MONTH, sMonth)
-          calendar2?.set(Calendar.DAY_OF_MONTH, sDay)
-          if (calendar2 != null && calendar2!!.before(Calendar.getInstance())) {
-            rootView.errorDialog("Start date should be after current date and time")
-          } else {
-            rootView.start_date_til.editText?.setText(mStartDate)
-            val charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2)
-            electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
-          }
-        }, HOUR, MINUTE, true)
+      DatePickerDialog(
+        requireContext(),
+        DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+          mStartDate = "$year/${month + 1}/$dayOfMonth"
+          sDay = dayOfMonth
+          sMonth = month
+          sYear = year
+        },
+        YEAR, MONTH, DATE
+      ).apply { datePicker.minDate = System.currentTimeMillis() - 1000 }
+    val timePickerDialog = TimePickerDialog(
+      context,
+      TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+        mStartDate = if (hourOfDay < 10 && minute < 10) "$mStartDate at 0$hourOfDay:0$minute"
+        else if (hourOfDay < 10) "$mStartDate at 0$hourOfDay:$minute"
+        else if (minute < 10) "$mStartDate at $hourOfDay:0$minute"
+        else "$mStartDate at $hourOfDay:$minute"
+        // Formatting the starting date in Date-Time format
+        calendar2 = Calendar.getInstance()
+        calendar2?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar2?.set(Calendar.MINUTE, minute)
+        calendar2?.set(Calendar.YEAR, sYear)
+        calendar2?.set(Calendar.MONTH, sMonth)
+        calendar2?.set(Calendar.DAY_OF_MONTH, sDay)
+        if (calendar2 != null && calendar2!!.before(Calendar.getInstance())) {
+          rootView.errorDialog("Start date should be after current date and time")
+        } else {
+          rootView.start_date_til.editText?.setText(mStartDate)
+          val charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2)
+          electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
+        }
+      },
+      HOUR, MINUTE, true
+    )
     timePickerDialog?.show()
     datePickerDialog?.show()
     datePickerDialog?.setOnCancelListener {
@@ -325,33 +328,40 @@ constructor(
     val HOUR = calendar[Calendar.HOUR_OF_DAY]
     val MINUTE = calendar[Calendar.MINUTE]
     datePickerDialog =
-      DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        mEndDate = "$year/${month+1}/$dayOfMonth"
-        eYear = year
-        eMonth = month
-        eDay = dayOfMonth
-      }, YEAR, MONTH, DATE).apply { datePicker.minDate = System.currentTimeMillis() - 1000 }
-    val timePickerDialog = TimePickerDialog(requireContext(),
-        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-          //Formatting the ending date in Date-Time format
-          mEndDate = if (hourOfDay < 10 && minute < 10) "$mEndDate at 0$hourOfDay:0$minute"
-          else if (hourOfDay < 10) "$mEndDate at 0$hourOfDay:$minute"
-          else if (minute < 10) "$mEndDate at $hourOfDay:0$minute"
-          else "$mEndDate at $hourOfDay:$minute"
-          calendar3 = Calendar.getInstance()
-          calendar3?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-          calendar3?.set(Calendar.MINUTE, minute)
-          calendar3?.set(Calendar.YEAR, eYear)
-          calendar3?.set(Calendar.MONTH, eMonth)
-          calendar3?.set(Calendar.DAY_OF_MONTH, eDay)
-          if (calendar3 != null && calendar3!!.before(Calendar.getInstance())) {
-            rootView.errorDialog("End date should be after current date and time")
-          } else {
-            rootView.end_date_til.editText?.setText(mEndDate)
-            val charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3)
-            electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
-          }
-        }, HOUR, MINUTE, true)
+      DatePickerDialog(
+        requireContext(),
+        DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+          mEndDate = "$year/${month + 1}/$dayOfMonth"
+          eYear = year
+          eMonth = month
+          eDay = dayOfMonth
+        },
+        YEAR, MONTH, DATE
+      ).apply { datePicker.minDate = System.currentTimeMillis() - 1000 }
+    val timePickerDialog = TimePickerDialog(
+      requireContext(),
+      TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+        // Formatting the ending date in Date-Time format
+        mEndDate = if (hourOfDay < 10 && minute < 10) "$mEndDate at 0$hourOfDay:0$minute"
+        else if (hourOfDay < 10) "$mEndDate at 0$hourOfDay:$minute"
+        else if (minute < 10) "$mEndDate at $hourOfDay:0$minute"
+        else "$mEndDate at $hourOfDay:$minute"
+        calendar3 = Calendar.getInstance()
+        calendar3?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar3?.set(Calendar.MINUTE, minute)
+        calendar3?.set(Calendar.YEAR, eYear)
+        calendar3?.set(Calendar.MONTH, eMonth)
+        calendar3?.set(Calendar.DAY_OF_MONTH, eDay)
+        if (calendar3 != null && calendar3!!.before(Calendar.getInstance())) {
+          rootView.errorDialog("End date should be after current date and time")
+        } else {
+          rootView.end_date_til.editText?.setText(mEndDate)
+          val charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3)
+          electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
+        }
+      },
+      HOUR, MINUTE, true
+    )
     timePickerDialog?.show()
     datePickerDialog?.show()
     datePickerDialog?.setOnCancelListener {
@@ -365,21 +375,21 @@ constructor(
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
       val electionNameInput: String = rootView.et_election_name.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val electionDescriptionInput: String = rootView.et_election_description.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val startDateInput: String = rootView.et_start_date.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val endDateInput: String = rootView.et_end_date.text
-          .toString()
-          .trim()
-      rootView.submit_details_btn.isEnabled = electionNameInput.isNotEmpty()
-          && electionDescriptionInput.isNotEmpty()
-          && startDateInput.isNotEmpty()
-          && endDateInput.isNotEmpty()
+        .toString()
+        .trim()
+      rootView.submit_details_btn.isEnabled = electionNameInput.isNotEmpty() &&
+        electionDescriptionInput.isNotEmpty() &&
+        startDateInput.isNotEmpty() &&
+        endDateInput.isNotEmpty()
     }
   }
 
@@ -391,11 +401,11 @@ constructor(
   override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
     rootView.submit_details_btn.toggleIsEnable()
-    if(message!=null) rootView.snackbar(message)
+    if (message != null) rootView.snackbar(message)
     prefs.setUpdateNeeded(true)
     electionDetailsSharedPrefs.clearElectionData()
     Navigation.findNavController(rootView)
-        .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+      .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
   }
 
   override fun onFailure(message: String) {
@@ -403,5 +413,4 @@ constructor(
     rootView.snackbar(message)
     rootView.submit_details_btn.toggleIsEnable()
   }
-
 }

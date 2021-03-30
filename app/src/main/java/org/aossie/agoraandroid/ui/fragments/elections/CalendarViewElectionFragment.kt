@@ -2,7 +2,6 @@ package org.aossie.agoraandroid.ui.fragments.elections
 
 import android.graphics.Color
 import android.os.Bundle
-import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +29,8 @@ import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Calendar
@@ -76,11 +75,10 @@ constructor(
 
     rootView.calendarView.visibility = View.GONE
     rootView.img_btn_month.setOnClickListener {
-      if(rootView.calendarView.visibility == View.GONE) {
+      if (rootView.calendarView.visibility == View.GONE) {
         rootView.calendarView.visibility = View.VISIBLE
         it.animate().rotation(180F).start()
-      }
-      else if(rootView.calendarView.visibility == View.VISIBLE) {
+      } else if (rootView.calendarView.visibility == View.VISIBLE) {
         rootView.calendarView.visibility = View.GONE
         it.animate().rotation(360F).start()
       }
@@ -96,7 +94,7 @@ constructor(
 
     dateFormat = SimpleDateFormat("MMM yyyy", Locale.ENGLISH)
     timeFormat = java.text.DateFormat.getTimeInstance(
-        java.text.DateFormat.SHORT, Locale.getDefault()
+      java.text.DateFormat.SHORT, Locale.getDefault()
     )
 
     content = rootView.findViewById(R.id.sample_content)
@@ -126,20 +124,20 @@ constructor(
     val defaultSelectedDate = Calendar.getInstance()
 
     horizontalCalendar = Builder(rootView, R.id.horizontal_calendarView)
-        .range(startDate, endDate)
-        .datesNumberOnScreen(5)
-        .configure()
-        .formatMiddleText("dd")
-        .formatBottomText("EEE")
-        .showTopText(false)
-        .showBottomText(true)
-        .textColor(Color.LTGRAY, Color.WHITE)
-        .colorTextMiddle(
-            Color.LTGRAY, Color.parseColor("#ffd54f")
-        )
-        .end()
-        .defaultSelectedDate(defaultSelectedDate)
-        .build()
+      .range(startDate, endDate)
+      .datesNumberOnScreen(5)
+      .configure()
+      .formatMiddleText("dd")
+      .formatBottomText("EEE")
+      .showTopText(false)
+      .showBottomText(true)
+      .textColor(Color.LTGRAY, Color.WHITE)
+      .colorTextMiddle(
+        Color.LTGRAY, Color.parseColor("#ffd54f")
+      )
+      .end()
+      .defaultSelectedDate(defaultSelectedDate)
+      .build()
 
     horizontalCalendar!!.calendarListener = object : HorizontalCalendarListener() {
       override fun onDateSelected(
@@ -164,22 +162,25 @@ constructor(
 
     rootView.swipe_refresh.setOnRefreshListener { doYourUpdate() }
 
-    electionViewModel.getElections().observe(viewLifecycleOwner, Observer {
-      if (it != null) {
-        for (election in it) {
-          addEvent(election)
-          onDayChange()
+    electionViewModel.getElections().observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it != null) {
+          for (election in it) {
+            addEvent(election)
+            onDayChange()
+          }
         }
       }
-    })
+    )
 
     rootView.fab_list_view.setOnClickListener {
       Navigation
-          .findNavController(rootView)
-          .navigate(
-              CalendarViewElectionFragmentDirections
-                  .actionCalendarViewElectionFragmentToElectionsFragment()
-          )
+        .findNavController(rootView)
+        .navigate(
+          CalendarViewElectionFragmentDirections
+            .actionCalendarViewElectionFragmentToElectionsFragment()
+        )
     }
 
     return rootView
@@ -194,14 +195,14 @@ constructor(
   private fun doYourUpdate() {
     prefs.setUpdateNeeded(true)
     Navigation.findNavController(rootView)
-        .navigate(R.id.calendarViewElectionFragment)
+      .navigate(R.id.calendarViewElectionFragment)
   }
 
   private fun onDayChange() {
-   dateTextView!!.text = dateFormat!!.format(day!!.time)
-   if(activity != null){
-     onEventsChange()
-   }
+    dateTextView!!.text = dateFormat!!.format(day!!.time)
+    if (activity != null) {
+      onEventsChange()
+    }
   }
 
   private fun onEventsChange() {
@@ -212,7 +213,7 @@ constructor(
     Timber.tag("on Event Change").d(gson.toJson(events) + " , day time in millis : " + day!!.timeInMillis)
     if (events != null) {
       Collections.sort(
-          events
+        events
       ) { o1, o2 -> if (o1.hour < o2.hour) -1 else if (o1.hour == o2.hour) if (o1.minute < o2.minute) -1 else if (o1.minute == o2.minute) 0 else 1 else 1 }
       eventViews = ArrayList()
       eventTimeRanges = ArrayList()
@@ -222,7 +223,7 @@ constructor(
       for (event in events) {
         val eventView =
           if (remaining > 0) recycled!![--remaining] else layoutInflater.inflate(
-              layout.list_item_event, dayView, false
+            layout.list_item_event, dayView, false
           )
         val status = "Status : ${event.status}"
         (eventView.findViewById<View>(R.id.tv_event_title) as TextView).text = event.title
@@ -233,9 +234,9 @@ constructor(
         eventView.setOnClickListener {
           val action =
             CalendarViewElectionFragmentDirections
-                .actionCalendarViewElectionFragmentToElectionDetailsFragment(event.id)
+              .actionCalendarViewElectionFragmentToElectionDetailsFragment(event.id)
           Navigation.findNavController(rootView)
-              .navigate(action)
+            .navigate(action)
         }
 
         eventViews.add(eventView)
@@ -246,9 +247,9 @@ constructor(
     }
     dayView!!.setEventViews(eventViews, eventTimeRanges)
     scrollView!!.post {
-      scrollView!!.smoothScrollTo(0, dayView!!.firstEventTop-300)
+      scrollView!!.smoothScrollTo(0, dayView!!.firstEventTop - 300)
     }
-    if(rootView.progress_bar.visibility == View.VISIBLE){
+    if (rootView.progress_bar.visibility == View.VISIBLE) {
       rootView.progress_bar.hide()
     }
   }
@@ -258,8 +259,8 @@ constructor(
     var formattedStartingDate: Date? = formatter.parse(election.start!!)
     val formattedEndingDate: Date? = formatter.parse(election.end!!)
     val currentDate = Calendar.getInstance()
-        .time
-    var status : String ?= null
+      .time
+    var status: String ? = null
     var eventColor = R.drawable.cornered_blue_background
     if (currentDate.before(formattedStartingDate)) {
       eventColor = R.drawable.cornered_green_background

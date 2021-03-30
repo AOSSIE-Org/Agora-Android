@@ -3,7 +3,6 @@
 package org.aossie.agoraandroid.utilities
 import android.app.Application
 import android.content.Context
-import android.content.res.Resources
 import androidx.annotation.StringRes
 
 fun Context.getString(@StringRes resId: Int) = getString(resId)
@@ -11,4 +10,3 @@ fun Context.getString(@StringRes resId: Int) = getString(resId)
 fun Application.getString(@StringRes resId: Int) = getString(resId)
 
 fun Application.get(@StringRes resId: Int) = getString(resId)
-

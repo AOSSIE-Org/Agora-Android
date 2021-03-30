@@ -29,14 +29,14 @@ class ElectionsAdapter(
     viewType: Int
   ): ElectionsViewHolder {
     val binding: ListItemElectionsBinding = DataBindingUtil.inflate(
-        LayoutInflater.from(parent.context),
-        R.layout.list_item_elections, parent, false
+      LayoutInflater.from(parent.context),
+      R.layout.list_item_elections, parent, false
     )
     return ElectionsViewHolder(binding, parent.context)
   }
 
   override fun getItemCount(): Int = elections.size
-  
+
   override fun onBindViewHolder(
     holder: ElectionsViewHolder,
     position: Int
@@ -54,12 +54,12 @@ class ElectionsAdapter(
         val formattedStartingDate: Date? = formatter.parse(election.start!!)
         val formattedEndingDate: Date? = formatter.parse(election.end!!)
         val currentDate = Calendar.getInstance()
-            .time
+          .time
         val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
-        //set end and start date
+        // set end and start date
         binding.tvEndDate.text = outFormat.format(formattedEndingDate!!)
         binding.tvStartDate.text = outFormat.format(formattedStartingDate!!)
-        //set label color and election status
+        // set label color and election status
         if (currentDate.before(formattedStartingDate)) {
           binding.label.text = PENDING_ELECTION_LABEL
           binding.label.setBackgroundResource(R.drawable.pending_election_label)
@@ -70,7 +70,7 @@ class ElectionsAdapter(
           binding.label.text = FINISHED_ELECTION_LABEL
           binding.label.setBackgroundResource(R.drawable.finished_election_label)
         }
-      }catch (e: ParseException){
+      } catch (e: ParseException) {
         e.printStackTrace()
       }
       // add candidates name

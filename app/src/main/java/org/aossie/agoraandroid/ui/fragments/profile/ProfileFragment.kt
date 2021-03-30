@@ -11,7 +11,6 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +51,7 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -98,17 +98,20 @@ constructor(
     homeViewModel.authListener = this
 
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-    viewModel.user.observe(viewLifecycleOwner, Observer {
-      if (it != null) {
-        Timber.d(it.toString())
-        binding.user = it
-        mUser = it
-        if (it.avatarURL != null) {
-          val bitmap = decodeBitmap(it.avatarURL)
-          encodedImage = encodePngImage(bitmap)
+    viewModel.user.observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it != null) {
+          Timber.d(it.toString())
+          binding.user = it
+          mUser = it
+          if (it.avatarURL != null) {
+            val bitmap = decodeBitmap(it.avatarURL)
+            encodedImage = encodePngImage(bitmap)
+          }
         }
       }
-    })
+    )
     binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
     binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
     binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
@@ -120,55 +123,54 @@ constructor(
       if (binding.firstNameTil.error == null && binding.lastNameTil.error == null) {
         hideKeyboardInFrag(this@ProfileFragment)
         val updatedUser = mUser
-        updatedUser.let{
+        updatedUser.let {
           it.firstName = binding.firstNameTiet.text.toString()
           it.lastName = binding.lastNameTiet.text.toString()
         }
         viewModel.updateUser(
-            updatedUser
+          updatedUser
         )
       } else {
         binding.root.progress_bar.hide()
         toggleIsEnable()
       }
-
     }
 
     binding.switchWidget.setOnClickListener {
       if (binding.switchWidget.isChecked) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Please Confirm")
-            .setMessage("Are you sure you want to enable two factor authentication")
-            .setCancelable(false)
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-              binding.root.progress_bar.show()
-              toggleIsEnable()
-              viewModel.toggleTwoFactorAuth()
-              dialog.cancel()
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-              binding.switchWidget.isChecked = false
-              dialog.cancel()
-            }
-            .create()
-            .show()
+          .setTitle("Please Confirm")
+          .setMessage("Are you sure you want to enable two factor authentication")
+          .setCancelable(false)
+          .setPositiveButton(android.R.string.ok) { dialog, _ ->
+            binding.root.progress_bar.show()
+            toggleIsEnable()
+            viewModel.toggleTwoFactorAuth()
+            dialog.cancel()
+          }
+          .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+            binding.switchWidget.isChecked = false
+            dialog.cancel()
+          }
+          .create()
+          .show()
       } else {
         AlertDialog.Builder(requireContext())
-            .setTitle("Please Confirm")
-            .setMessage("Are you sure you want to disable two factor authentication")
-            .setCancelable(false)
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-              binding.root.progress_bar.show()
-              toggleIsEnable()
-              viewModel.toggleTwoFactorAuth()
-              dialog.cancel()
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-              binding.switchWidget.isChecked = true
-              dialog.cancel()
-            }
-            .create()
-            .show()
+          .setTitle("Please Confirm")
+          .setMessage("Are you sure you want to disable two factor authentication")
+          .setCancelable(false)
+          .setPositiveButton(android.R.string.ok) { dialog, _ ->
+            binding.root.progress_bar.show()
+            toggleIsEnable()
+            viewModel.toggleTwoFactorAuth()
+            dialog.cancel()
+          }
+          .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+            binding.switchWidget.isChecked = true
+            dialog.cancel()
+          }
+          .create()
+          .show()
       }
     }
 
@@ -176,13 +178,16 @@ constructor(
       showChangeProfileDialog()
     }
 
-    mAvatar.observe(viewLifecycleOwner, Observer {
-      Picasso.get()
+    mAvatar.observe(
+      viewLifecycleOwner,
+      Observer {
+        Picasso.get()
           .load(it)
           .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
           .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
           .into(binding.root.iv_profile_pic)
-    })
+      }
+    )
 
     binding.changePasswordBtn.setOnClickListener {
       val newPass = binding.newPasswordTiet.text.toString()
@@ -190,10 +195,12 @@ constructor(
       if (binding.newPasswordTil.error == null && binding.confirmPasswordTil.error == null) {
         when {
           newPass.isEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
-          conPass.isEmpty() -> binding.confirmPasswordTil.error =
-            getString(string.password_empty_warn)
-          newPass != conPass -> binding.confirmPasswordTil.error =
-            getString(string.password_not_match_warn)
+          conPass.isEmpty() ->
+            binding.confirmPasswordTil.error =
+              getString(string.password_empty_warn)
+          newPass != conPass ->
+            binding.confirmPasswordTil.error =
+              getString(string.password_not_match_warn)
           else -> {
             binding.root.progress_bar.show()
             toggleIsEnable()
@@ -207,21 +214,33 @@ constructor(
       }
     }
 
-    viewModel.passwordRequestCode.observe(viewLifecycleOwner, Observer {
-      handlePassword(it)
-    })
-    viewModel.userUpdateResponse.observe(viewLifecycleOwner, Observer {
-      handleUser(it)
-    })
+    viewModel.passwordRequestCode.observe(
+      viewLifecycleOwner,
+      Observer {
+        handlePassword(it)
+      }
+    )
+    viewModel.userUpdateResponse.observe(
+      viewLifecycleOwner,
+      Observer {
+        handleUser(it)
+      }
+    )
 
-    viewModel.toggleTwoFactorAuthResponse.observe(viewLifecycleOwner, Observer {
-      handleTwoFactorAuthentication(it)
-      homeViewModel.doLogout()
-    })
+    viewModel.toggleTwoFactorAuthResponse.observe(
+      viewLifecycleOwner,
+      Observer {
+        handleTwoFactorAuthentication(it)
+        homeViewModel.doLogout()
+      }
+    )
 
-    viewModel.changeAvatarResponse.observe(viewLifecycleOwner, Observer {
-      handleChangeAvatar(it)
-    })
+    viewModel.changeAvatarResponse.observe(
+      viewLifecycleOwner,
+      Observer {
+        handleChangeAvatar(it)
+      }
+    )
     return binding.root
   }
 
@@ -234,14 +253,14 @@ constructor(
     val dialogView = layoutInflater.inflate(R.layout.dialog_change_avatar, null)
 
     val dialog = AlertDialog.Builder(requireContext())
-        .setView(dialogView)
-        .create()
+      .setView(dialogView)
+      .create()
 
     dialogView.camera_view.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
-              requireContext(), Manifest.permission.CAMERA
-          ) == PackageManager.PERMISSION_GRANTED
+          requireContext(), Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
       ) {
         openCamera()
       } else {
@@ -252,8 +271,8 @@ constructor(
     dialogView.gallery_view.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
-              requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-          ) == PackageManager.PERMISSION_GRANTED
+          requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
       ) {
         openGallery()
       } else {
@@ -262,12 +281,11 @@ constructor(
     }
 
     dialog.show()
-
   }
 
   private fun askReadStoragePermission() {
     requestPermissions(
-        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
+      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
     )
   }
 
@@ -321,7 +339,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.message.toString())
       loginViewModel.logInRequest(
-          mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
+        mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
     is Error -> {
@@ -345,19 +363,23 @@ constructor(
           }
           3 -> {
             when {
-              s.isNullOrEmpty() -> binding.newPasswordTil.error =
-                getString(string.password_empty_warn)
-              s.toString() == mUser.password -> binding.newPasswordTil.error =
-                getString(string.password_same_oldpassword_warn)
+              s.isNullOrEmpty() ->
+                binding.newPasswordTil.error =
+                  getString(string.password_empty_warn)
+              s.toString() == mUser.password ->
+                binding.newPasswordTil.error =
+                  getString(string.password_same_oldpassword_warn)
               else -> binding.newPasswordTil.error = null
             }
           }
           4 -> {
             when {
-              s.isNullOrEmpty() -> binding.confirmPasswordTil.error =
-                getString(string.password_empty_warn)
-              s.toString() != binding.newPasswordTiet.text.toString() -> binding.confirmPasswordTil.error =
-                getString(string.password_not_match_warn)
+              s.isNullOrEmpty() ->
+                binding.confirmPasswordTil.error =
+                  getString(string.password_empty_warn)
+              s.toString() != binding.newPasswordTiet.text.toString() ->
+                binding.confirmPasswordTil.error =
+                  getString(string.password_not_match_warn)
               else -> binding.confirmPasswordTil.error = null
             }
           }
@@ -387,13 +409,13 @@ constructor(
     toggleIsEnable()
     if (prefs.getIsFacebookUser()) {
       LoginManager.getInstance()
-          .logOut()
+        .logOut()
     }
     homeViewModel.deleteUserData()
     Navigation.findNavController(binding.root)
-        .navigate(
-            ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
-        )
+      .navigate(
+        ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
+      )
   }
 
   override fun onStarted() {
@@ -424,8 +446,8 @@ constructor(
         binding.root.progress_bar.show()
         toggleIsEnable()
         viewModel.changeAvatar(
-            url.toString(),
-            mUser
+          url.toString(),
+          mUser
         )
       } catch (e: FileNotFoundException) {
         binding.root.snackbar("File not found !")
@@ -438,8 +460,8 @@ constructor(
         binding.root.progress_bar.show()
         toggleIsEnable()
         viewModel.changeAvatar(
-            url.toString(),
-            mUser
+          url.toString(),
+          mUser
         )
       }
     }
@@ -512,7 +534,7 @@ constructor(
     }
   }
 
-  private fun toggleIsEnable(){
+  private fun toggleIsEnable() {
     binding.updateProfileBtn.toggleIsEnable()
     binding.changePasswordBtn.toggleIsEnable()
   }

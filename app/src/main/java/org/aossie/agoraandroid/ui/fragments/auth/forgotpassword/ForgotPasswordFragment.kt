@@ -23,10 +23,10 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class ForgotPasswordFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
-  ): Fragment(), AuthListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory
+) : Fragment(), AuthListener {
 
   private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels {
     viewModelFactory
@@ -46,9 +46,9 @@ class ForgotPasswordFragment
 
     rootView.button_send_link.setOnClickListener {
       val userName = rootView.edit_text_user_name.editText
-          ?.text
-          .toString()
-          .trim { it <= ' ' }
+        ?.text
+        .toString()
+        .trim { it <= ' ' }
       if (userName.isEmpty()) {
         rootView.snackbar("Please Enter User Name")
       } else {
@@ -74,5 +74,4 @@ class ForgotPasswordFragment
     rootView.progress_bar.hide()
     rootView.snackbar(message)
   }
-
 }
