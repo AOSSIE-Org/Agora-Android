@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_active_elections.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_active_elections.view.rv_active_elections
 import kotlinx.android.synthetic.main.fragment_active_elections.view.tv_empty_election
 import kotlinx.android.synthetic.main.fragment_active_elections.view.tv_something_went_wrong
@@ -19,6 +20,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
 import javax.inject.Inject
@@ -65,6 +67,7 @@ class ActiveElectionsFragment
   }
 
   private fun bindUI() {
+    rootView.progress_bar.show()
     Coroutines.main {
       try {
         val elections = displayElectionViewModel.activeElections.await()
@@ -75,6 +78,7 @@ class ActiveElectionsFragment
         })
       } catch (e: IllegalStateException) {
         rootView.tv_something_went_wrong.show()
+        rootView.progress_bar.hide()
       }
     }
   }
@@ -86,6 +90,7 @@ class ActiveElectionsFragment
     } else {
       rootView.tv_empty_election.show()
     }
+    rootView.progress_bar.hide()
   }
 
   override fun onItemClicked(_id: String) {
