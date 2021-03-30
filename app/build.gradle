@@ -108,7 +108,7 @@ dependencies {
   //timber
   implementation "com.jakewharton.timber:timber:$timberVersion"
   //httpLoggingInterceptor
-   implementation "com.squareup.okhttp3:logging-interceptor:$httpLoggingInterceptor"
+  implementation "com.squareup.okhttp3:logging-interceptor:$httpLoggingInterceptor"
   //chucker
   debugImplementation "com.github.chuckerteam.chucker:library:$chuckerVersion"
   releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chuckerVersion"
