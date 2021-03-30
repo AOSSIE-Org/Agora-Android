@@ -38,6 +38,7 @@ constructor(
     class Success(text: String? = null) : ResponseResults() {
       val message = text
     }
+
     class Error(errorText: String) : ResponseResults() {
       val message = errorText
     }
@@ -60,7 +61,11 @@ constructor(
     }
   }
 
-  fun castVote(id: String, ballotInput: String, passCode: String) {
+  fun castVote(
+    id: String,
+    ballotInput: String,
+    passCode: String
+  ) {
     try {
       Coroutines.main {
         val response = electionsRepository.castVote(id, ballotInput, passCode)

@@ -76,7 +76,8 @@ constructor(
     val jsonObject = JSONObject()
     try {
       jsonObject.put("url", url)
-      Timber.tag("change avatar").d(jsonObject.toString())
+      Timber.tag("change avatar")
+        .d(jsonObject.toString())
     } catch (e: JSONException) {
       e.printStackTrace()
     }
