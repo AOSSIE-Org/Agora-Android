@@ -190,7 +190,7 @@ constructor(
 
   suspend fun getResult(
     id: String
-  ): ArrayList<Winner>? {
+  ): List<Winner>? {
     val response = api.getResult(prefs.getCurrentToken(), id)
     return if (response.message() == "OK") {
       apiRequest { response }

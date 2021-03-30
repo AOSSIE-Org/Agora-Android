@@ -115,5 +115,5 @@ interface Api {
 
   @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("result/{id}")
-  suspend fun getResult(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<ArrayList<Winner>>
+  suspend fun getResult(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<List<Winner>>
 }
