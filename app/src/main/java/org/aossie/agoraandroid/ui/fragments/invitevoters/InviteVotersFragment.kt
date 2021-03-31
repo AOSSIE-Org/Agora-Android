@@ -40,11 +40,11 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class InviteVotersFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory,
-      private  val prefs: PreferenceProvider
-  ): Fragment(), InviteVoterListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory,
+  private val prefs: PreferenceProvider
+) : Fragment(), InviteVoterListener {
 
   private lateinit var rootView: View
 
@@ -73,9 +73,9 @@ class InviteVotersFragment
         val lastName = mVoterNames[viewHolder.adapterPosition]
         val lastEmail = mVoterEmails[viewHolder.adapterPosition]
         Snackbar.make(rootView, R.string.voter_removed, Snackbar.LENGTH_LONG)
-            .setAction(AppConstants.undo) {
-              addCandidate(lastName, lastEmail)
-            }.show()
+          .setAction(AppConstants.undo) {
+            addCandidate(lastName, lastEmail)
+          }.show()
 
         mVoterNames.removeAt(viewHolder.adapterPosition)
         mVoterEmails.removeAt(viewHolder.adapterPosition)
@@ -98,38 +98,37 @@ class InviteVotersFragment
     ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rootView.recycler_view_voters)
     rootView.recycler_view_voters.adapter = voterRecyclerAdapter
     rootView.text_input_voter_name.editText
-        ?.addTextChangedListener(object : TextWatcherAdapter() {
-          override fun onTextChanged(
-            p0: CharSequence?,
-            p1: Int,
-            p2: Int,
-            p3: Int
-          ) {
-            if (rootView.text_input_voter_name.editText!!.text.isNotEmpty()) {
-              rootView.text_input_voter_name.error = null
-            }
+      ?.addTextChangedListener(object : TextWatcherAdapter() {
+        override fun onTextChanged(
+          p0: CharSequence?,
+          p1: Int,
+          p2: Int,
+          p3: Int
+        ) {
+          if (rootView.text_input_voter_name.editText!!.text.isNotEmpty()) {
+            rootView.text_input_voter_name.error = null
           }
-        })
+        }
+      })
     rootView.text_input_voter_email.editText
-        ?.addTextChangedListener(object : TextWatcherAdapter() {
-          override fun onTextChanged(
-            p0: CharSequence?,
-            p1: Int,
-            p2: Int,
-            p3: Int
-          ) {
-            if (rootView.text_input_voter_email.editText!!.text.isNotEmpty()) {
-              rootView.text_input_voter_email.error = null
-            }
+      ?.addTextChangedListener(object : TextWatcherAdapter() {
+        override fun onTextChanged(
+          p0: CharSequence?,
+          p1: Int,
+          p2: Int,
+          p3: Int
+        ) {
+          if (rootView.text_input_voter_email.editText!!.text.isNotEmpty()) {
+            rootView.text_input_voter_email.error = null
           }
-        })
+        }
+      })
 
     rootView.button_invite_voter.setOnClickListener {
       try {
         val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(requireArguments())
-        val id : String = inviteVotersFragmentArgs.id
+        val id: String = inviteVotersFragmentArgs.id
         inviteVotersViewModel.inviteVoters(mVoterNames, mVoterEmails, id)
-
       } catch (e: JSONException) {
         e.printStackTrace()
       }
@@ -137,14 +136,14 @@ class InviteVotersFragment
 
     rootView.button_add_voter.setOnClickListener {
       val name = rootView.text_input_voter_name.editText
-          ?.text
-          .toString()
+        ?.text
+        .toString()
       val email = rootView.text_input_voter_email.editText
-          ?.text
-          .toString()
+        ?.text
+        .toString()
       if (inviteValidator(email, name, mVoterEmails)) {
         addCandidate(name, email)
-      }else{
+      } else {
         rootView.snackbar("Enter valid name and email address")
       }
     }
@@ -182,7 +181,7 @@ class InviteVotersFragment
     prefs.setUpdateNeeded(true)
     rootView.snackbar(message)
     Navigation.findNavController(rootView)
-        .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
+      .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
   }
 
   private fun emailValidator(
@@ -191,39 +190,51 @@ class InviteVotersFragment
   ): Boolean {
     val base = context as Activity
     if (email.isEmpty()) {
-      (base.findViewById<View>(
+      (
+        base.findViewById<View>(
           R.id.text_input_voter_email
-      ) as TextInputLayout).error = "Please enter Voter's Email"
+        ) as TextInputLayout
+        ).error = "Please enter Voter's Email"
       return false
     } else if (mVoterEmails.contains(email)) {
-      (base.findViewById<View>(
+      (
+        base.findViewById<View>(
           R.id.text_input_voter_email
-      ) as TextInputLayout).error = base.resources
-          .getString(string.voter_same_email)
+        ) as TextInputLayout
+        ).error = base.resources
+        .getString(string.voter_same_email)
       return false
-    }else if(!email.matches(emailPattern.toRegex())){
-      (base.findViewById<View>(
+    } else if (!email.matches(emailPattern.toRegex())) {
+      (
+        base.findViewById<View>(
           R.id.text_input_voter_email
-      ) as TextInputLayout).error = "Please enter valid email address"
+        ) as TextInputLayout
+        ).error = "Please enter valid email address"
       return false
     }
-    (base.findViewById<View>(
+    (
+      base.findViewById<View>(
         R.id.text_input_voter_email
-    ) as TextInputLayout).error = null
+      ) as TextInputLayout
+      ).error = null
     return true
   }
 
   private fun nameValidator(name: String): Boolean {
     val base = context as Activity
     if (name.isEmpty()) {
-      (base.findViewById<View>(
+      (
+        base.findViewById<View>(
           R.id.text_input_voter_name
-      ) as TextInputLayout).error = "Please enter Voter's Name"
+        ) as TextInputLayout
+        ).error = "Please enter Voter's Name"
       return false
     }
-    (base.findViewById<View>(
+    (
+      base.findViewById<View>(
         R.id.text_input_voter_name
-    ) as TextInputLayout).error = null
+      ) as TextInputLayout
+      ).error = null
     return true
   }
 
@@ -236,5 +247,4 @@ class InviteVotersFragment
     val isEmailValid = emailValidator(email, mVoterEmails)
     return isNameValid && isEmailValid
   }
-
 }

@@ -46,7 +46,7 @@ class SignUpFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-): Fragment(), AuthListener {
+) : Fragment(), AuthListener {
 
   private var securityQuestionOfSignUp: String? = null
 
@@ -71,8 +71,8 @@ constructor(
     }
 
     val adapter = ArrayAdapter.createFromResource(
-        requireContext(), array.security_questions,
-        android.R.layout.simple_spinner_item
+      requireContext(), array.security_questions,
+      android.R.layout.simple_spinner_item
     )
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -86,7 +86,7 @@ constructor(
         l: Long
       ) {
         securityQuestionOfSignUp = adapterView.getItemAtPosition(i)
-            .toString()
+          .toString()
       }
 
       override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -107,33 +107,33 @@ constructor(
 
   private fun validateAllFields() {
     val userName = signup_user_name.editText
-        ?.text
-        .toString()
+      ?.text
+      .toString()
     val firstName = signup_first_name.editText
-        ?.text
-        .toString()
+      ?.text
+      .toString()
     val lastName = signup_last_name.editText
-        ?.text
-        .toString()
+      ?.text
+      .toString()
     val userEmail = signup_email.editText
-        ?.text
-        .toString()
+      ?.text
+      .toString()
     val userPass = signup_password.editText
-        ?.text
-        .toString()
+      ?.text
+      .toString()
     val securityQuestionAnswer = security_answer.editText
-        ?.text
-        .toString()
+      ?.text
+      .toString()
     val securityQuestion = securityQuestionOfSignUp
     if (!Patterns.EMAIL_ADDRESS.matcher(userEmail)
-            .matches()
+      .matches()
     ) {
       signup_email.error = "Enter a valid email address!!!"
     } else {
       signup_email.error = null
       signUpViewModel.signUpRequest(
-          userName, userPass, userEmail, firstName, lastName,
-          securityQuestion!!, securityQuestionAnswer
+        userName, userPass, userEmail, firstName, lastName,
+        securityQuestion!!, securityQuestionAnswer
       )
     }
   }
@@ -144,29 +144,29 @@ constructor(
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
       val usernameInput: String = rootView.et_username.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val passwordInput: String = rootView.et_password.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val firstNameInput: String = rootView.et_first_name.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val lastNameInput: String = rootView.et_last_name.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val emailInput: String = rootView.et_email.text
-          .toString()
-          .trim()
+        .toString()
+        .trim()
       val answerInput: String = rootView.et_answer.text
-          .toString()
-          .trim()
-      rootView.signup_btn.isEnabled = usernameInput.isNotEmpty()
-          && passwordInput.isNotEmpty()
-          && firstNameInput.isNotEmpty()
-          && lastNameInput.isNotEmpty()
-          && emailInput.isNotEmpty()
-          && answerInput.isNotEmpty()
+        .toString()
+        .trim()
+      rootView.signup_btn.isEnabled = usernameInput.isNotEmpty() &&
+        passwordInput.isNotEmpty() &&
+        firstNameInput.isNotEmpty() &&
+        lastNameInput.isNotEmpty() &&
+        emailInput.isNotEmpty() &&
+        answerInput.isNotEmpty()
     }
   }
 
@@ -186,5 +186,4 @@ constructor(
     rootView.progress_bar.hide()
     rootView.signup_btn.toggleIsEnable()
   }
-
 }

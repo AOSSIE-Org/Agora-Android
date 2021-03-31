@@ -27,17 +27,17 @@ import javax.inject.Singleton
 @Module
 class AppModule {
 
-  //TODO provide App level dependencies in here using @Provides
+  // TODO provide App level dependencies in here using @Provides
 
   @Provides
   @Singleton
-  fun providesPreferenceProvider(context: Context): PreferenceProvider{
+  fun providesPreferenceProvider(context: Context): PreferenceProvider {
     return PreferenceProvider(context)
   }
 
   @Provides
   @Singleton
-  fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs{
+  fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs {
     return ElectionDetailsSharedPrefs(context)
   }
 
@@ -45,21 +45,21 @@ class AppModule {
   @Singleton
   fun providesNetworkInterceptor(context: Context): NetworkInterceptor {
     return NetworkInterceptor(
-        context
+      context
     )
   }
 
   @Provides
   @Singleton
-  fun providesAppDatabase(context: Context): AppDatabase{
+  fun providesAppDatabase(context: Context): AppDatabase {
     return AppDatabase(context)
   }
 
   @Provides
   @Singleton
-  fun providesAuthorizationInterceptor(context: Context, preferenceProvider: PreferenceProvider, appDatabase: AppDatabase,  @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(context: Context, preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
     return AuthorizationInterceptor(
-        context, preferenceProvider, appDatabase, api
+      context, preferenceProvider, appDatabase, api
     )
   }
 
@@ -81,57 +81,57 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideOkHttpClient(context: Context,networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
+  fun provideOkHttpClient(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
-        .apply {
-          addInterceptor(networkInterceptor)
-          if (BuildConfig.DEBUG) {
-            addInterceptor(
-                HttpLoggingInterceptor().apply {
-                  level = Level.BASIC
-                }
-            )
-            addInterceptor(
-                ChuckerInterceptor.Builder(context)
-                    .build()
-            )
-          }
-          addInterceptor(authorizationInterceptor)
+      .apply {
+        addInterceptor(networkInterceptor)
+        if (BuildConfig.DEBUG) {
+          addInterceptor(
+            HttpLoggingInterceptor().apply {
+              level = Level.BASIC
+            }
+          )
+          addInterceptor(
+            ChuckerInterceptor.Builder(context)
+              .build()
+          )
         }
-        .build()
+        addInterceptor(authorizationInterceptor)
+      }
+      .build()
   }
 
   @Provides
   @Singleton
   @Named("okHttpWithoutAuth")
-  fun provideOkHttpClientWithoutAuth(context: Context,networkInterceptor: NetworkInterceptor): OkHttpClient {
+  fun provideOkHttpClientWithoutAuth(context: Context, networkInterceptor: NetworkInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
-        .apply {
-          addInterceptor(networkInterceptor)
-          if (BuildConfig.DEBUG) {
-            addInterceptor(
-                HttpLoggingInterceptor().apply {
-                  level = Level.BASIC
-                }
-            )
-            addInterceptor(
-                ChuckerInterceptor.Builder(context)
-                    .build()
-            )
-          }
+      .apply {
+        addInterceptor(networkInterceptor)
+        if (BuildConfig.DEBUG) {
+          addInterceptor(
+            HttpLoggingInterceptor().apply {
+              level = Level.BASIC
+            }
+          )
+          addInterceptor(
+            ChuckerInterceptor.Builder(context)
+              .build()
+          )
         }
-        .build()
+      }
+      .build()
   }
 
   @Provides
   @Singleton
   fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-        .client(okHttpClient)
-        .baseUrl(AppConstants.BASE_URL)
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+      .client(okHttpClient)
+      .baseUrl(AppConstants.BASE_URL)
+      .addConverterFactory(ScalarsConverterFactory.create())
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
   }
 
   @Provides
@@ -139,11 +139,11 @@ class AppModule {
   @Named("retrofitWithoutAuth")
   fun provideRetrofitWithoutAuth(@Named("okHttpWithoutAuth") okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-        .client(okHttpClient)
-        .baseUrl(AppConstants.BASE_URL)
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+      .client(okHttpClient)
+      .baseUrl(AppConstants.BASE_URL)
+      .addConverterFactory(ScalarsConverterFactory.create())
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
   }
 
   @Provides
@@ -152,7 +152,7 @@ class AppModule {
     api: Api,
     appDatabase: AppDatabase,
     preferenceProvider: PreferenceProvider
-  ): UserRepository{
+  ): UserRepository {
     return UserRepository(api, appDatabase, preferenceProvider)
   }
 
@@ -162,7 +162,7 @@ class AppModule {
     api: Api,
     appDatabase: AppDatabase,
     preferenceProvider: PreferenceProvider
-  ): ElectionsRepository{
+  ): ElectionsRepository {
     return ElectionsRepository(api, appDatabase, preferenceProvider)
   }
 }

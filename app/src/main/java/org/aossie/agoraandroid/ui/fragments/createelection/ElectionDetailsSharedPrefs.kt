@@ -9,12 +9,12 @@ import javax.inject.Inject
 class ElectionDetailsSharedPrefs
 @Inject
 constructor(
-  context: Context)
-{
+  context: Context
+) {
   private val sharedPreferences: SharedPreferences
   private val editor: Editor
 
-  //Saving name of election
+  // Saving name of election
   fun saveElectionName(name: String?) {
     editor.putString(NameKey, name)
     editor.commit()
@@ -23,7 +23,7 @@ constructor(
   val electionName: String?
     get() = sharedPreferences.getString(NameKey, null)
 
-  //Saving Election Description
+  // Saving Election Description
   fun saveElectionDesc(desc: String?) {
     editor.putString(DescriptionKey, desc)
     editor.commit()
@@ -32,7 +32,7 @@ constructor(
   val electionDesc: String?
     get() = sharedPreferences.getString(DescriptionKey, null)
 
-  //Saving Start Time
+  // Saving Start Time
   fun saveStartTime(desc: String?) {
     editor.putString(StartTimeKey, desc)
     editor.commit()
@@ -41,7 +41,7 @@ constructor(
   val startTime: String?
     get() = sharedPreferences.getString(StartTimeKey, null)
 
-  //Saving End Time
+  // Saving End Time
   fun saveEndTime(desc: String?) {
     editor.putString(EndTimeKey, desc)
     editor.commit()
@@ -50,7 +50,7 @@ constructor(
   val endTime: String?
     get() = sharedPreferences.getString(EndTimeKey, null)
 
-  //Save voters visibility
+  // Save voters visibility
   fun saveIsRealTime(isRealTime: Boolean?) {
     editor.putBoolean(IsRealTimeKey, isRealTime!!)
     editor.commit()
@@ -59,7 +59,7 @@ constructor(
   val isRealTime: Boolean
     get() = sharedPreferences.getBoolean(IsRealTimeKey, false)
 
-  //Save candidates
+  // Save candidates
   fun saveCandidates(candidates: ArrayList<String>) {
     val gson = Gson()
     val json = gson.toJson(candidates)
@@ -67,27 +67,26 @@ constructor(
     editor.commit()
   }
 
-  fun getCandidates(): ArrayList<String>?{
+  fun getCandidates(): ArrayList<String>? {
     val json = sharedPreferences.getString(CandidatesKey, "")
     val gson = Gson()
     return gson.fromJson<ArrayList<String>>(json, ArrayList::class.java)
   }
 
-
-  //Save Real Time Results or not
+  // Save Real Time Results or not
   fun saveVoterListVisibility(voterListVisibility: Boolean?) {
     editor.putBoolean(
-        VoterListVisibilityKey, voterListVisibility!!
+      VoterListVisibilityKey, voterListVisibility!!
     )
     editor.commit()
   }
 
   val voterListVisibility: Boolean
     get() = sharedPreferences.getBoolean(
-        VoterListVisibilityKey, false
+      VoterListVisibilityKey, false
     )
 
-  //Voters are invited or not
+  // Voters are invited or not
   fun saveIsInvite(isInvited: Boolean?) {
     editor.putBoolean(IsInvitedKey, isInvited!!)
     editor.commit()
@@ -111,7 +110,7 @@ constructor(
 
   val ballotVisibility: String?
     get() = sharedPreferences.getString(
-        BallotVisibilityKey, null
+      BallotVisibilityKey, null
     )
 
   fun clearElectionData() {
@@ -143,7 +142,7 @@ constructor(
 
   init {
     sharedPreferences = context.getSharedPreferences(
-        myPrefs, Context.MODE_PRIVATE
+      myPrefs, Context.MODE_PRIVATE
     )
     editor = sharedPreferences.edit()
   }

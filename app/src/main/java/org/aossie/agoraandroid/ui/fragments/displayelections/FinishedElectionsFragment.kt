@@ -15,12 +15,12 @@ import kotlinx.android.synthetic.main.fragment_finished_elections.view.progress_
 import kotlinx.android.synthetic.main.fragment_finished_elections.view.rv_finished_elections
 import kotlinx.android.synthetic.main.fragment_finished_elections.view.tv_empty_election
 import kotlinx.android.synthetic.main.fragment_finished_elections.view.tv_something_went_wrong
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
 import javax.inject.Inject
@@ -32,8 +32,8 @@ class FinishedElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-): Fragment(),
-    ElectionRecyclerAdapterCallback {
+) : Fragment(),
+  ElectionRecyclerAdapterCallback {
 
   private lateinit var rootView: View
 
@@ -71,11 +71,14 @@ constructor(
     Coroutines.main {
       try {
         val elections = displayElectionViewModel.finishedElections.await()
-        elections.observe(requireActivity(), Observer {
-          if (it != null) {
-            addElections(it)
+        elections.observe(
+          requireActivity(),
+          Observer {
+            if (it != null) {
+              addElections(it)
+            }
           }
-        })
+        )
       } catch (e: IllegalStateException) {
         rootView.tv_something_went_wrong.show()
         rootView.progress_bar.hide()
@@ -97,7 +100,6 @@ constructor(
     val action =
       FinishedElectionsFragmentDirections.actionFinishedElectionsFragmentToElectionDetailsFragment(_id)
     Navigation.findNavController(rootView)
-        .navigate(action)
+      .navigate(action)
   }
-
 }

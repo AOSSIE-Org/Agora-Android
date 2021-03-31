@@ -26,14 +26,12 @@ class InviteVotersTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> = apiService.sendVoters(
-            "authToken",
-            "id",
-            invitationRequest
+          "authToken",
+          "id",
+          invitationRequest
         )
         Assert.assertEquals(response.body(), invitationResponse)
       }
     }
   }
 }
-
-
