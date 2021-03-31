@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +36,7 @@ class ResultFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-    DisplayElectionListener {
+  DisplayElectionListener {
 
   private lateinit var rootView: View
 
@@ -59,7 +58,7 @@ constructor(
     electionDetailsViewModel.displayElectionListener = this
 
     id = VotersFragmentArgs.fromBundle(
-        requireArguments()
+      requireArguments()
     ).id
     electionDetailsViewModel.getResult(id)
 
@@ -70,7 +69,7 @@ constructor(
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
       electionDetailsViewModel.resultResponse.observe(
-          requireActivity(), Observer {
+        requireActivity(), Observer {
         if (it != null) {
           initResultView(it)
         } else {
@@ -80,7 +79,7 @@ constructor(
         }
       })
       electionDetailsViewModel.notConnected.observe(
-          requireActivity(), Observer {
+        requireActivity(), Observer {
         if (it) {
           rootView.result_view.visibility = View.GONE
           rootView.tv_no_result.text = resources.getString(R.string.fetch_result_failed)
@@ -103,7 +102,9 @@ constructor(
 
     val value: ArrayList<PieEntry> = ArrayList()
     value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
-    value.add(PieEntry(winner.score?.denominator?.toFloat()!!, resources.getString(R.string.others)))
+    value.add(
+      PieEntry(winner.score.denominator?.toFloat()!!, resources.getString(R.string.others))
+    )
 
     val pieDataSet = PieDataSet(value, "")
     val pieData = PieData(pieDataSet)

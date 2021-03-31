@@ -15,9 +15,9 @@ import org.aossie.agoraandroid.ui.fragments.createelection.CreateElectionFragmen
 import org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment
 import org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFragment
-import org.aossie.agoraandroid.ui.fragments.electionDetails.ResultFragment
 import org.aossie.agoraandroid.ui.fragments.electionDetails.BallotFragment
 import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsFragment
+import org.aossie.agoraandroid.ui.fragments.electionDetails.ResultFragment
 import org.aossie.agoraandroid.ui.fragments.electionDetails.VotersFragment
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment

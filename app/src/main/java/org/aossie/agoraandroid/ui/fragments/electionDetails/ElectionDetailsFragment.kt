@@ -43,12 +43,12 @@ private const val PENDING_ELECTION_LABEL = "PENDING"
 private const val FINISHED_ELECTION_LABEL = "FINISHED"
 
 class ElectionDetailsFragment
-  @Inject
-  constructor(
-    private val viewModelFactory: ViewModelProvider.Factory,
-    private val prefs: PreferenceProvider
-  ): Fragment(),
-    DisplayElectionListener {
+@Inject
+constructor(
+  private val viewModelFactory: ViewModelProvider.Factory,
+  private val prefs: PreferenceProvider
+) : Fragment(),
+  DisplayElectionListener {
   lateinit var binding: FragmentElectionDetailsBinding
   private var id: String? = null
   private var status: String? = null
@@ -72,7 +72,7 @@ class ElectionDetailsFragment
     binding.root.button_ballot.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToBallotFragment(
-            id!!
+          id!!
         )
       Navigation.findNavController(binding.root)
         .navigate(action)
@@ -80,7 +80,7 @@ class ElectionDetailsFragment
     binding.root.button_voters.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToVotersFragment(
-            id!!
+          id!!
         )
       Navigation.findNavController(binding.root)
         .navigate(action)
@@ -91,7 +91,7 @@ class ElectionDetailsFragment
       } else {
         val action =
           ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToInviteVotersFragment(
-              id!!
+            id!!
           )
         Navigation.findNavController(binding.root)
           .navigate(action)
@@ -104,10 +104,10 @@ class ElectionDetailsFragment
         if (isConnected()) {
           val action =
             ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToResultFragment(
-                id!!
+              id!!
             )
           Navigation.findNavController(binding.root)
-              .navigate(action)
+            .navigate(action)
         } else {
           binding.root.snackbar(resources.getString(R.string.no_network))
         }
@@ -117,7 +117,7 @@ class ElectionDetailsFragment
     binding.root.button_delete.setOnClickListener {
       when (status) {
         "ACTIVE" -> binding.root.snackbar(
-            resources.getString(R.string.active_elections_not_started)
+          resources.getString(R.string.active_elections_not_started)
         )
         "FINISHED" -> electionDetailsViewModel.deleteElection(id)
         "PENDING" -> electionDetailsViewModel.deleteElection(id)
