@@ -19,8 +19,8 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
-import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
+import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
 import javax.inject.Inject
