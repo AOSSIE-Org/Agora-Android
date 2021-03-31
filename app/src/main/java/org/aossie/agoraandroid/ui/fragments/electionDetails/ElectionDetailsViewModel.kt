@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
-import timber.log.Timber
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +12,7 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import timber.log.Timber
 import javax.inject.Inject
 
 class ElectionDetailsViewModel
@@ -50,7 +50,7 @@ constructor(
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
         displayElectionListener.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)
@@ -72,7 +72,7 @@ constructor(
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
         displayElectionListener.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)
@@ -94,7 +94,7 @@ constructor(
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
         displayElectionListener.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: Exception) {
         displayElectionListener.onFailure(e.message!!)

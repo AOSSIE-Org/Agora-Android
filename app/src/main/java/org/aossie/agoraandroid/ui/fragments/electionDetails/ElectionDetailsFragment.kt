@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.ui.fragments.electionDetails
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
-import timber.log.Timber
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
+import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -65,7 +65,7 @@ class ElectionDetailsFragment
       DataBindingUtil.inflate(inflater, R.layout.fragment_election_details, container, false)
     val args =
       ElectionDetailsFragmentArgs.fromBundle(
-          requireArguments()
+        requireArguments()
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
@@ -75,7 +75,7 @@ class ElectionDetailsFragment
             id!!
         )
       Navigation.findNavController(binding.root)
-          .navigate(action)
+        .navigate(action)
     }
     binding.root.button_voters.setOnClickListener {
       val action =
@@ -83,7 +83,7 @@ class ElectionDetailsFragment
             id!!
         )
       Navigation.findNavController(binding.root)
-          .navigate(action)
+        .navigate(action)
     }
     binding.root.button_invite_voters.setOnClickListener {
       if (status == "FINISHED") {
@@ -94,7 +94,7 @@ class ElectionDetailsFragment
               id!!
           )
         Navigation.findNavController(binding.root)
-            .navigate(action)
+          .navigate(action)
       }
     }
     binding.root.button_result.setOnClickListener {
@@ -126,59 +126,59 @@ class ElectionDetailsFragment
 
     Coroutines.main {
       electionDetailsViewModel.getElectionById(id!!)
-          .observe(
-              viewLifecycleOwner, Observer {
-            if (it != null) {
-              Timber.d(it.toString())
-              binding.election = it
-              try {
-                val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-                val formattedStartingDate: Date = formatter.parse(it.start!!) as Date
-                val formattedEndingDate: Date = formatter.parse(it.end!!) as Date
-                val currentDate = Calendar.getInstance()
-                    .time
-                val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
-                //set end and start date
-                binding.tvEndDate.text = outFormat.format(formattedEndingDate)
-                binding.tvStartDate.text = outFormat.format(formattedStartingDate)
-                //set label color and election status
-                if (currentDate.before(formattedStartingDate)) {
-                  binding.label.text =
-                    PENDING_ELECTION_LABEL
-                  status = "PENDING"
-                  binding.label.setBackgroundResource(R.drawable.pending_election_label)
-                } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-                        formattedEndingDate
-                    )
-                ) {
-                  binding.label.text =
-                    ACTIVE_ELECTION_LABEL
-                  status = "ACTIVE"
-                  binding.label.setBackgroundResource(R.drawable.active_election_label)
-                } else if (currentDate.after(formattedEndingDate)) {
-                  binding.label.text =
-                    FINISHED_ELECTION_LABEL
-                  status = "FINISHED"
-                  binding.label.setBackgroundResource(R.drawable.finished_election_label)
-                }
-              } catch (e: ParseException) {
-                e.printStackTrace()
+        .observe(
+          viewLifecycleOwner, Observer {
+          if (it != null) {
+            Timber.d(it.toString())
+            binding.election = it
+            try {
+              val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+              val formattedStartingDate: Date = formatter.parse(it.start!!) as Date
+              val formattedEndingDate: Date = formatter.parse(it.end!!) as Date
+              val currentDate = Calendar.getInstance()
+                .time
+              val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
+              //set end and start date
+              binding.tvEndDate.text = outFormat.format(formattedEndingDate)
+              binding.tvStartDate.text = outFormat.format(formattedStartingDate)
+              //set label color and election status
+              if (currentDate.before(formattedStartingDate)) {
+                binding.label.text =
+                  PENDING_ELECTION_LABEL
+                status = "PENDING"
+                binding.label.setBackgroundResource(R.drawable.pending_election_label)
+              } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+                  formattedEndingDate
+                )
+              ) {
+                binding.label.text =
+                  ACTIVE_ELECTION_LABEL
+                status = "ACTIVE"
+                binding.label.setBackgroundResource(R.drawable.active_election_label)
+              } else if (currentDate.after(formattedEndingDate)) {
+                binding.label.text =
+                  FINISHED_ELECTION_LABEL
+                status = "FINISHED"
+                binding.label.setBackgroundResource(R.drawable.finished_election_label)
               }
-              // add candidates name
-              val mCandidatesName = StringBuilder()
-              val candidates = it.candidates
-              if (candidates != null) {
-                for (j in 0 until candidates.size) {
-                  mCandidatesName.append(candidates[j])
-                  if (j != candidates.size - 1) {
-                    mCandidatesName.append(", ")
-                  }
-                }
-              }
-              binding.tvCandidateList.text = mCandidatesName
-              binding.executePendingBindings()
+            } catch (e: ParseException) {
+              e.printStackTrace()
             }
-          })
+            // add candidates name
+            val mCandidatesName = StringBuilder()
+            val candidates = it.candidates
+            if (candidates != null) {
+              for (j in 0 until candidates.size) {
+                mCandidatesName.append(candidates[j])
+                if (j != candidates.size - 1) {
+                  mCandidatesName.append(", ")
+                }
+              }
+            }
+            binding.tvCandidateList.text = mCandidatesName
+            binding.executePendingBindings()
+          }
+        })
     }
 
     return binding.root
@@ -187,9 +187,9 @@ class ElectionDetailsFragment
   override fun onDeleteElectionSuccess() {
     prefs.setUpdateNeeded(true)
     Navigation.findNavController(binding.root)
-        .navigate(
-            ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
-        )
+      .navigate(
+        ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
+      )
   }
 
   override fun onSuccess(message: String?) {
@@ -217,5 +217,3 @@ class ElectionDetailsFragment
     }
   }
 }
-
-

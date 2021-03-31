@@ -39,42 +39,42 @@ constructor(
     }
   }
 
-  suspend fun fetchAndSaveElections(){
-    withContext(Dispatchers.IO){
+  suspend fun fetchAndSaveElections() {
+    withContext(Dispatchers.IO) {
       fetchElections()
     }
   }
 
   fun getElections(): LiveData<List<Election>> {
     return db.getElectionDao()
-        .getElections()
+      .getElections()
   }
 
   suspend fun getFinishedElectionsCount(currentDate: String): LiveData<Int> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getFinishedElectionsCount(currentDate)
+        .getFinishedElectionsCount(currentDate)
     }
   }
 
   suspend fun getPendingElectionsCount(currentDate: String): LiveData<Int> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getPendingElectionsCount(currentDate)
+        .getPendingElectionsCount(currentDate)
     }
   }
 
   suspend fun getTotalElectionsCount(): LiveData<Int> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getTotalElectionsCount()
+        .getTotalElectionsCount()
     }
   }
 
   suspend fun getActiveElectionsCount(currentDate: String): LiveData<Int> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getActiveElectionsCount(currentDate)
+        .getActiveElectionsCount(currentDate)
     }
   }
 
@@ -82,16 +82,16 @@ constructor(
     Coroutines.io {
       prefs.setUpdateNeeded(false)
       db.getElectionDao()
-          .deleteAllElections()
+        .deleteAllElections()
       db.getElectionDao()
-          .saveElections(elections)
+        .saveElections(elections)
     }
   }
 
   suspend fun getPendingElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getPendingElections(currentDate)
+        .getPendingElections(currentDate)
     }
   }
 
@@ -104,13 +104,9 @@ constructor(
         Timber.d(isNeeded.toString())
         Timber.d(response.toString())
       } catch (e: NoInternetException) {
-
       } catch (e: ApiException) {
-
       } catch (e: SessionExpirationException) {
-
       } catch (e: IOException) {
-
       }
     }
   }
@@ -118,21 +114,21 @@ constructor(
   suspend fun getFinishedElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getFinishedElections(currentDate)
+        .getFinishedElections(currentDate)
     }
   }
 
   suspend fun getActiveElections(currentDate: String): LiveData<List<Election>> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getActiveElections(currentDate)
+        .getActiveElections(currentDate)
     }
   }
 
   suspend fun getElectionById(id: String): LiveData<Election> {
     return withContext(Dispatchers.IO) {
       db.getElectionDao()
-          .getElectionById(id)
+        .getElectionById(id)
     }
   }
 
@@ -169,15 +165,15 @@ constructor(
 
   suspend fun verifyVoter(
     id: String
-  ) : ElectionResponse {
-    return apiRequest { api.verifyVoter(id)}
+  ): ElectionResponse {
+    return apiRequest { api.verifyVoter(id) }
   }
 
   suspend fun castVote(
     id: String,
     ballotInput: String,
     passCode: String
-  ) : ArrayList<String>{
+  ): ArrayList<String> {
     val jsonObject = JSONObject()
     try {
       jsonObject.put("ballotInput", ballotInput)

@@ -81,55 +81,61 @@ constructor(
     rootView = binding.root
 
     val user = viewModel.user
-    user.observe(viewLifecycleOwner, Observer {
-      if (it != null) {
-        binding.user = it
-        mUser = it
-        if (it.avatarURL != null) {
-          if(it.avatarURL.isUrl())
-            cacheAndSaveImage(it.avatarURL)
-          else {
-            val bitmap = decodeBitmap(it.avatarURL)
-            setAvatar(bitmap)
+    user.observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it != null) {
+          binding.user = it
+          mUser = it
+          if (it.avatarURL != null) {
+            if (it.avatarURL.isUrl())
+              cacheAndSaveImage(it.avatarURL)
+            else {
+              val bitmap = decodeBitmap(it.avatarURL)
+              setAvatar(bitmap)
+            }
           }
         }
       }
-    })
+    )
 
-    mAvatar.observe(viewLifecycleOwner, Observer {
-      Picasso.get()
+    mAvatar.observe(
+      viewLifecycleOwner,
+      Observer {
+        Picasso.get()
           .load(it)
           .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
           .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
           .into(rootView.image_view)
-    })
+      }
+    )
 
     homeViewModel.authListener = this
 
     rootView.tv_account_settings.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(SettingsFragmentDirections.actionSettingsFragmentToProfileFragment())
+        .navigate(SettingsFragmentDirections.actionSettingsFragmentToProfileFragment())
     }
 
     rootView.tv_share.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(
-              SettingsFragmentDirections.actionSettingsFragmentToShareWithOthersFragment()
-          )
+        .navigate(
+          SettingsFragmentDirections.actionSettingsFragmentToShareWithOthersFragment()
+        )
     }
 
     rootView.tv_about.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(
-              SettingsFragmentDirections.actionSettingsFragmentToAboutFragment()
-          )
+        .navigate(
+          SettingsFragmentDirections.actionSettingsFragmentToAboutFragment()
+        )
     }
 
     rootView.tv_contact_us.setOnClickListener {
       Navigation.findNavController(rootView)
-          .navigate(
-              SettingsFragmentDirections.actionSettingsFragmentToContactUsFragment()
-          )
+        .navigate(
+          SettingsFragmentDirections.actionSettingsFragmentToContactUsFragment()
+        )
     }
 
     rootView.tv_logout.setOnClickListener {
@@ -139,34 +145,37 @@ constructor(
     return rootView
   }
 
-  private fun cacheAndSaveImage(url:String) {
+  private fun cacheAndSaveImage(url: String) {
     Picasso.get().load(url)
-        .networkPolicy(OFFLINE)
-        .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-        .into(rootView.image_view,object :Callback{
+      .networkPolicy(OFFLINE)
+      .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
+      .into(
+        rootView.image_view,
+        object : Callback {
           override fun onSuccess() {
             println()
           }
           override fun onError(e: Exception?) {
             Picasso.get().load(url)
-                .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-                .into(rootView.image_view)
+              .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
+              .into(rootView.image_view)
           }
-        })
+        }
+      )
   }
 
   override fun onSuccess(message: String?) {
     rootView.progress_bar.hide()
     if (prefs.getIsFacebookUser()) {
       LoginManager.getInstance()
-          .logOut()
+        .logOut()
     }
     homeViewModel.deleteUserData()
     rootView.shortSnackbar("Logged Out")
     Navigation.findNavController(rootView)
-        .navigate(
-            SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
-        )
+      .navigate(
+        SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
+      )
   }
 
   override fun onStarted() {

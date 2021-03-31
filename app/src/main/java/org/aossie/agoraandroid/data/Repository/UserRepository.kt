@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.data.Repository
 
-import timber.log.Timber
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -10,6 +9,7 @@ import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.json.JSONException
 import org.json.JSONObject
+import timber.log.Timber
 
 class UserRepository(
   private val api: Api,
@@ -25,7 +25,7 @@ class UserRepository(
     lastName: String?,
     securityQuestion: String?,
     securityAnswer: String?
-  ): String{
+  ): String {
     val jsonObject = JSONObject()
     val securityJsonObject = JSONObject()
     try {
@@ -46,14 +46,14 @@ class UserRepository(
   suspend fun userLogin(
     identifier: String,
     password: String,
-    trustedDevice: String ?= null
+    trustedDevice: String ? = null
   ): AuthResponse {
     val jsonObject = JSONObject()
     try {
       jsonObject.put("identifier", identifier)
       jsonObject.put("password", password)
       jsonObject.put("trustedDevice", trustedDevice)
-    }catch (e: JSONException){
+    } catch (e: JSONException) {
       e.printStackTrace()
     }
     return apiRequest { api.logIn(jsonObject.toString()) }
@@ -69,7 +69,7 @@ class UserRepository(
       jsonObject.put("crypto", crypto)
       jsonObject.put("otp", otp)
       jsonObject.put("trustedDevice", trustedDevice)
-    }catch (e: JSONException){
+    } catch (e: JSONException) {
       e.printStackTrace()
     }
     return apiRequest { api.verifyOTP(jsonObject.toString()) }
@@ -88,7 +88,7 @@ class UserRepository(
   suspend fun saveUser(user: User) {
     appDatabase.getUserDao().removeUser()
     appDatabase.getUserDao().insert(user)
-    if(user.token != null) {
+    if (user.token != null) {
       Timber.d("saved")
       preferenceProvider.setIsLoggedIn(true)
       preferenceProvider.setCurrentToken(user.token)
@@ -96,32 +96,32 @@ class UserRepository(
   }
 
   suspend fun logout(): String {
-    return apiRequest{ api.logout(preferenceProvider.getCurrentToken()) }
+    return apiRequest { api.logout(preferenceProvider.getCurrentToken()) }
   }
 
-  fun getUser(): LiveData<User>{
+  fun getUser(): LiveData<User> {
     return appDatabase.getUserDao().getUser()
   }
 
-  suspend fun deleteUser(){
+  suspend fun deleteUser() {
     appDatabase.getUserDao().removeUser()
     preferenceProvider.clearData()
     appDatabase.getElectionDao().deleteAllElections()
   }
 
-  suspend fun sendForgotPasswordLink(username: String?): String{
+  suspend fun sendForgotPasswordLink(username: String?): String {
     return apiRequest { api.sendForgotPassword(username) }
   }
 
-  suspend fun updateUser(body: String): ArrayList<String>{
+  suspend fun updateUser(body: String): ArrayList<String> {
     return apiRequest { api.updateUser(preferenceProvider.getCurrentToken(), body) }
   }
 
-  suspend fun changeAvatar(body: String): ArrayList<String>{
+  suspend fun changeAvatar(body: String): ArrayList<String> {
     return apiRequest { api.changeAvatar(preferenceProvider.getCurrentToken(), body) }
   }
 
-  suspend fun changePassword(body: String): ArrayList<String>{
+  suspend fun changePassword(body: String): ArrayList<String> {
     return apiRequest { api.changePassword(body, preferenceProvider.getCurrentToken()) }
   }
 
@@ -132,5 +132,4 @@ class UserRepository(
   suspend fun resendOTP(username: String?): AuthResponse {
     return apiRequest { api.resendOTP(username) }
   }
-
 }
