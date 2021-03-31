@@ -23,11 +23,11 @@ import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
 import org.aossie.agoraandroid.adapters.UpvotedCandidateAdapter
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.MainActivity
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.hide
@@ -58,8 +58,8 @@ class CastVoteActivity :
 
   private lateinit var binding: ActivityCastVoteBinding
 
-  private var passCode: String ? = null
-  private var id: String ? = null
+  private var passCode: String? = null
+  private var id: String? = null
 
   private lateinit var candidates: ArrayList<String>
   private lateinit var hashMap: HashMap<String, Boolean>
@@ -174,11 +174,11 @@ class CastVoteActivity :
     )
   }
 
-  private fun handleCastVote(response: ResponseResults) = when (response) {
-    is Success -> {
+  private fun handleCastVote(response: ResponseResult) = when (response) {
+    is Success<*> -> {
       progress_bar.hide()
       AlertDialog.Builder(this)
-        .setTitle(response.message!!)
+        .setTitle(response.data.toString())
         .setMessage("Do you want to move to Home Screen ?")
         .setPositiveButton("Yes") { _, _ ->
           startActivity(Intent(this, MainActivity::class.java))
@@ -191,13 +191,13 @@ class CastVoteActivity :
         .show()
     }
     is Error -> {
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }
   }
 
-  private fun handleVerifyVoter(response: ResponseResults) = when (response) {
-    is Success -> {
+  private fun handleVerifyVoter(response: ResponseResult) = when (response) {
+    is Success<*> -> {
       viewModel.election.observe(
         this,
         Observer {
@@ -211,8 +211,7 @@ class CastVoteActivity :
               val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
               val formattedStartingDate: Date = formatter.parse(it.startingDate!!) as Date
               val formattedEndingDate: Date = formatter.parse(it.endingDate!!) as Date
-              val currentDate = Calendar.getInstance()
-                .time
+              val currentDate = Calendar.getInstance().time
               val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
               // set end and start date
               binding.tvEndDate.text = outFormat.format(formattedEndingDate)
@@ -221,7 +220,10 @@ class CastVoteActivity :
               if (currentDate.before(formattedStartingDate)) {
                 binding.label.text = PENDING_ELECTION_LABEL
                 binding.label.setBackgroundResource(R.drawable.pending_election_label)
-              } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
+              } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+                  formattedEndingDate
+                )
+              ) {
                 binding.label.text = ACTIVE_ELECTION_LABEL
                 binding.label.setBackgroundResource(R.drawable.active_election_label)
               } else if (currentDate.after(formattedEndingDate)) {
@@ -238,7 +240,7 @@ class CastVoteActivity :
       )
     }
     is Error -> {
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }
   }
