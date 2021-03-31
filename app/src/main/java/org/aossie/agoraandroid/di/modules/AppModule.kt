@@ -14,7 +14,6 @@ import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
-import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.remote.APIService
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
@@ -39,14 +38,6 @@ class AppModule {
   @Singleton
   fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs {
     return ElectionDetailsSharedPrefs(context)
-  }
-
-  @Provides
-  @Singleton
-  fun providesNetworkInterceptor(context: Context): NetworkInterceptor {
-    return NetworkInterceptor(
-      context
-    )
   }
 
   @Provides
@@ -81,10 +72,9 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideOkHttpClient(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
+  fun provideOkHttpClient(context: Context, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
-        addInterceptor(networkInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
@@ -104,10 +94,9 @@ class AppModule {
   @Provides
   @Singleton
   @Named("okHttpWithoutAuth")
-  fun provideOkHttpClientWithoutAuth(context: Context, networkInterceptor: NetworkInterceptor): OkHttpClient {
+  fun provideOkHttpClientWithoutAuth(context: Context): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
-        addInterceptor(networkInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
