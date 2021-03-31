@@ -120,7 +120,7 @@ constructor(
   }
 
   override fun onDeleteElectionSuccess() {
-    //do nothing
+    // do nothing
   }
 
   override fun onSuccess(message: String?) {

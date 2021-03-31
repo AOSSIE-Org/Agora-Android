@@ -138,10 +138,10 @@ constructor(
                 val currentDate = Calendar.getInstance()
                   .time
                 val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
-                //set end and start date
+                // set end and start date
                 binding.tvEndDate.text = outFormat.format(formattedEndingDate)
                 binding.tvStartDate.text = outFormat.format(formattedStartingDate)
-                //set label color and election status
+                // set label color and election status
                 if (currentDate.before(formattedStartingDate)) {
                   binding.label.text =
                     PENDING_ELECTION_LABEL
@@ -178,7 +178,8 @@ constructor(
               binding.tvCandidateList.text = mCandidatesName
               binding.executePendingBindings()
             }
-          })
+          }
+        )
     }
 
     return binding.root
