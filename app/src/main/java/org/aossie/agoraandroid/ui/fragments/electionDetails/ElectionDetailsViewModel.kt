@@ -119,7 +119,7 @@ constructor(
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
         displayElectionListener.onFailure(e.message!!)
-      }catch (e: NoInternetException) {
+      } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
         displayElectionListener.onFailure(e.message!!)
       } catch (e: Exception) {

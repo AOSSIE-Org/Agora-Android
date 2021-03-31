@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.PieData
@@ -69,23 +68,27 @@ constructor(
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
       electionDetailsViewModel.resultResponse.observe(
-        requireActivity(), Observer {
-        if (it != null) {
-          initResultView(it)
-        } else {
-          rootView.result_view.visibility = View.GONE
-          rootView.tv_no_result.text = resources.getString(R.string.no_result)
-          rootView.tv_no_result.show()
+        requireActivity(),
+        {
+          if (it != null) {
+            initResultView(it)
+          } else {
+            rootView.result_view.visibility = View.GONE
+            rootView.tv_no_result.text = resources.getString(R.string.no_result)
+            rootView.tv_no_result.show()
+          }
         }
-      })
+      )
       electionDetailsViewModel.notConnected.observe(
-        requireActivity(), Observer {
-        if (it) {
-          rootView.result_view.visibility = View.GONE
-          rootView.tv_no_result.text = resources.getString(R.string.fetch_result_failed)
-          rootView.tv_no_result.show()
+        requireActivity(),
+        {
+          if (it) {
+            rootView.result_view.visibility = View.GONE
+            rootView.tv_no_result.text = resources.getString(R.string.fetch_result_failed)
+            rootView.tv_no_result.show()
+          }
         }
-      })
+      )
     }
   }
 
