@@ -114,7 +114,7 @@ constructor(
       Navigation.findNavController(rootView)
         .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
-    is Error<*> -> {
+    is Error -> {
       rootView.progress_bar.hide()
       rootView.snackbar(response.error.toString())
     }
@@ -125,7 +125,7 @@ constructor(
       rootView.progress_bar.hide()
       rootView.snackbar("OTP is sent to your registered email address")
     }
-    is Error<*> -> {
+    is Error -> {
       rootView.progress_bar.hide()
       rootView.snackbar(response.error.toString())
     }

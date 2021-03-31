@@ -190,7 +190,7 @@ class CastVoteActivity :
         .create()
         .show()
     }
-    is Error<*> -> {
+    is Error -> {
       binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }
@@ -239,7 +239,7 @@ class CastVoteActivity :
         }
       )
     }
-    is Error<*> -> {
+    is Error -> {
       binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }

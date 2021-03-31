@@ -299,7 +299,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.data.toString())
     }
-    is Error<*> -> {
+    is Error -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
@@ -313,7 +313,7 @@ constructor(
       binding.root.snackbar(response.data.toString())
       loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
     }
-    is Error<*> -> {
+    is Error -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
@@ -326,7 +326,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.data.toString() + ", Please login again")
     }
-    is Error<*> -> {
+    is Error -> {
       toggleIsEnable()
       binding.root.progress_bar.hide()
       binding.root.snackbar(response.error.toString())
@@ -342,7 +342,7 @@ constructor(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
-    is Error<*> -> {
+    is Error -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
