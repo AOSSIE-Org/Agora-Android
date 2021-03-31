@@ -194,10 +194,8 @@ constructor(
       val conPass = binding.confirmPasswordTiet.text.toString()
       when {
         newPass.isEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
-        conPass.isEmpty() -> binding.confirmPasswordTil.error =
-          getString(string.password_empty_warn)
-        newPass != conPass -> binding.confirmPasswordTil.error =
-          getString(string.password_not_match_warn)
+        conPass.isEmpty() -> binding.confirmPasswordTil.error = getString(string.password_empty_warn)
+        newPass != conPass -> binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
         else -> {
           binding.root.progress_bar.show()
           toggleIsEnable()
