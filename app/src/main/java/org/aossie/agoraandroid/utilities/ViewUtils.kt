@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.utilities.AppConstants.TIME_UP
 
 fun ProgressBar.show() {
   visibility = ProgressBar.VISIBLE
@@ -29,7 +28,7 @@ fun TextView.show() {
 
 fun View.snackbar(message: String) {
   Snackbar
-    .make(this, message, TIME_UP)
+    .make(this, message, AppConstants.TIME_UP)
     .also { snackbar ->
       snackbar.setAction(AppConstants.ok) {
         snackbar.dismiss()
