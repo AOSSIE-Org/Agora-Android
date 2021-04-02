@@ -1,6 +1,8 @@
 package org.aossie.agoraandroid.ui.activities
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
@@ -50,6 +52,12 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
     setSupportActionBar(toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(false)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }else{
+      window.statusBarColor = Color.BLACK
+    }
 
     val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     if (hostFragment is NavHostFragment)
