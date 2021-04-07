@@ -7,10 +7,6 @@ import android.net.Network
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkRequest
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ConnectivityManager(context: Context) : LiveData<Boolean>() {
 
@@ -39,17 +35,8 @@ class ConnectivityManager(context: Context) : LiveData<Boolean>() {
     override fun onAvailable(network: Network) {
       val networkCapabilities = cm.getNetworkCapabilities(network)
       val hasInternetCapability = networkCapabilities?.hasCapability(NET_CAPABILITY_INTERNET)
-      if (hasInternetCapability == true) {
-        CoroutineScope(Dispatchers.IO).launch {
-          val hasInternet = InternetChecker.hasInternet(network.socketFactory)
-          if (hasInternet) {
-            withContext(Dispatchers.Main) {
-              validNetworks.add(network)
-              checkValidNetworks()
-            }
-          }
-        }
-      }
+      if (hasInternetCapability == true)
+        checkValidNetworks()
     }
 
     override fun onLost(network: Network) {
