@@ -109,7 +109,7 @@ constructor(
   }
 
   private fun handleVerifyOtp(response: ResponseResult) = when (response) {
-    is Success<*> -> {
+    is Success -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
         .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
@@ -121,7 +121,7 @@ constructor(
   }
 
   private fun handleResendOtp(response: ResponseResult) = when (response) {
-    is Success<*> -> {
+    is Success -> {
       rootView.progress_bar.hide()
       rootView.snackbar("OTP is sent to your registered email address")
     }

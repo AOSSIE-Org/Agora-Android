@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_cast_vote.rv_candidates
 import kotlinx.android.synthetic.main.activity_cast_vote.rv_selected_candidates
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
 import org.aossie.agoraandroid.adapters.UpvotedCandidateAdapter
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
@@ -175,10 +176,10 @@ class CastVoteActivity :
   }
 
   private fun handleCastVote(response: ResponseResult) = when (response) {
-    is Success<*> -> {
+    is Success -> {
       progress_bar.hide()
       AlertDialog.Builder(this)
-        .setTitle(response.data.toString())
+        .setTitle(getString(string.vote_successful))
         .setMessage("Do you want to move to Home Screen ?")
         .setPositiveButton("Yes") { _, _ ->
           startActivity(Intent(this, MainActivity::class.java))
@@ -197,7 +198,7 @@ class CastVoteActivity :
   }
 
   private fun handleVerifyVoter(response: ResponseResult) = when (response) {
-    is Success<*> -> {
+    is Success -> {
       viewModel.election.observe(
         this,
         Observer {
