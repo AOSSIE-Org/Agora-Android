@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -34,9 +34,9 @@ constructor(
 
   private lateinit var rootView: View
 
-  private var password: String ? = null
-  private var crypto: String ? = null
-  private var user: User ? = null
+  private var password: String? = null
+  private var crypto: String? = null
+  private var user: User? = null
 
   private val viewModel: TwoFactorAuthViewModel by viewModels {
     viewModelFactory
@@ -73,7 +73,9 @@ constructor(
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
         if (rootView.cb_trusted_device.isChecked) {
-          viewModel.verifyOTP(otp, rootView.cb_trusted_device.isChecked, password!!, user!!.crypto!!)
+          viewModel.verifyOTP(
+            otp, rootView.cb_trusted_device.isChecked, password!!, user!!.crypto!!
+          )
         } else {
           rootView.progress_bar.hide()
           rootView.snackbar("Please, tap on the checkbox to proceed")
@@ -106,25 +108,26 @@ constructor(
     return rootView
   }
 
-  private fun handleVerifyOtp(response: ResponseResults) = when (response) {
-    is Success -> {
+  private fun handleVerifyOtp(response: ResponseResult) = when (response) {
+    is Success<*> -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
         .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
     is Error -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.message)
+      rootView.snackbar(response.error.toString())
     }
   }
-  private fun handleResendOtp(response: ResponseResults) = when (response) {
-    is Success -> {
+
+  private fun handleResendOtp(response: ResponseResult) = when (response) {
+    is Success<*> -> {
       rootView.progress_bar.hide()
       rootView.snackbar("OTP is sent to your registered email address")
     }
     is Error -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.message)
+      rootView.snackbar(response.error.toString())
     }
   }
 }
