@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -20,30 +20,20 @@ import javax.inject.Inject
 class TwoFactorAuthViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository,
-  private val prefs: PreferenceProvider
+  private val userRepository: UserRepository
 ) : ViewModel() {
 
   val user = userRepository.getUser()
 
-  private val mVerifyOtpResponse = MutableLiveData<ResponseResults>()
+  private val mVerifyOtpResponse = MutableLiveData<ResponseResult>()
 
-  val verifyOtpResponse: LiveData<ResponseResults>
+  val verifyOtpResponse: LiveData<ResponseResult>
     get() = mVerifyOtpResponse
 
-  private val mResendOtpResponse = MutableLiveData<ResponseResults>()
+  private val mResendOtpResponse = MutableLiveData<ResponseResult>()
 
-  val resendOtpResponse: LiveData<ResponseResults>
+  val resendOtpResponse: LiveData<ResponseResult>
     get() = mResendOtpResponse
-
-  sealed class ResponseResults {
-    class Success(text: String? = null) : ResponseResults() {
-      val message = text
-    }
-    class Error(errorText: String) : ResponseResults() {
-      val message = errorText
-    }
-  }
 
   fun verifyOTP(
     otp: String,
@@ -66,7 +56,7 @@ constructor(
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
-          mVerifyOtpResponse.value = Success()
+          mVerifyOtpResponse.value = Success<String>()
         }
       } catch (e: ApiException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
@@ -80,7 +70,10 @@ constructor(
     }
   }
 
-  fun resendOTP(username: String, password: String) {
+  fun resendOTP(
+    username: String,
+    password: String
+  ) {
     if (username.isEmpty()) {
       mResendOtpResponse.value = Error("Login Again")
       return
@@ -95,7 +88,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
           )
           userRepository.saveUser(user)
-          mResendOtpResponse.value = Success()
+          mResendOtpResponse.value = Success<String>()
         }
       } catch (e: ApiException) {
         mResendOtpResponse.value = Error(e.message.toString())
