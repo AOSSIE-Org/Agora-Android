@@ -175,7 +175,7 @@
   <string name="voter_same_email">Voter with same Email Id already added</string>
   <string name="user_updated">User updated successfully!</string>
   <string name="password_updated">Password updated successfully!</string>
-  <string name="profile_updated">Profile Photo updated successfully!</string>
+  <string name="profile_updated">Profile photo updated successfully!</string>
   <string name="authentication_updated">Two Factor Authentication updated, Please login again!</string>
   <string name="first_name_empty">First Name cannot be empty</string>
   <string name="last_name_empty">Last Name cannot be empty</string>
