@@ -1,7 +1,6 @@
 package org.aossie.agoraandroid.data.network.interceptors
 
 import android.content.Context
-import android.net.ConnectivityManager
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.aossie.agoraandroid.R
