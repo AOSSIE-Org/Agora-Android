@@ -49,7 +49,7 @@ constructor(
       Coroutines.main {
         val electionResponse = electionsRepository.verifyVoter(id)
         electionResponse._id = id
-        mVerifyVoterResponse.value = Success("Success")
+        mVerifyVoterResponse.value = Success
         mElection.value = electionResponse
       }
     } catch (e: ApiException) {
@@ -68,8 +68,8 @@ constructor(
   ) {
     try {
       Coroutines.main {
-        val response = electionsRepository.castVote(id, ballotInput, passCode)
-        mCastVoteResponse.value = Success(response[1])
+        electionsRepository.castVote(id, ballotInput, passCode)
+        mCastVoteResponse.value = Success
       }
     } catch (e: ApiException) {
       mCastVoteResponse.value = Error(e.message.toString())

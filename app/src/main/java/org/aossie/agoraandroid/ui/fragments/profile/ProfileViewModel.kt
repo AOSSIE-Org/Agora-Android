@@ -54,9 +54,8 @@ constructor(
     }
     Coroutines.main {
       try {
-        val response = userRepository.changePassword(jsonObject.toString())
-        Timber.d(response[1])
-        _passwordRequestCode.value = Success(response[1])
+        userRepository.changePassword(jsonObject.toString())
+        _passwordRequestCode.value = Success
       } catch (e: ApiException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
@@ -94,8 +93,7 @@ constructor(
           )
           userRepository.saveUser(mUser)
         }
-        Timber.d(response.toString())
-        _changeAvatarResponse.value = Success(response[1])
+        _changeAvatarResponse.value = Success
       } catch (e: ApiException) {
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
@@ -111,9 +109,8 @@ constructor(
   fun toggleTwoFactorAuth() {
     Coroutines.main {
       try {
-        val response = userRepository.toggleTwoFactorAuth()
-        Timber.d(response[1])
-        _toggleTwoFactorAuthResponse.value = Success(response[1])
+        userRepository.toggleTwoFactorAuth()
+        _toggleTwoFactorAuthResponse.value = Success
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
@@ -147,10 +144,9 @@ constructor(
     }
     Coroutines.main {
       try {
-        val response = userRepository.updateUser(jsonObject.toString())
-        Timber.d(response[1])
+        userRepository.updateUser(jsonObject.toString())
         userRepository.saveUser(user)
-        _userUpdateResponse.value = Success(response[1])
+        _userUpdateResponse.value = Success
       } catch (e: ApiException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
