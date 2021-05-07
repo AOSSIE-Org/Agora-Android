@@ -1,7 +1,5 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
