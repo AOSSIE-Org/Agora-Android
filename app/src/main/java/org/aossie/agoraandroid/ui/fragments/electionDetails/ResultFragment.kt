@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -13,13 +14,11 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
-import kotlinx.android.synthetic.main.fragment_ballot.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_result.view.pie_chart
 import kotlinx.android.synthetic.main.fragment_result.view.result_view
-import kotlinx.android.synthetic.main.fragment_result.view.text_view_winner_name
 import kotlinx.android.synthetic.main.fragment_result.view.tv_no_result
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.model.Winner
+import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -36,6 +35,7 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
   DisplayElectionListener {
+  lateinit var binding: FragmentResultBinding
 
   private lateinit var rootView: View
 
@@ -51,9 +51,9 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_result, container, false)
-
-    rootView.tv_no_result.hide()
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
+    rootView = binding.root
+    binding.tvNoResult.hide()
     electionDetailsViewModel.displayElectionListener = this
 
     id = VotersFragmentArgs.fromBundle(
@@ -73,9 +73,9 @@ constructor(
           if (it != null) {
             initResultView(it)
           } else {
-            rootView.result_view.visibility = View.GONE
-            rootView.tv_no_result.text = resources.getString(R.string.no_result)
-            rootView.tv_no_result.show()
+            binding.resultView.visibility = View.GONE
+            binding.tvNoResult.text = resources.getString(R.string.no_result)
+            binding.tvNoResult.show()
           }
         }
       )
@@ -95,7 +95,7 @@ constructor(
   private fun initResultView(winner: Winner) {
     rootView.tv_no_result.hide()
     rootView.result_view.visibility = View.VISIBLE
-    val pieChart = rootView.pie_chart
+    val pieChart = binding.pieChart
     pieChart.setUsePercentValues(true)
 
     val description = Description()
@@ -116,7 +116,7 @@ constructor(
     legend.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
     pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
     pieChart.animateXY(1400, 1400)
-    rootView.text_view_winner_name.text = winner.candidate?.name
+    binding.textViewWinnerName.text = winner.candidate?.name
   }
 
   override fun onDeleteElectionSuccess() {
@@ -125,18 +125,18 @@ constructor(
 
   override fun onSuccess(message: String?) {
     if (message != null) rootView.snackbar(message)
-    rootView.progress_bar.hide()
+    binding.progressBar.hide()
   }
 
   override fun onStarted() {
-    rootView.result_view.visibility = View.GONE
-    rootView.progress_bar.show()
+    binding.resultView.visibility = View.GONE
+    binding.progressBar.show()
   }
 
   override fun onFailure(message: String) {
     rootView.snackbar(message)
-    rootView.progress_bar.hide()
-    rootView.tv_no_result.text = resources.getString(R.string.fetch_result_failed)
-    rootView.tv_no_result.show()
+    binding.progressBar.hide()
+    binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
+    binding.tvNoResult.show()
   }
 }

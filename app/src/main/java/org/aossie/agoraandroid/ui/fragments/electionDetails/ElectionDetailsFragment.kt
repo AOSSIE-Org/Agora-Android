@@ -22,6 +22,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.isConnected
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
@@ -100,7 +101,7 @@ constructor(
       if (status == "PENDING") {
         binding.root.snackbar(resources.getString(R.string.election_not_started))
       } else {
-        if (isConnected()) {
+        if (requireContext().isConnected()) {
           val action =
             ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToResultFragment(
               id!!
@@ -123,6 +124,12 @@ constructor(
       }
     }
 
+    getElectionById()
+
+    return binding.root
+  }
+
+  private fun getElectionById() {
     Coroutines.main {
       electionDetailsViewModel.getElectionById(id!!)
         .observe(
@@ -181,8 +188,6 @@ constructor(
           }
         )
     }
-
-    return binding.root
   }
 
   override fun onDeleteElectionSuccess() {
@@ -208,13 +213,5 @@ constructor(
     binding.root.snackbar(message)
     binding.root.progress_bar.hide()
     binding.root.button_delete.toggleIsEnable()
-  }
-
-  private fun isConnected(): Boolean {
-    val connectivityManager =
-      context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    connectivityManager.activeNetworkInfo.also {
-      return it != null && it.isConnected
-    }
   }
 }

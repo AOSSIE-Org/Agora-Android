@@ -14,6 +14,7 @@ import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -188,7 +189,7 @@ constructor(
     id: String
   ): List<Winner>? {
     val response = api.getResult(prefs.getCurrentToken(), id)
-    return if (response.message() == "OK") {
+    return if (response.message() == AppConstants.ok) {
       apiRequest { response }
     } else {
       null
