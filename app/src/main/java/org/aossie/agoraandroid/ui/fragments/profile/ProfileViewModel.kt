@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -24,34 +25,25 @@ constructor(
 
   val user = userRepository.getUser()
 
-  private val _passwordRequestCode = MutableLiveData<ResponseResults>()
+  private val _passwordRequestCode = MutableLiveData<ResponseResult>()
 
-  val passwordRequestCode: LiveData<ResponseResults>
+  val passwordRequestCode: LiveData<ResponseResult>
     get() = _passwordRequestCode
 
-  private val _userUpdateResponse = MutableLiveData<ResponseResults>()
+  private val _userUpdateResponse = MutableLiveData<ResponseResult>()
 
-  val userUpdateResponse: LiveData<ResponseResults>
+  val userUpdateResponse: LiveData<ResponseResult>
     get() = _userUpdateResponse
 
-  private val _toggleTwoFactorAuthResponse = MutableLiveData<ResponseResults>()
+  private val _toggleTwoFactorAuthResponse = MutableLiveData<ResponseResult>()
 
-  val toggleTwoFactorAuthResponse: LiveData<ResponseResults>
+  val toggleTwoFactorAuthResponse: LiveData<ResponseResult>
     get() = _toggleTwoFactorAuthResponse
 
-  private val _changeAvatarResponse = MutableLiveData<ResponseResults>()
+  private val _changeAvatarResponse = MutableLiveData<ResponseResult>()
 
-  val changeAvatarResponse: LiveData<ResponseResults>
+  val changeAvatarResponse: LiveData<ResponseResult>
     get() = _changeAvatarResponse
-
-  sealed class ResponseResults {
-    class Success(text: String? = null) : ResponseResults() {
-      val message = text
-    }
-    class Error(errorText: String) : ResponseResults() {
-      val message = errorText
-    }
-  }
 
   fun changePassword(password: String) {
     val jsonObject = JSONObject()
@@ -62,9 +54,8 @@ constructor(
     }
     Coroutines.main {
       try {
-        val response = userRepository.changePassword(jsonObject.toString())
-        Timber.d(response[1])
-        _passwordRequestCode.value = Success(response[1])
+        userRepository.changePassword(jsonObject.toString())
+        _passwordRequestCode.value = Success
       } catch (e: ApiException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
@@ -84,7 +75,8 @@ constructor(
     val jsonObject = JSONObject()
     try {
       jsonObject.put("url", url)
-      Timber.tag("change avatar").d(jsonObject.toString())
+      Timber.tag("change avatar")
+        .d(jsonObject.toString())
     } catch (e: JSONException) {
       e.printStackTrace()
     }
@@ -101,8 +93,7 @@ constructor(
           )
           userRepository.saveUser(mUser)
         }
-        Timber.d(response.toString())
-        _changeAvatarResponse.value = Success(response[1])
+        _changeAvatarResponse.value = Success
       } catch (e: ApiException) {
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
@@ -118,9 +109,8 @@ constructor(
   fun toggleTwoFactorAuth() {
     Coroutines.main {
       try {
-        val response = userRepository.toggleTwoFactorAuth()
-        Timber.d(response[1])
-        _toggleTwoFactorAuthResponse.value = Success(response[1])
+        userRepository.toggleTwoFactorAuth()
+        _toggleTwoFactorAuthResponse.value = Success
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
@@ -154,10 +144,9 @@ constructor(
     }
     Coroutines.main {
       try {
-        val response = userRepository.updateUser(jsonObject.toString())
-        Timber.d(response[1])
+        userRepository.updateUser(jsonObject.toString())
         userRepository.saveUser(user)
-        _userUpdateResponse.value = Success(response[1])
+        _userUpdateResponse.value = Success
       } catch (e: ApiException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {

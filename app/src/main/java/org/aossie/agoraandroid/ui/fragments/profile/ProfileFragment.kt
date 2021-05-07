@@ -38,13 +38,13 @@ import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.network.responses.ResponseResult
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Error
-import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel.ResponseResults.Success
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.hide
@@ -293,51 +293,51 @@ constructor(
     requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
   }
 
-  private fun handleChangeAvatar(response: ResponseResults) = when (response) {
+  private fun handleChangeAvatar(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString())
+      binding.root.snackbar(getString(string.profile_updated))
     }
     is Error -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 
-  private fun handleUser(response: ResponseResults) = when (response) {
+  private fun handleUser(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString())
+      binding.root.snackbar(getString(string.user_updated))
       loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
     }
     is Error -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 
-  private fun handleTwoFactorAuthentication(response: ResponseResults) = when (response) {
+  private fun handleTwoFactorAuthentication(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString() + ", Please login again")
+      binding.root.snackbar(getString(string.authentication_updated))
     }
     is Error -> {
       toggleIsEnable()
       binding.root.progress_bar.hide()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 
-  private fun handlePassword(response: ResponseResults) = when (response) {
+  private fun handlePassword(response: ResponseResult) = when (response) {
     is Success -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message.toString())
+      binding.root.snackbar(getString(string.password_updated))
       loginViewModel.logInRequest(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
@@ -345,7 +345,7 @@ constructor(
     is Error -> {
       binding.root.progress_bar.hide()
       toggleIsEnable()
-      binding.root.snackbar(response.message)
+      binding.root.snackbar(response.error.toString())
     }
   }
 
