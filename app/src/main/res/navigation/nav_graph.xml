@@ -280,6 +280,13 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"/>
+    <action
+        android:id="@+id/action_electionDetailsFragment_to_resultFragment"
+        app:destination="@+id/resultFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
   </fragment>
   <fragment
       android:id="@+id/votersFragment"
@@ -307,9 +314,6 @@
     <argument
         android:name="id"
         app:argType="string"/>
-    <argument
-        android:name="token"
-        app:argType="string"/>
     <action
         android:id="@+id/action_inviteVotersFragment_to_homeFragment"
         app:destination="@+id/homeFragment"
@@ -317,6 +321,15 @@
         app:exitAnim="@anim/slide_out_right"
         app:popEnterAnim="@anim/slide_in_right"
         app:popExitAnim="@anim/slide_out_left"/>
+  </fragment>
+  <fragment
+      android:id="@+id/resultFragment"
+      android:name="org.aossie.agoraandroid.ui.fragments.electionDetails.ResultFragment"
+      android:label="Result"
+      tools:layout="@layout/fragment_result">
+    <argument
+        android:name="id"
+        app:argType="string"/>
   </fragment>
   <fragment
       android:id="@+id/createElectionFragment"
