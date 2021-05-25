@@ -14,9 +14,8 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
-import kotlinx.android.synthetic.main.fragment_result.view.result_view
-import kotlinx.android.synthetic.main.fragment_result.view.tv_no_result
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.model.Winner
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -67,34 +66,42 @@ constructor(
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
-      electionDetailsViewModel.resultResponse.observe(
-        requireActivity(),
-        {
-          if (it != null) {
-            initResultView(it)
-          } else {
-            binding.resultView.visibility = View.GONE
-            binding.tvNoResult.text = resources.getString(R.string.no_result)
-            binding.tvNoResult.show()
-          }
-        }
-      )
-      electionDetailsViewModel.notConnected.observe(
-        requireActivity(),
-        {
-          if (it) {
-            rootView.result_view.visibility = View.GONE
-            rootView.tv_no_result.text = resources.getString(R.string.fetch_result_failed)
-            rootView.tv_no_result.show()
-          }
-        }
-      )
+      observeResult()
+      observeConnectivity()
     }
   }
 
+  private fun observeConnectivity() {
+    electionDetailsViewModel.notConnected.observe(
+      requireActivity(),
+      {
+        if (it) {
+          binding.resultView.visibility = View.GONE
+          binding.tvNoResult.text = resources.getString(string.fetch_result_failed)
+          binding.tvNoResult.show()
+        }
+      }
+    )
+  }
+
+  private fun observeResult() {
+    electionDetailsViewModel.resultResponse.observe(
+      requireActivity(),
+      {
+        if (it != null) {
+          initResultView(it)
+        } else {
+          binding.resultView.visibility = View.GONE
+          binding.tvNoResult.text = resources.getString(string.no_result)
+          binding.tvNoResult.show()
+        }
+      }
+    )
+  }
+
   private fun initResultView(winner: Winner) {
-    rootView.tv_no_result.hide()
-    rootView.result_view.visibility = View.VISIBLE
+    binding.tvNoResult.hide()
+    binding.resultView.visibility = View.VISIBLE
     val pieChart = binding.pieChart
     pieChart.setUsePercentValues(true)
 
@@ -123,14 +130,14 @@ constructor(
     // do nothing
   }
 
-  override fun onSuccess(message: String?) {
-    if (message != null) rootView.snackbar(message)
-    binding.progressBar.hide()
-  }
-
   override fun onStarted() {
     binding.resultView.visibility = View.GONE
     binding.progressBar.show()
+  }
+
+  override fun onSuccess(message: String?) {
+    if (message != null) rootView.snackbar(message)
+    binding.progressBar.hide()
   }
 
   override fun onFailure(message: String) {

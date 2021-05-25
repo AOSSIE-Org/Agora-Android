@@ -9,12 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_election_details.view.button_ballot
-import kotlinx.android.synthetic.main.fragment_election_details.view.button_delete
-import kotlinx.android.synthetic.main.fragment_election_details.view.button_invite_voters
-import kotlinx.android.synthetic.main.fragment_election_details.view.button_result
-import kotlinx.android.synthetic.main.fragment_election_details.view.button_voters
-import kotlinx.android.synthetic.main.fragment_election_details.view.progress_bar
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
@@ -67,7 +61,7 @@ constructor(
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
-    binding.root.button_ballot.setOnClickListener {
+    binding.buttonBallot.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToBallotFragment(
           id!!
@@ -75,7 +69,7 @@ constructor(
       Navigation.findNavController(binding.root)
         .navigate(action)
     }
-    binding.root.button_voters.setOnClickListener {
+    binding.buttonVoters.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToVotersFragment(
           id!!
@@ -83,7 +77,7 @@ constructor(
       Navigation.findNavController(binding.root)
         .navigate(action)
     }
-    binding.root.button_invite_voters.setOnClickListener {
+    binding.buttonInviteVoters.setOnClickListener {
       if (status == "FINISHED") {
         binding.root.snackbar(resources.getString(R.string.election_finished))
       } else {
@@ -95,7 +89,7 @@ constructor(
           .navigate(action)
       }
     }
-    binding.root.button_result.setOnClickListener {
+    binding.buttonResult.setOnClickListener {
       if (status == "PENDING") {
         binding.root.snackbar(resources.getString(R.string.election_not_started))
       } else {
@@ -112,7 +106,7 @@ constructor(
       }
     }
 
-    binding.root.button_delete.setOnClickListener {
+    binding.buttonDelete.setOnClickListener {
       when (status) {
         "ACTIVE" -> binding.root.snackbar(
           resources.getString(R.string.active_elections_not_started)
@@ -198,18 +192,18 @@ constructor(
 
   override fun onSuccess(message: String?) {
     if (message != null) binding.root.snackbar(message)
-    binding.root.progress_bar.hide()
-    binding.root.button_delete.toggleIsEnable()
+    binding.progressBar.hide()
+    binding.buttonDelete.toggleIsEnable()
   }
 
   override fun onStarted() {
-    binding.root.progress_bar.show()
-    binding.root.button_delete.toggleIsEnable()
+    binding.progressBar.show()
+    binding.buttonDelete.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
     binding.root.snackbar(message)
-    binding.root.progress_bar.hide()
-    binding.root.button_delete.toggleIsEnable()
+    binding.progressBar.hide()
+    binding.buttonDelete.toggleIsEnable()
   }
 }
