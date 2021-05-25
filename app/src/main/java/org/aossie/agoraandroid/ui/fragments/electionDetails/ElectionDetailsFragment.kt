@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -61,64 +62,67 @@ constructor(
       )
     id = args.id
     electionDetailsViewModel.displayElectionListener = this
+    initListeners()
+
+    getElectionById()
+
+    return binding.root
+  }
+
+  private fun initListeners() {
     binding.buttonBallot.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToBallotFragment(
-          id!!
+            id!!
         )
       Navigation.findNavController(binding.root)
-        .navigate(action)
+          .navigate(action)
     }
     binding.buttonVoters.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToVotersFragment(
-          id!!
+            id!!
         )
       Navigation.findNavController(binding.root)
-        .navigate(action)
+          .navigate(action)
     }
     binding.buttonInviteVoters.setOnClickListener {
       if (status == "FINISHED") {
-        binding.root.snackbar(resources.getString(R.string.election_finished))
+        binding.root.snackbar(resources.getString(string.election_finished))
       } else {
         val action =
           ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToInviteVotersFragment(
-            id!!
+              id!!
           )
         Navigation.findNavController(binding.root)
-          .navigate(action)
+            .navigate(action)
       }
     }
     binding.buttonResult.setOnClickListener {
       if (status == "PENDING") {
-        binding.root.snackbar(resources.getString(R.string.election_not_started))
+        binding.root.snackbar(resources.getString(string.election_not_started))
       } else {
         if (requireContext().isConnected()) {
           val action =
             ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToResultFragment(
-              id!!
+                id!!
             )
           Navigation.findNavController(binding.root)
-            .navigate(action)
+              .navigate(action)
         } else {
-          binding.root.snackbar(resources.getString(R.string.no_network))
+          binding.root.snackbar(resources.getString(string.no_network))
         }
       }
     }
-
     binding.buttonDelete.setOnClickListener {
       when (status) {
         "ACTIVE" -> binding.root.snackbar(
-          resources.getString(R.string.active_elections_not_started)
+            resources.getString(string.active_elections_not_started)
         )
         "FINISHED" -> electionDetailsViewModel.deleteElection(id)
         "PENDING" -> electionDetailsViewModel.deleteElection(id)
       }
     }
-
-    getElectionById()
-
-    return binding.root
   }
 
   private fun getElectionById() {

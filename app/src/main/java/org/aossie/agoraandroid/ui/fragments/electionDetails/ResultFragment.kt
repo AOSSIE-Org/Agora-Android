@@ -36,8 +36,6 @@ constructor(
   DisplayElectionListener {
   lateinit var binding: FragmentResultBinding
 
-  private lateinit var rootView: View
-
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
   }
@@ -51,7 +49,6 @@ constructor(
   ): View? {
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
-    rootView = binding.root
     binding.tvNoResult.hide()
     electionDetailsViewModel.displayElectionListener = this
 
@@ -60,7 +57,7 @@ constructor(
     ).id
     electionDetailsViewModel.getResult(id)
 
-    return rootView
+    return binding.root
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -136,12 +133,12 @@ constructor(
   }
 
   override fun onSuccess(message: String?) {
-    if (message != null) rootView.snackbar(message)
+    if (message != null) binding.root.snackbar(message)
     binding.progressBar.hide()
   }
 
   override fun onFailure(message: String) {
-    rootView.snackbar(message)
+    binding.root.snackbar(message)
     binding.progressBar.hide()
     binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
     binding.tvNoResult.show()
