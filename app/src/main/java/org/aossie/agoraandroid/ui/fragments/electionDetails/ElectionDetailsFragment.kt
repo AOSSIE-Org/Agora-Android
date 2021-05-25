@@ -73,18 +73,18 @@ constructor(
     binding.buttonBallot.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToBallotFragment(
-            id!!
+          id!!
         )
       Navigation.findNavController(binding.root)
-          .navigate(action)
+        .navigate(action)
     }
     binding.buttonVoters.setOnClickListener {
       val action =
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToVotersFragment(
-            id!!
+          id!!
         )
       Navigation.findNavController(binding.root)
-          .navigate(action)
+        .navigate(action)
     }
     binding.buttonInviteVoters.setOnClickListener {
       if (status == "FINISHED") {
@@ -92,10 +92,10 @@ constructor(
       } else {
         val action =
           ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToInviteVotersFragment(
-              id!!
+            id!!
           )
         Navigation.findNavController(binding.root)
-            .navigate(action)
+          .navigate(action)
       }
     }
     binding.buttonResult.setOnClickListener {
@@ -105,10 +105,10 @@ constructor(
         if (requireContext().isConnected()) {
           val action =
             ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToResultFragment(
-                id!!
+              id!!
             )
           Navigation.findNavController(binding.root)
-              .navigate(action)
+            .navigate(action)
         } else {
           binding.root.snackbar(resources.getString(string.no_network))
         }
@@ -117,7 +117,7 @@ constructor(
     binding.buttonDelete.setOnClickListener {
       when (status) {
         "ACTIVE" -> binding.root.snackbar(
-            resources.getString(string.active_elections_not_started)
+          resources.getString(string.active_elections_not_started)
         )
         "FINISHED" -> electionDetailsViewModel.deleteElection(id)
         "PENDING" -> electionDetailsViewModel.deleteElection(id)
