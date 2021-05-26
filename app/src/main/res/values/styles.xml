@@ -9,6 +9,7 @@
     <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
     <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
   </style>
 
   <style name="SplashTheme" parent="AppTheme">
