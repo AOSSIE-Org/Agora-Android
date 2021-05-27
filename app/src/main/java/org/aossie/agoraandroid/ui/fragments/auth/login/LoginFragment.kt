@@ -25,6 +25,8 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentLoginBinding
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.disableView
+import org.aossie.agoraandroid.utilities.enableView
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -82,13 +84,13 @@ constructor(
             }
 
             override fun onCancel() {
-              binding.btnFacebookLogin.isEnabled = true
+              binding.btnFacebookLogin.enableView()
               Toast.makeText(context, "Login Cancel", Toast.LENGTH_LONG)
                 .show()
             }
 
             override fun onError(exception: FacebookException) {
-              binding.btnFacebookLogin.isEnabled = true
+              binding.btnFacebookLogin.enableView()
               Toast.makeText(context, exception.message, Toast.LENGTH_LONG)
                 .show()
             }
@@ -119,7 +121,7 @@ constructor(
     binding.username.addTextChangedListener(loginTextWatcher)
 
     binding.btnFacebookLogin.setOnClickListener {
-      binding.btnFacebookLogin.isEnabled = false
+      binding.btnFacebookLogin.disableView()
       LoginManager.getInstance()
           .logInWithReadPermissions(
             activity,
@@ -180,7 +182,7 @@ constructor(
     binding.progressBar.hide()
     binding.root.snackbar(message)
     binding.loginBtn.toggleIsEnable()
-    binding.btnFacebookLogin.isEnabled = true
+    binding.btnFacebookLogin.enableView()
   }
 
   override fun onTwoFactorAuthentication(
