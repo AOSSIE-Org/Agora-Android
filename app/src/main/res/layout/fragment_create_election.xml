@@ -195,6 +195,16 @@
             app:layout_constraintTop_toBottomOf="@+id/add_candidate_btn"
             tools:item_layout="@layout/list_item_candidate_name"
             />
+
+          <TextView
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/size_8dp"
+            android:id="@+id/text_view_swipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/swipe_to_delete_candidate"
+            />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton

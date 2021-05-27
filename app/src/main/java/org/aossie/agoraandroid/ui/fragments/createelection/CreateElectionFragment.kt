@@ -35,7 +35,6 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import timber.log.Timber
 import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
@@ -206,7 +205,6 @@ constructor(
         ballotVisibility = resources.getStringArray(array.security_questions)[0]
       }
     }
-
   }
 
   private val itemTouchHelperCallback: SimpleCallback =
@@ -225,6 +223,7 @@ constructor(
       ) {
         mCandidates.removeAt(viewHolder.adapterPosition)
         candidateRecyclerAdapter!!.notifyDataSetChanged()
+        if (mCandidates.isEmpty()) binding.textViewSwipe.hide()
       }
     }
 
@@ -232,6 +231,7 @@ constructor(
     mCandidates.add(cName)
     candidateRecyclerAdapter!!.notifyDataSetChanged()
     binding.candidateTil.editText?.setText("")
+    binding.textViewSwipe.show()
   }
 
   private val candidateTextWatcher: TextWatcher = object : TextWatcher {
