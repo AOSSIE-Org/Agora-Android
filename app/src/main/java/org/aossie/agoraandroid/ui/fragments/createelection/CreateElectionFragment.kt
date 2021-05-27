@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
+import android.R.layout
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -22,31 +24,11 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.android.synthetic.main.fragment_create_election.view.add_candidate_btn
-import kotlinx.android.synthetic.main.fragment_create_election.view.btn_end_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.btn_start_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.candidate_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.checkbox_invite
-import kotlinx.android.synthetic.main.fragment_create_election.view.checkbox_real_time
-import kotlinx.android.synthetic.main.fragment_create_election.view.checkbox_voter_visibility
-import kotlinx.android.synthetic.main.fragment_create_election.view.election_description_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.election_name_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.end_date_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_candidate_name
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_election_description
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_election_name
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_end_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_start_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.names_rv
-import kotlinx.android.synthetic.main.fragment_create_election.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_create_election.view.spinner_algorithm
-import kotlinx.android.synthetic.main.fragment_create_election.view.spinner_ballot_visibility
-import kotlinx.android.synthetic.main.fragment_create_election.view.start_date_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.submit_details_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
@@ -67,7 +49,7 @@ constructor(
   private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
 ) : Fragment(), CreateElectionListener {
-
+  lateinit var binding: FragmentCreateElectionBinding
   private var sDay = 0
   private var sMonth: Int = 0
   private var sYear: Int = 0
@@ -99,46 +81,79 @@ constructor(
   private var mFinalIsRealTime: Boolean? = null
   private var voterListVisibility: Boolean? = null
 
-  private lateinit var rootView: View
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_create_election, container, false)
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_election, container, false)
 
     createElectionViewModel.createElectionListener = this
 
-    rootView.btn_start_date.setOnClickListener { handleStartDateTime() }
+    initView()
 
-    rootView.btn_end_date.setOnClickListener { handleEndDateTime() }
+    initListeners()
 
-    rootView.et_election_name.addTextChangedListener(textWatcher)
+    return binding.root
+  }
 
-    rootView.et_election_description.addTextChangedListener(textWatcher)
+  private fun initView() {
+    candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
+    binding.namesRv.layoutManager = LinearLayoutManager(context)
+    ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.namesRv)
+    binding.namesRv.adapter = candidateRecyclerAdapter
 
-    rootView.et_start_date.addTextChangedListener(textWatcher)
+    algorithmsAdapter = ArrayAdapter.createFromResource(
+      requireContext(), array.algorithms,
+      layout.simple_spinner_item
+    )
+    algorithmsAdapter.setDropDownViewResource(layout.simple_spinner_dropdown_item)
 
-    rootView.et_end_date.addTextChangedListener(textWatcher)
+    binding.spinnerAlgorithm.adapter = algorithmsAdapter
 
-    rootView.submit_details_btn.setOnClickListener {
-      mElectionName = rootView.election_name_til.editText?.text.toString()
-      mElectionDescription = rootView.election_description_til.editText?.text.toString()
-      mStartDate = rootView.start_date_til.editText?.text.toString()
-      mEndDate = rootView.end_date_til.editText?.text.toString()
+    ballotVisibilityAdapter = ArrayAdapter.createFromResource(
+      requireContext(), array.ballot_visibility,
+      layout.simple_spinner_item
+    )
+    ballotVisibilityAdapter.setDropDownViewResource(layout.simple_spinner_dropdown_item)
+
+    binding.spinnerBallotVisibility.adapter = ballotVisibilityAdapter
+  }
+
+  private fun initListeners() {
+    binding.startDateTil.setOnClickListener { handleStartDateTime() }
+
+    binding.etStartDate.setOnClickListener { handleStartDateTime() }
+
+    binding.endDateTil.setOnClickListener { handleEndDateTime() }
+
+    binding.etEndDate.setOnClickListener { handleEndDateTime() }
+
+    binding.etElectionName.addTextChangedListener(textWatcher)
+
+    binding.etElectionDescription.addTextChangedListener(textWatcher)
+
+    binding.etStartDate.addTextChangedListener(textWatcher)
+
+    binding.etEndDate.addTextChangedListener(textWatcher)
+
+    binding.submitDetailsBtn.setOnClickListener {
+      mElectionName = binding.electionNameTil.editText?.text.toString()
+      mElectionDescription = binding.electionDescriptionTil.editText?.text.toString()
+      mStartDate = binding.startDateTil.editText?.text.toString()
+      mEndDate = binding.endDateTil.editText?.text.toString()
       if (validateInputs()) {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        rootView.end_date_til.error = null
+        binding.endDateTil.error = null
         electionDetailsSharedPrefs.saveElectionName(mElectionName)
         electionDetailsSharedPrefs.saveElectionDesc(mElectionDescription)
         if (mCandidates.isNotEmpty()) {
           HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
           electionDetailsSharedPrefs.saveCandidates(mCandidates)
-          mFinalIsInvite = rootView.checkbox_invite.isChecked
-          mFinalIsRealTime = rootView.checkbox_real_time.isChecked
-          voterListVisibility = rootView.checkbox_voter_visibility.isChecked
+          mFinalIsInvite = binding.checkboxInvite.isChecked
+          mFinalIsRealTime = binding.checkboxRealTime.isChecked
+          voterListVisibility = binding.checkboxVoterVisibility.isChecked
           electionDetailsSharedPrefs.saveIsInvite(mFinalIsInvite)
           electionDetailsSharedPrefs.saveIsRealTime(mFinalIsRealTime)
           electionDetailsSharedPrefs.saveVoterListVisibility(voterListVisibility)
@@ -146,32 +161,20 @@ constructor(
           electionDetailsSharedPrefs.saveBallotVisibility(ballotVisibility)
           createElectionViewModel.createElection()
         } else {
-          rootView.snackbar("Please Add At least One Candidate")
+          binding.root.snackbar("Please Add At least One Candidate")
         }
       }
     }
 
-    candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
-    rootView.names_rv.layoutManager = LinearLayoutManager(context)
-    ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rootView.names_rv)
-    rootView.names_rv.adapter = candidateRecyclerAdapter
+    binding.etCandidateName.addTextChangedListener(candidateTextWatcher)
 
-    rootView.et_candidate_name.addTextChangedListener(candidateTextWatcher)
-
-    rootView.add_candidate_btn.setOnClickListener {
-      val name = rootView.candidate_til.editText?.text.toString().trim { it <= ' ' }
+    binding.addCandidateBtn.setOnClickListener {
+      val name = binding.candidateTil.editText?.text.toString()
+        .trim { it <= ' ' }
       addCandidate(name)
     }
 
-    algorithmsAdapter = ArrayAdapter.createFromResource(
-      requireContext(), array.algorithms,
-      android.R.layout.simple_spinner_item
-    )
-    algorithmsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-    rootView.spinner_algorithm.adapter = algorithmsAdapter
-
-    rootView.spinner_algorithm.onItemSelectedListener = object : OnItemSelectedListener {
+    binding.spinnerAlgorithm.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
         view: View,
@@ -187,15 +190,7 @@ constructor(
       }
     }
 
-    ballotVisibilityAdapter = ArrayAdapter.createFromResource(
-      requireContext(), array.ballot_visibility,
-      android.R.layout.simple_spinner_item
-    )
-    ballotVisibilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-    rootView.spinner_ballot_visibility.adapter = ballotVisibilityAdapter
-
-    rootView.spinner_ballot_visibility.onItemSelectedListener = object : OnItemSelectedListener {
+    binding.spinnerBallotVisibility.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
         view: View,
@@ -210,8 +205,6 @@ constructor(
         ballotVisibility = resources.getStringArray(array.security_questions)[0]
       }
     }
-
-    return rootView
   }
 
   private val itemTouchHelperCallback: SimpleCallback =
@@ -230,39 +223,53 @@ constructor(
       ) {
         mCandidates.removeAt(viewHolder.adapterPosition)
         candidateRecyclerAdapter!!.notifyDataSetChanged()
+        if (mCandidates.isEmpty()) binding.textViewSwipe.hide()
       }
     }
 
   private fun addCandidate(cName: String) {
     mCandidates.add(cName)
     candidateRecyclerAdapter!!.notifyDataSetChanged()
-    rootView.candidate_til.editText?.setText("")
+    binding.candidateTil.editText?.setText("")
+    binding.textViewSwipe.show()
   }
 
   private val candidateTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+    override fun beforeTextChanged(
+      s: CharSequence,
+      start: Int,
+      count: Int,
+      after: Int
+    ) {
+    }
+
     override fun afterTextChanged(s: Editable) {}
 
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-      val candidateNameInput: String = rootView.et_candidate_name.text
+    override fun onTextChanged(
+      s: CharSequence,
+      start: Int,
+      before: Int,
+      count: Int
+    ) {
+      val candidateNameInput: String = binding.etCandidateName.text
         .toString()
         .trim()
-      rootView.add_candidate_btn.isEnabled = candidateNameInput.isNotEmpty()
+      binding.addCandidateBtn.isEnabled = candidateNameInput.isNotEmpty()
     }
   }
+
   private fun validateInputs(): Boolean {
-    val isValid: Boolean = if (calendar2 == null || calendar3 == null) {
-      rootView.errorDialog("Please enter all the details")
+    return if (calendar2 == null || calendar3 == null) {
+      binding.root.errorDialog("Please enter all the details")
       false
     } else {
       if (calendar3!!.before(calendar2)) {
-        rootView.errorDialog("End date should be after starting date and time i.e. $mStartDate")
+        binding.root.errorDialog("End date should be after starting date and time i.e. $mStartDate")
         false
       } else {
         true
       }
     }
-    return isValid
   }
 
   private fun isDialogsVisible(): Boolean {
@@ -303,19 +310,19 @@ constructor(
         calendar2?.set(Calendar.MONTH, sMonth)
         calendar2?.set(Calendar.DAY_OF_MONTH, sDay)
         if (calendar2 != null && calendar2!!.before(Calendar.getInstance())) {
-          rootView.errorDialog("Start date should be after current date and time")
+          binding.root.errorDialog("Start date should be after current date and time")
         } else {
-          rootView.start_date_til.editText?.setText(mStartDate)
+          binding.startDateTil.editText?.setText(mStartDate)
           val charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2)
           electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
         }
       },
       HOUR, MINUTE, true
     )
-    timePickerDialog?.show()
+    timePickerDialog.show()
     datePickerDialog?.show()
     datePickerDialog?.setOnCancelListener {
-      timePickerDialog?.dismiss()
+      timePickerDialog.dismiss()
     }
   }
 
@@ -353,40 +360,52 @@ constructor(
         calendar3?.set(Calendar.MONTH, eMonth)
         calendar3?.set(Calendar.DAY_OF_MONTH, eDay)
         if (calendar3 != null && calendar3!!.before(Calendar.getInstance())) {
-          rootView.errorDialog("End date should be after current date and time")
+          binding.root.errorDialog("End date should be after current date and time")
         } else {
-          rootView.end_date_til.editText?.setText(mEndDate)
+          binding.endDateTil.editText?.setText(mEndDate)
           val charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3)
           electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
         }
       },
       HOUR, MINUTE, true
     )
-    timePickerDialog?.show()
+    timePickerDialog.show()
     datePickerDialog?.show()
     datePickerDialog?.setOnCancelListener {
-      timePickerDialog?.dismiss()
+      timePickerDialog.dismiss()
     }
   }
 
   private val textWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+    override fun beforeTextChanged(
+      s: CharSequence,
+      start: Int,
+      count: Int,
+      after: Int
+    ) {
+    }
+
     override fun afterTextChanged(s: Editable) {}
 
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-      val electionNameInput: String = rootView.et_election_name.text
+    override fun onTextChanged(
+      s: CharSequence,
+      start: Int,
+      before: Int,
+      count: Int
+    ) {
+      val electionNameInput: String = binding.etElectionName.text
         .toString()
         .trim()
-      val electionDescriptionInput: String = rootView.et_election_description.text
+      val electionDescriptionInput: String = binding.etElectionDescription.text
         .toString()
         .trim()
-      val startDateInput: String = rootView.et_start_date.text
+      val startDateInput: String = binding.etStartDate.text
         .toString()
         .trim()
-      val endDateInput: String = rootView.et_end_date.text
+      val endDateInput: String = binding.etEndDate.text
         .toString()
         .trim()
-      rootView.submit_details_btn.isEnabled = electionNameInput.isNotEmpty() &&
+      binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
         electionDescriptionInput.isNotEmpty() &&
         startDateInput.isNotEmpty() &&
         endDateInput.isNotEmpty()
@@ -394,23 +413,23 @@ constructor(
   }
 
   override fun onStarted() {
-    rootView.progress_bar.show()
-    rootView.submit_details_btn.toggleIsEnable()
+    binding.progressBar.show()
+    binding.submitDetailsBtn.toggleIsEnable()
   }
 
   override fun onSuccess(message: String?) {
-    rootView.progress_bar.hide()
-    rootView.submit_details_btn.toggleIsEnable()
-    if (message != null) rootView.snackbar(message)
+    binding.progressBar.hide()
+    binding.submitDetailsBtn.toggleIsEnable()
+    if (message != null) binding.root.snackbar(message)
     prefs.setUpdateNeeded(true)
     electionDetailsSharedPrefs.clearElectionData()
-    Navigation.findNavController(rootView)
+    Navigation.findNavController(binding.root)
       .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
   }
 
   override fun onFailure(message: String) {
-    rootView.progress_bar.hide()
-    rootView.snackbar(message)
-    rootView.submit_details_btn.toggleIsEnable()
+    binding.progressBar.hide()
+    binding.root.snackbar(message)
+    binding.submitDetailsBtn.toggleIsEnable()
   }
 }
