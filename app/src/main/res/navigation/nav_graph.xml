@@ -300,7 +300,7 @@
   <fragment
       android:id="@+id/ballotFragment"
       android:name="org.aossie.agoraandroid.ui.fragments.electionDetails.BallotFragment"
-      android:label="Ballot Fragment"
+      android:label="Ballot"
       tools:layout="@layout/fragment_ballot">
     <argument
         android:name="id"

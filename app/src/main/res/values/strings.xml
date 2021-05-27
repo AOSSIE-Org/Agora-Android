@@ -62,6 +62,7 @@
   <string name="zero">0</string>
   <string name="user_email_id">user email id</string>
   <string name="send_link">Send Link</string>
+  <string name="verify">Verify</string>
   <string name="developed_with_by_aossie">Developed with ❤ by AOSSIE</string>
   <string name="enter_user_name_reset_pass_link">Please enter user name to receive password reset link</string>
   <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor</string>

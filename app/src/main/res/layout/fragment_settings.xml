@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_contact_us"
             android:layout_marginHorizontal="@dimen/size_10dp"
-            android:layout_marginTop="@dimen/size_12dp"
+            android:layout_marginVertical="@dimen/size_12dp"
             android:gravity="center"
             android:text="@string/logout"
             android:textSize="@dimen/size_16sp"
