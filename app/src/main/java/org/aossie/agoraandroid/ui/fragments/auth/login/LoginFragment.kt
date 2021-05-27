@@ -74,45 +74,45 @@ constructor(
     callbackManager = Factory.create()
 
     LoginManager.getInstance()
-        .registerCallback(
-          callbackManager,
-          object : FacebookCallback<LoginResult?> {
-            override fun onSuccess(loginResult: LoginResult?) {
-              Timber.d("Success")
-              prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
-              loginViewModel.facebookLogInRequest(loginResult.accessToken.token)
-            }
-
-            override fun onCancel() {
-              binding.btnFacebookLogin.enableView()
-              Toast.makeText(context, "Login Cancel", Toast.LENGTH_LONG)
-                .show()
-            }
-
-            override fun onError(exception: FacebookException) {
-              binding.btnFacebookLogin.enableView()
-              Toast.makeText(context, exception.message, Toast.LENGTH_LONG)
-                .show()
-            }
+      .registerCallback(
+        callbackManager,
+        object : FacebookCallback<LoginResult?> {
+          override fun onSuccess(loginResult: LoginResult?) {
+            Timber.d("Success")
+            prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
+            loginViewModel.facebookLogInRequest(loginResult.accessToken.token)
           }
-        )
+
+          override fun onCancel() {
+            enableBtnFacebook()
+            Toast.makeText(context, "Login Cancel", Toast.LENGTH_LONG)
+              .show()
+          }
+
+          override fun onError(exception: FacebookException) {
+            enableBtnFacebook()
+            Toast.makeText(context, exception.message, Toast.LENGTH_LONG)
+              .show()
+          }
+        }
+      )
   }
 
   private fun initListeners() {
     binding.forgotPasswordTv.setOnClickListener {
       Navigation.findNavController(binding.root)
-          .navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
+        .navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
     }
 
     binding.loginBtn.setOnClickListener {
       val userName = binding.loginUserNameTil.editText
-          ?.text
-          .toString()
-          .trim { it <= ' ' }
+        ?.text
+        .toString()
+        .trim { it <= ' ' }
       val userPass = binding.loginPasswordTil.editText
-          ?.text
-          .toString()
-          .trim { it <= ' ' }
+        ?.text
+        .toString()
+        .trim { it <= ' ' }
       HideKeyboard.hideKeyboardInFrag(this)
       loginViewModel.logInRequest(userName, userPass)
     }
@@ -121,12 +121,12 @@ constructor(
     binding.username.addTextChangedListener(loginTextWatcher)
 
     binding.btnFacebookLogin.setOnClickListener {
-      binding.btnFacebookLogin.disableView()
+      disableBtnFacebook()
       LoginManager.getInstance()
-          .logInWithReadPermissions(
-            activity,
-            listOf("email", "public_profile")
-          )
+        .logInWithReadPermissions(
+          activity,
+          listOf("email", "public_profile")
+        )
     }
   }
 
@@ -182,7 +182,15 @@ constructor(
     binding.progressBar.hide()
     binding.root.snackbar(message)
     binding.loginBtn.toggleIsEnable()
+    enableBtnFacebook()
+  }
+
+  private fun enableBtnFacebook() {
     binding.btnFacebookLogin.enableView()
+  }
+
+  private fun disableBtnFacebook() {
+    binding.btnFacebookLogin.disableView()
   }
 
   override fun onTwoFactorAuthentication(
