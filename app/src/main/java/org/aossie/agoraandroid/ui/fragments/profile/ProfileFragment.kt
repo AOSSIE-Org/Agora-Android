@@ -196,12 +196,7 @@ constructor(
         newPass.isEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
         conPass.isEmpty() -> binding.confirmPasswordTil.error = getString(string.password_empty_warn)
         newPass != conPass -> binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
-        else -> {
-          binding.root.progress_bar.show()
-          toggleIsEnable()
-          hideKeyboardInFrag(this@ProfileFragment)
-          viewModel.changePassword(binding.newPasswordTiet.text.toString())
-        }
+        else -> updateUIAndChangePassword()
       }
     }
 
@@ -233,6 +228,13 @@ constructor(
       }
     )
     return binding.root
+  }
+
+  private fun updateUIAndChangePassword() {
+    binding.root.progress_bar.show()
+    toggleIsEnable()
+    hideKeyboardInFrag(this@ProfileFragment)
+    viewModel.changePassword(binding.newPasswordTiet.text.toString())
   }
 
   private fun decodeBitmap(encodedBitmap: String): Bitmap {
