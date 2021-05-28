@@ -10,7 +10,6 @@ import androidx.annotation.DrawableRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.gson.Gson
@@ -67,6 +66,8 @@ constructor(
     initView()
 
     initObjects()
+
+    initObservers()
 
     initListeners()
 
@@ -174,19 +175,6 @@ constructor(
 
     binding.calendarLayout.swipeRefresh.setOnRefreshListener { doYourUpdate() }
 
-    electionViewModel.getElections()
-      .observe(
-        viewLifecycleOwner,
-        Observer {
-          if (it != null) {
-            for (election in it) {
-              addEvent(election)
-              onDayChange()
-            }
-          }
-        }
-      )
-
     binding.fabListView.setOnClickListener {
       Navigation
         .findNavController(binding.root)
@@ -195,6 +183,22 @@ constructor(
             .actionCalendarViewElectionFragmentToElectionsFragment()
         )
     }
+  }
+
+  private fun initObservers() {
+    electionViewModel.getElections()
+      .observe(
+        viewLifecycleOwner,
+        {
+          if (it != null) {
+            allEvents!!.clear()
+            for (election in it) {
+              addEvent(election)
+              onDayChange()
+            }
+          }
+        }
+      )
   }
 
   override fun onDestroyView() {
