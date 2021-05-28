@@ -24,6 +24,7 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
+import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
 import timber.log.Timber
 import java.text.DateFormat
@@ -195,6 +196,30 @@ constructor(
             .actionCalendarViewElectionFragmentToElectionsFragment()
         )
     }
+
+    binding.calendarLayout.sampleDay.setOnTouchListener(object : SwipeDetector(
+      requireContext()
+    ) {
+        override fun onSwipeRight() {
+          super.onSwipeRight()
+          onPreviousDay()
+        }
+
+        override fun onSwipeLeft() {
+          super.onSwipeLeft()
+          onNextDay()
+        }
+      })
+  }
+
+  private fun onNextDay() {
+    day!!.timeInMillis += 86400000
+    horizontalCalendar!!.selectDate(day, false)
+  }
+
+  private fun onPreviousDay() {
+    day!!.timeInMillis -= 86400000
+    horizontalCalendar!!.selectDate(day, false)
   }
 
   override fun onDestroyView() {
@@ -244,13 +269,38 @@ constructor(
         (eventView.findViewById<View>(R.id.tv_event_status) as TextView).text = status
         eventView.background = resources.getDrawable(event.color, resources.newTheme())
 
-        eventView.setOnClickListener {
-          val action =
-            CalendarViewElectionFragmentDirections
-              .actionCalendarViewElectionFragmentToElectionDetailsFragment(event.id)
-          Navigation.findNavController(binding.root)
-            .navigate(action)
-        }
+        eventView.setOnTouchListener(object : SwipeDetector(
+          requireContext()
+        ) {
+            override fun onSwipeRight() {
+              super.onSwipeRight()
+              onPreviousDay()
+            }
+
+            override fun onSwipeLeft() {
+              super.onSwipeLeft()
+              onNextDay()
+            }
+
+            override fun onClick() {
+              val action =
+                CalendarViewElectionFragmentDirections
+                  .actionCalendarViewElectionFragmentToElectionDetailsFragment(event.id)
+              Navigation.findNavController(binding.root)
+                .navigate(action)
+              super.onClick()
+            }
+
+            override fun showRipple() {
+              setPressed(eventView, true)
+              super.showRipple()
+            }
+
+            override fun hideRipple() {
+              setPressed(eventView, false)
+              super.hideRipple()
+            }
+          })
 
         eventViews.add(eventView)
         val startMinute = 60 * event.hour + event.minute
@@ -267,6 +317,13 @@ constructor(
     if (binding.progressBar.visibility == View.VISIBLE) {
       binding.progressBar.hide()
     }
+  }
+
+  fun setPressed(
+    v: View,
+    isPressed: Boolean
+  ) {
+    v.isPressed = isPressed
   }
 
   private fun addEvent(election: Election) {
