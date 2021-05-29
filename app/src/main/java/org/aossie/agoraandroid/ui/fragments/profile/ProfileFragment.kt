@@ -28,16 +28,12 @@ import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.dialog_change_avatar.view.camera_view
-import kotlinx.android.synthetic.main.dialog_change_avatar.view.gallery_view
-import kotlinx.android.synthetic.main.fragment_profile.view.fab_edit_profile_pic
-import kotlinx.android.synthetic.main.fragment_profile.view.iv_profile_pic
-import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
@@ -118,7 +114,7 @@ constructor(
     binding.confirmPasswordTiet.addTextChangedListener(getTextWatcher(4))
 
     binding.updateProfileBtn.setOnClickListener {
-      binding.root.progress_bar.show()
+      binding.progressBar.show()
       toggleIsEnable()
       if (binding.firstNameTil.error == null && binding.lastNameTil.error == null) {
         hideKeyboardInFrag(this@ProfileFragment)
@@ -131,7 +127,7 @@ constructor(
           updatedUser
         )
       } else {
-        binding.root.progress_bar.hide()
+        binding.progressBar.hide()
         toggleIsEnable()
       }
     }
@@ -143,7 +139,7 @@ constructor(
           .setMessage("Are you sure you want to enable two factor authentication")
           .setCancelable(false)
           .setPositiveButton(android.R.string.ok) { dialog, _ ->
-            binding.root.progress_bar.show()
+            binding.progressBar.show()
             toggleIsEnable()
             viewModel.toggleTwoFactorAuth()
             dialog.cancel()
@@ -160,7 +156,7 @@ constructor(
           .setMessage("Are you sure you want to disable two factor authentication")
           .setCancelable(false)
           .setPositiveButton(android.R.string.ok) { dialog, _ ->
-            binding.root.progress_bar.show()
+            binding.progressBar.show()
             toggleIsEnable()
             viewModel.toggleTwoFactorAuth()
             dialog.cancel()
@@ -174,7 +170,7 @@ constructor(
       }
     }
 
-    binding.root.fab_edit_profile_pic.setOnClickListener {
+    binding.fabEditProfilePic.setOnClickListener {
       showChangeProfileDialog()
     }
 
@@ -185,7 +181,7 @@ constructor(
           .load(it)
           .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
           .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-          .into(binding.root.iv_profile_pic)
+          .into(binding.ivProfilePic)
       }
     )
 
@@ -231,7 +227,7 @@ constructor(
   }
 
   private fun updateUIAndChangePassword() {
-    binding.root.progress_bar.show()
+    binding.progressBar.show()
     toggleIsEnable()
     hideKeyboardInFrag(this@ProfileFragment)
     viewModel.changePassword(binding.newPasswordTiet.text.toString())
@@ -243,13 +239,13 @@ constructor(
   }
 
   private fun showChangeProfileDialog() {
-    val dialogView = layoutInflater.inflate(R.layout.dialog_change_avatar, null)
+    val dialogView = DialogChangeAvatarBinding.inflate(LayoutInflater.from(context))
 
     val dialog = AlertDialog.Builder(requireContext())
-      .setView(dialogView)
+      .setView(dialogView.root)
       .create()
 
-    dialogView.camera_view.setOnClickListener {
+    dialogView.cameraView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
           requireContext(), Manifest.permission.CAMERA
@@ -261,7 +257,7 @@ constructor(
       }
     }
 
-    dialogView.gallery_view.setOnClickListener {
+    dialogView.galleryView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
           requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
@@ -288,12 +284,12 @@ constructor(
 
   private fun handleChangeAvatar(response: ResponseResults) = when (response) {
     is Success -> {
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.message.toString())
     }
     is Error -> {
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.message)
     }
@@ -301,13 +297,13 @@ constructor(
 
   private fun handleUser(response: ResponseResults) = when (response) {
     is Success -> {
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.message.toString())
       loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
     }
     is Error -> {
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.message)
     }
@@ -315,20 +311,20 @@ constructor(
 
   private fun handleTwoFactorAuthentication(response: ResponseResults) = when (response) {
     is Success -> {
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.message.toString() + ", Please login again")
     }
     is Error -> {
       toggleIsEnable()
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       binding.root.snackbar(response.message)
     }
   }
 
   private fun handlePassword(response: ResponseResults) = when (response) {
     is Success -> {
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.message.toString())
       loginViewModel.logInRequest(
@@ -336,7 +332,7 @@ constructor(
       )
     }
     is Error -> {
-      binding.root.progress_bar.hide()
+      binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.message)
     }
@@ -398,7 +394,7 @@ constructor(
   }
 
   override fun onSuccess(message: String?) {
-    binding.root.progress_bar.hide()
+    binding.progressBar.hide()
     toggleIsEnable()
     if (prefs.getIsFacebookUser()) {
       LoginManager.getInstance()
@@ -412,12 +408,12 @@ constructor(
   }
 
   override fun onStarted() {
-    binding.root.progress_bar.show()
+    binding.progressBar.show()
     toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
-    binding.root.progress_bar.hide()
+    binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()
   }
@@ -436,7 +432,7 @@ constructor(
         val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
         encodedImage = encodeJpegImage(bitmap!!)
         val url = encodedImage!!.toUri()
-        binding.root.progress_bar.show()
+        binding.progressBar.show()
         toggleIsEnable()
         viewModel.changeAvatar(
           url.toString(),
@@ -450,7 +446,7 @@ constructor(
       if (bitmap is Bitmap) {
         encodedImage = encodePngImage(bitmap)
         val url = encodedImage!!.toUri()
-        binding.root.progress_bar.show()
+        binding.progressBar.show()
         toggleIsEnable()
         viewModel.changeAvatar(
           url.toString(),
