@@ -19,6 +19,7 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
+import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -279,21 +280,8 @@ constructor(
     val formattedEndingDate: Date? = formatter.parse(election.end!!)
     val currentDate = Calendar.getInstance()
       .time
-    var status: String? = null
-    var eventColor = R.drawable.cornered_blue_background
-    if (currentDate.before(formattedStartingDate)) {
-      eventColor = R.drawable.cornered_green_background
-      status = "PENDING"
-    } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-        formattedEndingDate
-      )
-    ) {
-      eventColor = R.drawable.cornered_red_background
-      status = "ACTIVE"
-    } else if (currentDate.after(formattedEndingDate)) {
-      eventColor = R.drawable.cornered_blue_background
-      status = "FINISHED"
-    }
+    val status = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
+    val eventColor = getEventColor(currentDate, formattedStartingDate, formattedEndingDate)
     val startCalendar = Calendar.getInstance()
     startCalendar.time = formattedStartingDate!!
     val endCalendar = Calendar.getInstance()
@@ -327,6 +315,44 @@ constructor(
       startCalendar.set(Calendar.HOUR_OF_DAY, 0)
       formattedStartingDate = startCalendar.time
     }
+  }
+
+  private fun getEventStatus(
+    currentDate: Date,
+    formattedStartingDate: Date?,
+    formattedEndingDate: Date?
+  ): String? {
+    var eventStatus: String? = null
+    if (currentDate.before(formattedStartingDate)) {
+      eventStatus = "PENDING"
+    } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+        formattedEndingDate
+      )
+    ) {
+      eventStatus = "ACTIVE"
+    } else if (currentDate.after(formattedEndingDate)) {
+      eventStatus = "FINISHED"
+    }
+    return eventStatus
+  }
+
+  private fun getEventColor(
+    currentDate: Date,
+    formattedStartingDate: Date?,
+    formattedEndingDate: Date?
+  ): Int {
+    var eventColor = drawable.cornered_blue_background
+    if (currentDate.before(formattedStartingDate)) {
+      eventColor = drawable.cornered_green_background
+    } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+        formattedEndingDate
+      )
+    ) {
+      eventColor = drawable.cornered_red_background
+    } else if (currentDate.after(formattedEndingDate)) {
+      eventColor = drawable.cornered_blue_background
+    }
+    return eventColor
   }
 
   private class Event(
