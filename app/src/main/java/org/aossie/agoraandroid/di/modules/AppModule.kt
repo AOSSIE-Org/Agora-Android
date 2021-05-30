@@ -15,7 +15,6 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
-import org.aossie.agoraandroid.remote.APIService
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
@@ -62,11 +61,6 @@ class AppModule {
       context, preferenceProvider, appDatabase, api
     )
   }
-
-  @Provides
-  @Singleton
-  fun providesAPIService(retrofit: Retrofit): APIService =
-    retrofit.create(APIService::class.java)
 
   @Provides
   @Singleton
