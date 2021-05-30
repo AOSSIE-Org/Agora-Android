@@ -384,7 +384,7 @@ constructor(
   }
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
-    if (s.toString() == binding.confirmPasswordTiet.text.toString()) {
+    if (s.toString() == binding.confirmPasswordTiet.text.toString().trim()) {
       binding.confirmPasswordTil.error = null
     } else {
       if (!binding.confirmPasswordTiet.text.isNullOrEmpty()) {
