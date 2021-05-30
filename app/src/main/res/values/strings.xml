@@ -255,5 +255,6 @@
   <string name="active_elections_not_started">Active Elections Cannot Be Deleted</string>
   <string name="election_result">Election Result in percentage</string>
   <string name="winner_is">Winner is</string>
+  <string name="login_cancelled">Login Cancelled</string>
 </resources>
 

@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -85,14 +84,12 @@ constructor(
 
           override fun onCancel() {
             enableBtnFacebook()
-            Toast.makeText(context, "Login Cancel", Toast.LENGTH_LONG)
-              .show()
+            binding.root.snackbar(resources.getString(R.string.login_cancelled))
           }
 
           override fun onError(exception: FacebookException) {
             enableBtnFacebook()
-            Toast.makeText(context, exception.message, Toast.LENGTH_LONG)
-              .show()
+            binding.root.snackbar(exception.message.toString())
           }
         }
       )
