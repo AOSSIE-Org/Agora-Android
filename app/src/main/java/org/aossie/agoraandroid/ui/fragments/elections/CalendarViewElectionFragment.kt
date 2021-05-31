@@ -322,18 +322,14 @@ constructor(
     formattedStartingDate: Date?,
     formattedEndingDate: Date?
   ): String? {
-    var eventStatus: String? = null
-    if (currentDate.before(formattedStartingDate)) {
-      eventStatus = "PENDING"
-    } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+    return when {
+      currentDate.before(formattedStartingDate) -> "PENDING"
+      currentDate.after(formattedStartingDate) && currentDate.before(
         formattedEndingDate
-      )
-    ) {
-      eventStatus = "ACTIVE"
-    } else if (currentDate.after(formattedEndingDate)) {
-      eventStatus = "FINISHED"
+      ) -> "ACTIVE"
+      currentDate.after(formattedEndingDate) -> "FINISHED"
+      else -> null
     }
-    return eventStatus
   }
 
   private fun getEventColor(
@@ -341,18 +337,14 @@ constructor(
     formattedStartingDate: Date?,
     formattedEndingDate: Date?
   ): Int {
-    var eventColor = drawable.cornered_blue_background
-    if (currentDate.before(formattedStartingDate)) {
-      eventColor = drawable.cornered_green_background
-    } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+    return when {
+      currentDate.before(formattedStartingDate) -> drawable.cornered_green_background
+      currentDate.after(formattedStartingDate) && currentDate.before(
         formattedEndingDate
-      )
-    ) {
-      eventColor = drawable.cornered_red_background
-    } else if (currentDate.after(formattedEndingDate)) {
-      eventColor = drawable.cornered_blue_background
+      ) -> drawable.cornered_red_background
+      currentDate.after(formattedEndingDate) -> drawable.cornered_blue_background
+      else -> drawable.cornered_blue_background
     }
-    return eventColor
   }
 
   private class Event(
