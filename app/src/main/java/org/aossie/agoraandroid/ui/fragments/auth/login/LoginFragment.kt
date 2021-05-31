@@ -200,7 +200,7 @@ constructor(
         Observer {
           if (it != null) {
             if (it.twoFactorAuthentication!!) {
-              binding.root.snackbar("OTP is sent to your registered email address")
+              binding.root.snackbar(getString(R.string.otp_sent))
               val action =
                 LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(password, crypto)
               Navigation.findNavController(binding.root)

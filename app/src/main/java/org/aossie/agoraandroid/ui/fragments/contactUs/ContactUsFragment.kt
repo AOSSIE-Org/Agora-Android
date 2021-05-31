@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.databinding.FragmentContactUsBinding
 import org.aossie.agoraandroid.utilities.browse
 import org.aossie.agoraandroid.utilities.snackbar
@@ -32,25 +32,21 @@ class ContactUsFragment : Fragment() {
 
   private fun initListeners() {
     binding.btnGitter.setOnClickListener {
-      try {
-        context?.browse("https://gitter.im/aossie/home")
-      } catch (e: ActivityNotFoundException) {
-        binding.root.snackbar(resources.getString(R.string.no_browser))
-      }
+      openUrl("https://gitter.im/aossie/home")
     }
     binding.btnGitlab.setOnClickListener {
-      try {
-        context?.browse("https://gitlab.com/aossie")
-      } catch (e: ActivityNotFoundException) {
-        binding.root.snackbar(resources.getString(R.string.no_browser))
-      }
+      openUrl("https://gitlab.com/aossie")
     }
     binding.btnReport.setOnClickListener {
-      try {
-        context?.browse("https://gitlab.com/aossie/agora-android/issues/new")
-      } catch (e: ActivityNotFoundException) {
-        binding.root.snackbar(resources.getString(R.string.no_browser))
-      }
+      openUrl("https://gitlab.com/aossie/agora-android/issues/new")
+    }
+  }
+
+  private fun openUrl(url: String) {
+    try {
+      context?.browse(url)
+    } catch (e: ActivityNotFoundException) {
+      binding.root.snackbar(resources.getString(string.no_browser))
     }
   }
 }

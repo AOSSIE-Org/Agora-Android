@@ -256,5 +256,6 @@
   <string name="election_result">Election Result in percentage</string>
   <string name="winner_is">Winner is</string>
   <string name="login_cancelled">Login Cancelled</string>
+  <string name="otp_sent">OTP is sent to your registered email address</string>
 </resources>
 
