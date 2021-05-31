@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/size_28dp"
             android:layout_marginTop="@dimen/size_30dp"
-            android:text="@string/send_link"
+            android:text="@string/verify"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
