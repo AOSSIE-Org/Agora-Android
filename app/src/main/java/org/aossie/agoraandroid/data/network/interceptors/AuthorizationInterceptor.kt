@@ -2,6 +2,7 @@
 package org.aossie.agoraandroid.data.network.interceptors
 
 import android.content.Context
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.aossie.agoraandroid.R
@@ -11,6 +12,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.di.utils.InternetManager
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -18,12 +20,14 @@ import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Named
 
+@ExperimentalCoroutinesApi
 class AuthorizationInterceptor(
   private val context: Context,
   private val prefs: PreferenceProvider,
   private val appDatabase: AppDatabase,
+  manager: InternetManager,
   @Named("apiWithoutAuth") private val api: Api
-) : Interceptor, ApiRequest() {
+) : Interceptor, ApiRequest(manager) {
 
   override fun intercept(chain: Interceptor.Chain): Response {
     val mainResponse = chain.proceed(chain.request())

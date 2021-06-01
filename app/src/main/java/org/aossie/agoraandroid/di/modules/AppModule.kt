@@ -4,6 +4,7 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -14,7 +15,7 @@ import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
-import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
+import org.aossie.agoraandroid.di.utils.InternetManager
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
@@ -23,6 +24,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
 @Module
 class AppModule {
 
@@ -42,23 +44,15 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesNetworkInterceptor(context: Context): NetworkInterceptor {
-    return NetworkInterceptor(
-      context
-    )
-  }
-
-  @Provides
-  @Singleton
   fun providesAppDatabase(context: Context): AppDatabase {
     return AppDatabase(context)
   }
 
   @Provides
   @Singleton
-  fun providesAuthorizationInterceptor(context: Context, preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(context: Context, preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, @Named("apiWithoutAuth") api: Api, manager: InternetManager): AuthorizationInterceptor {
     return AuthorizationInterceptor(
-      context, preferenceProvider, appDatabase, api
+      context, preferenceProvider, appDatabase, manager, api
     )
   }
 
@@ -75,10 +69,9 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideOkHttpClient(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
+  fun provideOkHttpClient(context: Context, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
-        addInterceptor(networkInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
@@ -98,10 +91,9 @@ class AppModule {
   @Provides
   @Singleton
   @Named("okHttpWithoutAuth")
-  fun provideOkHttpClientWithoutAuth(context: Context, networkInterceptor: NetworkInterceptor): OkHttpClient {
+  fun provideOkHttpClientWithoutAuth(context: Context): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
-        addInterceptor(networkInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
@@ -142,12 +134,17 @@ class AppModule {
 
   @Provides
   @Singleton
+  fun provideInternetManager(context: Context) = InternetManager(context)
+
+  @Provides
+  @Singleton
   fun providesUserRepository(
     api: Api,
     appDatabase: AppDatabase,
-    preferenceProvider: PreferenceProvider
+    preferenceProvider: PreferenceProvider,
+    manager: InternetManager
   ): UserRepository {
-    return UserRepository(api, appDatabase, preferenceProvider)
+    return UserRepository(api, appDatabase, preferenceProvider, manager)
   }
 
   @Provides
@@ -155,8 +152,9 @@ class AppModule {
   fun providesElectionsRepository(
     api: Api,
     appDatabase: AppDatabase,
-    preferenceProvider: PreferenceProvider
+    preferenceProvider: PreferenceProvider,
+    manager: InternetManager
   ): ElectionsRepository {
-    return ElectionsRepository(api, appDatabase, preferenceProvider)
+    return ElectionsRepository(api, appDatabase, preferenceProvider, manager)
   }
 }

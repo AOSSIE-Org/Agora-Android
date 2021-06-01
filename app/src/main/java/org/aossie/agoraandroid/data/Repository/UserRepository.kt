@@ -1,21 +1,25 @@
 package org.aossie.agoraandroid.data.Repository
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.di.utils.InternetManager
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 
+@ExperimentalCoroutinesApi
 class UserRepository(
   private val api: Api,
   private val appDatabase: AppDatabase,
-  private val preferenceProvider: PreferenceProvider
-) : ApiRequest() {
+  private val preferenceProvider: PreferenceProvider,
+  manager: InternetManager
+) : ApiRequest(manager) {
 
   suspend fun userSignup(
     identifier: String,
