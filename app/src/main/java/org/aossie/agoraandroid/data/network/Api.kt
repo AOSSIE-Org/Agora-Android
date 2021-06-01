@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.data.network
 
+import org.aossie.agoraandroid.data.db.model.Winner
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
@@ -112,4 +113,8 @@ interface Api {
   @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("vote/{id}")
   suspend fun castVote(@Path("id") id: String?, @Body body: String?): Response<ArrayList<String>>
+
+  @Headers("Accept: application/json", "Content-Type: application/json")
+  @GET("result/{id}")
+  suspend fun getResult(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<List<Winner>>
 }
