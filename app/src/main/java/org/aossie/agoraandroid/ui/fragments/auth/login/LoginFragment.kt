@@ -2,11 +2,10 @@ package org.aossie.agoraandroid.ui.fragments.auth.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -114,8 +113,12 @@ constructor(
       loginViewModel.logInRequest(userName, userPass)
     }
 
-    binding.password.addTextChangedListener(loginTextWatcher)
-    binding.username.addTextChangedListener(loginTextWatcher)
+    binding.password.doAfterTextChanged {
+      updateLoginButton()
+    }
+    binding.username.doAfterTextChanged {
+      updateLoginButton()
+    }
 
     binding.btnFacebookLogin.setOnClickListener {
       disableBtnFacebook()
@@ -127,31 +130,14 @@ constructor(
     }
   }
 
-  private val loginTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(
-      s: CharSequence,
-      start: Int,
-      count: Int,
-      after: Int
-    ) {
-    }
-
-    override fun afterTextChanged(s: Editable) {}
-
-    override fun onTextChanged(
-      s: CharSequence,
-      start: Int,
-      before: Int,
-      count: Int
-    ) {
-      val usernameInput: String = binding.username.text
-        .toString()
-        .trim()
-      val passwordInput: String = binding.password.text
-        .toString()
-        .trim()
-      binding.loginBtn.isEnabled = usernameInput.isNotEmpty() && passwordInput.isNotEmpty()
-    }
+  private fun updateLoginButton() {
+    val usernameInput: String = binding.username.text
+      .toString()
+      .trim()
+    val passwordInput: String = binding.password.text
+      .toString()
+      .trim()
+    binding.loginBtn.isEnabled = usernameInput.isNotEmpty() && passwordInput.isNotEmpty()
   }
 
   override fun onActivityResult(
