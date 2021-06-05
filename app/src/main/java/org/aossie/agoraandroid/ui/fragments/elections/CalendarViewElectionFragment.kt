@@ -192,7 +192,7 @@ constructor(
         viewLifecycleOwner,
         {
           if (it != null) {
-            allEvents!!.clear()
+            allEvents?.clear()
             for (election in it) {
               addEvent(election)
               onDayChange()
