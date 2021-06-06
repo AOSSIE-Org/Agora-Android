@@ -2,7 +2,7 @@ package org.aossie.agoraandroid.ui.fragments.elections
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.GlobalScope
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -17,7 +17,7 @@ constructor(
 ) : ViewModel() {
 
   fun getElections(): LiveData<List<Election>> {
-    GlobalScope.launch {
+    viewModelScope.launch {
       electionsRepository.fetchAndSaveElections()
     }
     return electionsRepository.getElections()
