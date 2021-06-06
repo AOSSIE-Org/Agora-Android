@@ -10,7 +10,6 @@ import androidx.annotation.DrawableRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.gson.Gson
@@ -20,6 +19,7 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
+import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -68,6 +68,8 @@ constructor(
     initView()
 
     initObjects()
+
+    initObservers()
 
     initListeners()
 
@@ -149,6 +151,22 @@ constructor(
     }
   }
 
+  private fun initObservers() {
+    electionViewModel.getElections()
+      .observe(
+        viewLifecycleOwner,
+        {
+          if (it != null) {
+            allEvents?.clear()
+            for (election in it) {
+              addEvent(election)
+              onDayChange()
+            }
+          }
+        }
+      )
+  }
+
   private fun initListeners() {
     binding.imgBtnMonth.setOnClickListener {
       if (binding.calendarView.visibility == View.GONE) {
@@ -175,19 +193,6 @@ constructor(
 
     binding.calendarLayout.swipeRefresh.setOnRefreshListener { doYourUpdate() }
 
-    electionViewModel.getElections()
-      .observe(
-        viewLifecycleOwner,
-        Observer {
-          if (it != null) {
-            for (election in it) {
-              addEvent(election)
-              onDayChange()
-            }
-          }
-        }
-      )
-
     binding.fabListView.setOnClickListener {
       Navigation
         .findNavController(binding.root)
@@ -200,25 +205,25 @@ constructor(
     binding.calendarLayout.sampleDay.setOnTouchListener(object : SwipeDetector(
       requireContext()
     ) {
-        override fun onSwipeRight() {
-          super.onSwipeRight()
-          onPreviousDay()
-        }
+      override fun onSwipeRight() {
+        super.onSwipeRight()
+        onPreviousDay()
+      }
 
-        override fun onSwipeLeft() {
-          super.onSwipeLeft()
-          onNextDay()
-        }
-      })
+      override fun onSwipeLeft() {
+        super.onSwipeLeft()
+        onNextDay()
+      }
+    })
   }
 
   private fun onNextDay() {
-    day!!.timeInMillis += 86400000
+    day!!.timeInMillis += 86400000 // 24hr = 86400000 ms
     horizontalCalendar!!.selectDate(day, false)
   }
 
   private fun onPreviousDay() {
-    day!!.timeInMillis -= 86400000
+    day!!.timeInMillis -= 86400000 // 24hr = 86400000 ms
     horizontalCalendar!!.selectDate(day, false)
   }
 
@@ -272,35 +277,31 @@ constructor(
         eventView.setOnTouchListener(object : SwipeDetector(
           requireContext()
         ) {
-            override fun onSwipeRight() {
-              super.onSwipeRight()
-              onPreviousDay()
-            }
+          override fun onSwipeRight() {
+            super.onSwipeRight()
+            onPreviousDay()
+          }
 
-            override fun onSwipeLeft() {
-              super.onSwipeLeft()
-              onNextDay()
-            }
+          override fun onSwipeLeft() {
+            super.onSwipeLeft()
+            onNextDay()
+          }
 
-            override fun onClick() {
-              val action =
-                CalendarViewElectionFragmentDirections
-                  .actionCalendarViewElectionFragmentToElectionDetailsFragment(event.id)
-              Navigation.findNavController(binding.root)
-                .navigate(action)
-              super.onClick()
-            }
+          override fun onClick() {
+            super.onClick()
+            openElectionDetail(event)
+          }
 
-            override fun showRipple() {
-              setPressed(eventView, true)
-              super.showRipple()
-            }
+          override fun showRipple() {
+            super.showRipple()
+            setPressed(eventView, true)
+          }
 
-            override fun hideRipple() {
-              setPressed(eventView, false)
-              super.hideRipple()
-            }
-          })
+          override fun hideRipple() {
+            super.hideRipple()
+            setPressed(eventView, false)
+          }
+        })
 
         eventViews.add(eventView)
         val startMinute = 60 * event.hour + event.minute
@@ -319,7 +320,15 @@ constructor(
     }
   }
 
-  fun setPressed(
+  private fun openElectionDetail(event: Event) {
+    val action =
+      CalendarViewElectionFragmentDirections
+        .actionCalendarViewElectionFragmentToElectionDetailsFragment(event.id)
+    Navigation.findNavController(binding.root)
+      .navigate(action)
+  }
+
+  private fun setPressed(
     v: View,
     isPressed: Boolean
   ) {
@@ -332,21 +341,8 @@ constructor(
     val formattedEndingDate: Date? = formatter.parse(election.end!!)
     val currentDate = Calendar.getInstance()
       .time
-    var status: String? = null
-    var eventColor = R.drawable.cornered_blue_background
-    if (currentDate.before(formattedStartingDate)) {
-      eventColor = R.drawable.cornered_green_background
-      status = "PENDING"
-    } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-        formattedEndingDate
-      )
-    ) {
-      eventColor = R.drawable.cornered_red_background
-      status = "ACTIVE"
-    } else if (currentDate.after(formattedEndingDate)) {
-      eventColor = R.drawable.cornered_blue_background
-      status = "FINISHED"
-    }
+    val status = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
+    val eventColor = getEventColor(currentDate, formattedStartingDate, formattedEndingDate)
     val startCalendar = Calendar.getInstance()
     startCalendar.time = formattedStartingDate!!
     val endCalendar = Calendar.getInstance()
@@ -379,6 +375,36 @@ constructor(
       startCalendar.set(Calendar.SECOND, 0)
       startCalendar.set(Calendar.HOUR_OF_DAY, 0)
       formattedStartingDate = startCalendar.time
+    }
+  }
+
+  private fun getEventStatus(
+    currentDate: Date,
+    formattedStartingDate: Date?,
+    formattedEndingDate: Date?
+  ): String? {
+    return when {
+      currentDate.before(formattedStartingDate) -> "PENDING"
+      currentDate.after(formattedStartingDate) && currentDate.before(
+        formattedEndingDate
+      ) -> "ACTIVE"
+      currentDate.after(formattedEndingDate) -> "FINISHED"
+      else -> null
+    }
+  }
+
+  private fun getEventColor(
+    currentDate: Date,
+    formattedStartingDate: Date?,
+    formattedEndingDate: Date?
+  ): Int {
+    return when {
+      currentDate.before(formattedStartingDate) -> drawable.cornered_green_background
+      currentDate.after(formattedStartingDate) && currentDate.before(
+        formattedEndingDate
+      ) -> drawable.cornered_red_background
+      currentDate.after(formattedEndingDate) -> drawable.cornered_blue_background
+      else -> drawable.cornered_blue_background
     }
   }
 
