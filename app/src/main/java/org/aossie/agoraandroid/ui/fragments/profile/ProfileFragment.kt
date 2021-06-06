@@ -360,6 +360,7 @@ constructor(
                   getString(string.password_same_oldpassword_warn)
               else -> binding.newPasswordTil.error = null
             }
+            checkNewPasswordAndConfirmPassword(s)
           }
           4 -> {
             when {
@@ -389,6 +390,17 @@ constructor(
         before: Int,
         count: Int
       ) {
+      }
+    }
+  }
+
+  private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
+    if (s.toString() == binding.confirmPasswordTiet.text.toString().trim()) {
+      binding.confirmPasswordTil.error = null
+    } else {
+      if (!binding.confirmPasswordTiet.text.isNullOrEmpty()) {
+        binding.confirmPasswordTil.error =
+          getString(string.password_not_match_warn)
       }
     }
   }
