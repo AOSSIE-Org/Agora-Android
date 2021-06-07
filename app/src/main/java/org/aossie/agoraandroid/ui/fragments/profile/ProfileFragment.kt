@@ -189,9 +189,14 @@ constructor(
       val newPass = binding.newPasswordTiet.text.toString()
       val conPass = binding.confirmPasswordTiet.text.toString()
       when {
-        newPass.isEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
-        conPass.isEmpty() -> binding.confirmPasswordTil.error = getString(string.password_empty_warn)
-        newPass != conPass -> binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
+        newPass.isEmpty() ->
+          binding.newPasswordTil.error = getString(string.password_empty_warn)
+        conPass.isEmpty() ->
+          binding.confirmPasswordTil.error = getString(string.password_empty_warn)
+        newPass != conPass ->
+          binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
+        newPass == mUser.password ->
+          binding.newPasswordTil.error = getString(string.password_same_oldpassword_warn)
         else -> updateUIAndChangePassword()
       }
     }
