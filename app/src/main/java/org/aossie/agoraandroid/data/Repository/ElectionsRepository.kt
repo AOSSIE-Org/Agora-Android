@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.data.Repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -13,6 +14,7 @@ import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.data.network.responses.Voters
+import org.aossie.agoraandroid.di.utils.InternetManager
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -24,13 +26,15 @@ import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class ElectionsRepository
 @Inject
 constructor(
   private val api: Api,
   private val db: AppDatabase,
-  private val prefs: PreferenceProvider
-) : ApiRequest() {
+  private val prefs: PreferenceProvider,
+  manager: InternetManager
+) : ApiRequest(manager) {
 
   private val elections = MutableLiveData<List<Election>>()
 
