@@ -62,6 +62,7 @@
   <string name="zero">0</string>
   <string name="user_email_id">user email id</string>
   <string name="send_link">Send Link</string>
+  <string name="verify">Verify</string>
   <string name="developed_with_by_aossie">Developed with ❤ by AOSSIE</string>
   <string name="enter_user_name_reset_pass_link">Please enter user name to receive password reset link</string>
   <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor</string>
@@ -94,7 +95,7 @@
   <string name="name_of_the_voter">Name of the Voter</string>
   <string name="add_voter">Add Voter</string>
   <string name="swipe_to_delete_voter">Swipe to delete Voter</string>
-  <string name="swipe_to_delete_candidate_s_name">Swipe to delete Candidate\'s Name</string>
+  <string name="swipe_to_delete_candidate">Swipe to delete Candidate</string>
   <string name="enter_details_of_voters">Enter Details of Voters</string>
   <string name="winner_name">Winner Name</string>
   <string name="security_question_answer">Please Write Your Answer Here</string>
@@ -169,12 +170,15 @@
   <string name="update_profile">Update Profile</string>
   <string name="password_empty_warn">Password Cannot Be Empty</string>
   <string name="password_not_match_warn">Passwords Not Matching</string>
-  <string name="password_same_oldpassword_warn">new password cannot be same as old password</string>
+  <string name="password_same_oldpassword_warn">New password cannot be same as old password</string>
   <string name="password_change_success">password changed successfully</string>
   <string name="token_expired">Your session was expired. Please login again!</string>
 
   <string name="voter_same_email">Voter with same Email Id already added</string>
   <string name="user_updated">User updated successfully!</string>
+  <string name="password_updated">Password updated successfully!</string>
+  <string name="profile_updated">Profile photo updated successfully!</string>
+  <string name="authentication_updated">Two Factor Authentication updated, Please login again!</string>
   <string name="first_name_empty">First Name cannot be empty</string>
   <string name="last_name_empty">Last Name cannot be empty</string>
   <string name="email_changed">Email cannot be changed</string>
@@ -242,6 +246,17 @@
   <string name="gallery">Gallery</string>
   <string name="no_browser">It seems you don\'t have any browser installed.</string>
   <string name="voter_removed">Voter removed</string>
-
+  <string name="vote_successful">Vote casted successfully!</string>
+  <string name="no_result">Nothing to show here</string>
+  <string name="fetch_result_failed">Unable to fetch result</string>
+  <string name="no_network">Please check your network connection</string>
+  <string name="others">Others</string>
+  <string name="election_not_started">Election is not started yet</string>
+  <string name="election_finished">Election is Finished</string>
+  <string name="active_elections_not_started">Active Elections Cannot Be Deleted</string>
+  <string name="election_result">Election Result in percentage</string>
+  <string name="winner_is">Winner is</string>
+  <string name="login_cancelled">Login Cancelled</string>
+  <string name="otp_sent">OTP is sent to your registered email address</string>
 </resources>
 

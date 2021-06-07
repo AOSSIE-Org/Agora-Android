@@ -72,3 +72,11 @@ fun BottomNavigationView.animGone() {
 fun View.toggleIsEnable() {
   isEnabled = !isEnabled
 }
+
+fun View.enableView() {
+  isEnabled = true
+}
+
+fun View.disableView() {
+  isEnabled = false
+}
