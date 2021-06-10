@@ -1,33 +1,36 @@
 package org.aossie.agoraandroid.data.network
 
-import org.aossie.agoraandroid.data.db.model.Winner
+import org.aossie.agoraandroid.data.dto.CastVoteDto
+import org.aossie.agoraandroid.data.dto.ElectionDto
+import org.aossie.agoraandroid.data.dto.LoginDto
+import org.aossie.agoraandroid.data.dto.NewUserDto
+import org.aossie.agoraandroid.data.dto.PasswordDto
+import org.aossie.agoraandroid.data.dto.UpdateUserDto
+import org.aossie.agoraandroid.data.dto.UrlDto
+import org.aossie.agoraandroid.data.dto.VerifyOtpDto
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
-import org.aossie.agoraandroid.data.network.responses.ElectionResponse
-import org.aossie.agoraandroid.data.network.responses.ElectionsResponse
-import org.aossie.agoraandroid.data.network.responses.Voters
+import org.aossie.agoraandroid.data.network.responses.ElectionListResponse
+import org.aossie.agoraandroid.data.network.responses.VotersResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface Api {
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("auth/signup")
-  suspend fun createUser(@Body body: String?): Response<String>
+  suspend fun createUser(@Body userdto: NewUserDto): Response<String>
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("auth/login")
-  suspend fun logIn(@Body body: String): Response<AuthResponse>
+  suspend fun logIn(@Body loginDto: LoginDto): Response<AuthResponse>
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("verifyOtp")
-  suspend fun verifyOTP(@Body body: String): Response<AuthResponse>
+  suspend fun verifyOTP(@Body verifyOtpDto: VerifyOtpDto): Response<AuthResponse>
 
   @GET("resendOtp/{userName}")
   suspend fun resendOTP(@Path("userName") userName: String?): Response<AuthResponse>
@@ -35,86 +38,62 @@ interface Api {
   @POST("auth/forgotPassword/send/{userName}")
   suspend fun sendForgotPassword(@Path("userName") userName: String?): Response<String>
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("election")
-  suspend fun getAllElections(
-    @Header(
-      "X-Auth-Token"
-    ) authToken: String?
-  ): Response<ElectionsResponse>
+  suspend fun getAllElections(): Response<ElectionListResponse>
 
   // DELETE election with specified id
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @DELETE("election/{id}")
-  suspend fun deleteElection(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<ArrayList<String>>
+  suspend fun deleteElection(@Path("id") id: String?): Response<List<String>>
 
   // GET Ballots for election with specified id
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("election/{id}/ballots")
-  suspend fun getBallot(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<Ballots>
+  suspend fun getBallot(@Path("id") id: String?): Response<Ballots>
 
   // GET Voters for election with specified id
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("election/{id}/voters")
-  suspend fun getVoters(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<Voters>
+  suspend fun getVoters(@Path("id") id: String?): Response<VotersResponse>
 
   // POST the list of voters to election
-  @Headers("Accept: application/json", "Content-Type: application/json")
-  @POST("election/{id}/voters")
-  suspend fun sendVoters(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?, @Body body: String?): Response<ArrayList<String>>
+  @POST("election/{id}/voter")
+  suspend fun sendVoters(@Path("id") id: String?, @Body votersDto: VotersDto): Response<List<String>>
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("user/logout")
-  suspend fun logout(
-    @Header(
-      "X-Auth-Token"
-    ) authToken: String?
-  ): Response<String>
+  suspend fun logout(): Response<String>
 
   // POST request to create a new election
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("election")
-  suspend fun createElection(@Body body: String?, @Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
+  suspend fun createElection(@Body electionDto: ElectionDto): Response<List<String>>
 
   // update user
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("user/update")
-  suspend fun updateUser(@Header("X-Auth-Token") authToken: String?, @Body body: String?): Response<ArrayList<String>>
+  suspend fun updateUser(@Body updateUserDto: UpdateUserDto): Response<List<String>>
 
   // change avatar
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("user/changeAvatar")
-  suspend fun changeAvatar(@Header("X-Auth-Token") authToken: String?, @Body body: String?): Response<ArrayList<String>>
+  suspend fun changeAvatar(@Body url: UrlDto): Response<List<String>>
 
   // POST request to change password
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("user/changePassword")
-  suspend fun changePassword(@Body body: String?, @Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
+  suspend fun changePassword(@Body password: PasswordDto): Response<List<String>>
 
   // GET
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("toggleTwoFactorAuth")
-  suspend fun toggleTwoFactorAuth(@Header("X-Auth-Token") authToken: String?): Response<ArrayList<String>>
+  suspend fun toggleTwoFactorAuth(): Response<List<String>>
 
   // GET request to log in via facebook Access Token
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("auth/authenticate/facebook")
-  suspend fun facebookLogin(@Header("Access-Token") accessToken: String?): Response<AuthResponse>
+  suspend fun facebookLogin(): Response<AuthResponse>
 
   // GET request to get user's data
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("user")
-  suspend fun getUserData(@Header("X-Auth-Token") authToken: String?): Response<AuthResponse>
+  suspend fun getUserData(): Response<AuthResponse>
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("voter/verifyPoll/{id}")
-  suspend fun verifyVoter(@Path("id") id: String?): Response<ElectionResponse>
+  suspend fun verifyVoter(@Path("id") id: String?): Response<ElectionDto>
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @POST("vote/{id}")
-  suspend fun castVote(@Path("id") id: String?, @Body body: String?): Response<ArrayList<String>>
+  suspend fun castVote(@Path("id") id: String?, @Body body: CastVoteDto): Response<List<String>>
 
-  @Headers("Accept: application/json", "Content-Type: application/json")
   @GET("result/{id}")
-  suspend fun getResult(@Header("X-Auth-Token") authToken: String?, @Path("id") id: String?): Response<List<Winner>>
+  suspend fun getResult(@Path("id") id: String?): Response<List<WinnerDto>>
 }

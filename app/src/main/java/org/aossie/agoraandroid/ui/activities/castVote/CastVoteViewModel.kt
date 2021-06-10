@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.network.responses.ElectionResponse
+import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
@@ -29,9 +29,9 @@ constructor(
   val castVoteResponse: LiveData<ResponseResult>
     get() = mCastVoteResponse
 
-  private val mElection = MutableLiveData<ElectionResponse>()
+  private val mElection = MutableLiveData<ElectionDto>()
 
-  val election: LiveData<ElectionResponse>
+  val election: LiveData<ElectionDto>
     get() = mElection
 
   sealed class ResponseResults {
@@ -47,10 +47,10 @@ constructor(
   fun verifyVoter(id: String) {
     try {
       Coroutines.main {
-        val electionResponse = electionsRepository.verifyVoter(id)
-        electionResponse._id = id
+        val ElectionDto = electionsRepository.verifyVoter(id)
+        ElectionDto._id = id
         mVerifyVoterResponse.value = Success
-        mElection.value = electionResponse
+        mElection.value = ElectionDto
       }
     } catch (e: ApiException) {
       mVerifyVoterResponse.value = Error(e.message.toString())

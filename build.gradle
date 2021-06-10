@@ -39,6 +39,7 @@ buildscript {
     httpLoggingInterceptor = '4.9.0'
     chuckerVersion = '3.4.0'
     leakcanaryVersion = '2.6'
+    moshiVersion = '1.10.0'
   }
 
   repositories {

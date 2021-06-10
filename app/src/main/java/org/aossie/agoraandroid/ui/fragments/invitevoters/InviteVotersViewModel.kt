@@ -4,12 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
@@ -21,27 +19,19 @@ constructor(
 ) : ViewModel() {
   lateinit var inviteVoterListener: InviteVoterListener
 
-  @Throws(
-    JSONException::class
-  ) fun inviteVoters(
+  fun inviteVoters(
     mVoterNames: ArrayList<String>,
     mVoterEmails: ArrayList<String>,
     id: String
   ) {
-    val jsonArray = JSONArray()
-    for (i in mVoterEmails.indices) {
-      val jsonObject = JSONObject()
-      jsonObject.put("name", mVoterNames[i])
-      jsonObject.put("hash", mVoterEmails[i])
-      jsonArray.put(jsonObject)
-      Timber.tag("TAG").d("inviteVoters: $jsonArray")
-      sendVoters(id, jsonArray.toString())
-    }
+
+    for (i in mVoterEmails.indices)
+      sendVoters(id, VotersDto(mVoterNames[i], mVoterEmails[i]))
   }
 
   private fun sendVoters(
     id: String,
-    body: String
+    body: VotersDto
   ) {
     inviteVoterListener.onStarted()
     viewModelScope.launch {

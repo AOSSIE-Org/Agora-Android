@@ -5,12 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.db.model.Ballot
+import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import javax.inject.Inject
 
 internal class CreateElectionViewModel
@@ -24,30 +21,24 @@ constructor(
 
   fun createElection() {
     createElectionListener.onStarted()
-    val candidates = electionDetailsSharedPrefs.getCandidates()
-    val jsArray = JSONArray(candidates)
-    val jsonObject = JSONObject()
-    try {
-      val ballot = JSONArray(ArrayList<Ballot>())
-      jsonObject.put("ballot", ballot)
-      jsonObject.put("name", electionDetailsSharedPrefs.electionName)
-      jsonObject.put("description", electionDetailsSharedPrefs.electionDesc)
-      jsonObject.put("voterListVisibility", electionDetailsSharedPrefs.voterListVisibility)
-      jsonObject.put("startingDate", electionDetailsSharedPrefs.startTime)
-      jsonObject.put("endingDate", electionDetailsSharedPrefs.endTime)
-      jsonObject.put("isInvite", electionDetailsSharedPrefs.isInvite)
-      jsonObject.put("ballotVisibility", electionDetailsSharedPrefs.ballotVisibility)
-      jsonObject.put("isRealTime", electionDetailsSharedPrefs.isRealTime)
-      jsonObject.put("votingAlgo", electionDetailsSharedPrefs.votingAlgo)
-      jsonObject.put("candidates", jsArray)
-      jsonObject.put("noVacancies", 1)
-      jsonObject.put("electionType", "Election")
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val response = electionsRepository.createElection(jsonObject.toString())
+        val response = electionsRepository.createElection(
+          ElectionDto(
+            listOf(), electionDetailsSharedPrefs.ballotVisibility,
+            electionDetailsSharedPrefs.getCandidates(),
+            electionDetailsSharedPrefs.electionDesc,
+            "Election",
+            electionDetailsSharedPrefs.endTime,
+            electionDetailsSharedPrefs.isInvite,
+            electionDetailsSharedPrefs.isRealTime,
+            electionDetailsSharedPrefs.electionName,
+            1,
+            electionDetailsSharedPrefs.startTime,
+            electionDetailsSharedPrefs.voterListVisibility,
+            electionDetailsSharedPrefs.votingAlgo
+          )
+        )
         createElectionListener.onSuccess(response[1])
       } catch (e: ApiException) {
         createElectionListener.onFailure(e.message!!)

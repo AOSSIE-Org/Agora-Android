@@ -8,13 +8,13 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.SessionExpirationException
-import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Named
 
@@ -34,7 +34,7 @@ class AuthorizationInterceptor(
         Coroutines.io {
           var user = appDatabase.getUserDao().getUserInfo()
           if (prefs.getIsFacebookUser()) {
-            val response = api.facebookLogin(prefs.getFacebookAccessToken())
+            val response = api.facebookLogin()
             if (response.isSuccessful) {
               // save new access token
               prefs.setCurrentToken(response.body()!!.authToken?.token)
@@ -45,11 +45,8 @@ class AuthorizationInterceptor(
               throw SessionExpirationException(context.resources.getString(R.string.token_expired))
             }
           } else {
-            val jsonObject = JSONObject()
-            jsonObject.put("identifier", user.username)
-            jsonObject.put("password", user.password)
-            jsonObject.put("trustedDevice", user.trustedDevice)
-            val loginResponse = api.logIn(jsonObject.toString())
+
+            val loginResponse = api.logIn(LoginDto(user.username ?: "", user.trustedDevice ?: "", user.password ?: ""))
             if (loginResponse.isSuccessful) {
               val authResponse: AuthResponse? = loginResponse.body()
               authResponse.let {

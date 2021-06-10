@@ -8,7 +8,7 @@ import java.io.IOException
 
 /** Test that checks getResult Call that helps in retrieving election results*/
 
-class ElectionResultTest : BaseTest() {
+class ElectionResultTest : BaseTest<Any>() {
 
   @Test
   @Throws(IOException::class)

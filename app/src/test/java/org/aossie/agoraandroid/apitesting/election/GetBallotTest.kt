@@ -13,7 +13,7 @@ import retrofit2.Response
 
 /** Test that checks getBallot Call that helps in retrieving ballot data */
 
-class GetBallotTest() : BaseTest() {
+class GetBallotTest() : BaseTest<Any>() {
 
   @Test
   @Throws(IOException::class)
@@ -24,7 +24,7 @@ class GetBallotTest() : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(getBallotResponse))
     runBlocking {
       GlobalScope.launch {
-        val responseFromRequest: Response<*> = apiService.getBallot("authToken", "id")
+        val responseFromRequest: Response<*> = apiService.getBallot("authToken")
         Assert.assertEquals(responseFromRequest.body(), getBallotResponse)
       }
     }

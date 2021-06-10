@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.db.model.Ballot
-import org.aossie.agoraandroid.data.db.model.VoterList
-import org.aossie.agoraandroid.data.db.model.Winner
+import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -21,14 +21,14 @@ constructor(
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
-  private val mVoterResponse = MutableLiveData<List<VoterList>>()
-  var voterResponse: LiveData<List<VoterList>> = mVoterResponse
+  private val mVoterResponse = MutableLiveData<List<VotersDto>>()
+  var voterResponse: LiveData<List<VotersDto>> = mVoterResponse
   private val mNotConnected = MutableLiveData<Boolean>()
   var notConnected: LiveData<Boolean> = mNotConnected
-  private val mBallotResponse = MutableLiveData<List<Ballot>>()
-  var ballotResponse: LiveData<List<Ballot>> = mBallotResponse
-  private val mResultResponse = MutableLiveData<Winner>()
-  var resultResponse: LiveData<Winner> = mResultResponse
+  private val mBallotResponse = MutableLiveData<List<BallotDto>>()
+  var ballotResponse: LiveData<List<BallotDto>> = mBallotResponse
+  private val mResultResponse = MutableLiveData<WinnerDto>()
+  var resultResponse: LiveData<WinnerDto> = mResultResponse
 
   lateinit var displayElectionListener: DisplayElectionListener
 
@@ -64,7 +64,7 @@ constructor(
     displayElectionListener.onStarted()
     Coroutines.main {
       try {
-        val response = electionsRepository.getVoters(id!!).voters
+        val response = electionsRepository.getVoters(id!!)
         Timber.d(response.toString())
         mVoterResponse.postValue(response)
         displayElectionListener.onSuccess()

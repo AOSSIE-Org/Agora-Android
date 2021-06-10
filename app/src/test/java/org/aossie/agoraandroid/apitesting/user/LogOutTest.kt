@@ -11,7 +11,7 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
-class LogOutTest : BaseTest() {
+class LogOutTest : BaseTest<Any>() {
   @Test
   @Throws(IOException::class)
   fun logOutTest() {
@@ -22,7 +22,7 @@ class LogOutTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> =
-          apiService.logout("authtoken")
+          apiService.logout()
         Assert.assertEquals(response.body(), logOutResponse)
       }
     }

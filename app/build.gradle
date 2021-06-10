@@ -64,9 +64,7 @@ dependencies {
   //Retrofit
   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
   implementation "com.squareup.retrofit2:converter-scalars:$retrofitConverterScalarsVersion"
-  //GSON and GSON converter
-  implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
-  implementation "com.google.code.gson:gson:$gsonVersion"
+
   //Navigation Architecture Dependencies
   implementation "androidx.navigation:navigation-fragment-ktx:$navFragmentVersion"
   implementation "androidx.navigation:navigation-ui-ktx:$navUiVersion"
@@ -114,7 +112,12 @@ dependencies {
   releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chuckerVersion"
 
   //leakcanary
-  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
+ // debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
+
+  //Moshi
+  implementation("com.squareup.moshi:moshi:$moshiVersion")
+  kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
+  implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 }
 repositories {
   mavenCentral()

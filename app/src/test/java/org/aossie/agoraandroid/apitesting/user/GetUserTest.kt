@@ -13,7 +13,7 @@ import java.io.IOException
 
 /** Tests getUser call that retrieves user data from backend */
 
-class GetUserTest : BaseTest() {
+class GetUserTest : BaseTest<Any>() {
   @Test
   @Throws(IOException::class)
   fun getUserTest() {
@@ -24,7 +24,7 @@ class GetUserTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> =
-          apiService.getUserData("authtoken")
+          apiService.getUserData()
         Assert.assertEquals(response.body(), getUserResponse)
       }
     }

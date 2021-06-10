@@ -11,7 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 
-class GetVotersTest : BaseTest() {
+class GetVotersTest : BaseTest<Any>() {
 
   @Test
   @Throws(IOException::class)
@@ -23,7 +23,7 @@ class GetVotersTest : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(getVotersResponse))
     runBlocking {
       GlobalScope.launch {
-        val response: Response<*> = apiService.getVoters("authToken", "id")
+        val response: Response<*> = apiService.getVoters("id")
         Assert.assertEquals(response.body(), getVotersResponse)
       }
     }

@@ -11,7 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 
-class FacebookLoginTest : BaseTest() {
+class FacebookLoginTest : BaseTest<Any>() {
 
   @Test
   @Throws(IOException::class)
@@ -22,7 +22,7 @@ class FacebookLoginTest : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(facebookLoginResponse))
     runBlocking {
       GlobalScope.launch {
-        val response: Response<*> = apiService.facebookLogin("authToken")
+        val response: Response<*> = apiService.facebookLogin()
         Assert.assertEquals(response.body(), facebookLoginResponse)
       }
     }

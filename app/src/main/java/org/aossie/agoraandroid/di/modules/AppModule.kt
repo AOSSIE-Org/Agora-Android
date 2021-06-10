@@ -14,11 +14,12 @@ import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
+import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
@@ -46,6 +47,11 @@ class AppModule {
     return NetworkInterceptor(
       context
     )
+  }
+  @Provides
+  @Singleton
+  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider): HeaderInterceptor {
+    return HeaderInterceptor(preferenceProvider)
   }
 
   @Provides
@@ -75,10 +81,11 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideOkHttpClient(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
+  fun provideOkHttpClient(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor, headerInterceptor: HeaderInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
         addInterceptor(networkInterceptor)
+        addInterceptor(headerInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
@@ -98,10 +105,11 @@ class AppModule {
   @Provides
   @Singleton
   @Named("okHttpWithoutAuth")
-  fun provideOkHttpClientWithoutAuth(context: Context, networkInterceptor: NetworkInterceptor): OkHttpClient {
+  fun provideOkHttpClientWithoutAuth(context: Context, networkInterceptor: NetworkInterceptor, headerInterceptor: HeaderInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
         addInterceptor(networkInterceptor)
+        addInterceptor(headerInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
@@ -124,7 +132,7 @@ class AppModule {
       .client(okHttpClient)
       .baseUrl(AppConstants.BASE_URL)
       .addConverterFactory(ScalarsConverterFactory.create())
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
   }
 
@@ -136,7 +144,7 @@ class AppModule {
       .client(okHttpClient)
       .baseUrl(AppConstants.BASE_URL)
       .addConverterFactory(ScalarsConverterFactory.create())
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
   }
 
