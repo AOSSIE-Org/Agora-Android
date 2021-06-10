@@ -3,7 +3,8 @@ package org.aossie.agoraandroid.ui.fragments.createelection
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import javax.inject.Inject
 
 class ElectionDetailsSharedPrefs
@@ -11,8 +12,12 @@ class ElectionDetailsSharedPrefs
 constructor(
   context: Context
 ) {
-  private val sharedPreferences: SharedPreferences
-  private val editor: Editor
+  private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+    myPrefs, Context.MODE_PRIVATE
+  )
+  private val editor: Editor = sharedPreferences.edit()
+  private val type = Types.newParameterizedType(ArrayList::class.java, String::class.java)
+  private val adapter = Moshi.Builder().build().adapter<ArrayList<String>>(type)
 
   // Saving name of election
   fun saveElectionName(name: String?) {
@@ -61,16 +66,14 @@ constructor(
 
   // Save candidates
   fun saveCandidates(candidates: ArrayList<String>) {
-    val gson = Gson()
-    val json = gson.toJson(candidates)
+    val json = adapter.toJson(candidates)
     editor.putString(CandidatesKey, json)
     editor.commit()
   }
 
   fun getCandidates(): ArrayList<String>? {
     val json = sharedPreferences.getString(CandidatesKey, "")
-    val gson = Gson()
-    return gson.fromJson<ArrayList<String>>(json, ArrayList::class.java)
+    return adapter.fromJson(json)
   }
 
   // Save Real Time Results or not
@@ -140,10 +143,4 @@ constructor(
     private const val CandidatesKey = "candidates"
   }
 
-  init {
-    sharedPreferences = context.getSharedPreferences(
-      myPrefs, Context.MODE_PRIVATE
-    )
-    editor = sharedPreferences.edit()
-  }
 }
