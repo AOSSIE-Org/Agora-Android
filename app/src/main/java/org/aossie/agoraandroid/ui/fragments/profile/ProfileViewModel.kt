@@ -116,7 +116,16 @@ constructor(
   ) {
     Coroutines.main {
       try {
-        userRepository.updateUser(UpdateUserDto(identifier = user.username ?: "", email = user.email ?: "", firstName = user.firstName, lastName = user.lastName, avatarURL = user.avatarURL, twoFactorAuthentication = user.twoFactorAuthentication, authToken = AuthToken(user.token, user.expiredAt)))
+        val updateUserDto = UpdateUserDto(
+          identifier = user.username ?: "",
+          email = user.email ?: "",
+          firstName = user.firstName,
+          lastName = user.lastName,
+          avatarURL = user.avatarURL,
+          twoFactorAuthentication = user.twoFactorAuthentication,
+          authToken = AuthToken(user.token, user.expiredAt)
+        )
+        userRepository.updateUser(updateUserDto)
         userRepository.saveUser(user)
         _userUpdateResponse.value = Success
       } catch (e: ApiException) {
