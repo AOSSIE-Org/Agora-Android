@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
-import com.squareup.moshi.Types
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -13,12 +12,10 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
-import java.lang.reflect.ParameterizedType
 
 /** Test that checks changePassword call which changes password via asking contemporary password and authToken */
 
 class ChangePasswordTest : BaseTest() {
-
 
   @Test
   @Throws(IOException::class)

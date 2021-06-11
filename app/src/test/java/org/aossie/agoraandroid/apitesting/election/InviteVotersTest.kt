@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.apitesting.election
 
-import com.squareup.moshi.Types
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -13,11 +12,8 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
-import java.lang.reflect.ParameterizedType
 
 class InviteVotersTest : BaseTest() {
-
-
 
   @Test
   @Throws(IOException::class)

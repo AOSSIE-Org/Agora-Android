@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
-import com.squareup.moshi.Types
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -8,17 +7,14 @@ import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.dto.LoginDtoJsonAdapter
-import org.aossie.agoraandroid.data.dto.PasswordDto
 import org.aossie.agoraandroid.utilities.MockFileParser
 import org.apache.tools.ant.taskdefs.Execute.launch
 import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
-import java.lang.reflect.ParameterizedType
 
 class LogInTest : BaseTest() {
-
 
   @Test
   @Throws(IOException::class)
