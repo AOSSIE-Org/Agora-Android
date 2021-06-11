@@ -112,7 +112,7 @@ dependencies {
   releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chuckerVersion"
 
   //leakcanary
- // debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
+  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanaryVersion"
 
   //Moshi
   implementation("com.squareup.moshi:moshi:$moshiVersion")
