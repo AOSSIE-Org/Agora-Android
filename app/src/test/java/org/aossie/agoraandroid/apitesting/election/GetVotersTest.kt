@@ -11,7 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 
-class GetVotersTest : BaseTest<Any>() {
+class GetVotersTest : BaseTest() {
 
   @Test
   @Throws(IOException::class)

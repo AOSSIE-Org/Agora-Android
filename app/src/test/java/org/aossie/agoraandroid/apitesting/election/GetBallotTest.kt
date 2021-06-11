@@ -13,7 +13,7 @@ import retrofit2.Response
 
 /** Test that checks getBallot Call that helps in retrieving ballot data */
 
-class GetBallotTest() : BaseTest<Any>() {
+class GetBallotTest() : BaseTest() {
 
   @Test
   @Throws(IOException::class)

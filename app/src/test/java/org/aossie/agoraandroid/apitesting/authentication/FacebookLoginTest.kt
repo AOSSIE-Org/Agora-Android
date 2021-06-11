@@ -11,7 +11,7 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 
-class FacebookLoginTest : BaseTest<Any>() {
+class FacebookLoginTest : BaseTest() {
 
   @Test
   @Throws(IOException::class)

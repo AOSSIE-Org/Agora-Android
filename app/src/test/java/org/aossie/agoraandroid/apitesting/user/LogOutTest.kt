@@ -11,7 +11,7 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
-class LogOutTest : BaseTest<Any>() {
+class LogOutTest : BaseTest() {
   @Test
   @Throws(IOException::class)
   fun logOutTest() {

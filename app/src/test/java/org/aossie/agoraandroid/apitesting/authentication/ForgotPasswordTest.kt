@@ -13,7 +13,7 @@ import java.io.IOException
 
 /** Test that checks sendForgotPassword call which changes password via asking for username */
 
-class ForgotPasswordTest : BaseTest<Any>() {
+class ForgotPasswordTest : BaseTest() {
   @Test
   @Throws(IOException::class)
   fun sendForgotPasswordTest() {

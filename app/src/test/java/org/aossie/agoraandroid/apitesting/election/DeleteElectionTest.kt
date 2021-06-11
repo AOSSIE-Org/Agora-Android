@@ -12,7 +12,7 @@ import retrofit2.Response
 import java.io.IOException
 import kotlin.jvm.Throws
 
-class DeleteElectionTest : BaseTest<Any>() {
+class DeleteElectionTest : BaseTest() {
 
   @Test
   @Throws(IOException::class)

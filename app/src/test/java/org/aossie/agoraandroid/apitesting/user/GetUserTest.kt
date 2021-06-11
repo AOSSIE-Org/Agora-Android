@@ -13,7 +13,7 @@ import java.io.IOException
 
 /** Tests getUser call that retrieves user data from backend */
 
-class GetUserTest : BaseTest<Any>() {
+class GetUserTest : BaseTest() {
   @Test
   @Throws(IOException::class)
   fun getUserTest() {
