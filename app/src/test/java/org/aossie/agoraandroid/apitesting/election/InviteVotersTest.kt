@@ -27,7 +27,7 @@ class InviteVotersTest : BaseTest() {
       mockWebServer.enqueue(MockResponse().setBody(invitationResponse))
       runBlocking {
         GlobalScope.launch {
-          val response: Response<*> = apiService.sendVoters("id", invitationRequest)
+          val response: Response<*> = apiService.sendVoters("id", listOf(invitationRequest))
           Assert.assertEquals(response.body(), invitationResponse)
         }
       }

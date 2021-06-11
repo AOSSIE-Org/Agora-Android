@@ -159,7 +159,7 @@ constructor(
 
   suspend fun sendVoters(
     id: String,
-    votersData: VotersDto
+    votersData: List<VotersDto>
   ): List<String> {
     return apiRequest { api.sendVoters(id, votersData) }
   }

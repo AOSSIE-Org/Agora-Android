@@ -25,13 +25,16 @@ constructor(
     id: String
   ) {
 
+    val votersData = mutableListOf<VotersDto>()
     for (i in mVoterEmails.indices)
-      sendVoters(id, VotersDto(mVoterNames[i], mVoterEmails[i]))
+      votersData.add(VotersDto(mVoterNames[i], mVoterEmails[i]))
+
+    sendVoters(id, votersData)
   }
 
   private fun sendVoters(
     id: String,
-    body: VotersDto
+    body: List<VotersDto>
   ) {
     inviteVoterListener.onStarted()
     viewModelScope.launch {

@@ -54,8 +54,8 @@ interface Api {
   suspend fun getVoters(@Path("id") id: String?): Response<VotersResponse>
 
   // POST the list of voters to election
-  @POST("election/{id}/voter")
-  suspend fun sendVoters(@Path("id") id: String?, @Body votersDto: VotersDto): Response<List<String>>
+  @POST("election/{id}/voters")
+  suspend fun sendVoters(@Path("id") id: String?, @Body votersDto: List<VotersDto>): Response<List<String>>
 
   @GET("user/logout")
   suspend fun logout(): Response<String>
