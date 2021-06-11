@@ -142,5 +142,4 @@ constructor(
     private const val BallotVisibilityKey = "ballotVisibility"
     private const val CandidatesKey = "candidates"
   }
-
 }
