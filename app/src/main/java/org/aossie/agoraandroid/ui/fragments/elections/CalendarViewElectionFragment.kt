@@ -25,7 +25,6 @@ import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
 import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
-import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.ArrayList
