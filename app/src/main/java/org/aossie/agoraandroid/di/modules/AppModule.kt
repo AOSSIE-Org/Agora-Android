@@ -20,7 +20,6 @@ import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsShared
 import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -131,7 +130,6 @@ class AppModule {
     return Retrofit.Builder()
       .client(okHttpClient)
       .baseUrl(AppConstants.BASE_URL)
-      .addConverterFactory(ScalarsConverterFactory.create())
       .addConverterFactory(MoshiConverterFactory.create())
       .build()
   }
@@ -143,7 +141,6 @@ class AppModule {
     return Retrofit.Builder()
       .client(okHttpClient)
       .baseUrl(AppConstants.BASE_URL)
-      .addConverterFactory(ScalarsConverterFactory.create())
       .addConverterFactory(MoshiConverterFactory.create())
       .build()
   }
