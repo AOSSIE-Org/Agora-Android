@@ -169,7 +169,7 @@ constructor(
   }
 
   override fun onSessionExpired() {
-    //do nothing
+    // do nothing
   }
 
   private fun enableBtnFacebook() {

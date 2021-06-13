@@ -8,7 +8,6 @@ import android.view.View
 import android.view.WindowManager.LayoutParams
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -26,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_cast_vote.rv_candidates
 import kotlinx.android.synthetic.main.activity_cast_vote.rv_selected_candidates
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
 import org.aossie.agoraandroid.adapters.UpvotedCandidateAdapter
@@ -143,7 +141,7 @@ class CastVoteActivity :
       if (selectedCandidates.size == 0) {
         binding.root.snackbar("Please select a candidate first")
       } else {
-        AlertDialog.Builder(this)
+        Builder(this)
           .setTitle("Confirmation")
           .setMessage("Please press confirm to cast vote to selected candidates")
           .setPositiveButton("Confirm") { _, _ ->
@@ -189,14 +187,14 @@ class CastVoteActivity :
   private fun handleCastVote(response: ResponseResult) = when (response) {
     is Success -> {
       progress_bar.hide()
-      AlertDialog.Builder(this)
+      Builder(this)
         .setTitle(getString(string.vote_successful))
         .setMessage("Do you want to move to Home Screen ?")
         .setPositiveButton("Yes") { _, _ ->
           startActivity(Intent(this, MainActivity::class.java))
         }
         .setNegativeButton("No") { _, _ ->
-          android.os.Process.killProcess(android.os.Process.myPid())
+          Process.killProcess(Process.myPid())
         }
         .setCancelable(false)
         .create()
@@ -278,7 +276,7 @@ class CastVoteActivity :
   }
 
   private fun logout() {
-    if(prefs.getIsLoggedIn()) binding.root.snackbar(resources.getString(R.string.token_expired))
+    if (prefs.getIsLoggedIn()) binding.root.snackbar(resources.getString(R.string.token_expired))
     if (prefs.getIsFacebookUser()) {
       LoginManager.getInstance()
         .logOut()

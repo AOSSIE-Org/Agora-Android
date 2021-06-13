@@ -47,6 +47,7 @@ class AppModule {
       context
     )
   }
+
   @Provides
   @Singleton
   fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider): HeaderInterceptor {
@@ -61,7 +62,11 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesAuthorizationInterceptor(preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(
+    preferenceProvider: PreferenceProvider,
+    appDatabase: AppDatabase,
+    @Named("apiWithoutAuth") api: Api
+  ): AuthorizationInterceptor {
     return AuthorizationInterceptor(
       preferenceProvider, appDatabase, api
     )
@@ -80,7 +85,12 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideOkHttpClient(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor, headerInterceptor: HeaderInterceptor): OkHttpClient {
+  fun provideOkHttpClient(
+    context: Context,
+    networkInterceptor: NetworkInterceptor,
+    authorizationInterceptor: AuthorizationInterceptor,
+    headerInterceptor: HeaderInterceptor
+  ): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
         addInterceptor(networkInterceptor)
@@ -104,7 +114,11 @@ class AppModule {
   @Provides
   @Singleton
   @Named("okHttpWithoutAuth")
-  fun provideOkHttpClientWithoutAuth(context: Context, networkInterceptor: NetworkInterceptor, headerInterceptor: HeaderInterceptor): OkHttpClient {
+  fun provideOkHttpClientWithoutAuth(
+    context: Context,
+    networkInterceptor: NetworkInterceptor,
+    headerInterceptor: HeaderInterceptor
+  ): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
         addInterceptor(networkInterceptor)

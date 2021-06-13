@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun logout() {
-    if(prefs.getIsLoggedIn()) binding.root.snackbar(resources.getString(R.string.token_expired))
+    if (prefs.getIsLoggedIn()) binding.root.snackbar(resources.getString(R.string.token_expired))
     if (prefs.getIsFacebookUser()) {
       LoginManager.getInstance()
         .logOut()

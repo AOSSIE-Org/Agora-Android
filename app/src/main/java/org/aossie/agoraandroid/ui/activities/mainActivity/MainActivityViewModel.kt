@@ -9,7 +9,7 @@ class MainActivityViewModel
 @Inject
 constructor(
   val userRepository: UserRepository
-): ViewModel() {
+) : ViewModel() {
 
   fun deleteUserData() {
     Coroutines.main {

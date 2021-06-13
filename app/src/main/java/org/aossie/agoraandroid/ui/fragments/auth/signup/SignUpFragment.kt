@@ -187,6 +187,6 @@ constructor(
   }
 
   override fun onSessionExpired() {
-    //do nothing
+    // do nothing
   }
 }
