@@ -16,8 +16,8 @@ constructor(
     myPrefs, Context.MODE_PRIVATE
   )
   private val editor: Editor = sharedPreferences.edit()
-  private val type = Types.newParameterizedType(ArrayList::class.java, String::class.java)
-  private val adapter = Moshi.Builder().build().adapter<ArrayList<String>>(type)
+  private val type = Types.newParameterizedType(List::class.java, String::class.java)
+  private val adapter = Moshi.Builder().build().adapter<List<String>>(type)
 
   // Saving name of election
   fun saveElectionName(name: String?) {
@@ -65,15 +65,15 @@ constructor(
     get() = sharedPreferences.getBoolean(IsRealTimeKey, false)
 
   // Save candidates
-  fun saveCandidates(candidates: ArrayList<String>) {
+  fun saveCandidates(candidates: List<String>) {
     val json = adapter.toJson(candidates)
     editor.putString(CandidatesKey, json)
     editor.commit()
   }
 
-  fun getCandidates(): ArrayList<String>? {
+  fun getCandidates(): List<String>? {
     val json = sharedPreferences.getString(CandidatesKey, "")
-    return adapter.fromJson(json)
+    return adapter.fromJson(json ?: "")
   }
 
   // Save Real Time Results or not
