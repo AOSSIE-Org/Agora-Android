@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class BallotDto(
   @Json(name = "hash")
-  val hash: String,
+  val hash: String? = null,
   @Json(name = "voteBallot")
-  val voteBallot: String
+  val voteBallot: String? = null
 )

@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class CandidateDto(
   @Json(name = "id")
-  val id: String,
+  val id: String? = null,
   @Json(name = "name")
-  val name: String,
+  val name: String? = null,
   @Json(name = "party")
-  val party: String
+  val party: String? = null
 )

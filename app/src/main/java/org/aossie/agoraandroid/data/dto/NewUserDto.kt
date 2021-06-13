@@ -6,15 +6,15 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class NewUserDto(
   @Json(name = "email")
-  val email: String,
+  val email: String? = null,
   @Json(name = "firstName")
-  val firstName: String,
+  val firstName: String? = null,
   @Json(name = "identifier")
-  val identifier: String,
+  val identifier: String? = null,
   @Json(name = "lastName")
-  val lastName: String,
+  val lastName: String? = null,
   @Json(name = "password")
-  val password: String,
+  val password: String? = null,
   @Json(name = "securityQuestion")
-  val securityQuestion: SecurityQuestionDto
+  val securityQuestion: SecurityQuestionDto? = null
 )

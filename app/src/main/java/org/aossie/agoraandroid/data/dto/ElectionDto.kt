@@ -6,31 +6,31 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ElectionDto(
   @Json(name = "ballot")
-  val ballot: List<BallotDto>?,
+  val ballot: List<BallotDto>? = null,
   @Json(name = "ballotVisibility")
-  val ballotVisibility: String?,
+  val ballotVisibility: String? = null,
   @Json(name = "candidates")
-  val candidates: List<String>?,
+  val candidates: List<String>? = null,
   @Json(name = "description")
-  val description: String?,
+  val description: String? = null,
   @Json(name = "electionType")
-  val electionType: String?,
+  val electionType: String? = null,
   @Json(name = "endingDate")
-  val endingDate: String?,
+  val endingDate: String? = null,
   @Json(name = "isInvite")
-  val isInvite: Boolean?,
+  val isInvite: Boolean? = null,
   @Json(name = "isRealTime")
-  val isRealTime: Boolean?,
+  val isRealTime: Boolean? = null,
   @Json(name = "name")
-  val name: String?,
+  val name: String? = null,
   @Json(name = "noVacancies")
-  val noVacancies: Int?,
+  val noVacancies: Int? = null,
   @Json(name = "startingDate")
-  val startingDate: String?,
+  val startingDate: String? = null,
   @Json(name = "voterListVisibility")
-  val voterListVisibility: Boolean?,
+  val voterListVisibility: Boolean? = null,
   @Json(name = "votingAlgo")
-  val votingAlgo: String?,
+  val votingAlgo: String? = null,
   var _id: String? = null,
 
 )

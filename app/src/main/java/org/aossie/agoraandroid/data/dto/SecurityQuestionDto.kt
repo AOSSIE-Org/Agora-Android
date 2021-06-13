@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class SecurityQuestionDto(
   @Json(name = "answer")
-  val answer: String,
+  val answer: String? = null,
   @Json(name = "crypto")
-  val crypto: String,
+  val crypto: String? = null,
   @Json(name = "question")
-  val question: String
+  val question: String? = null
 )

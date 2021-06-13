@@ -8,13 +8,20 @@ import org.aossie.agoraandroid.data.network.responses.AuthToken
 data class UpdateUserDto(
 
   @Json(name = "username")
-  val identifier: String,
-  val email: String,
+  val identifier: String? = null,
+  @Json(name = "email")
+  val email: String? = null,
+  @Json(name = "firstName")
   val firstName: String? = null,
+  @Json(name = "lastName")
   val lastName: String? = null,
+  @Json(name = "trustedDevice")
   val trustedDevice: String? = null,
+  @Json(name = "twoFactorAuthentication")
   val twoFactorAuthentication: Boolean? = null,
+  @Json(name = "avatarURL")
   val avatarURL: String? = null,
-  val authToken: AuthToken,
+  @Json(name = "authToken")
+  val authToken: AuthToken? = null,
 
 )

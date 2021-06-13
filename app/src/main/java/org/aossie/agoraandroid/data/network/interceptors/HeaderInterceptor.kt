@@ -7,12 +7,16 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 
 class HeaderInterceptor(private val preferenceProvider: PreferenceProvider) : Interceptor {
   override fun intercept(chain: Chain): Response {
-    val request = chain.request().newBuilder()
-      .addHeader("X-Auth-Token", preferenceProvider.getCurrentToken() ?: "")
-      .addHeader("Accept", "application/json")
-      .addHeader("Content-Type", "application/json")
-      .build()
 
+    val request = chain.request().newBuilder().apply {
+      if (chain.request().url.toString().contains("facebook"))
+        addHeader("Access-Token", preferenceProvider.getFacebookAccessToken() ?: "")
+      else
+        addHeader("X-Auth-Token", preferenceProvider.getCurrentToken() ?: "")
+
+      addHeader("Accept", "application/json")
+      addHeader("Content-Type", "application/json")
+    }.build()
     return chain.proceed(request)
   }
 }

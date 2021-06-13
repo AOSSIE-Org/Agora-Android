@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ScoreDto(
   @Json(name = "denominator")
-  val denominator: Int,
+  val denominator: Int? = null,
   @Json(name = "numerator")
-  val numerator: Int
+  val numerator: Int? = null
 )

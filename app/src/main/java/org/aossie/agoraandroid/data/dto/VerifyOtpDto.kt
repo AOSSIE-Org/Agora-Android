@@ -5,9 +5,9 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 class VerifyOtpDto(
-  val crypto: String,
-  val otp: String,
+  val crypto: String? = null,
+  val otp: String? = null,
   @Json(name = "trustedDevice")
-  val isTrusted: Boolean,
+  val isTrusted: Boolean? = null,
 
 )

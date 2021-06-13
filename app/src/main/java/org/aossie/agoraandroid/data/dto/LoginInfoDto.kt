@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class LoginInfoDto(
   @Json(name = "providerID")
-  val providerID: String,
+  val providerID: String? = null,
   @Json(name = "providerKey")
-  val providerKey: String
+  val providerKey: String? = null
 )
