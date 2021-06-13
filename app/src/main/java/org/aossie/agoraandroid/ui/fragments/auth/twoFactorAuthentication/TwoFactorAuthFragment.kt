@@ -19,7 +19,9 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -118,6 +120,9 @@ constructor(
       rootView.progress_bar.hide()
       rootView.snackbar(response.error.toString())
     }
+    is SessionExpired -> {
+      (activity as MainActivity).logout()
+    }
   }
 
   private fun handleResendOtp(response: ResponseResult) = when (response) {
@@ -128,6 +133,9 @@ constructor(
     is Error -> {
       rootView.progress_bar.hide()
       rootView.snackbar(response.error.toString())
+    }
+    is SessionExpired -> {
+      (activity as MainActivity).logout()
     }
   }
 }

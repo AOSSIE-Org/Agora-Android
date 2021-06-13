@@ -45,7 +45,7 @@ constructor(
       } catch (e: ApiException) {
         inviteVoterListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        inviteVoterListener.onFailure(e.message!!)
+        inviteVoterListener.onSessionExpired()
       } catch (e: NoInternetException) {
         inviteVoterListener.onFailure(e.message!!)
       } catch (e: Exception) {

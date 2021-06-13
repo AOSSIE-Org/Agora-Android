@@ -9,6 +9,7 @@ import org.aossie.agoraandroid.data.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -54,7 +55,7 @@ constructor(
       } catch (e: ApiException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        _passwordRequestCode.value = Error(e.message.toString())
+        _passwordRequestCode.value = SessionExpired
       } catch (e: NoInternetException) {
         _passwordRequestCode.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -85,7 +86,7 @@ constructor(
       } catch (e: ApiException) {
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        _changeAvatarResponse.value = Error(e.message.toString())
+        _changeAvatarResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         _changeAvatarResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -102,7 +103,7 @@ constructor(
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
+        _toggleTwoFactorAuthResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         _toggleTwoFactorAuthResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -131,8 +132,7 @@ constructor(
       } catch (e: ApiException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        Timber.d("Session Expired")
-        _userUpdateResponse.value = Error(e.message.toString())
+        _userUpdateResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         _userUpdateResponse.value = Error(e.message.toString())
       } catch (e: Exception) {

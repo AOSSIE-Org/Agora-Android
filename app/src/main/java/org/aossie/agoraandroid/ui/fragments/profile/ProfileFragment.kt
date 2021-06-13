@@ -35,9 +35,11 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
@@ -298,6 +300,9 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
     }
+    is SessionExpired -> {
+      (activity as MainActivity).logout()
+    }
   }
 
   private fun handleUser(response: ResponseResult) = when (response) {
@@ -312,6 +317,9 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
     }
+    is SessionExpired -> {
+      (activity as MainActivity).logout()
+    }
   }
 
   private fun handleTwoFactorAuthentication(response: ResponseResult) = when (response) {
@@ -324,6 +332,9 @@ constructor(
       toggleIsEnable()
       binding.progressBar.hide()
       binding.root.snackbar(response.error.toString())
+    }
+    is SessionExpired -> {
+      (activity as MainActivity).logout()
     }
   }
 
@@ -340,6 +351,9 @@ constructor(
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
+    }
+    is SessionExpired -> {
+      (activity as MainActivity).logout()
     }
   }
 
@@ -433,6 +447,10 @@ constructor(
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 
   override fun onActivityResult(

@@ -27,6 +27,7 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -182,6 +183,10 @@ constructor(
     rootView.snackbar(message)
     Navigation.findNavController(rootView)
       .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 
   private fun emailValidator(

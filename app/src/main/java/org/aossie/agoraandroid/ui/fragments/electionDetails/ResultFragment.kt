@@ -18,6 +18,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -142,5 +143,9 @@ constructor(
     binding.progressBar.hide()
     binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
     binding.tvNoResult.show()
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 }

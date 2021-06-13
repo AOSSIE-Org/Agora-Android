@@ -4,4 +4,5 @@ interface AuthListener {
   fun onSuccess(message: String? = null)
   fun onStarted()
   fun onFailure(message: String)
+  fun onSessionExpired()
 }

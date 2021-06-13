@@ -8,6 +8,7 @@ import dagger.multibindings.IntoMap
 import org.aossie.agoraandroid.di.utils.ViewModelFactory
 import org.aossie.agoraandroid.di.utils.ViewModelKey
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpViewModel
@@ -80,6 +81,11 @@ abstract class ViewModelModule {
   @IntoMap
   @ViewModelKey(CastVoteViewModel::class)
   internal abstract fun bindsCastVoteViewModel(viewModel: CastVoteViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(MainActivityViewModel::class)
+  internal abstract fun bindsMainActivityViewModel(viewModel: MainActivityViewModel): ViewModel
 
   @Binds
   @IntoMap

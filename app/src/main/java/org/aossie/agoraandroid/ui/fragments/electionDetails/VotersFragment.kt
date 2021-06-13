@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_voters.view.tv_no_voters_for_this
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.VotersAdapter
 import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -130,5 +131,9 @@ constructor(
   override fun onFailure(message: String) {
     rootView.snackbar(message)
     rootView.progress_bar.hide()
+  }
+
+  override fun onSessionExpired() {
+    (activity as MainActivity).logout()
   }
 }

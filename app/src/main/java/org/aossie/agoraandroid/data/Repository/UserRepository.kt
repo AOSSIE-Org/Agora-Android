@@ -51,7 +51,7 @@ class UserRepository(
     }
   }
 
-  suspend fun logout(): String {
+  suspend fun logout() : String {
     return apiRequest { api.logout() }
   }
 

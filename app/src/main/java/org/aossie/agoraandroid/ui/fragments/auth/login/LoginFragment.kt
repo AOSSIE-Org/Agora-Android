@@ -168,6 +168,10 @@ constructor(
     enableBtnFacebook()
   }
 
+  override fun onSessionExpired() {
+    //do nothing
+  }
+
   private fun enableBtnFacebook() {
     binding.btnFacebookLogin.enableView()
   }

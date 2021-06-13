@@ -11,6 +11,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -62,7 +63,7 @@ constructor(
       } catch (e: ApiException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        mVerifyOtpResponse.value = Error(e.message.toString())
+        mVerifyOtpResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -94,7 +95,7 @@ constructor(
       } catch (e: ApiException) {
         mResendOtpResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        mResendOtpResponse.value = Error(e.message.toString())
+        mResendOtpResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         mResendOtpResponse.value = Error(e.message.toString())
       } catch (e: Exception) {

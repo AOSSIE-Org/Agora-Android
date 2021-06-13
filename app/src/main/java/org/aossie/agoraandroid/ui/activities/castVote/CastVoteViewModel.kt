@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class CastVoteViewModel
 @Inject
 constructor(
-  val electionsRepository: ElectionsRepository
+  val electionsRepository: ElectionsRepository,
+  val userRepository: UserRepository
 ) : ViewModel() {
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseResult>()
@@ -77,6 +79,12 @@ constructor(
       mCastVoteResponse.value = Error(e.message.toString())
     } catch (e: Exception) {
       mCastVoteResponse.value = Error(e.message.toString())
+    }
+  }
+
+  fun deleteUserData() {
+    Coroutines.main {
+      userRepository.deleteUser()
     }
   }
 }
