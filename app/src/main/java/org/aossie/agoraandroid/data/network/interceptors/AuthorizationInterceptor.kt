@@ -47,7 +47,7 @@ class AuthorizationInterceptor(
     return mainResponse
   }
 
-  private suspend fun renewTokenAndUpdateUser() : String? {
+  private suspend fun renewTokenAndUpdateUser(): String? {
     var user = appDatabase.getUserDao()
       .getUserInfo()
     if (prefs.getIsFacebookUser()) {
