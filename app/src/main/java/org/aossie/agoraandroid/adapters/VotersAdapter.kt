@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.adapters.VotersAdapter.VotersViewHolder
-import org.aossie.agoraandroid.data.db.model.VoterList
+import org.aossie.agoraandroid.data.dto.VotersDto
 
-class VotersAdapter(private val voters: List<VoterList>) : Adapter<VotersViewHolder>() {
+class VotersAdapter(private val voters: List<VotersDto>) : Adapter<VotersViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
@@ -28,8 +28,8 @@ class VotersAdapter(private val voters: List<VoterList>) : Adapter<VotersViewHol
     holder: VotersViewHolder,
     position: Int
   ) {
-    holder.voterName.text = voters[position].name
-    holder.voterEmail.text = voters[position].hash
+    holder.voterName.text = voters[position].voterName
+    holder.voterEmail.text = voters[position].voterEmail
   }
 
   override fun getItemCount(): Int {

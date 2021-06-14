@@ -31,6 +31,8 @@ import kotlinx.android.synthetic.main.fragment_sign_up.view.sign_up_security_que
 import kotlinx.android.synthetic.main.fragment_sign_up.view.signup_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
+import org.aossie.agoraandroid.data.dto.NewUserDto
+import org.aossie.agoraandroid.data.dto.SecurityQuestionDto
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
@@ -131,10 +133,7 @@ constructor(
       signup_email.error = "Enter a valid email address!!!"
     } else {
       signup_email.error = null
-      signUpViewModel.signUpRequest(
-        userName, userPass, userEmail, firstName, lastName,
-        securityQuestion!!, securityQuestionAnswer
-      )
+      signUpViewModel.signUpRequest(NewUserDto(userEmail, firstName, userName, lastName, userPass, SecurityQuestionDto(securityQuestionAnswer, "", securityQuestion!!)))
     }
   }
 

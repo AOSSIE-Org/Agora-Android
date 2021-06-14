@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.dto.UpdateUserDto
+import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
@@ -12,8 +14,6 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
-import org.json.JSONException
-import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -46,15 +46,10 @@ constructor(
     get() = _changeAvatarResponse
 
   fun changePassword(password: String) {
-    val jsonObject = JSONObject()
-    try {
-      jsonObject.put("password", password)
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
+
     Coroutines.main {
       try {
-        userRepository.changePassword(jsonObject.toString())
+        userRepository.changePassword(password)
         _passwordRequestCode.value = Success
       } catch (e: ApiException) {
         _passwordRequestCode.value = Error(e.message.toString())
@@ -72,17 +67,10 @@ constructor(
     url: String,
     user: User
   ) {
-    val jsonObject = JSONObject()
-    try {
-      jsonObject.put("url", url)
-      Timber.tag("change avatar")
-        .d(jsonObject.toString())
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
+
     Coroutines.main {
       try {
-        val response = userRepository.changeAvatar(jsonObject.toString())
+        val response = userRepository.changeAvatar(url)
         val authResponse = userRepository.getUserData()
         Timber.d(authResponse.toString())
         authResponse.let {
@@ -126,25 +114,18 @@ constructor(
   fun updateUser(
     user: User
   ) {
-    val jsonObject = JSONObject()
-    val tokenObject = JSONObject()
-    try {
-      jsonObject.put("username", user.username)
-      jsonObject.put("firstName", user.firstName)
-      jsonObject.put("lastName", user.lastName)
-      jsonObject.put("avatarURL", user.avatarURL)
-      jsonObject.put("email", user.email)
-      jsonObject.put("twoFactorAuthentication", user.twoFactorAuthentication)
-      tokenObject.put("token", user.token)
-      tokenObject.put("expiresOn", user.expiredAt)
-      jsonObject.put("token", tokenObject)
-      Timber.d(user.toString())
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
     Coroutines.main {
       try {
-        userRepository.updateUser(jsonObject.toString())
+        val updateUserDto = UpdateUserDto(
+          identifier = user.username ?: "",
+          email = user.email ?: "",
+          firstName = user.firstName,
+          lastName = user.lastName,
+          avatarURL = user.avatarURL,
+          twoFactorAuthentication = user.twoFactorAuthentication,
+          authToken = AuthToken(user.token, user.expiredAt)
+        )
+        userRepository.updateUser(updateUserDto)
         userRepository.saveUser(user)
         _userUpdateResponse.value = Success
       } catch (e: ApiException) {

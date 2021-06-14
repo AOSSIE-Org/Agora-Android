@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
@@ -39,7 +40,7 @@ constructor(
     }
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val authResponse = userRepository.userLogin(identifier, password, trustedDevice)
+        val authResponse = userRepository.userLogin(LoginDto(identifier, trustedDevice ?: "", password))
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
@@ -65,11 +66,11 @@ constructor(
     }
   }
 
-  fun facebookLogInRequest(accessToken: String?) {
+  fun facebookLogInRequest() {
     authListener!!.onStarted()
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val authResponse = userRepository.fbLogin(accessToken!!)
+        val authResponse = userRepository.fbLogin()
         getUserData(authResponse)
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {

@@ -23,7 +23,7 @@ class GetVotersTest : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(getVotersResponse))
     runBlocking {
       GlobalScope.launch {
-        val response: Response<*> = apiService.getVoters("authToken", "id")
+        val response: Response<*> = apiService.getVoters("id")
         Assert.assertEquals(response.body(), getVotersResponse)
       }
     }

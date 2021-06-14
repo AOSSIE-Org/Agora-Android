@@ -5,7 +5,8 @@
   "firstName": "James",
   "lastName": "Bond",
   "securityQuestion": {
-    "question": "What is your pet name?",
-    "answer": "Bruno"
+    "crypto": "string",
+    "question": "string",
+    "answer": "string"
   }
 }
