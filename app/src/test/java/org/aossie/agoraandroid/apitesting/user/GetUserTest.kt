@@ -24,7 +24,7 @@ class GetUserTest : BaseTest() {
     runBlocking {
       GlobalScope.launch {
         val response: Response<*> =
-          apiService.getUserData("authtoken")
+          apiService.getUserData()
         Assert.assertEquals(response.body(), getUserResponse)
       }
     }

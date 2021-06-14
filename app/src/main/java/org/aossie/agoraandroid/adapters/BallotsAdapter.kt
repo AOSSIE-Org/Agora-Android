@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.adapters.BallotsAdapter.BallotsViewHolder
-import org.aossie.agoraandroid.data.db.model.Ballot
+import org.aossie.agoraandroid.data.dto.BallotDto
 
-class BallotsAdapter(private val ballots: List<Ballot>) : Adapter<BallotsViewHolder>() {
+class BallotsAdapter(private val ballots: List<BallotDto>) : Adapter<BallotsViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,

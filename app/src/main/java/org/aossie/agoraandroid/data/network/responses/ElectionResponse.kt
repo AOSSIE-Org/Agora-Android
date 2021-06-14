@@ -1,32 +1,60 @@
 package org.aossie.agoraandroid.data.network.responses
 
-import org.aossie.agoraandroid.data.db.model.Ballot
-import org.aossie.agoraandroid.data.db.model.VoterList
-import org.aossie.agoraandroid.data.db.model.Winner
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.dto.WinnerDto
 
+@JsonClass(generateAdapter = true)
 data class ElectionResponse(
-  var _id: String? = null,
-  val name: String? = null,
-  val description: String? = null,
-  val electionType: String? = null,
-  val creatorName: String ? = null,
-  val creatorEmail: String ? = null,
-  val startingDate: String? = null,
-  val endingDate: String? = null,
-  val realtimeResult: String ? = null,
-  val votingAlgo: String ? = null,
-  val candidates: ArrayList<String> ? = null,
-  val ballotVisibility: String ? = null,
-  val voterListVisibility: String ? = null,
-  val isInvite: String ? = null,
-  val isCompleted: String ? = null,
-  val isStarted: String ? = null,
-  val createdTime: String ? = null,
-  val adminLink: String ? = null,
-  val inviteCode: String ? = null,
-  val ballot: ArrayList<Ballot> ? = null,
-  val voterList: ArrayList<VoterList> ? = null,
-  val winners: ArrayList<Winner> ? = null,
-  val isCounted: String ? = null,
-  val noVacancies: String ? = null
+  @Json(name = "adminLink")
+  val adminLink: String,
+  @Json(name = "ballot")
+  val ballot: List<BallotDto>,
+  @Json(name = "ballotVisibility")
+  val ballotVisibility: String,
+  @Json(name = "candidates")
+  val candidates: List<String>,
+  @Json(name = "createdTime")
+  val createdTime: String,
+  @Json(name = "creatorEmail")
+  val creatorEmail: String,
+  @Json(name = "creatorName")
+  val creatorName: String,
+  @Json(name = "description")
+  val description: String,
+  @Json(name = "electionType")
+  val electionType: String,
+  @Json(name = "end")
+  val end: String,
+  @Json(name = "_id")
+  val id: String,
+  @Json(name = "inviteCode")
+  val inviteCode: String,
+  @Json(name = "isCompleted")
+  val isCompleted: Boolean,
+  @Json(name = "isCounted")
+  val isCounted: Boolean,
+  @Json(name = "isInvite")
+  val isInvite: Boolean,
+  @Json(name = "isStarted")
+  val isStarted: Boolean,
+  @Json(name = "name")
+  val name: String,
+  @Json(name = "noVacancies")
+  val noVacancies: Int,
+  @Json(name = "realtimeResult")
+  val realtimeResult: Boolean,
+  @Json(name = "start")
+  val start: String,
+  @Json(name = "voterList")
+  val voterList: List<VotersDto>,
+  @Json(name = "voterListVisibility")
+  val voterListVisibility: Boolean,
+  @Json(name = "votingAlgo")
+  val votingAlgo: String,
+  @Json(name = "winners")
+  val winners: List<WinnerDto>,
+
 )

@@ -24,7 +24,7 @@ class GetBallotTest() : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(getBallotResponse))
     runBlocking {
       GlobalScope.launch {
-        val responseFromRequest: Response<*> = apiService.getBallot("authToken", "id")
+        val responseFromRequest: Response<*> = apiService.getBallot("authToken")
         Assert.assertEquals(responseFromRequest.body(), getBallotResponse)
       }
     }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
@@ -47,7 +48,7 @@ constructor(
     }
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val authResponse = userRepository.verifyOTP(otp, trustedDevice, crypto)
+        val authResponse = userRepository.verifyOTP(VerifyOtpDto(crypto, otp, trustedDevice))
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,

@@ -104,7 +104,7 @@ constructor(
                 if (currentDate.after(expiresOn)) {
                   Timber.tag("expired").d(expireOn.toString())
                   if (preferenceProvider.getIsFacebookUser()) {
-                    loginViewModel.facebookLogInRequest(preferenceProvider.getFacebookAccessToken())
+                    loginViewModel.facebookLogInRequest()
                   } else {
                     loginViewModel.logInRequest(
                       user.username!!, user.password!!, user.trustedDevice
