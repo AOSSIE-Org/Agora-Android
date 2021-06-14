@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import org.aossie.agoraandroid.R
@@ -127,62 +128,61 @@ constructor(
 
   private fun getElectionById() {
     Coroutines.main {
-      electionDetailsViewModel.getElectionById(id!!)
-        .observe(
-          viewLifecycleOwner,
-          {
-            if (it != null) {
-              Timber.d(it.toString())
-              binding.election = it
-              try {
-                val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-                val formattedStartingDate: Date = formatter.parse(it.start!!) as Date
-                val formattedEndingDate: Date = formatter.parse(it.end!!) as Date
-                val currentDate = Calendar.getInstance()
-                  .time
-                val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
-                // set end and start date
-                binding.tvEndDate.text = outFormat.format(formattedEndingDate)
-                binding.tvStartDate.text = outFormat.format(formattedStartingDate)
-                // set label color and election status
-                if (currentDate.before(formattedStartingDate)) {
-                  binding.label.text =
-                    PENDING_ELECTION_LABEL
-                  status = "PENDING"
-                  binding.label.setBackgroundResource(R.drawable.pending_election_label)
-                } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-                    formattedEndingDate
-                  )
-                ) {
-                  binding.label.text =
-                    ACTIVE_ELECTION_LABEL
-                  status = "ACTIVE"
-                  binding.label.setBackgroundResource(R.drawable.active_election_label)
-                } else if (currentDate.after(formattedEndingDate)) {
-                  binding.label.text =
-                    FINISHED_ELECTION_LABEL
-                  status = "FINISHED"
-                  binding.label.setBackgroundResource(R.drawable.finished_election_label)
-                }
-              } catch (e: ParseException) {
-                e.printStackTrace()
+      electionDetailsViewModel.getElectionById(id ?: "").observe(
+        viewLifecycleOwner,
+        Observer {
+          if (it != null) {
+            Timber.d(it.toString())
+            binding.election = it
+            try {
+              val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+              val formattedStartingDate: Date = formatter.parse(it.start!!) as Date
+              val formattedEndingDate: Date = formatter.parse(it.end!!) as Date
+              val currentDate = Calendar.getInstance()
+                .time
+              val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
+              // set end and start date
+              binding.tvEndDate.text = outFormat.format(formattedEndingDate)
+              binding.tvStartDate.text = outFormat.format(formattedStartingDate)
+              // set label color and election status
+              if (currentDate.before(formattedStartingDate)) {
+                binding.label.text =
+                  PENDING_ELECTION_LABEL
+                status = "PENDING"
+                binding.label.setBackgroundResource(R.drawable.pending_election_label)
+              } else if (currentDate.after(formattedStartingDate) && currentDate.before(
+                  formattedEndingDate
+                )
+              ) {
+                binding.label.text =
+                  ACTIVE_ELECTION_LABEL
+                status = "ACTIVE"
+                binding.label.setBackgroundResource(R.drawable.active_election_label)
+              } else if (currentDate.after(formattedEndingDate)) {
+                binding.label.text =
+                  FINISHED_ELECTION_LABEL
+                status = "FINISHED"
+                binding.label.setBackgroundResource(R.drawable.finished_election_label)
               }
-              // add candidates name
-              val mCandidatesName = StringBuilder()
-              val candidates = it.candidates
-              if (candidates != null) {
-                for (j in 0 until candidates.size) {
-                  mCandidatesName.append(candidates[j])
-                  if (j != candidates.size - 1) {
-                    mCandidatesName.append(", ")
-                  }
-                }
-              }
-              binding.tvCandidateList.text = mCandidatesName
-              binding.executePendingBindings()
+            } catch (e: ParseException) {
+              e.printStackTrace()
             }
+            // add candidates name
+            val mCandidatesName = StringBuilder()
+            val candidates = it.candidates
+            if (candidates != null) {
+              for (j in 0 until candidates.size) {
+                mCandidatesName.append(candidates[j])
+                if (j != candidates.size - 1) {
+                  mCandidatesName.append(", ")
+                }
+              }
+            }
+            binding.tvCandidateList.text = mCandidatesName
+            binding.executePendingBindings()
           }
-        )
+        }
+      )
     }
   }
 

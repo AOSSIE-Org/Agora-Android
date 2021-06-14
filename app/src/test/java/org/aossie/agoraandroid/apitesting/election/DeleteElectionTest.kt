@@ -10,6 +10,7 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
+import kotlin.jvm.Throws
 
 class DeleteElectionTest : BaseTest() {
 
@@ -17,16 +18,13 @@ class DeleteElectionTest : BaseTest() {
   @Throws(IOException::class)
   fun deleteElectionTest() {
 
-    val deleteElectionResponse: String = MockFileParser("responses/election_responses/delete_election_response.json").content
+    val deleteElectionDto: String = MockFileParser("responses/election_responses/delete_election_response.json").content
 
-    mockWebServer.enqueue(MockResponse().setBody(deleteElectionResponse))
+    mockWebServer.enqueue(MockResponse().setBody(deleteElectionDto))
     runBlocking {
       GlobalScope.launch {
-        val response: Response<*> = apiService.deleteElection(
-          "authToken",
-          "id"
-        )
-        Assert.assertEquals(response.body(), deleteElectionResponse)
+        val response: Response<*> = apiService.deleteElection("id")
+        Assert.assertEquals(response.body(), deleteElectionDto)
       }
     }
   }

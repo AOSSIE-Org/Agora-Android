@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.dto.NewUserDto
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -20,26 +21,12 @@ constructor(
 
   lateinit var authListener: AuthListener
   fun signUpRequest(
-    userName: String,
-    userPassword: String,
-    userEmail: String,
-    firstName: String,
-    lastName: String,
-    securityQuestion: String,
-    securityAnswer: String
+    userData: NewUserDto
   ) {
     authListener.onStarted()
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val call = userRepository.userSignup(
-          userName,
-          userPassword,
-          userEmail,
-          firstName,
-          lastName,
-          securityQuestion,
-          securityAnswer
-        )
+        val call = userRepository.userSignup(userData)
         Timber.d(call)
         authListener.onSuccess()
       } catch (e: ApiException) {

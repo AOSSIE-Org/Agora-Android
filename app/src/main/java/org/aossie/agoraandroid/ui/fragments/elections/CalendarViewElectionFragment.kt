@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.google.gson.Gson
 import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
@@ -26,7 +25,6 @@ import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
 import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
-import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -250,9 +248,6 @@ constructor(
     var eventViews: MutableList<View?>? = null
     var eventTimeRanges: MutableList<EventTimeRange?>? = null
     val events = allEvents!![day!!.timeInMillis]
-    val gson = Gson()
-    Timber.tag("on Event Change")
-      .d(gson.toJson(events) + " , day time in millis : " + day!!.timeInMillis)
     if (events != null) {
       Collections.sort(
         events
@@ -366,9 +361,6 @@ constructor(
         (endCalendar.timeInMillis - startCalendar.timeInMillis) / 60000
       events.add(Event(id, title, description, status, hour, minute, duration, eventColor))
       allEvents!![sDate.timeInMillis] = events
-      val gson = Gson()
-      Timber.tag("all Events")
-        .d(gson.toJson(allEvents))
       startCalendar.add(Calendar.DATE, 1)
       startCalendar.set(Calendar.HOUR, 0)
       startCalendar.set(Calendar.MINUTE, 0)

@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_voters.view.recycler_view_voters
 import kotlinx.android.synthetic.main.fragment_voters.view.tv_no_voters_for_this_election
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.VotersAdapter
-import org.aossie.agoraandroid.data.db.model.VoterList
+import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -53,7 +53,7 @@ constructor(
 
     rootView.recycler_view_voters.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-      val arr = ArrayList<VoterList>()
+      val arr = ArrayList<VotersDto>()
       adapter = VotersAdapter(arr)
     }
 
@@ -89,7 +89,7 @@ constructor(
     }
   }
 
-  private fun initRecyclerView(voters: List<VoterList>) {
+  private fun initRecyclerView(voters: List<VotersDto>) {
     if (voters.isEmpty()) {
       rootView.tv_no_voters_for_this_election.show()
     }
@@ -106,7 +106,7 @@ constructor(
         requireActivity(),
         Observer {
           if (it != null) {
-            initRecyclerView(it.voterList as List<VoterList>)
+            initRecyclerView(it.voterList as List<VotersDto>)
             rootView.progress_bar.hide()
           }
         }

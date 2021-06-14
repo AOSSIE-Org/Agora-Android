@@ -22,7 +22,7 @@ class FacebookLoginTest : BaseTest() {
     mockWebServer.enqueue(MockResponse().setBody(facebookLoginResponse))
     runBlocking {
       GlobalScope.launch {
-        val response: Response<*> = apiService.facebookLogin("authToken")
+        val response: Response<*> = apiService.facebookLogin()
         Assert.assertEquals(response.body(), facebookLoginResponse)
       }
     }

@@ -1,67 +1,74 @@
 package org.aossie.agoraandroid.utilities
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import org.aossie.agoraandroid.data.db.model.Ballot
-import org.aossie.agoraandroid.data.db.model.VoterList
-import org.aossie.agoraandroid.data.db.model.Winner
-import java.lang.reflect.Type
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.dto.WinnerDto
 
 class Converters {
   companion object {
     @TypeConverter
     @JvmStatic
-    fun fromString(value: String?): ArrayList<String> {
-      val listType: Type = object : TypeToken<ArrayList<String?>?>() {}.type
-      return Gson().fromJson(value, listType)
+    fun fromString(value: String?): List<String> {
+      val type = Types.newParameterizedType(List::class.java, String::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<String>>(type)
+      return adapter.fromJson(value ?: "") ?: listOf()
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromArrayList(list: ArrayList<String?>?): String {
-      val gson = Gson()
-      return gson.toJson(list)
+    fun fromList(list: List<String>?): String {
+      val type = Types.newParameterizedType(List::class.java, String::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<String>>(type)
+      return adapter.toJson(list)
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromBallotString(value: String?): ArrayList<Ballot> {
-      val listType: Type = object : TypeToken<ArrayList<Ballot?>?>() {}.type
-      return Gson().fromJson(value, listType)
+    fun fromBallotString(value: String?): List<BallotDto> {
+      val type = Types.newParameterizedType(List::class.java, BallotDto::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<BallotDto>>(type)
+      return adapter.fromJson(value ?: "") ?: listOf()
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromBallotArrayList(list: ArrayList<Ballot?>?): String {
-      val gson = Gson()
-      return gson.toJson(list)
+    fun fromBallotList(list: List<BallotDto>?): String {
+      val type = Types.newParameterizedType(List::class.java, BallotDto::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<BallotDto>>(type)
+      return adapter.toJson(list)
     }
     @TypeConverter
     @JvmStatic
-    fun fromVotersString(value: String?): ArrayList<VoterList> {
-      val listType: Type = object : TypeToken<ArrayList<VoterList?>?>() {}.type
-      return Gson().fromJson(value, listType)
-    }
-
-    @TypeConverter
-    @JvmStatic
-    fun fromVotersArrayList(list: ArrayList<VoterList?>?): String {
-      val gson = Gson()
-      return gson.toJson(list)
-    }
-    @TypeConverter
-    @JvmStatic
-    fun fromWinnersString(value: String?): ArrayList<Winner> {
-      val listType: Type = object : TypeToken<ArrayList<Winner?>?>() {}.type
-      return Gson().fromJson(value, listType)
+    fun fromVotersString(value: String?): List<VotersDto> {
+      val type = Types.newParameterizedType(List::class.java, VotersDto::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<VotersDto>>(type)
+      return adapter.fromJson(value ?: "") ?: listOf()
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromWinnersArrayList(list: ArrayList<Winner?>?): String {
-      val gson = Gson()
-      return gson.toJson(list)
+    fun fromVotersList(list: List<VotersDto>?): String {
+      val type = Types.newParameterizedType(List::class.java, VotersDto::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<VotersDto>>(type)
+      return adapter.toJson(list)
+    }
+    @TypeConverter
+    @JvmStatic
+    fun fromWinnersString(value: String?): List<WinnerDto> {
+      val type = Types.newParameterizedType(List::class.java, WinnerDto::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<WinnerDto>>(type)
+      return adapter.fromJson(value ?: "") ?: listOf()
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromWinnersList(list: List<WinnerDto>?): String {
+      val type = Types.newParameterizedType(List::class.java, WinnerDto::class.java)
+      val adapter = Moshi.Builder().build().adapter<List<WinnerDto>>(type)
+      return adapter.toJson(list)
     }
   }
 }

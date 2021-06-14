@@ -16,7 +16,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.db.model.Winner
+import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
@@ -96,7 +96,7 @@ constructor(
     )
   }
 
-  private fun initResultView(winner: Winner) {
+  private fun initResultView(winner: WinnerDto) {
     binding.tvNoResult.hide()
     binding.resultView.visibility = View.VISIBLE
     val pieChart = binding.pieChart

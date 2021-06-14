@@ -78,7 +78,7 @@ constructor(
           override fun onSuccess(loginResult: LoginResult?) {
             Timber.d("Success")
             prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
-            loginViewModel.facebookLogInRequest(loginResult.accessToken.token)
+            loginViewModel.facebookLogInRequest()
           }
 
           override fun onCancel() {

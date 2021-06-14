@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_ballot.view.recycler_view_ballots
 import kotlinx.android.synthetic.main.fragment_ballot.view.tv_empty_ballots
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.BallotsAdapter
-import org.aossie.agoraandroid.data.db.model.Ballot
+import org.aossie.agoraandroid.data.dto.BallotDto
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -54,7 +54,7 @@ constructor(
 
     rootView.recycler_view_ballots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-      val arr = ArrayList<Ballot>()
+      val arr = ArrayList<BallotDto>()
       adapter = BallotsAdapter(arr)
     }
 
@@ -90,7 +90,7 @@ constructor(
     }
   }
 
-  private fun initRecyclerView(ballots: List<Ballot>) {
+  private fun initRecyclerView(ballots: List<BallotDto>) {
     if (ballots.isEmpty()) {
       rootView.tv_empty_ballots.show()
     }
@@ -106,7 +106,7 @@ constructor(
       electionDetailsViewModel.getElectionById(id!!).observe(
         requireActivity(),
         Observer {
-          initRecyclerView(it.ballot as List<Ballot>)
+          initRecyclerView(it.ballot as List<BallotDto>)
           rootView.progress_bar.hide()
         }
       )
