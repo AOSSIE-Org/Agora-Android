@@ -47,6 +47,11 @@ class AppModule {
       context
     )
   }
+  @Provides
+  @Singleton
+  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider): HeaderInterceptor {
+    return HeaderInterceptor(preferenceProvider)
+  }
 
   @Provides
   @Singleton
