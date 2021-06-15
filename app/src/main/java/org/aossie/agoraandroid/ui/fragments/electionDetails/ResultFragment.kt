@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.components.Description
@@ -18,7 +19,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -38,6 +39,10 @@ constructor(
   lateinit var binding: FragmentResultBinding
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -146,6 +151,6 @@ constructor(
   }
 
   override fun onSessionExpired() {
-    (activity as MainActivity).logout()
+    hostViewModel.setLogout(true)
   }
 }

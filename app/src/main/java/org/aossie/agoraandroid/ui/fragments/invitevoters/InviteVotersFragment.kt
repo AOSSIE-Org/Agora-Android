@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -27,7 +28,7 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.ui.activities.main.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -54,6 +55,9 @@ constructor(
   private val mVoterNames = ArrayList<String>()
   private val mVoterEmails = ArrayList<String>()
   private val inviteVotersViewModel: InviteVotersViewModel by viewModels {
+    viewModelFactory
+  }
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
   private var voterRecyclerAdapter: VoterRecyclerAdapter? = null
@@ -186,7 +190,7 @@ constructor(
   }
 
   override fun onSessionExpired() {
-    (activity as MainActivity).logout()
+    hostViewModel.setLogout(true)
   }
 
   private fun emailValidator(

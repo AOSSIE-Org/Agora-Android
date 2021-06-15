@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -32,7 +33,7 @@ import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
@@ -70,6 +71,10 @@ constructor(
   private lateinit var mUser: User
 
   private val viewModel: ProfileViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -192,7 +197,7 @@ constructor(
   }
 
   override fun onSessionExpired() {
-    (activity as MainActivity).logout()
+    hostViewModel.setLogout(true)
   }
 
   private fun decodeBitmap(encodedBitmap: String): Bitmap {

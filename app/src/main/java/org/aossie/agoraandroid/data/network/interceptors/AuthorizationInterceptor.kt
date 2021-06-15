@@ -24,16 +24,11 @@ class AuthorizationInterceptor(
   override fun intercept(chain: Interceptor.Chain): Response {
     val request = chain.request()
     val mainResponse = chain.proceed(request)
-    var tryCount = AppConstants.retryCount
 
     // if response code is 401, network call has encountered authentication error
-    while (mainResponse.code == AppConstants.UNAUTHENTICATED_CODE) {
+    if (mainResponse.code == AppConstants.UNAUTHENTICATED_CODE) {
       if (prefs.getIsLoggedIn()) {
         runBlocking {
-          if (tryCount == 0) {
-            throw SessionExpirationException()
-          }
-          tryCount--
           val newToken = renewTokenAndUpdateUser()
           prefs.setAccessToken(newToken)
         }
@@ -47,38 +42,24 @@ class AuthorizationInterceptor(
   }
 
   private suspend fun renewTokenAndUpdateUser(): String? {
-    var user = appDatabase.getUserDao()
-      .getUserInfo()
-    if (prefs.getIsFacebookUser()) {
-      val response = api.facebookLogin()
-      if (response.isSuccessful) {
-        // save new access token
-        prefs.setAccessToken(response.body()?.authToken?.token)
-        user.authToken = response.body()?.authToken?.token
-        user.authTokenExpiresOn = response.body()?.authToken?.expiresOn
-      } else {
-        throw SessionExpirationException()
+    val refreshAccessResponse = api.refreshAccessToken()
+    if (refreshAccessResponse.isSuccessful) {
+      val authResponse: AuthResponse? = refreshAccessResponse.body()
+      authResponse.let {
+        val user = User(
+          it?.username, it?.email, it?.firstName, it?.lastName, it?.avatarURL,
+          it?.crypto, it?.twoFactorAuthentication,
+          it?.authToken?.token, it?.authToken?.expiresOn, it?.refreshToken?.token,
+          it?.refreshToken?.expiresOn, it?.trustedDevice
+        )
+        appDatabase.getUserDao()
+          .replace(user)
+        Timber.d(authResponse.toString())
+        return user.authToken
       }
     } else {
-      val loginResponse = api.refreshAccessToken()
-      if (loginResponse.isSuccessful) {
-        val authResponse: AuthResponse? = loginResponse.body()
-        authResponse.let {
-          user = User(
-            it?.username, it?.email, it?.firstName, it?.lastName, it?.avatarURL,
-            it?.crypto, it?.twoFactorAuthentication,
-            it?.authToken?.token, it?.authToken?.expiresOn, it?.refreshToken?.token,
-            it?.refreshToken?.expiresOn, user.trustedDevice
-          )
-          Timber.d(authResponse.toString())
-        }
-      } else {
-        throw SessionExpirationException()
-      }
+      throw SessionExpirationException()
     }
-    appDatabase.getUserDao()
-      .replace(user)
-    return user.authToken
   }
 
   private fun updateRequestWithToken(request: Request): Request {

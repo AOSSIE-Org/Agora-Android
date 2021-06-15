@@ -82,6 +82,13 @@ class MainActivity : AppCompatActivity() {
     bottom_navigation.setOnNavigationItemReselectedListener {
       println()
     }
+
+    viewModel.isLogout.observe(
+      this,
+      {
+        if (it) logout()
+      }
+    )
   }
 
   private fun setToolbar(destination: NavDestination) {
@@ -111,11 +118,10 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
         supportActionBar?.hide()
       }
-      else ->
-        {
-          window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
-          supportActionBar?.show()
-        }
+      else -> {
+        window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        supportActionBar?.show()
+      }
     }
   }
 
@@ -147,6 +153,7 @@ class MainActivity : AppCompatActivity() {
       else -> iv_back.visibility = View.GONE
     }
   }
+
   override fun onActivityResult(
     requestCode: Int,
     resultCode: Int,

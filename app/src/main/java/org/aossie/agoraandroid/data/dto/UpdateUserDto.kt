@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.data.dto
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.aossie.agoraandroid.data.network.responses.AuthToken
-import org.aossie.agoraandroid.data.network.responses.RefreshToken
 
 @JsonClass(generateAdapter = true)
 data class UpdateUserDto(
@@ -25,5 +24,5 @@ data class UpdateUserDto(
   @Json(name = "authToken")
   val authToken: AuthToken? = null,
   @Json(name = "refreshToken")
-  val refreshToken: RefreshToken? = null,
+  val refreshToken: AuthToken? = null,
 )

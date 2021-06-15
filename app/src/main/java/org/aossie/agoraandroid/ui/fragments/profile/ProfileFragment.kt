@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -39,7 +40,7 @@ import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpi
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
@@ -83,6 +84,10 @@ constructor(
   }
 
   private val homeViewModel: HomeViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -299,7 +304,7 @@ constructor(
       binding.root.snackbar(response.error.toString())
     }
     is SessionExpired -> {
-      (activity as MainActivity).logout()
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -315,7 +320,7 @@ constructor(
       binding.root.snackbar(response.error.toString())
     }
     is SessionExpired -> {
-      (activity as MainActivity).logout()
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -331,7 +336,7 @@ constructor(
       binding.root.snackbar(response.error.toString())
     }
     is SessionExpired -> {
-      (activity as MainActivity).logout()
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -350,7 +355,7 @@ constructor(
       binding.root.snackbar(response.error.toString())
     }
     is SessionExpired -> {
-      (activity as MainActivity).logout()
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -445,7 +450,7 @@ constructor(
   }
 
   override fun onSessionExpired() {
-    (activity as MainActivity).logout()
+    hostViewModel.setLogout(true)
   }
 
   override fun onActivityResult(

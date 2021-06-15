@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +22,7 @@ import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
-import org.aossie.agoraandroid.ui.activities.main.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -40,6 +41,10 @@ constructor(
   private var user: User? = null
 
   private val viewModel: TwoFactorAuthViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -119,7 +124,7 @@ constructor(
       rootView.snackbar(response.error.toString())
     }
     is SessionExpired -> {
-      (activity as MainActivity).logout()
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -133,7 +138,7 @@ constructor(
       rootView.snackbar(response.error.toString())
     }
     is SessionExpired -> {
-      (activity as MainActivity).logout()
+      hostViewModel.setLogout(true)
     }
   }
 }

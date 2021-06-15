@@ -49,10 +49,10 @@ constructor(
   fun verifyVoter(id: String) {
     try {
       Coroutines.main {
-        val ElectionDto = electionsRepository.verifyVoter(id)
-        ElectionDto._id = id
+        val electionDto = electionsRepository.verifyVoter(id)
+        electionDto._id = id
         mVerifyVoterResponse.value = Success
-        mElection.value = ElectionDto
+        mElection.value = electionDto
       }
     } catch (e: ApiException) {
       mVerifyVoterResponse.value = Error(e.message.toString())

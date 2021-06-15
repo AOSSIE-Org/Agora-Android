@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_forgot_password.view.button_send_link
 import kotlinx.android.synthetic.main.fragment_forgot_password.view.edit_text_user_name
 import kotlinx.android.synthetic.main.fragment_forgot_password.view.progress_bar
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.ui.activities.main.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
@@ -30,6 +31,10 @@ constructor(
 ) : Fragment(), AuthListener {
 
   private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -77,6 +82,6 @@ constructor(
   }
 
   override fun onSessionExpired() {
-    (activity as MainActivity).logout()
+    hostViewModel.setLogout(true)
   }
 }
