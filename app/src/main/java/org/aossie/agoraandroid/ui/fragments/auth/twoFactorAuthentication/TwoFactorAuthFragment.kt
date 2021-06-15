@@ -21,7 +21,7 @@ import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
-import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show

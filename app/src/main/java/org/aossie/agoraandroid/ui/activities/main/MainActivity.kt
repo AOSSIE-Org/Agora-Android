@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.activities.mainActivity
+package org.aossie.agoraandroid.ui.activities.main
 
 import android.content.Intent
 import android.os.Bundle

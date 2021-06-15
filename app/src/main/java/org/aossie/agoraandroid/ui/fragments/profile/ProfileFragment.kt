@@ -39,7 +39,7 @@ import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpi
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
-import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel

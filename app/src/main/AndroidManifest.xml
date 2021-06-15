@@ -40,7 +40,7 @@
       </intent-filter>
     </activity>
     <activity
-        android:name=".ui.activities.mainActivity.MainActivity"
+        android:name=".ui.activities.main.MainActivity"
         android:configChanges="orientation|screenSize"
         android:theme="@style/SplashTheme"
         android:windowSoftInputMode="adjustResize|stateVisible">

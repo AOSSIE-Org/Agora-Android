@@ -54,9 +54,9 @@ class AuthorizationInterceptor(
       val response = api.facebookLogin()
       if (response.isSuccessful) {
         // save new access token
-        prefs.setCurrentToken(response.body()!!.authToken?.token)
-        user.token = response.body()!!.authToken?.token
-        user.expiredAt = response.body()!!.authToken?.expiresOn
+        prefs.setCurrentToken(response.body()?.authToken?.token)
+        user.token = response.body()?.authToken?.token
+        user.expiredAt = response.body()?.authToken?.expiresOn
       } else {
         throw SessionExpirationException()
       }

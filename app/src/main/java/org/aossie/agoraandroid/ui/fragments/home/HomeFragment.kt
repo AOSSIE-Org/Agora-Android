@@ -25,7 +25,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.Coroutines

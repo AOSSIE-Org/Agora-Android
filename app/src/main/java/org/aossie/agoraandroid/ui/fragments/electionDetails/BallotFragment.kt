@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_ballot.view.tv_empty_ballots
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.BallotsAdapter
 import org.aossie.agoraandroid.data.dto.BallotDto
-import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show

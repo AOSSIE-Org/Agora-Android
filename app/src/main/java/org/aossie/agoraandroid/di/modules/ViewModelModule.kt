@@ -8,7 +8,7 @@ import dagger.multibindings.IntoMap
 import org.aossie.agoraandroid.di.utils.ViewModelFactory
 import org.aossie.agoraandroid.di.utils.ViewModelKey
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel
-import org.aossie.agoraandroid.ui.activities.mainActivity.MainActivityViewModel
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpViewModel
