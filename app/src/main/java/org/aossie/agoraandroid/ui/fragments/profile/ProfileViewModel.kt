@@ -71,14 +71,15 @@ constructor(
 
     Coroutines.main {
       try {
-        val response = userRepository.changeAvatar(url)
+        userRepository.changeAvatar(url)
         val authResponse = userRepository.getUserData()
         Timber.d(authResponse.toString())
         authResponse.let {
           val mUser = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL,
-            it.crypto, it.twoFactorAuthentication, user.token,
-            user.expiredAt, user.password, user.trustedDevice
+            it.crypto, it.twoFactorAuthentication, user.authToken,
+            user.authTokenExpiresOn, user.refreshToken, user.refreshTokenExpiresOn,
+            user.trustedDevice
           )
           userRepository.saveUser(mUser)
         }
@@ -124,7 +125,7 @@ constructor(
           lastName = user.lastName,
           avatarURL = user.avatarURL,
           twoFactorAuthentication = user.twoFactorAuthentication,
-          authToken = AuthToken(user.token, user.expiredAt)
+          authToken = AuthToken(user.authToken, user.authTokenExpiresOn)
         )
         userRepository.updateUser(updateUserDto)
         userRepository.saveUser(user)

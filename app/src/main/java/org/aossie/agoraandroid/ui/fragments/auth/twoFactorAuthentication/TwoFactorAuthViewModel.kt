@@ -40,7 +40,6 @@ constructor(
   fun verifyOTP(
     otp: String,
     trustedDevice: Boolean,
-    password: String,
     crypto: String
   ) {
     if (otp.isEmpty()) {
@@ -54,7 +53,8 @@ constructor(
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, it.trustedDevice
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
@@ -74,7 +74,6 @@ constructor(
 
   fun resendOTP(
     username: String,
-    password: String
   ) {
     if (username.isEmpty()) {
       mResendOtpResponse.value = Error("Login Again")
@@ -87,7 +86,8 @@ constructor(
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, it.trustedDevice
           )
           userRepository.saveUser(user)
           mResendOtpResponse.value = Success

@@ -197,8 +197,6 @@ constructor(
           binding.confirmPasswordTil.error = getString(string.password_empty_warn)
         newPass != conPass ->
           binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
-        newPass == mUser.password ->
-          binding.newPasswordTil.error = getString(string.password_same_oldpassword_warn)
         else -> updateUIAndChangePassword()
       }
     }
@@ -310,7 +308,6 @@ constructor(
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.user_updated))
-      loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
     }
     is Error -> {
       binding.progressBar.hide()
@@ -374,9 +371,6 @@ constructor(
               s.isNullOrEmpty() ->
                 binding.newPasswordTil.error =
                   getString(string.password_empty_warn)
-              s.toString() == mUser.password ->
-                binding.newPasswordTil.error =
-                  getString(string.password_same_oldpassword_warn)
               else -> binding.newPasswordTil.error = null
             }
             checkNewPasswordAndConfirmPassword(s)
@@ -414,7 +408,9 @@ constructor(
   }
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
-    if (s.toString() == binding.confirmPasswordTiet.text.toString().trim()) {
+    if (s.toString() == binding.confirmPasswordTiet.text.toString()
+        .trim()
+    ) {
       binding.confirmPasswordTil.error = null
     } else {
       if (!binding.confirmPasswordTiet.text.isNullOrEmpty()) {

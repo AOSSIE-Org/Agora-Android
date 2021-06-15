@@ -36,7 +36,6 @@ constructor(
 
   private lateinit var rootView: View
 
-  private var password: String? = null
   private var crypto: String? = null
   private var user: User? = null
 
@@ -51,7 +50,6 @@ constructor(
   ): View? {
     rootView = inflater.inflate(R.layout.fragment_two_factor_auth, container, false)
 
-    password = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).password
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
 
     viewModel.user.observe(
@@ -76,7 +74,7 @@ constructor(
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
         if (rootView.cb_trusted_device.isChecked) {
           viewModel.verifyOTP(
-            otp, rootView.cb_trusted_device.isChecked, password!!, user!!.crypto!!
+            otp, rootView.cb_trusted_device.isChecked, user!!.crypto!!
           )
         } else {
           rootView.progress_bar.hide()
@@ -88,7 +86,7 @@ constructor(
     rootView.tv_resend_otp.setOnClickListener {
       if (user != null) {
         rootView.progress_bar.show()
-        viewModel.resendOTP(user!!.username!!, user!!.password!!)
+        viewModel.resendOTP(user!!.username!!)
       } else {
         rootView.snackbar("Please try again")
       }

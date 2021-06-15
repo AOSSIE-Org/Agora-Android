@@ -40,18 +40,21 @@ constructor(
     }
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val authResponse = userRepository.userLogin(LoginDto(identifier, trustedDevice ?: "", password))
+        val authResponse =
+          userRepository.userLogin(LoginDto(identifier, trustedDevice ?: "", password))
         authResponse.let {
           val user = User(
-            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, trustedDevice
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
+            it.twoFactorAuthentication,
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, trustedDevice
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
           if (!it.twoFactorAuthentication!!) {
             authListener?.onSuccess()
           } else {
-            loginListener?.onTwoFactorAuthentication(password, user.crypto!!)
+            loginListener?.onTwoFactorAuthentication(user.crypto!!)
           }
         }
       } catch (e: ApiException) {
@@ -62,6 +65,27 @@ constructor(
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {
         authListener?.onFailure(e.message!!)
+      }
+    }
+  }
+
+  fun refreshAccessToken(
+    trustedDevice: String? = null
+  ) {
+    viewModelScope.launch(Dispatchers.Main) {
+      try {
+        val authResponse = userRepository.refreshAccessToken()
+        authResponse.let {
+          val user = User(
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
+            it.twoFactorAuthentication,
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, trustedDevice
+          )
+          userRepository.saveUser(user)
+        }
+      } catch (e: Exception) {
+        authListener?.onSessionExpired()
       }
     }
   }
@@ -91,7 +115,9 @@ constructor(
         val user = User(
           authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName,
           authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
-          authResponse.authToken?.token, authResponse.authToken?.expiresOn
+          authResponse.authToken?.token, authResponse.authToken?.expiresOn,
+          authResponse.refreshToken?.token, authResponse.refreshToken?.expiresOn,
+          authResponse.trustedDevice
         )
         userRepository.saveUser(user)
         Timber.d(authResponse.toString())

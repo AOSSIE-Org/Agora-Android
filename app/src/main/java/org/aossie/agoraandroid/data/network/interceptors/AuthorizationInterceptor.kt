@@ -7,7 +7,6 @@ import okhttp3.Response
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
@@ -36,7 +35,7 @@ class AuthorizationInterceptor(
           }
           tryCount--
           val newToken = renewTokenAndUpdateUser()
-          prefs.setCurrentToken(newToken)
+          prefs.setAccessToken(newToken)
         }
         mainResponse.close()
         return chain.proceed(updateRequestWithToken(request))
@@ -54,22 +53,22 @@ class AuthorizationInterceptor(
       val response = api.facebookLogin()
       if (response.isSuccessful) {
         // save new access token
-        prefs.setCurrentToken(response.body()?.authToken?.token)
-        user.token = response.body()?.authToken?.token
-        user.expiredAt = response.body()?.authToken?.expiresOn
+        prefs.setAccessToken(response.body()?.authToken?.token)
+        user.authToken = response.body()?.authToken?.token
+        user.authTokenExpiresOn = response.body()?.authToken?.expiresOn
       } else {
         throw SessionExpirationException()
       }
     } else {
-      val loginResponse =
-        api.logIn(LoginDto(user.username ?: "", user.trustedDevice ?: "", user.password ?: ""))
+      val loginResponse = api.refreshAccessToken()
       if (loginResponse.isSuccessful) {
         val authResponse: AuthResponse? = loginResponse.body()
         authResponse.let {
           user = User(
             it?.username, it?.email, it?.firstName, it?.lastName, it?.avatarURL,
             it?.crypto, it?.twoFactorAuthentication,
-            it?.authToken?.token, it?.authToken?.expiresOn, user.password, user.trustedDevice
+            it?.authToken?.token, it?.authToken?.expiresOn, it?.refreshToken?.token,
+            it?.refreshToken?.expiresOn, user.trustedDevice
           )
           Timber.d(authResponse.toString())
         }
@@ -79,12 +78,12 @@ class AuthorizationInterceptor(
     }
     appDatabase.getUserDao()
       .replace(user)
-    return user.token
+    return user.authToken
   }
 
   private fun updateRequestWithToken(request: Request): Request {
     return request.newBuilder()
-      .header(AppConstants.X_AUTH_TOKEN, prefs.getCurrentToken() ?: "")
+      .header(AppConstants.X_AUTH_TOKEN, prefs.getAccessToken() ?: "")
       .build()
   }
 }
