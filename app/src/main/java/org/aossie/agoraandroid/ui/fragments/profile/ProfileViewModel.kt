@@ -7,6 +7,7 @@ import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.network.responses.AuthToken
+import org.aossie.agoraandroid.data.network.responses.RefreshToken
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
@@ -125,7 +126,8 @@ constructor(
           lastName = user.lastName,
           avatarURL = user.avatarURL,
           twoFactorAuthentication = user.twoFactorAuthentication,
-          authToken = AuthToken(user.authToken, user.authTokenExpiresOn)
+          authToken = AuthToken(user.authToken, user.authTokenExpiresOn),
+          refreshToken = RefreshToken(user.refreshToken, user.refreshTokenExpiresOn)
         )
         userRepository.updateUser(updateUserDto)
         userRepository.saveUser(user)
