@@ -185,4 +185,8 @@ constructor(
     rootView.progress_bar.hide()
     rootView.signup_btn.toggleIsEnable()
   }
+
+  override fun onSessionExpired() {
+    // do nothing
+  }
 }

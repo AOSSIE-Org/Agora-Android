@@ -65,7 +65,7 @@ constructor(
       } catch (e: ApiException) {
         authListener?.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
+        authListener?.onSessionExpired()
       } catch (e: NoInternetException) {
         authListener?.onFailure(e.message!!)
       } catch (e: Exception) {

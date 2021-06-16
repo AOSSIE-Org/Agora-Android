@@ -11,6 +11,7 @@ import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -39,7 +40,6 @@ constructor(
   fun verifyOTP(
     otp: String,
     trustedDevice: Boolean,
-    password: String,
     crypto: String
   ) {
     if (otp.isEmpty()) {
@@ -53,7 +53,8 @@ constructor(
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, it.trustedDevice
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
@@ -62,7 +63,7 @@ constructor(
       } catch (e: ApiException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        mVerifyOtpResponse.value = Error(e.message.toString())
+        mVerifyOtpResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         mVerifyOtpResponse.value = Error(e.message.toString())
       } catch (e: Exception) {
@@ -73,7 +74,6 @@ constructor(
 
   fun resendOTP(
     username: String,
-    password: String
   ) {
     if (username.isEmpty()) {
       mResendOtpResponse.value = Error("Login Again")
@@ -86,7 +86,8 @@ constructor(
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, it.trustedDevice
           )
           userRepository.saveUser(user)
           mResendOtpResponse.value = Success
@@ -94,7 +95,7 @@ constructor(
       } catch (e: ApiException) {
         mResendOtpResponse.value = Error(e.message.toString())
       } catch (e: SessionExpirationException) {
-        mResendOtpResponse.value = Error(e.message.toString())
+        mResendOtpResponse.value = SessionExpired
       } catch (e: NoInternetException) {
         mResendOtpResponse.value = Error(e.message.toString())
       } catch (e: Exception) {

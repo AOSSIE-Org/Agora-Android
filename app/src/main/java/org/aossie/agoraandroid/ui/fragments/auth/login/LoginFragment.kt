@@ -168,6 +168,10 @@ constructor(
     enableBtnFacebook()
   }
 
+  override fun onSessionExpired() {
+    // do nothing
+  }
+
   private fun enableBtnFacebook() {
     binding.btnFacebookLogin.enableView()
   }
@@ -177,7 +181,6 @@ constructor(
   }
 
   override fun onTwoFactorAuthentication(
-    password: String,
     crypto: String
   ) {
     loginViewModel.getLoggedInUser()
@@ -188,7 +191,7 @@ constructor(
             if (it.twoFactorAuthentication!!) {
               binding.root.snackbar(getString(R.string.otp_sent))
               val action =
-                LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(password, crypto)
+                LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(crypto)
               Navigation.findNavController(binding.root)
                 .navigate(action)
             }

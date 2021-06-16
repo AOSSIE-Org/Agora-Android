@@ -29,6 +29,10 @@ class UserRepository(
     return apiRequest { api.logIn(loginData) }
   }
 
+  suspend fun refreshAccessToken(): AuthResponse {
+    return apiRequest { api.refreshAccessToken() }
+  }
+
   suspend fun verifyOTP(otpData: VerifyOtpDto): AuthResponse {
     return apiRequest { api.verifyOTP(otpData) }
   }
@@ -42,27 +46,33 @@ class UserRepository(
   }
 
   suspend fun saveUser(user: User) {
-    appDatabase.getUserDao().removeUser()
-    appDatabase.getUserDao().insert(user)
-    if (user.token != null) {
+    appDatabase.getUserDao()
+      .removeUser()
+    appDatabase.getUserDao()
+      .insert(user)
+    if (user.authToken != null) {
       Timber.d("saved")
       preferenceProvider.setIsLoggedIn(true)
-      preferenceProvider.setCurrentToken(user.token)
+      preferenceProvider.setAccessToken(user.authToken)
+      preferenceProvider.setRefreshToken(user.refreshToken)
     }
   }
 
-  suspend fun logout(): String {
+  suspend fun logout() {
     return apiRequest { api.logout() }
   }
 
   fun getUser(): LiveData<User> {
-    return appDatabase.getUserDao().getUser()
+    return appDatabase.getUserDao()
+      .getUser()
   }
 
   suspend fun deleteUser() {
-    appDatabase.getUserDao().removeUser()
+    appDatabase.getUserDao()
+      .removeUser()
     preferenceProvider.clearData()
-    appDatabase.getElectionDao().deleteAllElections()
+    appDatabase.getElectionDao()
+      .deleteAllElections()
   }
 
   suspend fun sendForgotPasswordLink(username: String?): String {

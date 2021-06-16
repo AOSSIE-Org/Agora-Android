@@ -29,6 +29,9 @@ interface Api {
   @POST("auth/login")
   suspend fun logIn(@Body loginDto: LoginDto): Response<AuthResponse>
 
+  @GET("auth/refreshAccessToken")
+  suspend fun refreshAccessToken(): Response<AuthResponse>
+
   @POST("verifyOtp")
   suspend fun verifyOTP(@Body verifyOtpDto: VerifyOtpDto): Response<AuthResponse>
 
@@ -55,10 +58,13 @@ interface Api {
 
   // POST the list of voters to election
   @POST("election/{id}/voters")
-  suspend fun sendVoters(@Path("id") id: String?, @Body votersDto: List<VotersDto>): Response<List<String>>
+  suspend fun sendVoters(
+    @Path("id") id: String?,
+    @Body votersDto: List<VotersDto>
+  ): Response<List<String>>
 
   @GET("user/logout")
-  suspend fun logout(): Response<String>
+  suspend fun logout(): Response<Unit>
 
   // POST request to create a new election
   @POST("election")
@@ -92,7 +98,10 @@ interface Api {
   suspend fun verifyVoter(@Path("id") id: String?): Response<ElectionDto>
 
   @POST("vote/{id}")
-  suspend fun castVote(@Path("id") id: String?, @Body body: CastVoteDto): Response<List<String>>
+  suspend fun castVote(
+    @Path("id") id: String?,
+    @Body body: CastVoteDto
+  ): Response<List<String>>
 
   @GET("result/{id}")
   suspend fun getResult(@Path("id") id: String?): Response<List<WinnerDto>>

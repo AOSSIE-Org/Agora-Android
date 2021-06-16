@@ -8,7 +8,8 @@ import javax.inject.Inject
 private const val IS_LOGGED_IN = "isLoggedIn"
 private const val IS_FACEBOOK_USER = "isFacebookUser"
 private const val IS_UPDATE_NEEDED = "isUpdateNeeded"
-private const val ACCESS_TOKEN = "token"
+private const val ACCESS_TOKEN = "accessToken"
+private const val REFRESH_TOKEN = "refreshToken"
 private const val FACEBOOK_ACCESS_TOKEN = "facebookAccessToken"
 
 class PreferenceProvider
@@ -21,10 +22,12 @@ constructor(
     get() = PreferenceManager.getDefaultSharedPreferences(appContext)
 
   fun setIsLoggedIn(boolean: Boolean) {
-    preferences.edit().putBoolean(
-      IS_LOGGED_IN,
-      boolean
-    ).apply()
+    preferences.edit()
+      .putBoolean(
+        IS_LOGGED_IN,
+        boolean
+      )
+      .apply()
   }
 
   fun getIsLoggedIn(): Boolean {
@@ -32,10 +35,12 @@ constructor(
   }
 
   fun setIsFacebookUser(boolean: Boolean) {
-    preferences.edit().putBoolean(
-      IS_FACEBOOK_USER,
-      boolean
-    ).apply()
+    preferences.edit()
+      .putBoolean(
+        IS_FACEBOOK_USER,
+        boolean
+      )
+      .apply()
   }
 
   fun getIsFacebookUser(): Boolean {
@@ -43,10 +48,11 @@ constructor(
   }
 
   fun setUpdateNeeded(isNeeded: Boolean) {
-    preferences.edit().putBoolean(
-      IS_UPDATE_NEEDED,
-      isNeeded
-    )
+    preferences.edit()
+      .putBoolean(
+        IS_UPDATE_NEEDED,
+        isNeeded
+      )
       .apply()
   }
 
@@ -54,22 +60,39 @@ constructor(
     return preferences.getBoolean(IS_UPDATE_NEEDED, true)
   }
 
-  fun setCurrentToken(token: String?) {
-    preferences.edit().putString(
-      ACCESS_TOKEN,
-      token
-    ).apply()
+  fun setAccessToken(token: String?) {
+    preferences.edit()
+      .putString(
+        ACCESS_TOKEN,
+        token
+      )
+      .apply()
   }
 
-  fun getCurrentToken(): String? {
+  fun getAccessToken(): String? {
     return preferences.getString(ACCESS_TOKEN, null)
   }
 
+  fun setRefreshToken(token: String?) {
+    preferences.edit()
+      .putString(
+        REFRESH_TOKEN,
+        token
+      )
+      .apply()
+  }
+
+  fun getRefreshToken(): String? {
+    return preferences.getString(REFRESH_TOKEN, null)
+  }
+
   fun setFacebookAccessToken(accessToken: String?) {
-    preferences.edit().putString(
-      FACEBOOK_ACCESS_TOKEN,
-      accessToken
-    ).apply()
+    preferences.edit()
+      .putString(
+        FACEBOOK_ACCESS_TOKEN,
+        accessToken
+      )
+      .apply()
   }
 
   fun getFacebookAccessToken(): String? {
@@ -77,6 +100,8 @@ constructor(
   }
 
   fun clearData() {
-    preferences.edit().clear().apply()
+    preferences.edit()
+      .clear()
+      .apply()
   }
 }
