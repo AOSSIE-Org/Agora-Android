@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 
-class SelectCandidateAdapter(
+class CandidatesAdapter(
   private val candidates: ArrayList<String>,
+  private val isActive: Boolean,
   private val adapterCallback: CandidateRecyclerAdapterCallback
-) : RecyclerView.Adapter<SelectCandidateAdapter.SelectCandidateViewHolder>() {
+) : RecyclerView.Adapter<CandidatesAdapter.SelectCandidateViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
@@ -24,7 +26,7 @@ class SelectCandidateAdapter(
     val li = parent.context
       .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     val candidateView = li.inflate(layout.list_item_add_candidate, parent, false)
-    return SelectCandidateViewHolder(candidateView)
+    return SelectCandidateViewHolder(candidateView, isActive)
   }
 
   override fun getItemCount(): Int = candidates.size
@@ -34,12 +36,24 @@ class SelectCandidateAdapter(
     position: Int
   ) = holder.instantiate(candidates[position], adapterCallback)
 
-  class SelectCandidateViewHolder(itemView: View) : ViewHolder(itemView) {
-    fun instantiate(candidate: String, adapterCallback: CandidateRecyclerAdapterCallback) {
+  class SelectCandidateViewHolder(
+    itemView: View,
+    isActive1: Boolean
+  ) : ViewHolder(itemView) {
+    private val isActive = isActive1
+    fun instantiate(
+      candidate: String,
+      adapterCallback: CandidateRecyclerAdapterCallback
+    ) {
       val textView: TextView = itemView.findViewById(id.tv_candidate_name)
       textView.text = candidate
-      itemView.setOnClickListener {
-        adapterCallback.onItemClicked(candidate, textView, AppConstants.CANDIDATE_ITEM_CLICKED)
+      if (isActive) {
+        itemView.setOnClickListener {
+          adapterCallback.onItemClicked(candidate, textView, AppConstants.CANDIDATE_ITEM_CLICKED)
+        }
+        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
+      } else {
+        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
       }
     }
   }

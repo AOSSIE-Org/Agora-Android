@@ -12,10 +12,10 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 
-class UpvotedCandidateAdapter(
+class SelectedCandidateAdapter(
   private val candidates: ArrayList<String>,
   private val adapterCallback: CandidateRecyclerAdapterCallback
-) : RecyclerView.Adapter<UpvotedCandidateAdapter.UpvotedCandidateViewHolder>() {
+) : RecyclerView.Adapter<SelectedCandidateAdapter.UpvotedCandidateViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,

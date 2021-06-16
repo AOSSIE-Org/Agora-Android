@@ -26,6 +26,7 @@ abstract class ApiRequest {
         AppConstants.BAD_REQUEST_CODE -> message.append(AppConstants.BAD_REQUEST_MESSAGE)
         AppConstants.UNAUTHENTICATED_CODE -> message.append(AppConstants.UNAUTHENTICATED_MESSAGE)
         AppConstants.INVALID_CREDENTIALS_CODE -> message.append(AppConstants.INVALID_CREDENTIALS_MESSAGE)
+        AppConstants.NOT_FOUND_CODE -> message.append(AppConstants.NOT_FOUND_MESSAGE)
         AppConstants.INTERNAL_SERVER_ERROR_CODE -> message.append(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE)
       }
       if (message.isEmpty()) message.append(response.code().toString())

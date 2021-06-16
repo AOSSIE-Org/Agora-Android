@@ -23,6 +23,7 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
 import java.text.DateFormat
@@ -376,11 +377,11 @@ constructor(
     formattedEndingDate: Date?
   ): String? {
     return when {
-      currentDate.before(formattedStartingDate) -> "PENDING"
+      currentDate.before(formattedStartingDate) -> AppConstants.PENDING
       currentDate.after(formattedStartingDate) && currentDate.before(
         formattedEndingDate
-      ) -> "ACTIVE"
-      currentDate.after(formattedEndingDate) -> "FINISHED"
+      ) -> AppConstants.ACTIVE
+      currentDate.after(formattedEndingDate) -> AppConstants.FINISHED
       else -> null
     }
   }

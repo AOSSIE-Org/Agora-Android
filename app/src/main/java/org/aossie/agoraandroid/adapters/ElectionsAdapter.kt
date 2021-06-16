@@ -6,18 +6,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.ListItemElectionsBinding
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-
-private const val ACTIVE_ELECTION_LABEL = "ACTIVE"
-private const val PENDING_ELECTION_LABEL = "PENDING"
-private const val FINISHED_ELECTION_LABEL = "FINISHED"
 
 class ElectionsAdapter(
   private val elections: List<Election>,
@@ -60,16 +58,8 @@ class ElectionsAdapter(
         binding.tvEndDate.text = outFormat.format(formattedEndingDate!!)
         binding.tvStartDate.text = outFormat.format(formattedStartingDate!!)
         // set label color and election status
-        if (currentDate.before(formattedStartingDate)) {
-          binding.label.text = PENDING_ELECTION_LABEL
-          binding.label.setBackgroundResource(R.drawable.pending_election_label)
-        } else if (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)) {
-          binding.label.text = ACTIVE_ELECTION_LABEL
-          binding.label.setBackgroundResource(R.drawable.active_election_label)
-        } else if (currentDate.after(formattedEndingDate)) {
-          binding.label.text = FINISHED_ELECTION_LABEL
-          binding.label.setBackgroundResource(R.drawable.finished_election_label)
-        }
+        binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
+        binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
       } catch (e: ParseException) {
         e.printStackTrace()
       }
@@ -88,6 +78,36 @@ class ElectionsAdapter(
       binding.executePendingBindings()
       itemView.setOnClickListener {
         adapterCallback.onItemClicked(election._id)
+      }
+    }
+
+    private fun getEventStatus(
+      currentDate: Date,
+      formattedStartingDate: Date?,
+      formattedEndingDate: Date?
+    ): String? {
+      return when {
+        currentDate.before(formattedStartingDate) -> AppConstants.PENDING
+        currentDate.after(formattedStartingDate) && currentDate.before(
+          formattedEndingDate
+        ) -> AppConstants.ACTIVE
+        currentDate.after(formattedEndingDate) -> AppConstants.FINISHED
+        else -> null
+      }
+    }
+
+    private fun getEventColor(
+      currentDate: Date,
+      formattedStartingDate: Date?,
+      formattedEndingDate: Date?
+    ): Int {
+      return when {
+        currentDate.before(formattedStartingDate) -> drawable.pending_election_label
+        currentDate.after(formattedStartingDate) && currentDate.before(
+          formattedEndingDate
+        ) -> drawable.active_election_label
+        currentDate.after(formattedEndingDate) -> drawable.finished_election_label
+        else -> drawable.finished_election_label
       }
     }
   }
