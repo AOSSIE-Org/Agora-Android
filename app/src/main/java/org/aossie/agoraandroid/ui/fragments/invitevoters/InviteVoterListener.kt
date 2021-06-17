@@ -4,4 +4,5 @@ interface InviteVoterListener {
   fun onStarted()
   fun onFailure(message: String)
   fun onSuccess(message: String)
+  fun onSessionExpired()
 }

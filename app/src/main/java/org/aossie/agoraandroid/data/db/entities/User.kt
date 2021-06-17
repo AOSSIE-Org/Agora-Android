@@ -14,9 +14,10 @@ data class User(
   val avatarURL: String? = null,
   val crypto: String? = null,
   val twoFactorAuthentication: Boolean? = null,
-  var token: String? = null,
-  var expiredAt: String? = null,
-  val password: String? = null,
+  var authToken: String? = null,
+  var authTokenExpiresOn: String? = null,
+  var refreshToken: String? = null,
+  var refreshTokenExpiresOn: String? = null,
   val trustedDevice: String? = null
 ) {
   @PrimaryKey(autoGenerate = false)

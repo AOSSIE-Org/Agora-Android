@@ -6,8 +6,8 @@ import dagger.Component
 import org.aossie.agoraandroid.di.modules.AppModule
 import org.aossie.agoraandroid.di.modules.FragmentModule
 import org.aossie.agoraandroid.di.modules.ViewModelModule
-import org.aossie.agoraandroid.ui.activities.MainActivity
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import javax.inject.Singleton
 
 @Singleton

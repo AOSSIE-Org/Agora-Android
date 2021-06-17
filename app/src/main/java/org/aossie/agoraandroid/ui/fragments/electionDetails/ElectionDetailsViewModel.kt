@@ -49,7 +49,7 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onFailure(e.message!!)
+        displayElectionListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
@@ -71,7 +71,7 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onFailure(e.message!!)
+        displayElectionListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
@@ -93,7 +93,7 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onFailure(e.message!!)
+        displayElectionListener.onSessionExpired()
       } catch (e: NoInternetException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: Exception) {
@@ -118,7 +118,7 @@ constructor(
       } catch (e: ApiException) {
         displayElectionListener.onFailure(e.message!!)
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onFailure(e.message!!)
+        displayElectionListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
         displayElectionListener.onFailure(e.message!!)

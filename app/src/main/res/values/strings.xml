@@ -170,8 +170,7 @@
   <string name="update_profile">Update Profile</string>
   <string name="password_empty_warn">Password Cannot Be Empty</string>
   <string name="password_not_match_warn">Passwords Not Matching</string>
-  <string name="password_same_oldpassword_warn">New password cannot be same as old password</string>
-  <string name="password_change_success">password changed successfully</string>
+  <string name="password_change_success">Password changed successfully</string>
   <string name="token_expired">Your session was expired. Please login again!</string>
 
   <string name="voter_same_email">Voter with same Email Id already added</string>
