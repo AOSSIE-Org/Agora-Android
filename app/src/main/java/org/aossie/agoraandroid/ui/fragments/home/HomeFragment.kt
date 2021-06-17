@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,7 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -48,6 +50,10 @@ constructor(
   }
 
   private val loginViewModel: LoginViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -94,21 +100,21 @@ constructor(
             // Timber.d(user.token!!)
             val currentDate = Calendar.getInstance()
               .time
-            val expireOn = user.expiredAt
+            val expireOn = user.authTokenExpiresOn
             Timber.d(user.toString())
-            Timber.tag("expiresOn").d(expireOn.toString())
+            Timber.tag("expiresOn")
+              .d(expireOn.toString())
             try {
               if (expireOn != null) {
                 val expiresOn = formatter.parse(expireOn)
                 // If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
-                  Timber.tag("expired").d(expireOn.toString())
+                  Timber.tag("expired")
+                    .d(expireOn.toString())
                   if (preferenceProvider.getIsFacebookUser()) {
                     loginViewModel.facebookLogInRequest()
                   } else {
-                    loginViewModel.logInRequest(
-                      user.username!!, user.password!!, user.trustedDevice
-                    )
+                    loginViewModel.refreshAccessToken(user.trustedDevice)
                   }
                 }
               }
@@ -124,39 +130,41 @@ constructor(
       val activeElectionCount = homeViewModel.activeElectionsCount.await()
       val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
       if (view != null) {
-        homeViewModel.getElections().observe(
-          viewLifecycleOwner,
-          androidx.lifecycle.Observer {
-            totalElectionCount.observe(
-              viewLifecycleOwner,
-              Observer {
-                rootView.text_view_total_count.text = it.toString()
-                pendingElectionCount.observe(
-                  viewLifecycleOwner,
-                  Observer { pending ->
-                    rootView.text_view_pending_count.text = pending.toString()
-                    finishedElectionCount.observe(
-                      viewLifecycleOwner,
-                      Observer { finished ->
-                        rootView.text_view_finished_count.text = finished.toString()
-                        activeElectionCount.observe(
-                          viewLifecycleOwner,
-                          Observer { active ->
-                            rootView.text_view_active_count.text = active.toString()
-                            rootView.shimmer_view_container.stopShimmer()
-                            rootView.shimmer_view_container.visibility = View.GONE
-                            rootView.constraintLayout.visibility = View.VISIBLE
-                            rootView.swipe_refresh.isRefreshing = false // Disables the refresh icon
-                          }
-                        )
-                      }
-                    )
-                  }
-                )
-              }
-            )
-          }
-        )
+        homeViewModel.getElections()
+          .observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer {
+              totalElectionCount.observe(
+                viewLifecycleOwner,
+                Observer {
+                  rootView.text_view_total_count.text = it.toString()
+                  pendingElectionCount.observe(
+                    viewLifecycleOwner,
+                    Observer { pending ->
+                      rootView.text_view_pending_count.text = pending.toString()
+                      finishedElectionCount.observe(
+                        viewLifecycleOwner,
+                        Observer { finished ->
+                          rootView.text_view_finished_count.text = finished.toString()
+                          activeElectionCount.observe(
+                            viewLifecycleOwner,
+                            Observer { active ->
+                              rootView.text_view_active_count.text = active.toString()
+                              rootView.shimmer_view_container.stopShimmer()
+                              rootView.shimmer_view_container.visibility = View.GONE
+                              rootView.constraintLayout.visibility = View.VISIBLE
+                              rootView.swipe_refresh.isRefreshing =
+                                false // Disables the refresh icon
+                            }
+                          )
+                        }
+                      )
+                    }
+                  )
+                }
+              )
+            }
+          )
       }
     }
     return rootView
@@ -194,6 +202,10 @@ constructor(
   }
 
   override fun onFailure(message: String) {
-    rootView.snackbar("$message - " + context?.resources?.getString(R.string.token_expired))
+    rootView.snackbar(message)
+  }
+
+  override fun onSessionExpired() {
+    hostViewModel.setLogout(true)
   }
 }

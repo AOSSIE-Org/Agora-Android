@@ -1,16 +1,20 @@
-package org.aossie.agoraandroid.ui.activities
+package org.aossie.agoraandroid.ui.activities.main
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavOptions.Builder
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.facebook.login.LoginManager
 import kotlinx.android.synthetic.main.activity_main.bottom_navigation
 import kotlinx.android.synthetic.main.activity_main.iv_back
 import kotlinx.android.synthetic.main.activity_main.toolbar
@@ -18,15 +22,19 @@ import kotlinx.android.synthetic.main.activity_main.tv_title
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.databinding.ActivityMainBinding
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 import org.aossie.agoraandroid.utilities.animGone
 import org.aossie.agoraandroid.utilities.animVisible
+import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+
+  private lateinit var binding: ActivityMainBinding
 
   private lateinit var navController: NavController
 
@@ -39,6 +47,10 @@ class MainActivity : AppCompatActivity() {
   @Inject
   lateinit var prefs: PreferenceProvider
 
+  private val viewModel: MainActivityViewModel by viewModels {
+    viewModelFactory
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
 
     (application as AgoraApp).appComponent.inject(this)
@@ -47,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     setTheme(R.style.AppTheme)
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     setSupportActionBar(toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -70,6 +82,13 @@ class MainActivity : AppCompatActivity() {
     bottom_navigation.setOnNavigationItemReselectedListener {
       println()
     }
+
+    viewModel.isLogout.observe(
+      this,
+      {
+        if (it) logout()
+      }
+    )
   }
 
   private fun setToolbar(destination: NavDestination) {
@@ -99,11 +118,10 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
         supportActionBar?.hide()
       }
-      else ->
-        {
-          window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
-          supportActionBar?.show()
-        }
+      else -> {
+        window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        supportActionBar?.show()
+      }
     }
   }
 
@@ -135,6 +153,7 @@ class MainActivity : AppCompatActivity() {
       else -> iv_back.visibility = View.GONE
     }
   }
+
   override fun onActivityResult(
     requestCode: Int,
     resultCode: Int,
@@ -144,5 +163,20 @@ class MainActivity : AppCompatActivity() {
     val navHostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     val childFragments = navHostFragment?.childFragmentManager?.fragments
     childFragments?.forEach { it.onActivityResult(requestCode, resultCode, data) }
+  }
+
+  fun logout() {
+    if (prefs.getIsLoggedIn()) binding.root.snackbar(resources.getString(R.string.token_expired))
+    if (prefs.getIsFacebookUser()) {
+      LoginManager.getInstance()
+        .logOut()
+    }
+    viewModel.deleteUserData()
+    val navBuilder = Builder()
+    navBuilder.setEnterAnim(R.anim.slide_in_left)
+      .setExitAnim(R.anim.slide_out_right)
+      .setPopEnterAnim(R.anim.slide_in_right)
+      .setPopExitAnim(R.anim.slide_out_left)
+    navController.navigate(R.id.welcomeFragment, null, navBuilder.build())
   }
 }

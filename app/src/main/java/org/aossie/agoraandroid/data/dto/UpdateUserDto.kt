@@ -23,5 +23,6 @@ data class UpdateUserDto(
   val avatarURL: String? = null,
   @Json(name = "authToken")
   val authToken: AuthToken? = null,
-
+  @Json(name = "refreshToken")
+  val refreshToken: AuthToken? = null,
 )

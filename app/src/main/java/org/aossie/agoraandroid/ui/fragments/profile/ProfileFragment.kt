@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -35,9 +36,11 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
@@ -81,6 +84,10 @@ constructor(
   }
 
   private val homeViewModel: HomeViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -195,8 +202,6 @@ constructor(
           binding.confirmPasswordTil.error = getString(string.password_empty_warn)
         newPass != conPass ->
           binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
-        newPass == mUser.password ->
-          binding.newPasswordTil.error = getString(string.password_same_oldpassword_warn)
         else -> updateUIAndChangePassword()
       }
     }
@@ -298,6 +303,9 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
     }
+    is SessionExpired -> {
+      hostViewModel.setLogout(true)
+    }
   }
 
   private fun handleUser(response: ResponseResult) = when (response) {
@@ -305,12 +313,14 @@ constructor(
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.user_updated))
-      loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
     }
     is Error -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
+    }
+    is SessionExpired -> {
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -324,6 +334,9 @@ constructor(
       toggleIsEnable()
       binding.progressBar.hide()
       binding.root.snackbar(response.error.toString())
+    }
+    is SessionExpired -> {
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -340,6 +353,9 @@ constructor(
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(response.error.toString())
+    }
+    is SessionExpired -> {
+      hostViewModel.setLogout(true)
     }
   }
 
@@ -360,9 +376,6 @@ constructor(
               s.isNullOrEmpty() ->
                 binding.newPasswordTil.error =
                   getString(string.password_empty_warn)
-              s.toString() == mUser.password ->
-                binding.newPasswordTil.error =
-                  getString(string.password_same_oldpassword_warn)
               else -> binding.newPasswordTil.error = null
             }
             checkNewPasswordAndConfirmPassword(s)
@@ -400,7 +413,8 @@ constructor(
   }
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
-    if (s.toString() == binding.confirmPasswordTiet.text.toString().trim()) {
+    if (s.toString() == binding.confirmPasswordTiet.text.toString().trim()
+    ) {
       binding.confirmPasswordTil.error = null
     } else {
       if (!binding.confirmPasswordTiet.text.isNullOrEmpty()) {
@@ -433,6 +447,10 @@ constructor(
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()
+  }
+
+  override fun onSessionExpired() {
+    hostViewModel.setLogout(true)
   }
 
   override fun onActivityResult(

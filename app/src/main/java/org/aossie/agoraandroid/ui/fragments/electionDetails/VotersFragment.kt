@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_voters.view.tv_no_voters_for_this
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.VotersAdapter
 import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -36,6 +38,10 @@ constructor(
   private lateinit var rootView: View
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
+    viewModelFactory
+  }
+
+  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
@@ -130,5 +136,9 @@ constructor(
   override fun onFailure(message: String) {
     rootView.snackbar(message)
     rootView.progress_bar.hide()
+  }
+
+  override fun onSessionExpired() {
+    hostViewModel.setLogout(true)
   }
 }

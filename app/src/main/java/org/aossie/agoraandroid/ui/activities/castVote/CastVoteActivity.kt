@@ -2,18 +2,22 @@ package org.aossie.agoraandroid.ui.activities.castVote
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Process
 import android.util.Log.getStackTraceString
 import android.view.View
 import android.view.WindowManager.LayoutParams
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.facebook.login.LoginManager
 import kotlinx.android.synthetic.main.activity_cast_vote.btn_cast_vote
 import kotlinx.android.synthetic.main.activity_cast_vote.constraintLayout
 import kotlinx.android.synthetic.main.activity_cast_vote.progress_bar
@@ -24,11 +28,13 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.SelectCandidateAdapter
 import org.aossie.agoraandroid.adapters.UpvotedCandidateAdapter
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
+import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
-import org.aossie.agoraandroid.ui.activities.MainActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.hide
@@ -68,6 +74,9 @@ class CastVoteActivity :
 
   private lateinit var selectedCandidates: ArrayList<String>
   private lateinit var upvotedCandidateAdapter: UpvotedCandidateAdapter
+
+  @Inject
+  lateinit var prefs: PreferenceProvider
 
   private val viewModel: CastVoteViewModel by viewModels {
     viewModelFactory
@@ -132,7 +141,7 @@ class CastVoteActivity :
       if (selectedCandidates.size == 0) {
         binding.root.snackbar("Please select a candidate first")
       } else {
-        AlertDialog.Builder(this)
+        Builder(this)
           .setTitle("Confirmation")
           .setMessage("Please press confirm to cast vote to selected candidates")
           .setPositiveButton("Confirm") { _, _ ->
@@ -178,14 +187,14 @@ class CastVoteActivity :
   private fun handleCastVote(response: ResponseResult) = when (response) {
     is Success -> {
       progress_bar.hide()
-      AlertDialog.Builder(this)
+      Builder(this)
         .setTitle(getString(string.vote_successful))
         .setMessage("Do you want to move to Home Screen ?")
         .setPositiveButton("Yes") { _, _ ->
           startActivity(Intent(this, MainActivity::class.java))
         }
         .setNegativeButton("No") { _, _ ->
-          android.os.Process.killProcess(android.os.Process.myPid())
+          Process.killProcess(Process.myPid())
         }
         .setCancelable(false)
         .create()
@@ -195,6 +204,7 @@ class CastVoteActivity :
       binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }
+    is SessionExpired -> logout()
   }
 
   private fun handleVerifyVoter(response: ResponseResult) = when (response) {
@@ -244,6 +254,7 @@ class CastVoteActivity :
       binding.root.snackbar(response.error.toString())
       progress_bar.hide()
     }
+    is SessionExpired -> logout()
   }
 
   override fun onItemClicked(
@@ -262,5 +273,20 @@ class CastVoteActivity :
       upvotedCandidateAdapter.notifyDataSetChanged()
       candidateAdapter.notifyDataSetChanged()
     }
+  }
+
+  private fun logout() {
+    if (prefs.getIsLoggedIn()) binding.root.snackbar(resources.getString(R.string.token_expired))
+    if (prefs.getIsFacebookUser()) {
+      LoginManager.getInstance()
+        .logOut()
+    }
+    viewModel.deleteUserData()
+    val navBuilder = NavOptions.Builder()
+    navBuilder.setEnterAnim(R.anim.slide_in_left)
+      .setExitAnim(R.anim.slide_out_right)
+      .setPopEnterAnim(R.anim.slide_in_right)
+      .setPopExitAnim(R.anim.slide_out_left)
+    Navigation.findNavController(binding.root).navigate(R.id.welcomeFragment, null, navBuilder.build())
   }
 }
