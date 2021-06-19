@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.ui.activities.castVote
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Process
 import android.view.View
 import android.view.WindowManager.LayoutParams
 import android.widget.TextView
@@ -11,8 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.facebook.login.LoginManager
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
