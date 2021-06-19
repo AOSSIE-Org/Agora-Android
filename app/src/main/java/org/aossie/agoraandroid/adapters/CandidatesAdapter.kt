@@ -17,26 +17,26 @@ class CandidatesAdapter(
   private val candidates: ArrayList<String>,
   private val isActive: Boolean,
   private val adapterCallback: CandidateRecyclerAdapterCallback
-) : RecyclerView.Adapter<CandidatesAdapter.SelectCandidateViewHolder>() {
+) : RecyclerView.Adapter<CandidatesAdapter.CandidatesViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int
-  ): SelectCandidateViewHolder {
+  ): CandidatesViewHolder {
     val li = parent.context
       .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     val candidateView = li.inflate(layout.list_item_add_candidate, parent, false)
-    return SelectCandidateViewHolder(candidateView, isActive)
+    return CandidatesViewHolder(candidateView, isActive)
   }
 
   override fun getItemCount(): Int = candidates.size
 
   override fun onBindViewHolder(
-    holder: SelectCandidateViewHolder,
+    holder: CandidatesViewHolder,
     position: Int
   ) = holder.instantiate(candidates[position], adapterCallback)
 
-  class SelectCandidateViewHolder(
+  class CandidatesViewHolder(
     itemView: View,
     isActive1: Boolean
   ) : ViewHolder(itemView) {

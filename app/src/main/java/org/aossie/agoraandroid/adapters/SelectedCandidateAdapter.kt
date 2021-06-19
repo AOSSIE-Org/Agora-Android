@@ -15,26 +15,26 @@ import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 class SelectedCandidateAdapter(
   private val candidates: ArrayList<String>,
   private val adapterCallback: CandidateRecyclerAdapterCallback
-) : RecyclerView.Adapter<SelectedCandidateAdapter.UpvotedCandidateViewHolder>() {
+) : RecyclerView.Adapter<SelectedCandidateAdapter.SelectedCandidateViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int
-  ): UpvotedCandidateViewHolder {
+  ): SelectedCandidateViewHolder {
     val li = parent.context
       .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     val candidateView = li.inflate(layout.list_item_selected_candidates, parent, false)
-    return UpvotedCandidateViewHolder(candidateView)
+    return SelectedCandidateViewHolder(candidateView)
   }
 
   override fun getItemCount(): Int = candidates.size
 
   override fun onBindViewHolder(
-    holder: UpvotedCandidateViewHolder,
+    holder: SelectedCandidateViewHolder,
     position: Int
   ) = holder.instantiate(candidates[position], adapterCallback)
 
-  class UpvotedCandidateViewHolder(itemView: View) : ViewHolder(itemView) {
+  class SelectedCandidateViewHolder(itemView: View) : ViewHolder(itemView) {
     fun instantiate(candidate: String, adapterCallback: CandidateRecyclerAdapterCallback) {
       val textView: TextView = itemView.findViewById(id.tv_selected_candidate_name)
       textView.text = candidate
