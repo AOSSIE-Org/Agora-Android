@@ -2,14 +2,13 @@ package org.aossie.agoraandroid.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.databinding.ListItemAddCandidateBinding
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 
@@ -25,8 +24,9 @@ class CandidatesAdapter(
   ): CandidatesViewHolder {
     val li = parent.context
       .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    val candidateView = li.inflate(layout.list_item_add_candidate, parent, false)
-    return CandidatesViewHolder(candidateView, isActive)
+    val binding: ListItemAddCandidateBinding =
+      DataBindingUtil.inflate(li, layout.list_item_add_candidate, parent, false)
+    return CandidatesViewHolder(binding)
   }
 
   override fun getItemCount(): Int = candidates.size
@@ -36,24 +36,31 @@ class CandidatesAdapter(
     position: Int
   ) = holder.instantiate(candidates[position], adapterCallback)
 
-  class CandidatesViewHolder(
-    itemView: View,
-    isActive1: Boolean
-  ) : ViewHolder(itemView) {
-    private val isActive = isActive1
+  inner class CandidatesViewHolder(
+    listItemAddCandidateBinding: ListItemAddCandidateBinding
+  ) : ViewHolder(listItemAddCandidateBinding.root) {
+    val binding = listItemAddCandidateBinding
+
     fun instantiate(
       candidate: String,
       adapterCallback: CandidateRecyclerAdapterCallback
     ) {
-      val textView: TextView = itemView.findViewById(id.tv_candidate_name)
-      textView.text = candidate
-      if (isActive) {
-        itemView.setOnClickListener {
-          adapterCallback.onItemClicked(candidate, textView, AppConstants.CANDIDATE_ITEM_CLICKED)
+      binding.tvCandidateName.apply {
+        text = candidate
+        setCompoundDrawablesWithIntrinsicBounds(
+          0,
+          0,
+          if (isActive) R.drawable.ic_plus
+          else 0,
+          0
+        )
+      }
+      itemView.setOnClickListener {
+        if (isActive) {
+          adapterCallback.onItemClicked(
+            candidate, binding.tvCandidateName, AppConstants.CANDIDATE_ITEM_CLICKED
+          )
         }
-        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
-      } else {
-        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
       }
     }
   }

@@ -2,13 +2,12 @@ package org.aossie.agoraandroid.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.databinding.ListItemSelectedCandidatesBinding
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 
@@ -23,8 +22,9 @@ class SelectedCandidateAdapter(
   ): SelectedCandidateViewHolder {
     val li = parent.context
       .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    val candidateView = li.inflate(layout.list_item_selected_candidates, parent, false)
-    return SelectedCandidateViewHolder(candidateView)
+    val binding: ListItemSelectedCandidatesBinding =
+      DataBindingUtil.inflate(li, layout.list_item_selected_candidates, parent, false)
+    return SelectedCandidateViewHolder(binding)
   }
 
   override fun getItemCount(): Int = candidates.size
@@ -34,12 +34,20 @@ class SelectedCandidateAdapter(
     position: Int
   ) = holder.instantiate(candidates[position], adapterCallback)
 
-  class SelectedCandidateViewHolder(itemView: View) : ViewHolder(itemView) {
-    fun instantiate(candidate: String, adapterCallback: CandidateRecyclerAdapterCallback) {
-      val textView: TextView = itemView.findViewById(id.tv_selected_candidate_name)
-      textView.text = candidate
+  inner class SelectedCandidateViewHolder(
+    listItemSelectedCandidatesBinding: ListItemSelectedCandidatesBinding
+  ) : ViewHolder(listItemSelectedCandidatesBinding.root) {
+    val binding = listItemSelectedCandidatesBinding
+
+    fun instantiate(
+      candidate: String,
+      adapterCallback: CandidateRecyclerAdapterCallback
+    ) {
+      binding.tvSelectedCandidateName.text = candidate
       itemView.setOnClickListener {
-        adapterCallback.onItemClicked(candidate, textView, AppConstants.UPVOTED_CANDIDATE_ITEM_CLICKED)
+        adapterCallback.onItemClicked(
+          candidate, binding.tvSelectedCandidateName, AppConstants.UPVOTED_CANDIDATE_ITEM_CLICKED
+        )
       }
     }
   }
