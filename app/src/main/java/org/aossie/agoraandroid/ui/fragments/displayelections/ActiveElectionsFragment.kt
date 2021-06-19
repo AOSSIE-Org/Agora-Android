@@ -18,7 +18,6 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
 import javax.inject.Inject
@@ -30,8 +29,7 @@ class ActiveElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),
-  ElectionRecyclerAdapterCallback {
+) : Fragment() {
   private lateinit var rootView: View
 
   private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
@@ -40,6 +38,13 @@ constructor(
 
   lateinit var mElections: ArrayList<Election>
   private lateinit var electionsAdapter: ElectionsAdapter
+
+  private val onItemClicked = { _id: String ->
+    val action =
+      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(_id)
+    Navigation.findNavController(rootView)
+      .navigate(action)
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -50,7 +55,7 @@ constructor(
 
     rootView = inflater.inflate(R.layout.fragment_active_elections, container, false)
     mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(mElections as List<Election>, this)
+    electionsAdapter = ElectionsAdapter(mElections as List<Election>, onItemClicked)
     rootView.rv_active_elections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
@@ -89,12 +94,5 @@ constructor(
     } else {
       rootView.tv_empty_election.show()
     }
-  }
-
-  override fun onItemClicked(_id: String) {
-    val action =
-      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(_id)
-    Navigation.findNavController(rootView)
-      .navigate(action)
   }
 }

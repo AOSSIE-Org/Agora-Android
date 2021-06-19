@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -10,7 +9,6 @@ import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.ListItemElectionsBinding
 import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -19,7 +17,7 @@ import java.util.Locale
 
 class ElectionsAdapter(
   private val elections: List<Election>,
-  private val adapterCallback: ElectionRecyclerAdapterCallback
+  private val onItemClicked: (name: String) -> Unit
 ) : RecyclerView.Adapter<ElectionsAdapter.ElectionsViewHolder>() {
 
   override fun onCreateViewHolder(
@@ -30,7 +28,7 @@ class ElectionsAdapter(
       LayoutInflater.from(parent.context),
       R.layout.list_item_elections, parent, false
     )
-    return ElectionsViewHolder(binding, parent.context)
+    return ElectionsViewHolder(binding, onItemClicked)
   }
 
   override fun getItemCount(): Int = elections.size
@@ -38,14 +36,14 @@ class ElectionsAdapter(
   override fun onBindViewHolder(
     holder: ElectionsViewHolder,
     position: Int
-  ) = holder.bind(elections[position], adapterCallback)
+  ) = holder.bind(elections[position])
 
   class ElectionsViewHolder(
-    val binding: ListItemElectionsBinding,
-    val context: Context
+    private val binding: ListItemElectionsBinding,
+    private val onItemClicked: (name: String) -> Unit
   ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(election: Election, adapterCallback: ElectionRecyclerAdapterCallback) {
+    fun bind(election: Election) {
       binding.election = election
       try {
         val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
@@ -59,7 +57,9 @@ class ElectionsAdapter(
         binding.tvStartDate.text = outFormat.format(formattedStartingDate!!)
         // set label color and election status
         binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
-        binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
+        binding.label.setBackgroundResource(
+          getEventColor(currentDate, formattedStartingDate, formattedEndingDate)
+        )
       } catch (e: ParseException) {
         e.printStackTrace()
       }
@@ -77,7 +77,7 @@ class ElectionsAdapter(
       binding.tvCandidateList.text = mCandidatesName
       binding.executePendingBindings()
       itemView.setOnClickListener {
-        adapterCallback.onItemClicked(election._id)
+        onItemClicked(election._id)
       }
     }
 

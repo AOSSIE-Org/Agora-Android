@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +26,6 @@ import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isConnected
 import org.aossie.agoraandroid.utilities.show
@@ -42,7 +40,6 @@ import javax.inject.Inject
 
 class CastVoteActivity :
   AppCompatActivity(),
-  CandidateRecyclerAdapterCallback,
   GetResolvedPathListener {
 
   @Inject
@@ -64,6 +61,20 @@ class CastVoteActivity :
 
   private val viewModel: CastVoteViewModel by viewModels {
     viewModelFactory
+  }
+
+  private val onCandidateItemClick = { name: String ->
+    candidates.remove(name)
+    selectedCandidates.add(name)
+    candidatesAdapter.notifyDataSetChanged()
+    selectedCandidateAdapter.notifyDataSetChanged()
+  }
+
+  private val onSelectedCandidateItemClick = { name: String ->
+    selectedCandidates.remove(name)
+    candidates.add(name)
+    selectedCandidateAdapter.notifyDataSetChanged()
+    candidatesAdapter.notifyDataSetChanged()
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,8 +104,9 @@ class CastVoteActivity :
   ) {
     candidates = ArrayList(candidatesList)
     selectedCandidates = ArrayList()
-    candidatesAdapter = CandidatesAdapter(candidates, isActive, this)
-    selectedCandidateAdapter = SelectedCandidateAdapter(selectedCandidates, this)
+    candidatesAdapter = CandidatesAdapter(candidates, isActive, onCandidateItemClick)
+    selectedCandidateAdapter =
+      SelectedCandidateAdapter(selectedCandidates, onSelectedCandidateItemClick)
   }
 
   private fun initView(isActive: Boolean) {
@@ -292,24 +304,6 @@ class CastVoteActivity :
     intent.putExtra(AppConstants.SHOW_SNACKBAR_KEY, message)
     startActivity(intent)
     finish()
-  }
-
-  override fun onItemClicked(
-    name: String,
-    itemView: TextView,
-    requestCode: Int
-  ) {
-    if (requestCode == AppConstants.CANDIDATE_ITEM_CLICKED) {
-      candidates.remove(name)
-      selectedCandidates.add(name)
-      candidatesAdapter.notifyDataSetChanged()
-      selectedCandidateAdapter.notifyDataSetChanged()
-    } else if (requestCode == AppConstants.UPVOTED_CANDIDATE_ITEM_CLICKED) {
-      selectedCandidates.remove(name)
-      candidates.add(name)
-      selectedCandidateAdapter.notifyDataSetChanged()
-      candidatesAdapter.notifyDataSetChanged()
-    }
   }
 
   override fun onStarted() {

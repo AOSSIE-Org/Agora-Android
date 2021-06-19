@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,24 +8,22 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.databinding.ListItemAddCandidateBinding
-import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.CandidateRecyclerAdapterCallback
 
 class CandidatesAdapter(
   private val candidates: ArrayList<String>,
   private val isActive: Boolean,
-  private val adapterCallback: CandidateRecyclerAdapterCallback
+  private val onItemClicked: (name: String) -> Unit
 ) : RecyclerView.Adapter<CandidatesAdapter.CandidatesViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int
   ): CandidatesViewHolder {
-    val li = parent.context
-      .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     val binding: ListItemAddCandidateBinding =
-      DataBindingUtil.inflate(li, layout.list_item_add_candidate, parent, false)
-    return CandidatesViewHolder(binding)
+      DataBindingUtil.inflate(
+        LayoutInflater.from(parent.context), layout.list_item_add_candidate, parent, false
+      )
+    return CandidatesViewHolder(binding, onItemClicked)
   }
 
   override fun getItemCount(): Int = candidates.size
@@ -34,16 +31,15 @@ class CandidatesAdapter(
   override fun onBindViewHolder(
     holder: CandidatesViewHolder,
     position: Int
-  ) = holder.instantiate(candidates[position], adapterCallback)
+  ) = holder.instantiate(candidates[position])
 
   inner class CandidatesViewHolder(
-    listItemAddCandidateBinding: ListItemAddCandidateBinding
-  ) : ViewHolder(listItemAddCandidateBinding.root) {
-    val binding = listItemAddCandidateBinding
+    private val binding: ListItemAddCandidateBinding,
+    private val onItemClicked: (name: String) -> Unit
+  ) : ViewHolder(binding.root) {
 
     fun instantiate(
       candidate: String,
-      adapterCallback: CandidateRecyclerAdapterCallback
     ) {
       binding.tvCandidateName.apply {
         text = candidate
@@ -57,8 +53,8 @@ class CandidatesAdapter(
       }
       itemView.setOnClickListener {
         if (isActive) {
-          adapterCallback.onItemClicked(
-            candidate, binding.tvCandidateName, AppConstants.CANDIDATE_ITEM_CLICKED
+          onItemClicked(
+            candidate
           )
         }
       }
