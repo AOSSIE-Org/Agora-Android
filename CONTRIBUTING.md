@@ -87,5 +87,20 @@ Follow these steps to deploy your app to appetize.io:-
 4. Command in step 3 will return a response. Note the public key from your response and add  a CI/CD varible named "APPETIZE_KEY" and enter this public key as value.  
     Make sure to make both the variables protected and make your branch protected too. Follow this guide: https://docs.gitlab.com/ee/user/project/protected_branches.html#configuring-protected-branches  
     
-    This is a one time setup, subsequent changes you make in your repository will be reflected in your link you got in the response automatically.  
+    This is a one time setup, subsequent changes you make in your repository will be reflected in your link you got in the response automatically.
+
+## Signed apk setup for pipeline
+
+Follow the following steps :-
+
+   1) Generate a keystore.jks file using keytool. keytool -genkeypair -v -keystore keystore.jks -alias YOUR-KEY-ALIAS -keyalg RSA -keysize 2048 -validity 10000 Replace YOUR-KEY-ALIAS with your key alias.
+      or you can generate a keystore file using android studio.
+   2) run this command in your terminal and copy the output  "base64 -w 0 KEY-NAME.jks" Replace KEY-NAME with the your key name.
+   3) Add the following CI/CD variables:-
+      3.1) "KEYSTORE" and paste the copied output.
+      3.2) "KEY_PASSWORD" and enter you key password.
+      3.3) "KEY_ALIAS" and enter you key alias.
+      3.4) "KEYSTORE_PASSWORD" and enter your keystore password.
+
+    Make these CI variables Protected also don't forget to make your branch Protected.
 

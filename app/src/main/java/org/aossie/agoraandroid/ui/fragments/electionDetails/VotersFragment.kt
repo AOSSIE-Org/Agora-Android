@@ -75,7 +75,7 @@ constructor(
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
       electionDetailsViewModel.voterResponse.observe(
-        requireActivity(),
+        viewLifecycleOwner,
         Observer {
           if (it != null) {
             initRecyclerView(it)
@@ -85,7 +85,7 @@ constructor(
         }
       )
       electionDetailsViewModel.notConnected.observe(
-        requireActivity(),
+        viewLifecycleOwner,
         Observer {
           if (it) {
             getVotersFromDb()
@@ -109,7 +109,7 @@ constructor(
   private fun getVotersFromDb() {
     Coroutines.main {
       electionDetailsViewModel.getElectionById(id!!).observe(
-        requireActivity(),
+        viewLifecycleOwner,
         Observer {
           if (it != null) {
             initRecyclerView(it.voterList as List<VotersDto>)

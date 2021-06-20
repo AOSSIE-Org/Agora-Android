@@ -3,12 +3,19 @@ package org.aossie.agoraandroid.utilities
 import android.R.string
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Callback
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import org.aossie.agoraandroid.R
+import java.io.File
 
 fun ProgressBar.show() {
   visibility = ProgressBar.VISIBLE
@@ -79,4 +86,29 @@ fun View.enableView() {
 
 fun View.disableView() {
   isEnabled = false
+}
+
+fun ImageView.loadImage(url: String, networkPolicy: NetworkPolicy? = null, onError: () -> Unit = {}) {
+  Picasso.get().load(url).apply {
+    if (networkPolicy != null) networkPolicy(networkPolicy)
+    placeholder(ContextCompat.getDrawable(this@loadImage.context, R.drawable.ic_user)!!)
+      .into(
+        this@loadImage,
+        object : Callback {
+          override fun onSuccess() {
+            // Do Nothing
+          }
+          override fun onError(e: Exception?) {
+            onError.invoke()
+          }
+        }
+      )
+  }
+}
+
+fun ImageView.loadImageFromMemoryNoCache(file: File) {
+  Picasso.get().load(file)
+    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+    .placeholder(ContextCompat.getDrawable(this.context, R.drawable.ic_user)!!)
+    .into(this)
 }
