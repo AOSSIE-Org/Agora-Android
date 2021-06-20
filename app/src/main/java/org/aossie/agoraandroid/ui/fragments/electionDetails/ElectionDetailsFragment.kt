@@ -176,7 +176,7 @@ constructor(
             val mCandidatesName = StringBuilder()
             val candidates = it.candidates
             if (candidates != null) {
-              for (j in 0 until candidates.size) {
+              for (j in candidates.indices) {
                 mCandidatesName.append(candidates[j])
                 if (j != candidates.size - 1) {
                   mCandidatesName.append(", ")
