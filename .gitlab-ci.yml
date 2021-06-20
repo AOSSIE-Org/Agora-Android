@@ -49,7 +49,7 @@ assembleRelease:
     - 'touch req.json && echo {\"url\":\"$CI_JOB_URL/artifacts/raw/app/build/outputs/apk/release/app-release.apk\",\"platform\": \"android\" } > req.json'
   artifacts:
     paths:
-      - app/build/outputs/apks/release/app-release.apk
+      - app/build/outputs/apk/release/app-release.apk
       - req.json
 
 debugTests:
