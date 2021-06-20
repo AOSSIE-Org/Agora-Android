@@ -32,15 +32,17 @@ lintDebug:
   script:
     - ./gradlew ktlintCheck
 
-assembleDebug:
+assembleRelease:
   interruptible: true
   stage: build
   script:
-    - ./gradlew assembleDebug
-    - 'touch req.json && echo {\"url\":\"$CI_JOB_URL/artifacts/raw/app/build/outputs/apk/debug/app-debug.apk\",\"platform\": \"android\" } > req.json'
+    - touch signing.properties && echo -e "storeFile=keystore.jks\nstorePassword=$KEY_PASSWORD\nkeyAlias=$KEY_ALIAS\nkeyPassword=$KEY_PASSWORD" > signing.properties
+    - touch /app/keystore.jks && echo $KEYSTORE | base64 --decode > /app/keystore.jks
+    - ./gradlew assembleRelease --stacktrace --no-daemon
+    - 'touch req.json && echo {\"url\":\"$CI_JOB_URL/artifacts/raw/app/build/outputs/apk/release/app-release.apk\",\"platform\": \"android\" } > req.json'
   artifacts:
     paths:
-      - app/build/outputs/
+      - app/build/outputs/apks/release/app-release.apk
       - req.json
 
 debugTests:
@@ -53,6 +55,6 @@ deploy:
   interruptible: true
   stage: deploy
   dependencies:
-    - assembleDebug
+    - assembleRelease
   script:
     - 'curl -s -X POST -H "Content-Type: application/json" -d @req.json https://$APPETIZE_API@api.appetize.io/v1/apps/$APPETIZE_KEY > response.json'
