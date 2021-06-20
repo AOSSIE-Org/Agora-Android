@@ -37,7 +37,7 @@ assembleRelease:
   stage: build
   script:
     - touch signing.properties && echo -e "storeFile=keystore.jks\nstorePassword=$KEY_PASSWORD\nkeyAlias=$KEY_ALIAS\nkeyPassword=$KEY_PASSWORD" > signing.properties
-    - touch /app/keystore.jks && echo $KEYSTORE | base64 --decode > /app/keystore.jks
+    - touch app/keystore.jks && echo $KEYSTORE | base64 --decode > app/keystore.jks
     - ./gradlew assembleRelease --stacktrace --no-daemon
     - 'touch req.json && echo {\"url\":\"$CI_JOB_URL/artifacts/raw/app/build/outputs/apk/release/app-release.apk\",\"platform\": \"android\" } > req.json'
   artifacts:
