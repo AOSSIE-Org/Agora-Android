@@ -10,6 +10,8 @@ All contributions to the project should follow the following procedure:
 - [Set up instructions](#set-up-instructions)
 - [Best practices](#best-practices)
 - [Some don'ts](#some-donts)
+- [Setting up appetize.io](setting-up-appetize.io)
+- [Signed apk setup for pipeline](#signed-apk-setup-for-pipeline)
 
 ## Installation
 
@@ -102,4 +104,4 @@ Follow the following steps :-
       3.3) "KEY_ALIAS" and enter you key alias.
       3.4) "KEYSTORE_PASSWORD" and enter your keystore password.
 
-    Make these CI variables Protected also don't forget to make your branch Protected.
+   Make these CI variables Protected also don't forget to make your branch Protected.
