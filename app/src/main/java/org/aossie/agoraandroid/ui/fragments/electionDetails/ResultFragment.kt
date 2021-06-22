@@ -76,7 +76,7 @@ constructor(
 
   private fun observeConnectivity() {
     electionDetailsViewModel.notConnected.observe(
-      requireActivity(),
+      viewLifecycleOwner,
       {
         if (it) {
           binding.resultView.visibility = View.GONE
@@ -89,7 +89,7 @@ constructor(
 
   private fun observeResult() {
     electionDetailsViewModel.resultResponse.observe(
-      requireActivity(),
+      viewLifecycleOwner,
       {
         if (it != null) {
           initResultView(it)

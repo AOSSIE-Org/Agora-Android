@@ -69,7 +69,7 @@ constructor(
       try {
         val elections = displayElectionViewModel.activeElections.await()
         elections.observe(
-          requireActivity(),
+          viewLifecycleOwner,
           Observer {
             if (it != null) {
               addElections(it)
