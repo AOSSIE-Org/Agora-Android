@@ -38,6 +38,7 @@ buildscript {
     chuckerVersion = '3.4.0'
     leakcanaryVersion = '2.6'
     moshiVersion = '1.10.0'
+    poi = '3.17'
   }
 
   repositories {

@@ -1,8 +1,12 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
+import android.Manifest
 import android.R.layout
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +18,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,18 +31,30 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.InputStream
 import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
+
+const val STORAGE_PERMISSION_REQUEST_CODE = 2
+const val STORAGE_INTENT_REQUEST_CODE = 4
 
 /**
  * A simple [Fragment] subclass.
@@ -205,6 +222,32 @@ constructor(
         ballotVisibility = resources.getStringArray(array.security_questions)[0]
       }
     }
+
+    binding.importCandidates.setOnClickListener {
+      if (ActivityCompat.checkSelfPermission(
+          requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+      ) {
+        searchExcelFile()
+      } else {
+        askReadStoragePermission()
+      }
+    }
+  }
+
+  private fun searchExcelFile() {
+    val excelIntent = Intent()
+    excelIntent.let {
+      it.action = Intent.ACTION_GET_CONTENT
+      it.type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+    startActivityForResult(excelIntent, STORAGE_INTENT_REQUEST_CODE)
+  }
+
+  private fun askReadStoragePermission() {
+    requestPermissions(
+      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
+    )
   }
 
   private val itemTouchHelperCallback: SimpleCallback =
@@ -231,6 +274,12 @@ constructor(
     mCandidates.add(cName)
     candidateRecyclerAdapter!!.notifyDataSetChanged()
     binding.candidateTil.editText?.setText("")
+    binding.textViewSwipe.show()
+  }
+
+  private fun importCandidates(cNames: List<String>) {
+    mCandidates.addAll(cNames)
+    candidateRecyclerAdapter!!.notifyDataSetChanged()
     binding.textViewSwipe.show()
   }
 
@@ -431,5 +480,51 @@ constructor(
     binding.progressBar.hide()
     binding.root.snackbar(message)
     binding.submitDetailsBtn.toggleIsEnable()
+  }
+
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    intentData: Intent?
+  ) {
+    super.onActivityResult(requestCode, resultCode, intentData)
+    if (resultCode != Activity.RESULT_OK) return
+
+    if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
+      val fileUri = intentData?.data ?: return
+      FileUtils.getPathFromUri(requireContext(), fileUri)
+        ?.let { readExcelData(it) }
+    }
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<String>,
+    grantResults: IntArray
+  ) {
+    if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        searchExcelFile()
+      } else {
+        binding.root.snackbar(getString(string.permission_denied))
+      }
+    }
+  }
+
+  private fun readExcelData(excelFilePath: String) {
+    try {
+      val inputStream: InputStream = FileInputStream(File(excelFilePath))
+      val workbook = XSSFWorkbook(inputStream)
+      val sheet: XSSFSheet = workbook.getSheetAt(0) ?: return
+      val list: ArrayList<String> = ArrayList()
+      for (row in sheet.rowIterator()) {
+        list.add(row.getCell(0).stringCellValue)
+      }
+      importCandidates(list)
+    } catch (e: FileNotFoundException) {
+      binding.root.snackbar(getString(string.file_not_found))
+    } catch (e: IOException) {
+      binding.root.snackbar(getString(string.cannot_read_file))
+    }
   }
 }
