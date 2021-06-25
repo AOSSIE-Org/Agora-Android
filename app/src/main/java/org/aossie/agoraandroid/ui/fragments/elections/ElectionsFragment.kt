@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -11,13 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_elections.view.rv_total_elections
-import kotlinx.android.synthetic.main.fragment_elections.view.tv_empty_election
-import kotlinx.android.synthetic.main.fragment_elections.view.tv_something_went_wrong
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.databinding.FragmentElectionsBinding
 import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
+import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ constructor(
 ) : Fragment(),
   ElectionRecyclerAdapterCallback {
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentElectionsBinding
 
   private val electionViewModel: ElectionViewModel by viewModels {
     viewModelFactory
@@ -43,14 +43,20 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_elections, container, false)
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_elections, container, false)
     mElections = ArrayList()
     electionsAdapter = ElectionsAdapter(mElections as List<Election>, this)
-    rootView.rv_total_elections.apply {
+    binding.rvTotalElections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
     }
-    return rootView
+    binding.searchView.setOnQueryChangeListener { _, query ->
+      filter(query)
+    }
+    val leftActionIcon =
+      binding.searchView.findViewById<View>(com.arlib.floatingsearchview.R.id.left_action)
+
+    return binding.root
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -70,7 +76,7 @@ constructor(
           }
         )
     } catch (e: IllegalStateException) {
-      rootView.tv_something_went_wrong.show()
+      binding.tvSomethingWentWrong.show()
     }
   }
 
@@ -79,15 +85,30 @@ constructor(
       mElections.addAll(elections)
       electionsAdapter.notifyDataSetChanged()
     } else {
-      rootView.tv_empty_election.show()
+      binding.tvEmptyElection.show()
     }
+  }
+
+  private fun filter(query: String) {
+    val updatedList: java.util.ArrayList<Election> = java.util.ArrayList()
+    for (election in mElections) {
+      if (election.name?.contains(query) == true || election.description?.contains(query) == true) {
+        updatedList.add(election)
+      }
+    }
+    if (updatedList.isEmpty()) {
+      binding.tvEmptyElection.show()
+    } else {
+      binding.tvEmptyElection.hide()
+    }
+    electionsAdapter.updateList(updatedList)
   }
 
   override fun onItemClicked(_id: String) {
     val action =
       ElectionsFragmentDirections
         .actionElectionsFragmentToElectionDetailsFragment(_id)
-    Navigation.findNavController(rootView)
+    Navigation.findNavController(binding.root)
       .navigate(action)
   }
 }

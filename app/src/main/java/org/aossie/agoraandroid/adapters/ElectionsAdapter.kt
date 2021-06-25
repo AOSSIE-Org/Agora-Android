@@ -20,7 +20,7 @@ private const val PENDING_ELECTION_LABEL = "PENDING"
 private const val FINISHED_ELECTION_LABEL = "FINISHED"
 
 class ElectionsAdapter(
-  private val elections: List<Election>,
+  private var elections: List<Election>,
   private val adapterCallback: ElectionRecyclerAdapterCallback
 ) : RecyclerView.Adapter<ElectionsAdapter.ElectionsViewHolder>() {
 
@@ -41,6 +41,11 @@ class ElectionsAdapter(
     holder: ElectionsViewHolder,
     position: Int
   ) = holder.bind(elections[position], adapterCallback)
+
+  fun updateList(queryElections: List<Election>) {
+    elections = queryElections
+    notifyDataSetChanged()
+  }
 
   class ElectionsViewHolder(
     val binding: ListItemElectionsBinding,

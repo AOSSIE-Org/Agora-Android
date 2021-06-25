@@ -1,41 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context=".ui.fragments.elections.ElectionsFragment"
+  >
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.elections.ElectionsFragment"
+    android:orientation="vertical"
     >
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_total_elections"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:item_layout="@layout/list_item_election_details"
+
+    <com.arlib.floatingsearchview.FloatingSearchView
+      android:id="@+id/search_view"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/size_58dp"
+      android:layout_marginTop="@dimen/size_8dp"
+      app:floatingSearch_close_search_on_keyboard_dismiss="true"
+      app:floatingSearch_leftActionMode="showSearch"
+      app:floatingSearch_searchBarMarginLeft="@dimen/size_8dp"
+      app:floatingSearch_searchBarMarginRight="@dimen/size_8dp"
+      app:floatingSearch_searchHint="@string/search_hint"
+      app:floatingSearch_showSearchKey="true"
       />
-  <TextView
-      android:id="@+id/tv_empty_election"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textSize="@dimen/size_18sp"
-      android:visibility="invisible"
-      android:text="@string/empty_elections"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
-  <TextView
-      android:id="@+id/tv_something_went_wrong"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textSize="@dimen/size_18sp"
-      android:visibility="invisible"
-      android:text="@string/something_went_wrong_please_try_again_later"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_total_elections"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:item_layout="@layout/list_item_election_details"
+        />
+      <TextView
+        android:id="@+id/tv_empty_election"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_elections"
+        android:textSize="@dimen/size_18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+      <TextView
+        android:id="@+id/tv_something_went_wrong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/something_went_wrong_please_try_again_later"
+        android:textSize="@dimen/size_18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+</layout>
