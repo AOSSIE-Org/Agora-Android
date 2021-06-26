@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -56,8 +57,8 @@ constructor(
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
     }
-    binding.searchView.setOnQueryChangeListener { _, query ->
-      filter(query)
+    binding.searchView.doAfterTextChanged {
+      filter(it.toString())
     }
     return binding.root
   }
@@ -96,12 +97,12 @@ constructor(
 
   private fun filter(query: String) {
     val updatedList = displayElectionViewModel.filter(mElections, query)
+    electionsAdapter.submitList(updatedList)
     if (updatedList.isEmpty()) {
       binding.tvEmptyElection.show()
     } else {
       binding.tvEmptyElection.hide()
     }
-    electionsAdapter.submitList(updatedList)
   }
 
   override fun onItemClicked(_id: String) {

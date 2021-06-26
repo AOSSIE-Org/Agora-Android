@@ -11,18 +11,35 @@
     android:orientation="vertical"
     >
 
-    <com.arlib.floatingsearchview.FloatingSearchView
-      android:id="@+id/search_view"
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/fieldSearch"
+      style="@style/SearchFieldStyle"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/size_58dp"
-      android:layout_marginTop="@dimen/size_8dp"
-      app:floatingSearch_close_search_on_keyboard_dismiss="true"
-      app:floatingSearch_leftActionMode="showSearch"
-      app:floatingSearch_searchBarMarginLeft="@dimen/size_8dp"
-      app:floatingSearch_searchBarMarginRight="@dimen/size_8dp"
-      app:floatingSearch_searchHint="@string/search_hint"
-      app:floatingSearch_showSearchKey="true"
-      />
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/size_8dp"
+      android:padding="0dp"
+      app:boxStrokeWidth="0dp"
+      app:boxStrokeWidthFocused="0dp"
+      app:startIconDrawable="@drawable/ic_baseline_search_24"
+      app:startIconTint="@color/green_gradient_color"
+      >
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_background"
+        android:gravity="center_vertical"
+        android:hint="@string/search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="0dp"
+        android:textColor="@color/green_gradient_color"
+        android:textColorHint="@color/grey"
+        android:textSize="18sp"
+        />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"

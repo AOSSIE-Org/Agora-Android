@@ -120,9 +120,6 @@ dependencies {
 
   //recyclerView
   implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-
-  //Search Bar
-  implementation "com.github.arimorty:floatingsearchview:$searchBarVersion"
 }
 repositories {
   mavenCentral()
