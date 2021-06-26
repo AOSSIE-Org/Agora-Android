@@ -22,7 +22,6 @@ import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
-import java.util.Locale
 import javax.inject.Inject
 
 /**
