@@ -8,8 +8,6 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +17,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -148,13 +147,13 @@ constructor(
 
     binding.etEndDate.setOnClickListener { handleEndDateTime() }
 
-    binding.etElectionName.addTextChangedListener(textWatcher)
+    binding.etElectionName.doAfterTextChanged { doAfterTextChange() }
 
-    binding.etElectionDescription.addTextChangedListener(textWatcher)
+    binding.etElectionDescription.doAfterTextChanged { doAfterTextChange() }
 
-    binding.etStartDate.addTextChangedListener(textWatcher)
+    binding.etStartDate.doAfterTextChanged { doAfterTextChange() }
 
-    binding.etEndDate.addTextChangedListener(textWatcher)
+    binding.etEndDate.doAfterTextChanged { doAfterTextChange() }
 
     binding.submitDetailsBtn.setOnClickListener {
       mElectionName = binding.electionNameTil.editText?.text.toString()
@@ -184,7 +183,12 @@ constructor(
       }
     }
 
-    binding.etCandidateName.addTextChangedListener(candidateTextWatcher)
+    binding.etCandidateName.doAfterTextChanged {
+      val candidateNameInput: String = binding.etCandidateName.text
+        .toString()
+        .trim()
+      binding.addCandidateBtn.isEnabled = candidateNameInput.isNotEmpty()
+    }
 
     binding.addCandidateBtn.setOnClickListener {
       val name = binding.candidateTil.editText?.text.toString()
@@ -282,30 +286,6 @@ constructor(
     mCandidates.addAll(cNames)
     candidateRecyclerAdapter!!.notifyDataSetChanged()
     binding.textViewSwipe.show()
-  }
-
-  private val candidateTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(
-      s: CharSequence,
-      start: Int,
-      count: Int,
-      after: Int
-    ) {
-    }
-
-    override fun afterTextChanged(s: Editable) {}
-
-    override fun onTextChanged(
-      s: CharSequence,
-      start: Int,
-      before: Int,
-      count: Int
-    ) {
-      val candidateNameInput: String = binding.etCandidateName.text
-        .toString()
-        .trim()
-      binding.addCandidateBtn.isEnabled = candidateNameInput.isNotEmpty()
-    }
   }
 
   private fun validateInputs(): Boolean {
@@ -426,40 +406,23 @@ constructor(
     }
   }
 
-  private val textWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(
-      s: CharSequence,
-      start: Int,
-      count: Int,
-      after: Int
-    ) {
-    }
-
-    override fun afterTextChanged(s: Editable) {}
-
-    override fun onTextChanged(
-      s: CharSequence,
-      start: Int,
-      before: Int,
-      count: Int
-    ) {
-      val electionNameInput: String = binding.etElectionName.text
-        .toString()
-        .trim()
-      val electionDescriptionInput: String = binding.etElectionDescription.text
-        .toString()
-        .trim()
-      val startDateInput: String = binding.etStartDate.text
-        .toString()
-        .trim()
-      val endDateInput: String = binding.etEndDate.text
-        .toString()
-        .trim()
-      binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
-        electionDescriptionInput.isNotEmpty() &&
-        startDateInput.isNotEmpty() &&
-        endDateInput.isNotEmpty()
-    }
+  private fun doAfterTextChange() {
+    val electionNameInput: String = binding.etElectionName.text
+      .toString()
+      .trim()
+    val electionDescriptionInput: String = binding.etElectionDescription.text
+      .toString()
+      .trim()
+    val startDateInput: String = binding.etStartDate.text
+      .toString()
+      .trim()
+    val endDateInput: String = binding.etEndDate.text
+      .toString()
+      .trim()
+    binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
+      electionDescriptionInput.isNotEmpty() &&
+      startDateInput.isNotEmpty() &&
+      endDateInput.isNotEmpty()
   }
 
   override fun onStarted() {
