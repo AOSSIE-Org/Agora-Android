@@ -360,7 +360,7 @@ constructor(
       val minute = startCalendar[Calendar.MINUTE]
       val duration =
         (endCalendar.timeInMillis - startCalendar.timeInMillis) / 60000
-      events.add(Event(id, title, description, status, hour, minute, duration, eventColor))
+      events.add(Event(id, title, description, status?.name, hour, minute, duration, eventColor))
       allEvents!![sDate.timeInMillis] = events
       startCalendar.add(Calendar.DATE, 1)
       startCalendar.set(Calendar.HOUR, 0)
@@ -375,13 +375,13 @@ constructor(
     currentDate: Date,
     formattedStartingDate: Date?,
     formattedEndingDate: Date?
-  ): String? {
+  ): AppConstants.Status? {
     return when {
-      currentDate.before(formattedStartingDate) -> AppConstants.PENDING
+      currentDate.before(formattedStartingDate) -> AppConstants.Status.PENDING
       currentDate.after(formattedStartingDate) && currentDate.before(
         formattedEndingDate
-      ) -> AppConstants.ACTIVE
-      currentDate.after(formattedEndingDate) -> AppConstants.FINISHED
+      ) -> AppConstants.Status.ACTIVE
+      currentDate.after(formattedEndingDate) -> AppConstants.Status.FINISHED
       else -> null
     }
   }

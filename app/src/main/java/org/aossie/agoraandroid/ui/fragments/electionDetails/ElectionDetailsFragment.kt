@@ -45,7 +45,7 @@ constructor(
   DisplayElectionListener {
   lateinit var binding: FragmentElectionDetailsBinding
   private var id: String? = null
-  private var status: String? = null
+  private var status: AppConstants.Status? = null
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
   }
@@ -91,7 +91,7 @@ constructor(
         .navigate(action)
     }
     binding.buttonInviteVoters.setOnClickListener {
-      if (status == AppConstants.FINISHED) {
+      if (status == AppConstants.Status.FINISHED) {
         binding.root.snackbar(resources.getString(string.election_finished))
       } else {
         val action =
@@ -103,7 +103,7 @@ constructor(
       }
     }
     binding.buttonResult.setOnClickListener {
-      if (status == AppConstants.PENDING) {
+      if (status == AppConstants.Status.PENDING) {
         binding.root.snackbar(resources.getString(string.election_not_started))
       } else {
         if (requireContext().isConnected()) {
@@ -120,11 +120,11 @@ constructor(
     }
     binding.buttonDelete.setOnClickListener {
       when (status) {
-        AppConstants.ACTIVE -> binding.root.snackbar(
+        AppConstants.Status.ACTIVE -> binding.root.snackbar(
           resources.getString(string.active_elections_not_started)
         )
-        AppConstants.FINISHED -> electionDetailsViewModel.deleteElection(id)
-        AppConstants.PENDING -> electionDetailsViewModel.deleteElection(id)
+        AppConstants.Status.FINISHED -> electionDetailsViewModel.deleteElection(id)
+        AppConstants.Status.PENDING -> electionDetailsViewModel.deleteElection(id)
       }
     }
   }
@@ -148,7 +148,7 @@ constructor(
               binding.tvEndDate.text = outFormat.format(formattedEndingDate)
               binding.tvStartDate.text = outFormat.format(formattedStartingDate)
               // set label color and election status
-              binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
+              binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
               binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
               status = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
             } catch (e: ParseException) {
@@ -177,13 +177,13 @@ constructor(
     currentDate: Date,
     formattedStartingDate: Date?,
     formattedEndingDate: Date?
-  ): String? {
+  ): AppConstants.Status? {
     return when {
-      currentDate.before(formattedStartingDate) -> AppConstants.PENDING
+      currentDate.before(formattedStartingDate) -> AppConstants.Status.PENDING
       currentDate.after(formattedStartingDate) && currentDate.before(
         formattedEndingDate
-      ) -> AppConstants.ACTIVE
-      currentDate.after(formattedEndingDate) -> AppConstants.FINISHED
+      ) -> AppConstants.Status.ACTIVE
+      currentDate.after(formattedEndingDate) -> AppConstants.Status.FINISHED
       else -> null
     }
   }

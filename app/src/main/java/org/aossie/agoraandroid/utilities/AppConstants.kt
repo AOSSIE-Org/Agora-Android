@@ -4,9 +4,6 @@ object AppConstants {
   const val ok = "OK"
   const val undo = "UNDO"
   const val SHOW_SNACKBAR_KEY = "showSnackBar"
-  const val PENDING = "PENDING"
-  const val ACTIVE = "ACTIVE"
-  const val FINISHED = "FINISHED"
   const val FACEBOOK = "facebook"
   const val REFRESH_ACCESS_TOKEN = "refreshAccessToken"
   const val X_AUTH_TOKEN = "X-Auth-Token"
@@ -27,4 +24,7 @@ object AppConstants {
   const val INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error. Please enter valid input"
   const val URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$"
   const val BASE_URL = "https://agora-rest-api.herokuapp.com/api/v1/"
+  enum class Status {
+    PENDING, ACTIVE, FINISHED
+  }
 }

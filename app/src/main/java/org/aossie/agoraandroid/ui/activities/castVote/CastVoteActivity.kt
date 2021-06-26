@@ -212,7 +212,7 @@ class CastVoteActivity :
               binding.tvEndDate.text = outFormat.format(formattedEndingDate)
               binding.tvStartDate.text = outFormat.format(formattedStartingDate)
               // set label color and election status
-              binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
+              binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
               binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
             } catch (e: ParseException) {
               e.printStackTrace()
@@ -259,13 +259,13 @@ class CastVoteActivity :
     currentDate: Date,
     formattedStartingDate: Date?,
     formattedEndingDate: Date?
-  ): String? {
+  ): AppConstants.Status? {
     return when {
-      currentDate.before(formattedStartingDate) -> AppConstants.PENDING
+      currentDate.before(formattedStartingDate) -> AppConstants.Status.PENDING
       currentDate.after(formattedStartingDate) && currentDate.before(
         formattedEndingDate
-      ) -> AppConstants.ACTIVE
-      currentDate.after(formattedEndingDate) -> AppConstants.FINISHED
+      ) -> AppConstants.Status.ACTIVE
+      currentDate.after(formattedEndingDate) -> AppConstants.Status.FINISHED
       else -> null
     }
   }
