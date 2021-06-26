@@ -520,11 +520,11 @@ constructor(
       val list: ArrayList<String> = ArrayList()
       for (row in sheet.rowIterator()) {
         row.getCell(0)?.let {
-          if(it.stringCellValue.isNotEmpty()) list.add(it.stringCellValue)
+          if (it.stringCellValue.isNotEmpty()) list.add(it.stringCellValue)
         }
       }
-      if(list.isNotEmpty()) importCandidates(list)
-    } catch (e : NotOfficeXmlFileException){
+      if (list.isNotEmpty()) importCandidates(list)
+    } catch (e: NotOfficeXmlFileException) {
       binding.root.snackbar(getString(string.not_excel))
     } catch (e: FileNotFoundException) {
       binding.root.snackbar(getString(string.file_not_available))
