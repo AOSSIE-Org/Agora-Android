@@ -36,7 +36,9 @@ constructor(
     query: String
   ): List<Election> {
     return mElections.filter {
-      it.name?.contains(query) == true || it.description?.contains(query) == true || it.candidates?.any { candidate -> candidate.contains(query) } == true
+      it.name?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true ||
+        it.description?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true ||
+        it.candidates?.any { candidate -> candidate.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT)) } == true
     }
   }
 }
