@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import javax.inject.Inject
 
@@ -27,7 +26,7 @@ constructor(
     query: String
   ): List<Election> {
     return mElections.filter {
-      it.name?.contains(query) == true || it.description?.contains(query) == true
+      it.name?.contains(query) == true || it.description?.contains(query) == true || it.candidates?.any { candidate -> candidate.contains(query) } == true
     }
   }
 }

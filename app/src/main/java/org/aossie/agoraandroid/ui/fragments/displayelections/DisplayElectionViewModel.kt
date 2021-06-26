@@ -36,7 +36,7 @@ constructor(
     query: String
   ): List<Election> {
     return mElections.filter {
-      it.name?.contains(query) == true || it.description?.contains(query) == true
+      it.name?.contains(query) == true || it.description?.contains(query) == true || it.candidates?.any { candidate -> candidate.contains(query) } == true
     }
   }
 }
