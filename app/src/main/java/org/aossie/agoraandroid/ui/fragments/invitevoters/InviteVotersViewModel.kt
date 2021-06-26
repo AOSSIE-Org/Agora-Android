@@ -20,16 +20,11 @@ constructor(
   lateinit var inviteVoterListener: InviteVoterListener
 
   fun inviteVoters(
-    mVoterNames: ArrayList<String>,
-    mVoterEmails: ArrayList<String>,
+    mVoters: ArrayList<VotersDto>,
     id: String
   ) {
 
-    val votersData = mutableListOf<VotersDto>()
-    for (i in mVoterEmails.indices)
-      votersData.add(VotersDto(mVoterNames[i], mVoterEmails[i]))
-
-    sendVoters(id, votersData)
+    sendVoters(id, mVoters)
   }
 
   private fun sendVoters(

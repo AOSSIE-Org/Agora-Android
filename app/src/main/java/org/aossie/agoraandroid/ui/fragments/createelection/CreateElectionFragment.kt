@@ -42,6 +42,7 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
@@ -518,11 +519,15 @@ constructor(
       val sheet: XSSFSheet = workbook.getSheetAt(0) ?: return
       val list: ArrayList<String> = ArrayList()
       for (row in sheet.rowIterator()) {
-        list.add(row.getCell(0).stringCellValue)
+        row.getCell(0)?.let {
+          if(it.stringCellValue.isNotEmpty()) list.add(it.stringCellValue)
+        }
       }
-      importCandidates(list)
+      if(list.isNotEmpty()) importCandidates(list)
+    } catch (e : NotOfficeXmlFileException){
+      binding.root.snackbar(getString(string.not_excel))
     } catch (e: FileNotFoundException) {
-      binding.root.snackbar(getString(string.file_not_found))
+      binding.root.snackbar(getString(string.file_not_available))
     } catch (e: IOException) {
       binding.root.snackbar(getString(string.cannot_read_file))
     }
