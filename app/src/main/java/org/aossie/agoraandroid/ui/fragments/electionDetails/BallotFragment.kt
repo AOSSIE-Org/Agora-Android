@@ -76,7 +76,7 @@ constructor(
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
       electionDetailsViewModel.ballotResponse.observe(
-        requireActivity(),
+        viewLifecycleOwner,
         Observer {
           if (it != null) {
             initRecyclerView(it)
@@ -86,7 +86,7 @@ constructor(
         }
       )
       electionDetailsViewModel.notConnected.observe(
-        requireActivity(),
+        viewLifecycleOwner,
         Observer {
           if (it) {
             getBallotsFromDb()
@@ -110,7 +110,7 @@ constructor(
   private fun getBallotsFromDb() {
     Coroutines.main {
       electionDetailsViewModel.getElectionById(id!!).observe(
-        requireActivity(),
+        viewLifecycleOwner,
         Observer {
           initRecyclerView(it.ballot as List<BallotDto>)
           rootView.progress_bar.hide()
