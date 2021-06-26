@@ -2,6 +2,7 @@ package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -28,5 +29,14 @@ constructor(
   }
   val finishedElections by lazyDeferred {
     electionsRepository.getFinishedElections(date)
+  }
+
+  fun filter(
+    mElections: List<Election>,
+    query: String
+  ): List<Election> {
+    return mElections.filter {
+      it.name?.contains(query) == true || it.description?.contains(query) == true
+    }
   }
 }

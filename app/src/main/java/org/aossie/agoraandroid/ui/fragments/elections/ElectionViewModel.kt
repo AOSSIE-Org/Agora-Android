@@ -12,8 +12,7 @@ import javax.inject.Inject
 class ElectionViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository,
-  private val prefs: PreferenceProvider
+  private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
   fun getElections(): LiveData<List<Election>> {
@@ -21,5 +20,14 @@ constructor(
       electionsRepository.fetchAndSaveElections()
     }
     return electionsRepository.getElections()
+  }
+
+  fun filter(
+    mElections: List<Election>,
+    query: String
+  ): List<Election> {
+    return mElections.filter {
+      it.name?.contains(query) == true || it.description?.contains(query) == true
+    }
   }
 }

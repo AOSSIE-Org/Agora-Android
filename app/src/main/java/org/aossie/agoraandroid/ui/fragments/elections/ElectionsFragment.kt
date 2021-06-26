@@ -45,7 +45,7 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_elections, container, false)
     mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(mElections as List<Election>, this)
+    electionsAdapter = ElectionsAdapter(this)
     binding.rvTotalElections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
@@ -53,9 +53,6 @@ constructor(
     binding.searchView.setOnQueryChangeListener { _, query ->
       filter(query)
     }
-    val leftActionIcon =
-      binding.searchView.findViewById<View>(com.arlib.floatingsearchview.R.id.left_action)
-
     return binding.root
   }
 
@@ -83,25 +80,20 @@ constructor(
   private fun addElections(elections: List<Election>) {
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
-      electionsAdapter.notifyDataSetChanged()
+      electionsAdapter.submitList(elections)
     } else {
       binding.tvEmptyElection.show()
     }
   }
 
   private fun filter(query: String) {
-    val updatedList: java.util.ArrayList<Election> = java.util.ArrayList()
-    for (election in mElections) {
-      if (election.name?.contains(query) == true || election.description?.contains(query) == true) {
-        updatedList.add(election)
-      }
-    }
+    val updatedList = electionViewModel.filter(mElections, query)
     if (updatedList.isEmpty()) {
       binding.tvEmptyElection.show()
     } else {
       binding.tvEmptyElection.hide()
     }
-    electionsAdapter.updateList(updatedList)
+    electionsAdapter.submitList(updatedList)
   }
 
   override fun onItemClicked(_id: String) {

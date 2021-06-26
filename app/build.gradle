@@ -118,6 +118,9 @@ dependencies {
   kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
   implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
+  //recyclerView
+  implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+
   //Search Bar
   implementation "com.github.arimorty:floatingsearchview:$searchBarVersion"
 }

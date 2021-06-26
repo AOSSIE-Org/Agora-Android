@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -20,9 +22,8 @@ private const val PENDING_ELECTION_LABEL = "PENDING"
 private const val FINISHED_ELECTION_LABEL = "FINISHED"
 
 class ElectionsAdapter(
-  private var elections: List<Election>,
   private val adapterCallback: ElectionRecyclerAdapterCallback
-) : RecyclerView.Adapter<ElectionsAdapter.ElectionsViewHolder>() {
+) : ListAdapter<Election, ElectionsAdapter.ElectionsViewHolder>(ElectionItemDiffCallback) {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
@@ -35,17 +36,10 @@ class ElectionsAdapter(
     return ElectionsViewHolder(binding, parent.context)
   }
 
-  override fun getItemCount(): Int = elections.size
-
   override fun onBindViewHolder(
     holder: ElectionsViewHolder,
     position: Int
-  ) = holder.bind(elections[position], adapterCallback)
-
-  fun updateList(queryElections: List<Election>) {
-    elections = queryElections
-    notifyDataSetChanged()
-  }
+  ) = holder.bind(getItem(position), adapterCallback)
 
   class ElectionsViewHolder(
     val binding: ListItemElectionsBinding,
@@ -94,6 +88,16 @@ class ElectionsAdapter(
       itemView.setOnClickListener {
         adapterCallback.onItemClicked(election._id)
       }
+    }
+  }
+
+  object ElectionItemDiffCallback : DiffUtil.ItemCallback<Election>() {
+    override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
+      return oldItem._id == newItem._id
+    }
+
+    override fun areContentsTheSame(oldItem: Election, newItem: Election): Boolean {
+      return oldItem == newItem
     }
   }
 }

@@ -51,7 +51,7 @@ constructor(
     binding =
       DataBindingUtil.inflate(inflater, R.layout.fragment_finished_elections, container, false)
     mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(mElections as List<Election>, this)
+    electionsAdapter = ElectionsAdapter(this)
     binding.rvFinishedElections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
@@ -88,25 +88,20 @@ constructor(
   private fun addElections(elections: List<Election>) {
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
-      electionsAdapter.notifyDataSetChanged()
+      electionsAdapter.submitList(elections)
     } else {
       binding.tvEmptyElection.show()
     }
   }
 
   private fun filter(query: String) {
-    val updatedList: ArrayList<Election> = ArrayList()
-    for (election in mElections) {
-      if (election.name?.contains(query) == true || election.description?.contains(query) == true) {
-        updatedList.add(election)
-      }
-    }
+    val updatedList = displayElectionViewModel.filter(mElections, query)
     if (updatedList.isEmpty()) {
       binding.tvEmptyElection.show()
     } else {
       binding.tvEmptyElection.hide()
     }
-    electionsAdapter.updateList(updatedList)
+    electionsAdapter.submitList(updatedList)
   }
 
   override fun onItemClicked(_id: String) {

@@ -39,6 +39,7 @@ buildscript {
     leakcanaryVersion = '2.6'
     moshiVersion = '1.10.0'
     searchBarVersion = '2.1.1'
+    recyclerViewVersion = '1.2.1'
   }
 
   repositories {
