@@ -32,13 +32,13 @@ lintDebug:
   interruptible: true
   stage: build
   script:
-    - ./gradlew ktlintCheck
+    - fastlane lint
 
 assembleRelease:
   interruptible: true
   stage: build
   script:
-    - ./gradlew assembleRelease --stacktrace --no-daemon
+    - fastlane build_release
     - 'touch req.json && echo {\"url\":\"$CI_JOB_URL/artifacts/raw/app/build/outputs/apk/release/app-release.apk\",\"platform\": \"android\" } > req.json'
   artifacts:
     paths:
@@ -49,7 +49,7 @@ debugTests:
   interruptible: true
   stage: test
   script:
-    - ./gradlew -Pci --console=plain :app:testDebug
+    - fastlane test
 
 deploy:
   interruptible: true
