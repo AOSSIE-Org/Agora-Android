@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <TextView
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <TextView
       android:id="@+id/tv_selected_candidate_name"
+      style="@style/UpVotedCandidateTextStyle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      style="@style/UpVotedCandidateTextStyle"
-      android:text="@string/candidate"
-      android:layout_marginHorizontal="@dimen/size_10dp"
       android:layout_margin="@dimen/size_4dp"
+      android:layout_marginHorizontal="@dimen/size_10dp"
       android:gravity="center"
+      android:text="@string/candidate"
       android:textSize="@dimen/size_18sp"
       />
 
-</LinearLayout>
+  </LinearLayout>
+</layout>
