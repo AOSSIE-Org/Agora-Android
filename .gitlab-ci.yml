@@ -25,12 +25,8 @@ before_script:
   - touch signing.properties && echo -e "storeFile=keystore.jks\nstorePassword=$KEYSTORE_PASSWORD\nkeyAlias=$KEY_ALIAS\nkeyPassword=$KEY_PASSWORD" > signing.properties
   - touch app/keystore.jks && echo $KEYSTORE | base64 --decode > app/keystore.jks
   - chmod +x ./gradlew
-  - apt-get --quiet install software-properties-common --yes
-  - apt-add-repository ppa:brightbox/ruby-ng
   - apt-get --quiet install libc6-dev --yes
   - apt-get --quiet install g++ --yes
-  - apt-get  --quiet install ruby2.5 ruby2.5-dev build-essential dh-autoreconf --yes
-  - apt-get --quiet install ruby-dev --yes
   -  gem install bundler:1.17.2
   -  bundle install
   # temporarily disable checking for EPIPE error and use yes to accept all licenses
