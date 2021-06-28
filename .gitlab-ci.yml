@@ -29,7 +29,7 @@ before_script:
   - apt-add-repository ppa:brightbox/ruby-ng
   - apt-get --quiet install libc6-dev --yes
   - apt-get --quiet install g++ --yes
-  - sudo apt-get  --quiet install ruby2.5 ruby2.5-dev build-essential dh-autoreconf --yes
+  - apt-get  --quiet install ruby2.5 ruby2.5-dev build-essential dh-autoreconf --yes
   - gem install fastlane
   # temporarily disable checking for EPIPE error and use yes to accept all licenses
   - set +o pipefail
