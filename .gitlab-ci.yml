@@ -25,6 +25,8 @@ before_script:
   - touch signing.properties && echo -e "storeFile=keystore.jks\nstorePassword=$KEYSTORE_PASSWORD\nkeyAlias=$KEY_ALIAS\nkeyPassword=$KEY_PASSWORD" > signing.properties
   - touch app/keystore.jks && echo $KEYSTORE | base64 --decode > app/keystore.jks
   - chmod +x ./gradlew
+  - apt-get --quite install software-properties-common --yes
+  - apt-get update
   - apt-add-repository ppa:brightbox/ruby-ng
   - apt-get update
   - apt-get--quite install ruby2.4 --yes
