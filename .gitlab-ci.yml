@@ -8,6 +8,8 @@ variables:
   ANDROID_COMPILE_SDK: "28"
   ANDROID_BUILD_TOOLS: "28.0.2"
   ANDROID_SDK_TOOLS: "4333796"
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
 
 before_script:
   - apt-get --quiet update --yes
