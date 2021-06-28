@@ -26,9 +26,7 @@ before_script:
   - touch app/keystore.jks && echo $KEYSTORE | base64 --decode > app/keystore.jks
   - chmod +x ./gradlew
   - apt-get --quiet install software-properties-common --yes
-  - apt-get update
   - apt-add-repository ppa:brightbox/ruby-ng
-  - apt-get update
   - apt-get--quiet install ruby2.4 --yes
   - apt-get --quiet install ruby2.4-dev --yes
   - apt-get --quiet install libc6-dev --yes
