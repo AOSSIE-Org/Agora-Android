@@ -18,7 +18,6 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.utilities.Coroutines
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
 import javax.inject.Inject
@@ -30,8 +29,7 @@ class PendingElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),
-  ElectionRecyclerAdapterCallback {
+) : Fragment() {
 
   private lateinit var rootView: View
 
@@ -42,6 +40,13 @@ constructor(
   lateinit var mElections: ArrayList<Election>
   private lateinit var electionsAdapter: ElectionsAdapter
 
+  private val onItemClicked = { _id: String ->
+    val action = PendingElectionsFragmentDirections
+      .actionPendingElectionsFragmentToElectionDetailsFragment(_id)
+    Navigation.findNavController(rootView)
+      .navigate(action)
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -50,7 +55,7 @@ constructor(
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_pending_elections, container, false)
     mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(mElections as List<Election>, this)
+    electionsAdapter = ElectionsAdapter(mElections as List<Election>, onItemClicked)
     rootView.rv_pending_elections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
@@ -69,7 +74,7 @@ constructor(
       try {
         val elections = displayElectionViewModel.pendingElections.await()
         elections.observe(
-          requireActivity(),
+          viewLifecycleOwner,
           Observer {
             if (it != null) {
               addElections(it)
@@ -89,12 +94,5 @@ constructor(
     } else {
       rootView.tv_empty_election.show()
     }
-  }
-
-  override fun onItemClicked(_id: String) {
-    val action = PendingElectionsFragmentDirections
-      .actionPendingElectionsFragmentToElectionDetailsFragment(_id)
-    Navigation.findNavController(rootView)
-      .navigate(action)
   }
 }

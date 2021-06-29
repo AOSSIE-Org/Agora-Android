@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        app:title="Cast Vote"
+        app:title="@string/cast_vote"
         app:titleTextColor="@color/white"
         />
     <FrameLayout
@@ -55,7 +55,7 @@
             android:visibility="gone"
             >
 
-          <RelativeLayout
+          <LinearLayout
               android:id="@+id/relativeLayout"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -201,9 +201,7 @@
                 android:id="@+id/tv_select_candidate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/card_view"
                 android:layout_margin="@dimen/size_8dp"
-                android:text="@string/please_select_candidate"
                 android:textColor="@color/black_color"
                 android:textSize="@dimen/size_18sp"
                 />
@@ -212,14 +210,20 @@
                 android:id="@+id/rv_candidates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_select_candidate"
                 android:layout_margin="@dimen/size_8dp"
                 android:padding="@dimen/size_8dp"
                 android:background="@drawable/white_cornered_background"
                 tools:listitem="@layout/list_item_add_candidate"
                 />
 
-            <TextView
+            <LinearLayout
+              android:id="@+id/voteLayout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              >
+
+              <TextView
                 android:id="@+id/tv_selected_candidate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -230,25 +234,28 @@
                 android:textSize="@dimen/size_18sp"
                 />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_selected_candidates"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_selected_candidate"
-                android:layout_margin="@dimen/size_8dp"
-                android:padding="@dimen/size_8dp"
-                android:background="@drawable/white_cornered_background"
-                />
+              <androidx.recyclerview.widget.RecyclerView
+                  android:id="@+id/rv_selected_candidates"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/tv_selected_candidate"
+                  android:layout_margin="@dimen/size_8dp"
+                  android:padding="@dimen/size_8dp"
+                  android:background="@drawable/white_cornered_background"
+                  />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_cast_vote"
-                style="@style/MainButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_below="@+id/rv_selected_candidates"
-                android:layout_margin="@dimen/size_10dp"
-                android:text="@string/cast_vote"
-                />
-          </RelativeLayout>
+              <androidx.appcompat.widget.AppCompatButton
+                  android:id="@+id/btn_cast_vote"
+                  style="@style/MainButtonStyle"
+                  android:layout_width="match_parent"
+                  android:layout_below="@+id/rv_selected_candidates"
+                  android:layout_margin="@dimen/size_10dp"
+                  android:text="@string/cast_vote"
+                  />
+
+            </LinearLayout>
+
+          </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

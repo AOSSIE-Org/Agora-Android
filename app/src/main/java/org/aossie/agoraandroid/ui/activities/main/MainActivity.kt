@@ -27,6 +27,7 @@ import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragme
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.animGone
 import org.aossie.agoraandroid.utilities.animVisible
 import org.aossie.agoraandroid.utilities.snackbar
@@ -63,6 +64,9 @@ class MainActivity : AppCompatActivity() {
     setSupportActionBar(toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(false)
 
+    intent?.getStringExtra(AppConstants.SHOW_SNACKBAR_KEY)?.let {
+      binding.root.snackbar(it)
+    }
     val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     if (hostFragment is NavHostFragment)
       navController = hostFragment.navController
@@ -83,12 +87,7 @@ class MainActivity : AppCompatActivity() {
       println()
     }
 
-    viewModel.isLogout.observe(
-      this,
-      {
-        if (it) logout()
-      }
-    )
+    initObservers()
   }
 
   private fun setToolbar(destination: NavDestination) {
@@ -154,6 +153,15 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
+  private fun initObservers() {
+    viewModel.isLogout.observe(
+      this,
+      {
+        if (it) logout()
+      }
+    )
+  }
+
   override fun onActivityResult(
     requestCode: Int,
     resultCode: Int,
@@ -178,5 +186,12 @@ class MainActivity : AppCompatActivity() {
       .setPopEnterAnim(R.anim.slide_in_right)
       .setPopExitAnim(R.anim.slide_out_left)
     navController.navigate(R.id.welcomeFragment, null, navBuilder.build())
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    intent?.getStringExtra(AppConstants.SHOW_SNACKBAR_KEY)?.let {
+      binding.root.snackbar(it)
+    }
   }
 }

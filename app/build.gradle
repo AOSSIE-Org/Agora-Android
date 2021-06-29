@@ -10,6 +10,12 @@ def fbApiScheme = properties.getProperty('fbApiScheme')
 def fbApiKey = properties.getProperty('fbApiKey')
 
 android {
+  def keystoreProperties = new Properties()
+  def keystorePropertiesFile = rootProject.file('signing.properties')
+  if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+  }
+
   lintOptions {
     baseline file("lint-baseline.xml")
   }
@@ -25,8 +31,28 @@ android {
     versionName "1.0"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
+  signingConfigs {
+    file(rootProject.file('signing.properties')).with { propFile ->
+      if (propFile.canRead()) {
+        release {
+          keyAlias keystoreProperties['keyAlias']
+          keyPassword keystoreProperties['keyPassword']
+          storeFile file(keystoreProperties['storeFile'])
+          storePassword keystoreProperties['storePassword']
+        }
+      }
+      else {
+        print('not signed')
+      }
+    }
+  }
   buildTypes {
     release {
+      file(rootProject.file('signing.properties')).with { propFile ->
+        if (propFile.canRead()) {
+          signingConfig signingConfigs.release
+        }
+      }
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }

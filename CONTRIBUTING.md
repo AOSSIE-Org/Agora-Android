@@ -10,6 +10,8 @@ All contributions to the project should follow the following procedure:
 - [Set up instructions](#set-up-instructions)
 - [Best practices](#best-practices)
 - [Some don'ts](#some-donts)
+- [Setting up appetize.io](setting-up-appetize.io)
+- [Signed apk setup for pipeline](#signed-apk-setup-for-pipeline)
 
 ## Installation
 
@@ -50,7 +52,7 @@ For creating a merge request, it is very **important** to follow the [best pract
 4. Use one commit per task. Do not over commit (add unnecessary commits for a single task) or under commit (merge 2 or more tasks in one commit).
 5. Add screenshot/short video in case the changes made in the MR, are being reflected in the UI of the application.
 6. add appetize link to MRs
-  
+
 ## Some don'ts
 
 1. Send a MR without an existing issue.
@@ -59,7 +61,7 @@ For creating a merge request, it is very **important** to follow the [best pract
 4. Suggest unnecessary or completely new features in the issue list.
 5. Add unnecessary spacing or indentation to the code.
 
-If you face **any** problems, feel free to ask our community at [Gitter](https://gitter.im/AOSSIE/Agora-Android) 
+If you face **any** problems, feel free to ask our community at [Gitter](https://gitter.im/AOSSIE/Agora-Android)
 
 ## Running the application
 To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https://developers.facebook.com/apps/).And then add these following variables.
@@ -77,15 +79,29 @@ To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https:/
 
 Follow these steps to deploy your app to appetize.io:-
 
-1. Get an API token from here: https://appetize.io/docs#request-api-token.   
-2. Create a CI/CD variable for api token named "APPETIZE_API".     
-    Follow this guide to learn how to add CI/CD variables to your gitlab repository: https://docs.gitlab.com/ee/ci/variables/#creating-a-custom-environment-variable  
-3. Run the following command once to upload the app.    
-    ```curl https://APITOKEN@api.appetize.io/v1/apps -F "file=@file_to_upload.apk" -F "platform=android"```    
-    Replace API_TOKEN with the api token you got in step 1.  
-    Replace file_to_upload.apk with your apk file.   
-4. Command in step 3 will return a response. Note the public key from your response and add  a CI/CD varible named "APPETIZE_KEY" and enter this public key as value.  
-    Make sure to make both the variables protected and make your branch protected too. Follow this guide: https://docs.gitlab.com/ee/user/project/protected_branches.html#configuring-protected-branches  
-    
-    This is a one time setup, subsequent changes you make in your repository will be reflected in your link you got in the response automatically.  
+1. Get an API token from here: https://appetize.io/docs#request-api-token.
+2. Create a CI/CD variable for api token named "APPETIZE_API".
+    Follow this guide to learn how to add CI/CD variables to your gitlab repository: https://docs.gitlab.com/ee/ci/variables/#creating-a-custom-environment-variable
+3. Run the following command once to upload the app.
+    ```curl https://APITOKEN@api.appetize.io/v1/apps -F "file=@file_to_upload.apk" -F "platform=android"```
+    Replace API_TOKEN with the api token you got in step 1.
+    Replace file_to_upload.apk with your apk file.
+4. Command in step 3 will return a response. Note the public key from your response and add  a CI/CD varible named "APPETIZE_KEY" and enter this public key as value.
+    Make sure to make both the variables protected and make your branch protected too. Follow this guide: https://docs.gitlab.com/ee/user/project/protected_branches.html#configuring-protected-branches
 
+    This is a one time setup, subsequent changes you make in your repository will be reflected in your link you got in the response automatically.
+
+## Signed apk setup for pipeline
+
+Follow the following steps :-
+
+   1) Generate a keystore.jks file using keytool. keytool -genkeypair -v -keystore keystore.jks -alias YOUR-KEY-ALIAS -keyalg RSA -keysize 2048 -validity 10000 Replace YOUR-KEY-ALIAS with your key alias.
+      or you can generate a keystore file using android studio.
+   2) run this command in your terminal and copy the output  "base64 -w 0 KEY-NAME.jks" Replace KEY-NAME with the your key name.
+   3) Add the following CI/CD variables:-
+      3.1) "KEYSTORE" and paste the copied output.
+      3.2) "KEY_PASSWORD" and enter you key password.
+      3.3) "KEY_ALIAS" and enter you key alias.
+      3.4) "KEYSTORE_PASSWORD" and enter your keystore password.
+
+   Make these CI variables Protected also don't forget to make your branch Protected.

@@ -16,7 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,10 +26,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.Picasso
+import com.squareup.picasso.NetworkPolicy.OFFLINE
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
@@ -47,11 +44,13 @@ import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.isUrl
+import org.aossie.agoraandroid.utilities.loadImage
+import org.aossie.agoraandroid.utilities.loadImageFromMemoryNoCache
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toByteArray
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -105,12 +104,15 @@ constructor(
       viewLifecycleOwner,
       Observer {
         if (it != null) {
-          Timber.d(it.toString())
           binding.user = it
           mUser = it
           if (it.avatarURL != null) {
-            val bitmap = decodeBitmap(it.avatarURL)
-            encodedImage = encodePngImage(bitmap)
+            if (it.avatarURL.isUrl())
+              cacheAndSaveImage(it.avatarURL)
+            else {
+              val bitmap = decodeBitmap(it.avatarURL)
+              setAvatarFile(bitmap.toByteArray())
+            }
           }
         }
       }
@@ -184,11 +186,7 @@ constructor(
     mAvatar.observe(
       viewLifecycleOwner,
       Observer {
-        Picasso.get()
-          .load(it)
-          .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-          .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-          .into(binding.ivProfilePic)
+        binding.ivProfilePic.loadImageFromMemoryNoCache(it)
       }
     )
 
@@ -246,6 +244,12 @@ constructor(
   private fun decodeBitmap(encodedBitmap: String): Bitmap {
     val decodedString = Base64.decode(encodedBitmap, Base64.NO_WRAP)
     return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+  }
+
+  private fun cacheAndSaveImage(url: String) {
+    binding.ivProfilePic.loadImage(url, OFFLINE) {
+      binding.ivProfilePic.loadImage(url)
+    }
   }
 
   private fun showChangeProfileDialog() {
@@ -526,17 +530,13 @@ constructor(
   }
 
   private fun encodeJpegImage(bitmap: Bitmap): String {
-    val bos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 10, bos)
-    val bytes = bos.toByteArray()
+    val bytes = bitmap.toByteArray(Bitmap.CompressFormat.JPEG)
     setAvatarFile(bytes)
     return Base64.encodeToString(bytes, Base64.NO_WRAP)
   }
 
   private fun encodePngImage(bitmap: Bitmap): String {
-    val bos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos)
-    val bytes = bos.toByteArray()
+    val bytes = bitmap.toByteArray(Bitmap.CompressFormat.PNG)
     setAvatarFile(bytes)
     return Base64.encodeToString(bytes, Base64.NO_WRAP)
   }
