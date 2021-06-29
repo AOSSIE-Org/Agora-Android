@@ -23,6 +23,7 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
 import java.text.DateFormat
@@ -359,7 +360,7 @@ constructor(
       val minute = startCalendar[Calendar.MINUTE]
       val duration =
         (endCalendar.timeInMillis - startCalendar.timeInMillis) / 60000
-      events.add(Event(id, title, description, status, hour, minute, duration, eventColor))
+      events.add(Event(id, title, description, status?.name, hour, minute, duration, eventColor))
       allEvents!![sDate.timeInMillis] = events
       startCalendar.add(Calendar.DATE, 1)
       startCalendar.set(Calendar.HOUR, 0)
@@ -374,13 +375,13 @@ constructor(
     currentDate: Date,
     formattedStartingDate: Date?,
     formattedEndingDate: Date?
-  ): String? {
+  ): AppConstants.Status? {
     return when {
-      currentDate.before(formattedStartingDate) -> "PENDING"
+      currentDate.before(formattedStartingDate) -> AppConstants.Status.PENDING
       currentDate.after(formattedStartingDate) && currentDate.before(
         formattedEndingDate
-      ) -> "ACTIVE"
-      currentDate.after(formattedEndingDate) -> "FINISHED"
+      ) -> AppConstants.Status.ACTIVE
+      currentDate.after(formattedEndingDate) -> AppConstants.Status.FINISHED
       else -> null
     }
   }
