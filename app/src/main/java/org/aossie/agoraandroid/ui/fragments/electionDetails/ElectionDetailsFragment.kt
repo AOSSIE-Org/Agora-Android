@@ -12,10 +12,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isConnected
@@ -34,10 +36,6 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 
-private const val ACTIVE_ELECTION_LABEL = "ACTIVE"
-private const val PENDING_ELECTION_LABEL = "PENDING"
-private const val FINISHED_ELECTION_LABEL = "FINISHED"
-
 class ElectionDetailsFragment
 @Inject
 constructor(
@@ -47,7 +45,7 @@ constructor(
   DisplayElectionListener {
   lateinit var binding: FragmentElectionDetailsBinding
   private var id: String? = null
-  private var status: String? = null
+  private var status: AppConstants.Status? = null
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
   }
@@ -93,7 +91,7 @@ constructor(
         .navigate(action)
     }
     binding.buttonInviteVoters.setOnClickListener {
-      if (status == "FINISHED") {
+      if (status == AppConstants.Status.FINISHED) {
         binding.root.snackbar(resources.getString(string.election_finished))
       } else {
         val action =
@@ -105,7 +103,7 @@ constructor(
       }
     }
     binding.buttonResult.setOnClickListener {
-      if (status == "PENDING") {
+      if (status == AppConstants.Status.PENDING) {
         binding.root.snackbar(resources.getString(string.election_not_started))
       } else {
         if (requireContext().isConnected()) {
@@ -122,11 +120,11 @@ constructor(
     }
     binding.buttonDelete.setOnClickListener {
       when (status) {
-        "ACTIVE" -> binding.root.snackbar(
+        AppConstants.Status.ACTIVE -> binding.root.snackbar(
           resources.getString(string.active_elections_not_started)
         )
-        "FINISHED" -> electionDetailsViewModel.deleteElection(id)
-        "PENDING" -> electionDetailsViewModel.deleteElection(id)
+        AppConstants.Status.FINISHED -> electionDetailsViewModel.deleteElection(id)
+        AppConstants.Status.PENDING -> electionDetailsViewModel.deleteElection(id)
       }
     }
   }
@@ -150,25 +148,9 @@ constructor(
               binding.tvEndDate.text = outFormat.format(formattedEndingDate)
               binding.tvStartDate.text = outFormat.format(formattedStartingDate)
               // set label color and election status
-              if (currentDate.before(formattedStartingDate)) {
-                binding.label.text =
-                  PENDING_ELECTION_LABEL
-                status = "PENDING"
-                binding.label.setBackgroundResource(R.drawable.pending_election_label)
-              } else if (currentDate.after(formattedStartingDate) && currentDate.before(
-                  formattedEndingDate
-                )
-              ) {
-                binding.label.text =
-                  ACTIVE_ELECTION_LABEL
-                status = "ACTIVE"
-                binding.label.setBackgroundResource(R.drawable.active_election_label)
-              } else if (currentDate.after(formattedEndingDate)) {
-                binding.label.text =
-                  FINISHED_ELECTION_LABEL
-                status = "FINISHED"
-                binding.label.setBackgroundResource(R.drawable.finished_election_label)
-              }
+              binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
+              binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
+              status = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
             } catch (e: ParseException) {
               e.printStackTrace()
             }
@@ -188,6 +170,36 @@ constructor(
           }
         }
       )
+    }
+  }
+
+  private fun getEventStatus(
+    currentDate: Date,
+    formattedStartingDate: Date?,
+    formattedEndingDate: Date?
+  ): AppConstants.Status? {
+    return when {
+      currentDate.before(formattedStartingDate) -> AppConstants.Status.PENDING
+      currentDate.after(formattedStartingDate) && currentDate.before(
+        formattedEndingDate
+      ) -> AppConstants.Status.ACTIVE
+      currentDate.after(formattedEndingDate) -> AppConstants.Status.FINISHED
+      else -> null
+    }
+  }
+
+  private fun getEventColor(
+    currentDate: Date,
+    formattedStartingDate: Date?,
+    formattedEndingDate: Date?
+  ): Int {
+    return when {
+      currentDate.before(formattedStartingDate) -> drawable.pending_election_label
+      currentDate.after(formattedStartingDate) && currentDate.before(
+        formattedEndingDate
+      ) -> drawable.active_election_label
+      currentDate.after(formattedEndingDate) -> drawable.finished_election_label
+      else -> drawable.finished_election_label
     }
   }
 

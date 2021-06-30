@@ -18,7 +18,6 @@ import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentActiveElectionsBinding
 import org.aossie.agoraandroid.utilities.Coroutines
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
@@ -31,8 +30,7 @@ class ActiveElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),
-  ElectionRecyclerAdapterCallback {
+) : Fragment() {
 
   private lateinit var binding: FragmentActiveElectionsBinding
 
@@ -43,6 +41,13 @@ constructor(
   lateinit var mElections: ArrayList<Election>
   private lateinit var electionsAdapter: ElectionsAdapter
 
+  private val onItemClicked = { _id: String ->
+    val action =
+      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(_id)
+    Navigation.findNavController(binding.root)
+      .navigate(action)
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -52,7 +57,7 @@ constructor(
     binding =
       DataBindingUtil.inflate(inflater, R.layout.fragment_active_elections, container, false)
     mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(this)
+    electionsAdapter = ElectionsAdapter(onItemClicked)
     binding.rvActiveElections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
@@ -73,7 +78,7 @@ constructor(
       try {
         val elections = displayElectionViewModel.activeElections.await()
         elections.observe(
-          requireActivity(),
+          viewLifecycleOwner,
           Observer {
             if (it != null) {
               addElections(it)
@@ -103,12 +108,5 @@ constructor(
     } else {
       binding.tvEmptyElection.hide()
     }
-  }
-
-  override fun onItemClicked(_id: String) {
-    val action =
-      ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(_id)
-    Navigation.findNavController(binding.root)
-      .navigate(action)
   }
 }

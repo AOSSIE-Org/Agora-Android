@@ -17,7 +17,6 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentElectionsBinding
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
@@ -26,8 +25,7 @@ class ElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),
-  ElectionRecyclerAdapterCallback {
+) : Fragment() {
 
   private lateinit var binding: FragmentElectionsBinding
 
@@ -38,6 +36,13 @@ constructor(
   lateinit var mElections: ArrayList<Election>
   private lateinit var electionsAdapter: ElectionsAdapter
 
+  private val onItemClicked = { _id: String ->
+    val action = ElectionsFragmentDirections
+      .actionElectionsFragmentToElectionDetailsFragment(_id)
+    Navigation.findNavController(binding.root)
+      .navigate(action)
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -46,7 +51,7 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_elections, container, false)
     mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(this)
+    electionsAdapter = ElectionsAdapter(onItemClicked)
     binding.rvTotalElections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
@@ -95,13 +100,5 @@ constructor(
     } else {
       binding.tvEmptyElection.hide()
     }
-  }
-
-  override fun onItemClicked(_id: String) {
-    val action =
-      ElectionsFragmentDirections
-        .actionElectionsFragmentToElectionDetailsFragment(_id)
-    Navigation.findNavController(binding.root)
-      .navigate(action)
   }
 }

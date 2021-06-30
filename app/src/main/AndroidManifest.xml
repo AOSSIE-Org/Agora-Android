@@ -22,19 +22,20 @@
     <activity
         android:name=".ui.activities.castVote.CastVoteActivity"
         android:configChanges="orientation|screenSize"
-        android:windowSoftInputMode="adjustResize|stateVisible">
+        android:windowSoftInputMode="adjustPan"
+        android:launchMode="singleTask">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
         <data
             android:scheme="https"
-            android:host="u6898803.ct.sendgrid.net"
+            android:host="u15645437.ct.sendgrid.net"
             android:pathPattern="/.*/.*"
             />
         <data
             android:scheme="http"
-            android:host="u6898803.ct.sendgrid.net"
+            android:host="u15645437+.ct.sendgrid.net"
             android:pathPattern="/.*/.*"
             />
       </intent-filter>
@@ -43,7 +44,8 @@
         android:name=".ui.activities.main.MainActivity"
         android:configChanges="orientation|screenSize"
         android:theme="@style/SplashTheme"
-        android:windowSoftInputMode="adjustResize|stateVisible">
+        android:windowSoftInputMode="adjustResize|stateVisible"
+      android:launchMode="singleTask">
     <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
