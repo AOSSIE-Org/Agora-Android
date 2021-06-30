@@ -3,6 +3,8 @@ package org.aossie.agoraandroid.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
@@ -16,9 +18,8 @@ import java.util.Date
 import java.util.Locale
 
 class ElectionsAdapter(
-  private val elections: List<Election>,
   private val onItemClicked: (name: String) -> Unit
-) : RecyclerView.Adapter<ElectionsAdapter.ElectionsViewHolder>() {
+) : ListAdapter<Election, ElectionsAdapter.ElectionsViewHolder>(ElectionItemDiffCallback) {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
@@ -31,12 +32,10 @@ class ElectionsAdapter(
     return ElectionsViewHolder(binding, onItemClicked)
   }
 
-  override fun getItemCount(): Int = elections.size
-
   override fun onBindViewHolder(
     holder: ElectionsViewHolder,
     position: Int
-  ) = holder.bind(elections[position])
+  ) = holder.bind(getItem(position))
 
   class ElectionsViewHolder(
     private val binding: ListItemElectionsBinding,
@@ -67,7 +66,7 @@ class ElectionsAdapter(
       val mCandidatesName = StringBuilder()
       val candidates = election.candidates
       if (candidates != null) {
-        for (j in 0 until candidates.size) {
+        for (j in candidates.indices) {
           mCandidatesName.append(candidates[j])
           if (j != candidates.size - 1) {
             mCandidatesName.append(", ")
@@ -109,6 +108,16 @@ class ElectionsAdapter(
         currentDate.after(formattedEndingDate) -> drawable.finished_election_label
         else -> drawable.finished_election_label
       }
+    }
+  }
+
+  object ElectionItemDiffCallback : DiffUtil.ItemCallback<Election>() {
+    override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
+      return oldItem._id == newItem._id
+    }
+
+    override fun areContentsTheSame(oldItem: Election, newItem: Election): Boolean {
+      return oldItem == newItem
     }
   }
 }
