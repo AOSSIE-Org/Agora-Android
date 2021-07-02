@@ -28,7 +28,7 @@ fun TextView.show() {
 
 fun View.snackbar(message: String) {
   Snackbar
-    .make(this, message, Snackbar.LENGTH_INDEFINITE)
+    .make(this, message, AppConstants.TIME_UP)
     .also { snackbar ->
       snackbar.setAction(AppConstants.ok) {
         snackbar.dismiss()
