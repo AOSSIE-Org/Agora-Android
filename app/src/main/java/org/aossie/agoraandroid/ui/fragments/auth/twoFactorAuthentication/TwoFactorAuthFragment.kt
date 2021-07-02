@@ -32,7 +32,7 @@ class TwoFactorAuthFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),SessionExpiredListener {
+) : Fragment(), SessionExpiredListener {
 
   private lateinit var rootView: View
 
@@ -114,32 +114,31 @@ constructor(
   }
 
   private fun handleVerifyOtp(response: ResponseUI<Any>) = when (response.status) {
-     ResponseUI.Status.SUCCESS -> {
+    ResponseUI.Status.SUCCESS -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
         .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
     ResponseUI.Status.ERROR -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.message?:"")
+      rootView.snackbar(response.message ?: "")
     }
 
-    else -> {//Do Nothing
-            }
+    else -> { // Do Nothing
+    }
   }
 
   private fun handleResendOtp(response: ResponseUI<Any>) = when (response.status) {
-     ResponseUI.Status.SUCCESS -> {
+    ResponseUI.Status.SUCCESS -> {
       rootView.progress_bar.hide()
       rootView.snackbar(getString(string.otp_sent))
     }
     ResponseUI.Status.ERROR -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.message?:"")
+      rootView.snackbar(response.message ?: "")
     }
-    else -> {//Do Nothing
+    else -> { // Do Nothing
     }
-
   }
 
   override fun onSessionExpired() {

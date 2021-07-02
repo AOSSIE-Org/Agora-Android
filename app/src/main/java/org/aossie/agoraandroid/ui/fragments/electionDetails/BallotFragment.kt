@@ -78,23 +78,26 @@ constructor(
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
 
-      electionDetailsViewModel.getBallotResponseLiveData.observe(viewLifecycleOwner, { responseUI ->
-        when (responseUI.status) {
-          ResponseUI.Status.LOADING ->   rootView.progress_bar.hide()
-          ResponseUI.Status.SUCCESS -> {
-            if (responseUI.message.isNullOrBlank())   rootView.snackbar(responseUI.message?:"")
-            rootView.progress_bar.hide()
+      electionDetailsViewModel.getBallotResponseLiveData.observe(
+        viewLifecycleOwner,
+        { responseUI ->
+          when (responseUI.status) {
+            ResponseUI.Status.LOADING -> rootView.progress_bar.hide()
+            ResponseUI.Status.SUCCESS -> {
+              if (responseUI.message.isNullOrBlank()) rootView.snackbar(responseUI.message ?: "")
+              rootView.progress_bar.hide()
 
-            responseUI.dataList?.let {
-              initRecyclerView(it)
-            }?:  rootView.tv_empty_ballots.show()
-          }
-          ResponseUI.Status.ERROR -> {
-            rootView.snackbar(responseUI.message?:"")
-            rootView.progress_bar.hide()
+              responseUI.dataList?.let {
+                initRecyclerView(it)
+              } ?: rootView.tv_empty_ballots.show()
+            }
+            ResponseUI.Status.ERROR -> {
+              rootView.snackbar(responseUI.message ?: "")
+              rootView.progress_bar.hide()
+            }
           }
         }
-      })
+      )
 
       electionDetailsViewModel.notConnected.observe(
         viewLifecycleOwner,
@@ -129,7 +132,6 @@ constructor(
       )
     }
   }
-
 
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)

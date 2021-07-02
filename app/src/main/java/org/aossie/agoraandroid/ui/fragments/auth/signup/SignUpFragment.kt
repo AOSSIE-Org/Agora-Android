@@ -106,24 +106,27 @@ constructor(
     rootView.et_answer.addTextChangedListener(signUpTextWatcher)
     rootView.et_password.addTextChangedListener(signUpTextWatcher)
 
-    signUpViewModel.getSignUpLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  {
-          rootView.progress_bar.show()
-          rootView.signup_btn.toggleIsEnable()
-        }
-        ResponseUI.Status.SUCCESS ->{
-          rootView.progress_bar.hide()
-          rootView.snackbar(getString(string.verify_account))
-          rootView.signup_btn.toggleIsEnable()
-        }
-        ResponseUI.Status.ERROR ->{
-          rootView.snackbar(it.message?:"")
-          rootView.progress_bar.hide()
-          rootView.signup_btn.toggleIsEnable()
+    signUpViewModel.getSignUpLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            rootView.progress_bar.show()
+            rootView.signup_btn.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            rootView.progress_bar.hide()
+            rootView.snackbar(getString(string.verify_account))
+            rootView.signup_btn.toggleIsEnable()
+          }
+          ResponseUI.Status.ERROR -> {
+            rootView.snackbar(it.message ?: "")
+            rootView.progress_bar.hide()
+            rootView.signup_btn.toggleIsEnable()
+          }
         }
       }
-    })
+    )
 
     return rootView
   }
@@ -189,8 +192,6 @@ constructor(
         answerInput.isNotEmpty()
     }
   }
-
-
 
   override fun onSessionExpired() {
     // do nothing

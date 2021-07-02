@@ -27,11 +27,9 @@ constructor(
 ) : ViewModel() {
 
   var sessionExpiredListener: SessionExpiredListener? = null
-  var loginListener: LoginListener? = null
 
-  private val _getLoginLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  private val _getLoginLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
   val getLoginLiveData = _getLoginLiveData
-
 
   fun getLoggedInUser() = userRepository.getUser()
 
@@ -40,7 +38,7 @@ constructor(
     password: String,
     trustedDevice: String? = null
   ) {
-   _getLoginLiveData.value = ResponseUI.loading()
+    _getLoginLiveData.value = ResponseUI.loading()
     if (identifier.isEmpty() || password.isEmpty()) {
       _getLoginLiveData.value = ResponseUI.error(AppConstants.INVALID_CREDENTIALS_MESSAGE)
       return
@@ -61,21 +59,17 @@ constructor(
           if (!it.twoFactorAuthentication!!) {
             _getLoginLiveData.value = ResponseUI.success()
           } else {
-            loginListener?.onTwoFactorAuthentication(user.crypto!!)
+            _getLoginLiveData.value = ResponseUI.success(user.crypto!!)
           }
         }
       } catch (e: ApiException) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -109,19 +103,13 @@ constructor(
         getUserData(authResponse)
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -141,19 +129,13 @@ constructor(
         prefs.setIsFacebookUser(true)
         _getLoginLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
-
-
+        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }

@@ -29,7 +29,9 @@ import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -46,7 +48,7 @@ class InviteVotersFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), InviteVoterListener {
+) : Fragment(), SessionExpiredListener {
 
   private lateinit var rootView: View
 
@@ -96,7 +98,7 @@ constructor(
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_invite_voters, container, false)
 
-    inviteVotersViewModel.inviteVoterListener = this
+    inviteVotersViewModel.sessionExpiredListener = this
 
     voterRecyclerAdapter = VoterRecyclerAdapter(mVoterNames, mVoterEmails)
     rootView.recycler_view_voters.layoutManager = LinearLayoutManager(context)
@@ -153,6 +155,17 @@ constructor(
       }
     }
 
+    inviteVotersViewModel.getSendVoterLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> onStarted()
+          ResponseUI.Status.SUCCESS -> onSuccess(it.message ?: "")
+          ResponseUI.Status.ERROR -> onFailure(it.message ?: "")
+        }
+      }
+    )
+
     return rootView
   }
 
@@ -167,12 +180,12 @@ constructor(
     rootView.text_input_voter_email.editText?.setText("")
   }
 
-  override fun onStarted() {
+  fun onStarted() {
     rootView.progress_bar.show()
     rootView.button_invite_voter.toggleIsEnable()
   }
 
-  override fun onFailure(message: String) {
+  fun onFailure(message: String) {
     rootView.progress_bar.hide()
     rootView.button_invite_voter.toggleIsEnable()
     val mMessage = StringBuilder()
@@ -180,7 +193,7 @@ constructor(
     rootView.snackbar(mMessage.toString())
   }
 
-  override fun onSuccess(message: String) {
+  fun onSuccess(message: String) {
     rootView.progress_bar.hide()
     rootView.button_invite_voter.toggleIsEnable()
     prefs.setUpdateNeeded(true)

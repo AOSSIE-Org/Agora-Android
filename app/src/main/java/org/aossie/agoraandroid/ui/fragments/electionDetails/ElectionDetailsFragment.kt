@@ -18,7 +18,6 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragmentDirections
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -74,7 +73,6 @@ constructor(
 
     getElectionById()
 
-
     return binding.root
   }
 
@@ -118,30 +116,29 @@ constructor(
       }
     })*/
 
-    electionDetailsViewModel.getDeleteElectionLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING -> {
-          binding.progressBar.show()
-          binding.buttonDelete.toggleIsEnable()
-        }
-        ResponseUI.Status.SUCCESS -> {
-          prefs.setUpdateNeeded(true)
-          Navigation.findNavController(binding.root)
-            .navigate(
-              ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
-            )
-        }
-        ResponseUI.Status.ERROR ->{
-          binding.root.snackbar(it.message?:"")
-          binding.progressBar.hide()
-          binding.buttonDelete.toggleIsEnable()
+    electionDetailsViewModel.getDeleteElectionLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            binding.progressBar.show()
+            binding.buttonDelete.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            prefs.setUpdateNeeded(true)
+            Navigation.findNavController(binding.root)
+              .navigate(
+                ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
+              )
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(it.message ?: "")
+            binding.progressBar.hide()
+            binding.buttonDelete.toggleIsEnable()
+          }
         }
       }
-    })
-
-
-
-
+    )
   }
 
   private fun initListeners() {
@@ -273,8 +270,6 @@ constructor(
       else -> drawable.finished_election_label
     }
   }
-
-
 
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)

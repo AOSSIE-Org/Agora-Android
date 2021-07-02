@@ -28,7 +28,6 @@ class ResponseUI<T> {
     this.data = data as T?
   }
 
-
   constructor(status: Status) {
     this.status = status
     this.data = null
@@ -36,7 +35,7 @@ class ResponseUI<T> {
     this.dataList = null
   }
 
-  companion object{
+  companion object {
     fun <T> success(): ResponseUI<T> {
       return ResponseUI<T>(Status.SUCCESS, null, null)
     }
@@ -49,16 +48,8 @@ class ResponseUI<T> {
       return ResponseUI<T>(Status.SUCCESS, dataList, null, null)
     }
 
-    fun <T> error(msg: String, data: T?): ResponseUI<T> {
-      return ResponseUI<T>(Status.ERROR, data, msg)
-    }
-
     fun <T> error(msg: String): ResponseUI<T> {
       return ResponseUI<T>(Status.ERROR, null, msg)
-    }
-
-    fun <T> loading(data: T?): ResponseUI<T> {
-      return ResponseUI<T>(Status.LOADING, data, null)
     }
 
     fun <T> loading(): ResponseUI<T> {
@@ -69,41 +60,4 @@ class ResponseUI<T> {
       return ResponseUI<T>(Status.SUCCESS, null, msg)
     }
   }
-
-
-  override fun equals(o: Any?): Boolean {
-    if (this === o) {
-      return true
-    }
-    if (o == null || javaClass != o.javaClass) {
-      return false
-    }
-
-    val resource = o as ResponseUI<*>?
-
-    if (status != resource!!.status) {
-      return false
-    }
-    if (if (message != null) message != resource.message else resource.message != null) {
-      return false
-    }
-    return if (data != null) data == resource.data else resource.data == null
-  }
-
-  override fun hashCode(): Int {
-    var result = status.hashCode()
-    result = 31 * result + if (message != null) message!!.hashCode() else 0
-    result = 31 * result + if (data != null) data!!.hashCode() else 0
-    return result
-  }
-
-  override fun toString(): String {
-    return "Resource{" +
-      "status=" + status +
-      ", message='" + message + '\''.toString() +
-      ", data=" + data +
-      '}'.toString()
-  }
-
-
 }

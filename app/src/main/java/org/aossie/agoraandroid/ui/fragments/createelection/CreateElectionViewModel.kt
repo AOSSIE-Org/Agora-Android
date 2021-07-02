@@ -44,11 +44,11 @@ constructor(
         )
         _getCreateElectionData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-       _getCreateElectionData.value = ResponseUI.error(e.message?:"")
+        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
       } catch (e: NoInternetException) {
-       _getCreateElectionData.value = ResponseUI.error(e.message?:"")
+        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-       _getCreateElectionData.value = ResponseUI.error(e.message?:"")
+        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }

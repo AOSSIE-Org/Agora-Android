@@ -28,14 +28,10 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragmentDirections
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
-import org.aossie.agoraandroid.utilities.toggleIsEnable
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -95,19 +91,22 @@ constructor(
     }
     rootView.swipe_refresh.setOnRefreshListener { updateUi() }
 
-    loginViewModel.getLoginLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  {
-        //Do Nothing
-        }
-        ResponseUI.Status.SUCCESS ->{
-         updateUi()
-        }
-        ResponseUI.Status.ERROR ->{
-          rootView.snackbar(it.message?:"")
+    loginViewModel.getLoginLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            // Do Nothing
+          }
+          ResponseUI.Status.SUCCESS -> {
+            updateUi()
+          }
+          ResponseUI.Status.ERROR -> {
+            rootView.snackbar(it.message ?: "")
+          }
         }
       }
-    })
+    )
 
     loginViewModel.getLoggedInUser()
       .observe(
@@ -211,7 +210,6 @@ constructor(
     Navigation.findNavController(rootView)
       .navigate(R.id.homeFragment)
   }
-
 
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)

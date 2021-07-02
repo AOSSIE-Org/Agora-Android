@@ -61,13 +61,13 @@ constructor(
           mVerifyOtpResponse.value = ResponseUI.success()
         }
       } catch (e: ApiException) {
-        mVerifyOtpResponse.value = ResponseUI.error(e.message?:"")
+        mVerifyOtpResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-      sessionExpiredListener.onSessionExpired()
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mVerifyOtpResponse.value = ResponseUI.error(e.message?:"")
+        mVerifyOtpResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        mVerifyOtpResponse.value = ResponseUI.error(e.message?:"")
+        mVerifyOtpResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -93,13 +93,13 @@ constructor(
           mResendOtpResponse.value = ResponseUI.success()
         }
       } catch (e: ApiException) {
-        mResendOtpResponse.value = ResponseUI.error(e.message?:"")
+        mResendOtpResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mResendOtpResponse.value = ResponseUI.error(e.message?:"")
+        mResendOtpResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        mResendOtpResponse.value = ResponseUI.error(e.message?:"")
+        mResendOtpResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }

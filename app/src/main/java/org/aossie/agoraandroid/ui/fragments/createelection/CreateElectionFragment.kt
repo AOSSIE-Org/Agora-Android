@@ -24,11 +24,8 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.android.synthetic.main.fragment_sign_up.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_sign_up.view.signup_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
-import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
@@ -93,43 +90,38 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_election, container, false)
 
-
-
     initView()
 
     initListeners()
 
-    createElectionViewModel.getCreateElectionData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  {
+    createElectionViewModel.getCreateElectionData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
 
             binding.progressBar.show()
             binding.submitDetailsBtn.toggleIsEnable()
-
-
-
-        }
-        ResponseUI.Status.SUCCESS ->{
-
+          }
+          ResponseUI.Status.SUCCESS -> {
 
             binding.progressBar.hide()
             binding.submitDetailsBtn.toggleIsEnable()
-            if (!it.message.isNullOrBlank()) binding.root.snackbar(it.message?:"")
+            if (!it.message.isNullOrBlank()) binding.root.snackbar(it.message ?: "")
             prefs.setUpdateNeeded(true)
             electionDetailsSharedPrefs.clearElectionData()
             Navigation.findNavController(binding.root)
               .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+          }
+          ResponseUI.Status.ERROR -> {
 
-        }
-        ResponseUI.Status.ERROR ->{
-
-          binding.progressBar.hide()
-            binding.root.snackbar(it.message?:"")
+            binding.progressBar.hide()
+            binding.root.snackbar(it.message ?: "")
             binding.submitDetailsBtn.toggleIsEnable()
-
+          }
         }
       }
-    })
+    )
 
     return binding.root
   }
@@ -447,6 +439,4 @@ constructor(
         endDateInput.isNotEmpty()
     }
   }
-
-
 }

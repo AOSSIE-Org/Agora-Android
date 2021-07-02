@@ -88,20 +88,21 @@ constructor(
   }
 
   private lateinit var mUser: User
-//TODO Handle passchange
+// TODO Handle passchange
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
     homeViewModel.sessionExpiredListener = this
+    loginViewModel.sessionExpiredListener = this
 
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-  binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
+    binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
     binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
     binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
     binding.confirmPasswordTiet.addTextChangedListener(getTextWatcher(4))
-  setObserver()
+    setObserver()
 
     binding.updateProfileBtn.setOnClickListener {
       binding.progressBar.show()
@@ -164,8 +165,6 @@ constructor(
       showChangeProfileDialog()
     }
 
-
-
     binding.changePasswordBtn.setOnClickListener {
       val newPass = binding.newPasswordTiet.text.toString()
       val conPass = binding.confirmPasswordTiet.text.toString()
@@ -179,9 +178,6 @@ constructor(
         else -> updateUIAndChangePassword()
       }
     }
-
-
-
 
     return binding.root
   }
@@ -203,7 +199,7 @@ constructor(
       binding.ivProfilePic.loadImage(url)
     }
   }
-  fun setObserver(){
+  fun setObserver() {
     mAvatar.observe(
       viewLifecycleOwner,
       Observer {
@@ -235,6 +231,19 @@ constructor(
         handlePassword(it)
       }
     )
+
+    loginViewModel.getLoginLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> onLoadingStarted()
+          ResponseUI.Status.SUCCESS -> binding.progressBar.hide()
+          ResponseUI.Status.ERROR -> {
+            onError(it.message ?: "")
+          }
+        }
+      }
+    )
     viewModel.userUpdateResponse.observe(
       viewLifecycleOwner,
       Observer {
@@ -256,34 +265,40 @@ constructor(
         handleChangeAvatar(it)
       }
     )
-    homeViewModel.getLogoutLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.ERROR ->{
-          binding.progressBar.hide()
-          binding.root.snackbar(it.message?:"")
-          toggleIsEnable()
-        }
-        ResponseUI.Status.SUCCESS->{
-          binding.progressBar.hide()
-          toggleIsEnable()
-          if (prefs.getIsFacebookUser()) {
-            LoginManager.getInstance()
-              .logOut()
+    homeViewModel.getLogoutLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.ERROR -> onError(it.message ?: "")
+
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            toggleIsEnable()
+            if (prefs.getIsFacebookUser()) {
+              LoginManager.getInstance()
+                .logOut()
+            }
+            homeViewModel.deleteUserData()
+            Navigation.findNavController(binding.root)
+              .navigate(
+                ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
+              )
           }
-          homeViewModel.deleteUserData()
-          Navigation.findNavController(binding.root)
-            .navigate(
-              ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
-            )
-        }
-        ResponseUI.Status.LOADING -> {
-          binding.progressBar.show()
-          toggleIsEnable()
+          ResponseUI.Status.LOADING -> onLoadingStarted()
         }
       }
-    })
+    )
+  }
+  private fun onLoadingStarted() {
+    binding.progressBar.show()
+    toggleIsEnable()
   }
 
+  private fun onError(message: String) {
+    binding.progressBar.hide()
+    binding.root.snackbar(message)
+    toggleIsEnable()
+  }
   private fun showChangeProfileDialog() {
     val dialogView = DialogChangeAvatarBinding.inflate(LayoutInflater.from(context))
 
@@ -328,39 +343,39 @@ constructor(
     requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
   }
 
-  private fun handleChangeAvatar(response: ResponseUI<Any>) = when(response.status) {
-   ResponseUI.Status.SUCCESS -> {
+  private fun handleChangeAvatar(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.profile_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message?:"")
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
 
-   else-> onStarted()
+    else -> onStarted()
   }
 
-  private fun handleUser(response: ResponseUI<Any>) = when(response.status) {
-   ResponseUI.Status.SUCCESS -> {
+  private fun handleUser(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.user_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message?:"")
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
     else -> onStarted()
   }
 
-  private fun handleTwoFactorAuthentication(response: ResponseUI<Any>) = when(response.status) {
-   ResponseUI.Status.SUCCESS -> {
+  private fun handleTwoFactorAuthentication(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.authentication_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message?:"")
-   else -> onStarted()
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    else -> onStarted()
   }
 
   private fun handlePassword(response: ResponseUI<Any>) = when (response.status) {
-     ResponseUI.Status.SUCCESS -> {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.password_updated))
@@ -368,10 +383,9 @@ constructor(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message?:"")
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
 
-    else->  onStarted()
-
+    else -> onStarted()
   }
 
   private fun getTextWatcher(code: Int): TextWatcher {
@@ -439,14 +453,12 @@ constructor(
     }
   }
 
-
-
-   fun onStarted() {
+  private fun onStarted() {
     binding.progressBar.show()
     toggleIsEnable()
   }
 
-   fun onFailure(message: String) {
+  private fun onFailure(message: String) {
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()

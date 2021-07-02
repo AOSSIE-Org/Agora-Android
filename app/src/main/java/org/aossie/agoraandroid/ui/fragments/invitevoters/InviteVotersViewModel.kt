@@ -1,12 +1,15 @@
 package org.aossie.agoraandroid.ui.fragments.invitevoters
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import timber.log.Timber
 import java.util.ArrayList
@@ -17,7 +20,9 @@ internal class InviteVotersViewModel
 constructor(
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
-  lateinit var inviteVoterListener: InviteVoterListener
+  private val _getSendVoterLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  val getSendVoterLiveData = _getSendVoterLiveData
+  lateinit var sessionExpiredListener: SessionExpiredListener
 
   fun inviteVoters(
     mVoterNames: ArrayList<String>,
@@ -36,20 +41,20 @@ constructor(
     id: String,
     body: List<VotersDto>
   ) {
-    inviteVoterListener.onStarted()
+    _getSendVoterLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
         val response = electionsRepository.sendVoters(id, body)
         Timber.d(response.toString())
-        inviteVoterListener.onSuccess(response[1])
+        _getSendVoterLiveData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        inviteVoterListener.onFailure(e.message!!)
+        _getSendVoterLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-        inviteVoterListener.onSessionExpired()
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        inviteVoterListener.onFailure(e.message!!)
+        _getSendVoterLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        inviteVoterListener.onFailure(e.message!!)
+        _getSendVoterLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }

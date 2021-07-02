@@ -16,10 +16,10 @@ constructor(
   private val userRepository: UserRepository
 ) : ViewModel() {
 
-  private val _getSendResetLinkLiveData:MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  private val _getSendResetLinkLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
   val getSendResetLinkLiveData = _getSendResetLinkLiveData
   fun sendResetLink(userName: String?) = Coroutines.main {
-   _getSendResetLinkLiveData.value = ResponseUI.loading()
+    _getSendResetLinkLiveData.value = ResponseUI.loading()
     try {
       userRepository.sendForgotPasswordLink(userName)
       _getSendResetLinkLiveData.value = ResponseUI.success()
@@ -27,12 +27,12 @@ constructor(
       if (e.message == "412") {
         _getSendResetLinkLiveData.value = ResponseUI.error(AppConstants.INVALID_USERNAME_MESSAGE)
       } else {
-        getSendResetLinkLiveData.value = ResponseUI.error(e.message?:"")
+        getSendResetLinkLiveData.value = ResponseUI.error(e.message ?: "")
       }
     } catch (e: NoInternetException) {
-       getSendResetLinkLiveData.value = ResponseUI.error(e.message?:"")
+      getSendResetLinkLiveData.value = ResponseUI.error(e.message ?: "")
     } catch (e: Exception) {
-       getSendResetLinkLiveData.value = ResponseUI.error(e.message?:"")
+      getSendResetLinkLiveData.value = ResponseUI.error(e.message ?: "")
     }
   }
 }

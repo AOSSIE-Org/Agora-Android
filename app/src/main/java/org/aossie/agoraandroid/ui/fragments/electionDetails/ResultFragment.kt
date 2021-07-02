@@ -91,66 +91,64 @@ constructor(
 
   private fun observeResult() {
 
-electionDetailsViewModel.getResultResponseLiveData.observe(viewLifecycleOwner, { responseUI ->
-  when (responseUI.status) {
-    ResponseUI.Status.LOADING -> {binding.resultView.visibility = View.GONE
-      binding.progressBar.show()
-    }
-    ResponseUI.Status.SUCCESS -> {
-      if (responseUI.message.isNullOrBlank()) binding.root.snackbar(responseUI.message?:"")
-      binding.progressBar.hide()
-      responseUI.data?.let {
-        initResultView(it)
-      }?: kotlin.run {
-        binding.resultView.visibility = View.GONE
-        binding.tvNoResult.text = resources.getString(string.no_result)
-        binding.tvNoResult.show()
+    electionDetailsViewModel.getResultResponseLiveData.observe(
+      viewLifecycleOwner,
+      { responseUI ->
+        when (responseUI.status) {
+          ResponseUI.Status.LOADING -> {
+            binding.resultView.visibility = View.GONE
+            binding.progressBar.show()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            if (responseUI.message.isNullOrBlank()) binding.root.snackbar(responseUI.message ?: "")
+            binding.progressBar.hide()
+            responseUI.data?.let {
+              initResultView(it)
+            } ?: kotlin.run {
+              binding.resultView.visibility = View.GONE
+              binding.tvNoResult.text = resources.getString(string.no_result)
+              binding.tvNoResult.show()
+            }
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(responseUI.message ?: "")
+            binding.progressBar.hide()
+            binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
+            binding.tvNoResult.show()
+          }
+        }
       }
-    }
-    ResponseUI.Status.ERROR -> {
-      binding.root.snackbar(responseUI.message?:"")
-      binding.progressBar.hide()
-      binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
-      binding.tvNoResult.show()
-    }
+    )
   }
-})
 
+  private fun initResultView(winner: WinnerDto) {
+    binding.tvNoResult.hide()
+    binding.resultView.visibility = View.VISIBLE
+    val pieChart = binding.pieChart
+    pieChart.setUsePercentValues(true)
 
-}
+    val description = Description()
+    description.text = getString(R.string.election_result)
+    description.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+    pieChart.description = description
 
-private fun initResultView(winner: WinnerDto) {
-binding.tvNoResult.hide()
-binding.resultView.visibility = View.VISIBLE
-val pieChart = binding.pieChart
-pieChart.setUsePercentValues(true)
+    val value: ArrayList<PieEntry> = ArrayList()
+    value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
+    value.add(
+      PieEntry(winner.score.denominator?.toFloat()!!, resources.getString(R.string.others))
+    )
 
-val description = Description()
-description.text = getString(R.string.election_result)
-description.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-pieChart.description = description
+    val pieDataSet = PieDataSet(value, "")
+    val pieData = PieData(pieDataSet)
+    pieChart.data = pieData
+    val legend = pieChart.legend
+    legend.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+    pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
+    pieChart.animateXY(1400, 1400)
+    binding.textViewWinnerName.text = winner.candidate?.name
+  }
 
-val value: ArrayList<PieEntry> = ArrayList()
-value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
-value.add(
- PieEntry(winner.score.denominator?.toFloat()!!, resources.getString(R.string.others))
-)
-
-val pieDataSet = PieDataSet(value, "")
-val pieData = PieData(pieDataSet)
-pieChart.data = pieData
-val legend = pieChart.legend
-legend.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
-pieChart.animateXY(1400, 1400)
-binding.textViewWinnerName.text = winner.candidate?.name
-}
-
-
-
-
-
-override fun onSessionExpired() {
-hostViewModel.setLogout(true)
-}
+  override fun onSessionExpired() {
+    hostViewModel.setLogout(true)
+  }
 }

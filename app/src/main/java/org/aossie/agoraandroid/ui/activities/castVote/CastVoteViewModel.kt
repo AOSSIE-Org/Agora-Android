@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.dto.ElectionDto
-
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -26,7 +25,6 @@ constructor(
   val electionsRepository: ElectionsRepository,
   val userRepository: UserRepository
 ) : ViewModel() {
-
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseUI<Any>>()
 
@@ -56,11 +54,11 @@ constructor(
         mVerifyVoterResponse.value = ResponseUI.success()
         mElection.value = electionDto
       } catch (e: ApiException) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message?:"")
+        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: NoInternetException) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message?:"")
+        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message?:"")
+        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -75,11 +73,11 @@ constructor(
         electionsRepository.castVote(id, ballotInput, passCode)
         mCastVoteResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        mCastVoteResponse.value = ResponseUI.error(e.message?:"")
+        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: NoInternetException) {
-        mCastVoteResponse.value = ResponseUI.error(e.message?:"")
+        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        mCastVoteResponse.value = ResponseUI.error(e.message?:"")
+        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -94,7 +92,6 @@ constructor(
         val resolvedURL = URL(con.getHeaderField("Location"))
         withContext(Dispatchers.Main) {
           _getDeepLinkLiveData.value = ResponseUI.success(resolvedURL.path.toString())
-          getResolvedPathListener.onSuccess(resolvedURL.path.toString())
         }
       } catch (ex: MalformedURLException) {
         withContext(Dispatchers.Main) {
@@ -102,7 +99,7 @@ constructor(
         }
       } catch (ex: Exception) {
         withContext(Dispatchers.Main) {
-          _getDeepLinkLiveData.value = ResponseUI.error(ex.message?:"")
+          _getDeepLinkLiveData.value = ResponseUI.error(ex.message ?: "")
         }
       }
     }

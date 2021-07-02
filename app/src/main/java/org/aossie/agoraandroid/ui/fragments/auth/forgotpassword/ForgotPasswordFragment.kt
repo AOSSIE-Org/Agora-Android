@@ -63,19 +63,22 @@ constructor(
       }
     }
 
-    forgotPasswordViewModel.getSendResetLinkLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  rootView.progress_bar.show()
-        ResponseUI.Status.SUCCESS ->{
-          rootView.progress_bar.hide()
-          rootView.snackbar(requireContext().getString(R.string.link_sent_please_check_your_email))
-        }
-        ResponseUI.Status.ERROR ->{
-        rootView.progress_bar.hide()
-        rootView.snackbar(it.message?:"")
+    forgotPasswordViewModel.getSendResetLinkLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> rootView.progress_bar.show()
+          ResponseUI.Status.SUCCESS -> {
+            rootView.progress_bar.hide()
+            rootView.snackbar(requireContext().getString(R.string.link_sent_please_check_your_email))
+          }
+          ResponseUI.Status.ERROR -> {
+            rootView.progress_bar.hide()
+            rootView.snackbar(it.message ?: "")
+          }
         }
       }
-    })
+    )
 
     return rootView
   }

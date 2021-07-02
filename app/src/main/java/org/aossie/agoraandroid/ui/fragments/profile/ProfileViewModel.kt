@@ -7,10 +7,6 @@ import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.network.responses.AuthToken
-import org.aossie.agoraandroid.data.network.responses.ResponseResult
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -27,7 +23,7 @@ constructor(
 ) : ViewModel() {
 
   val user = userRepository.getUser()
-private lateinit var sessionExpiredListener: SessionExpiredListener
+  private lateinit var sessionExpiredListener: SessionExpiredListener
   private val _passwordRequestCode = MutableLiveData<ResponseUI<Any>>()
 
   val passwordRequestCode: LiveData<ResponseUI<Any>>
@@ -55,13 +51,13 @@ private lateinit var sessionExpiredListener: SessionExpiredListener
         userRepository.changePassword(password)
         _passwordRequestCode.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _passwordRequestCode.value = ResponseUI.error(e.message?:"")
+        _passwordRequestCode.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-       sessionExpiredListener.onSessionExpired()
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _passwordRequestCode.value = ResponseUI.error(e.message?:"")
+        _passwordRequestCode.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        _passwordRequestCode.value = ResponseUI.error(e.message?:"")
+        _passwordRequestCode.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -87,13 +83,13 @@ private lateinit var sessionExpiredListener: SessionExpiredListener
         }
         _changeAvatarResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _changeAvatarResponse.value = ResponseUI.error(e.message?:"")
+        _changeAvatarResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _changeAvatarResponse.value = ResponseUI.error(e.message?:"")
+        _changeAvatarResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        _changeAvatarResponse.value = ResponseUI.error(e.message?:"")
+        _changeAvatarResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -104,13 +100,13 @@ private lateinit var sessionExpiredListener: SessionExpiredListener
         userRepository.toggleTwoFactorAuth()
         _toggleTwoFactorAuthResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message?:"")
+        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message?:"")
+        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message?:"")
+        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -134,13 +130,13 @@ private lateinit var sessionExpiredListener: SessionExpiredListener
         userRepository.saveUser(user)
         _userUpdateResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _userUpdateResponse.value = ResponseUI.error(e.message?:"")
+        _userUpdateResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _userUpdateResponse.value = ResponseUI.error(e.message?:"")
+        _userUpdateResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        _userUpdateResponse.value = ResponseUI.error(e.message?:"")
+        _userUpdateResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }

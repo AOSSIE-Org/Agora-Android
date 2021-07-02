@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.fragment_voters.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_voters.view.recycler_view_voters
 import kotlinx.android.synthetic.main.fragment_voters.view.tv_no_voters_for_this_election
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.VotersAdapter
 import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
@@ -76,34 +75,35 @@ constructor(
   }
 
   private fun setObserver() {
-    electionDetailsViewModel.getVoterResponseLiveData.observe(viewLifecycleOwner, { responseUI ->
-      when (responseUI.status) {
-        ResponseUI.Status.LOADING ->  rootView.progress_bar.show()
-        ResponseUI.Status.SUCCESS -> {
-          if (responseUI.message.isNullOrBlank()) rootView.snackbar(responseUI.message?:"")
-          rootView.progress_bar.hide()
-          responseUI.dataList?.let {
-            initRecyclerView(it)
-          }?: rootView.tv_no_voters_for_this_election.show()
-        }
-        ResponseUI.Status.ERROR -> {
-          rootView.snackbar(responseUI.message?:"")
-          rootView.progress_bar.hide()
+    electionDetailsViewModel.getVoterResponseLiveData.observe(
+      viewLifecycleOwner,
+      { responseUI ->
+        when (responseUI.status) {
+          ResponseUI.Status.LOADING -> rootView.progress_bar.show()
+          ResponseUI.Status.SUCCESS -> {
+            if (responseUI.message.isNullOrBlank()) rootView.snackbar(responseUI.message ?: "")
+            rootView.progress_bar.hide()
+            responseUI.dataList?.let {
+              initRecyclerView(it)
+            } ?: rootView.tv_no_voters_for_this_election.show()
+          }
+          ResponseUI.Status.ERROR -> {
+            rootView.snackbar(responseUI.message ?: "")
+            rootView.progress_bar.hide()
+          }
         }
       }
-    })
+    )
 
     electionDetailsViewModel.notConnected.observe(
       viewLifecycleOwner,
-       {
+      {
         if (it) {
           getVotersFromDb()
         }
       }
     )
   }
-
-
 
   private fun initRecyclerView(voters: List<VotersDto>) {
     if (voters.isEmpty()) {
@@ -129,10 +129,6 @@ constructor(
       )
     }
   }
-
-
-
-
 
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)

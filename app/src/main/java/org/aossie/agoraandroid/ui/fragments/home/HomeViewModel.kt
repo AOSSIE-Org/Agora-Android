@@ -61,19 +61,19 @@ constructor(
   }
 
   fun doLogout() {
-   _getLogoutLiveData.value = ResponseUI.loading()
+    _getLogoutLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
         userRepository.logout()
         _getLogoutLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _getLogoutLiveData.value = ResponseUI.error(e.message?:"")
+        _getLogoutLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLogoutLiveData.value = ResponseUI.error(e.message?:"")
+        _getLogoutLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        _getLogoutLiveData.value = ResponseUI.error(e.message?:"")
+        _getLogoutLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }

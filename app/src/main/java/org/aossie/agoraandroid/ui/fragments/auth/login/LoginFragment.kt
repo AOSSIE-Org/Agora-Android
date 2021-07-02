@@ -41,7 +41,7 @@ class LoginFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), SessionExpiredListener, LoginListener {
+) : Fragment(), SessionExpiredListener {
 
   private lateinit var binding: FragmentLoginBinding
 
@@ -68,27 +68,33 @@ constructor(
 
   private fun initObjects() {
     loginViewModel.sessionExpiredListener = this
-    loginViewModel.loginListener = this
-    loginViewModel.getLoginLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  {
-          binding.progressBar.show()
-          binding.loginBtn.toggleIsEnable()
-        }
-        ResponseUI.Status.SUCCESS ->{
-          binding.loginBtn.toggleIsEnable()
-          binding.progressBar.hide()
-          Navigation.findNavController(binding.root)
-            .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-        }
-        ResponseUI.Status.ERROR ->{
-          binding.progressBar.hide()
-          binding.root.snackbar(it.message?:"")
-          binding.loginBtn.toggleIsEnable()
-          enableBtnFacebook()
+    loginViewModel.getLoginLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            binding.progressBar.show()
+            binding.loginBtn.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            binding.loginBtn.toggleIsEnable()
+            binding.progressBar.hide()
+            it.message?.let { crypto ->
+              onTwoFactorAuthentication(crypto)
+            } ?: kotlin.run {
+              Navigation.findNavController(binding.root)
+                .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+            }
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.progressBar.hide()
+            binding.root.snackbar(it.message ?: "")
+            binding.loginBtn.toggleIsEnable()
+            enableBtnFacebook()
+          }
         }
       }
-    })
+    )
 
     callbackManager = Factory.create()
 
@@ -170,7 +176,6 @@ constructor(
     callbackManager!!.onActivityResult(requestCode, resultCode, data)
   }
 
-
   override fun onSessionExpired() {
     // do nothing
   }
@@ -179,8 +184,7 @@ constructor(
     binding.btnFacebookLogin.enableView()
   }
 
-
-  override fun onTwoFactorAuthentication(
+  fun onTwoFactorAuthentication(
     crypto: String
   ) {
     loginViewModel.getLoggedInUser()

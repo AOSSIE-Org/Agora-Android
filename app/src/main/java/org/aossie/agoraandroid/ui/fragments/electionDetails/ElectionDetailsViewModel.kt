@@ -46,17 +46,17 @@ constructor(
     _getBallotResponseLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
-        val response:List<BallotDto> = electionsRepository.getBallots(id!!).ballots
+        val response: List<BallotDto> = electionsRepository.getBallots(id!!).ballots
         Timber.d(response.toString())
         _getBallotResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
-      _getBallotResponseLiveData.value = ResponseUI.error(e.message?:"")
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
-      _getBallotResponseLiveData.value = ResponseUI.error(e.message?:"")
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -71,13 +71,13 @@ constructor(
         Timber.d(response.toString())
         _getVoterResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
-       _getVoterResponseLiveData.value = ResponseUI.error(e.message?:"")
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
-       _getVoterResponseLiveData.value = ResponseUI.error(e.message?:"")
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -85,20 +85,20 @@ constructor(
   fun deleteElection(
     id: String?
   ) {
-   _getDeleteElectionLiveData.value = ResponseUI.loading()
+    _getDeleteElectionLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
         val response = electionsRepository.deleteElection(id!!)
         Timber.d(response.toString())
         _getDeleteElectionLiveData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        _getDeleteElectionLiveData.value = ResponseUI.error(e.message?:"")
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-         _getDeleteElectionLiveData.value = ResponseUI.error(e.message?:"")
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-         _getDeleteElectionLiveData.value = ResponseUI.error(e.message?:"")
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -115,14 +115,14 @@ constructor(
         else
           _getResultResponseLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _getResultResponseLiveData.value = ResponseUI.error(e.message?:"")
+        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
-        _getResultResponseLiveData.value = ResponseUI.error(e.message?:"")
+        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        _getResultResponseLiveData.value = ResponseUI.error(e.message?:"")
+        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
