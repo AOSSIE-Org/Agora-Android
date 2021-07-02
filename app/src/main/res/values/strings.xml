@@ -103,7 +103,7 @@
   <string name="welcome">Welcome, %1$s!</string>
   <string name="link_sent_please_check_your_email">Link Sent, Please Check Your Emails</string>
   <string name="invalid_username">Invalid Username</string>
-  <string name="something_went_wrong_please_try_again_later">Something Went Wrong Please Try Again Later</string>
+  <string name="something_went_wrong_please_try_again_later">Something Went Wrong. Please Try Again Later</string>
   <string name="ballots_are_completely_secret">Completely secret and never shown to anyone</string>
   <string name="ballots_visible_only_to_me">Visible only to me</string>
   <string name="ballots_visible_to_everyone">Visible to everyone with access to the election</string>
@@ -258,9 +258,11 @@
   <string name="login_cancelled">Login Cancelled</string>
   <string name="otp_sent">OTP is sent to your registered email address</string>
   <string name="import_xlsx">Import</string>
+  <string name="export_xlsx">Export</string>
   <string name="file_not_found">File not found!</string>
   <string name="file_not_available">File not available!</string>
   <string name="cannot_read_file">Error reading the file</string>
+  <string name="cannot_write_file">Error writing the file</string>
   <string name="permission_denied">Permission denied</string>
   <string name="not_excel">Not an excel file</string>
   <string name="enter_valid_details">Enter valid name and email address</string>
@@ -273,5 +275,6 @@
   <string name="confirm_vote_message">Are you sure you want to vote for this election?</string>
   <string name="confirm_button">Confirm</string>
   <string name="cancel_button">Cancel</string>
-=</resources>
+  <string name="share_result">Share Result</string>
+</resources>
 
