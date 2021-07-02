@@ -77,44 +77,6 @@ constructor(
   }
 
   private fun setObserver() {
-    /*electionDetailsViewModel.getResultResponseLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  onStarted()
-        ResponseUI.Status.SUCCESS ->{
-          binding.loginBtn.toggleIsEnable()
-          binding.progressBar.hide()
-          Navigation.findNavController(binding.root)
-            .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-        }
-        ResponseUI.Status.ERROR ->onFailure(it.message?:"")
-      }
-    })
-
-    electionDetailsViewModel.getBallotResponseLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  onStarted()
-        ResponseUI.Status.SUCCESS ->{
-          binding.loginBtn.toggleIsEnable()
-          binding.progressBar.hide()
-          Navigation.findNavController(binding.root)
-            .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-        }
-        ResponseUI.Status.ERROR ->onFailure(it.message?:"")
-      }
-    })
-
-    electionDetailsViewModel.getVoterResponseLiveData.observe(viewLifecycleOwner,{
-      when(it.status){
-        ResponseUI.Status.LOADING ->  onStarted()
-        ResponseUI.Status.SUCCESS ->{
-          binding.loginBtn.toggleIsEnable()
-          binding.progressBar.hide()
-          Navigation.findNavController(binding.root)
-            .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-        }
-        ResponseUI.Status.ERROR ->onFailure(it.message?:"")
-      }
-    })*/
 
     electionDetailsViewModel.getDeleteElectionLiveData.observe(
       viewLifecycleOwner,
