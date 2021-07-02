@@ -15,10 +15,13 @@ import kotlinx.android.synthetic.main.fragment_voters.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_voters.view.recycler_view_voters
 import kotlinx.android.synthetic.main.fragment_voters.view.tv_no_voters_for_this_election
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.VotersAdapter
 import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -33,7 +36,7 @@ class VotersFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-  DisplayElectionListener {
+  SessionExpiredListener {
 
   private lateinit var rootView: View
 
@@ -55,7 +58,7 @@ constructor(
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_voters, container, false)
     rootView.tv_no_voters_for_this_election.hide()
-    electionDetailsViewModel.displayElectionListener = this
+    electionDetailsViewModel.sessionExpiredListener = this
 
     rootView.recycler_view_voters.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -67,33 +70,40 @@ constructor(
       requireArguments()
     ).id
     electionDetailsViewModel.getVoter(id)
+    setObserver()
 
     return rootView
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
-    Coroutines.main {
-      electionDetailsViewModel.voterResponse.observe(
-        viewLifecycleOwner,
-        Observer {
-          if (it != null) {
+  private fun setObserver() {
+    electionDetailsViewModel.getVoterResponseLiveData.observe(viewLifecycleOwner, { responseUI ->
+      when (responseUI.status) {
+        ResponseUI.Status.LOADING ->  rootView.progress_bar.show()
+        ResponseUI.Status.SUCCESS -> {
+          if (responseUI.message.isNullOrBlank()) rootView.snackbar(responseUI.message?:"")
+          rootView.progress_bar.hide()
+          responseUI.dataList?.let {
             initRecyclerView(it)
-          } else {
-            rootView.tv_no_voters_for_this_election.show()
-          }
+          }?: rootView.tv_no_voters_for_this_election.show()
         }
-      )
-      electionDetailsViewModel.notConnected.observe(
-        viewLifecycleOwner,
-        Observer {
-          if (it) {
-            getVotersFromDb()
-          }
+        ResponseUI.Status.ERROR -> {
+          rootView.snackbar(responseUI.message?:"")
+          rootView.progress_bar.hide()
         }
-      )
-    }
+      }
+    })
+
+    electionDetailsViewModel.notConnected.observe(
+      viewLifecycleOwner,
+       {
+        if (it) {
+          getVotersFromDb()
+        }
+      }
+    )
   }
+
+
 
   private fun initRecyclerView(voters: List<VotersDto>) {
     if (voters.isEmpty()) {
@@ -120,23 +130,9 @@ constructor(
     }
   }
 
-  override fun onDeleteElectionSuccess() {
-    // do nothing
-  }
 
-  override fun onSuccess(message: String?) {
-    if (message != null) rootView.snackbar(message)
-    rootView.progress_bar.hide()
-  }
 
-  override fun onStarted() {
-    rootView.progress_bar.show()
-  }
 
-  override fun onFailure(message: String) {
-    rootView.snackbar(message)
-    rootView.progress_bar.hide()
-  }
 
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)

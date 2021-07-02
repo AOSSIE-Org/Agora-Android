@@ -24,12 +24,16 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import kotlinx.android.synthetic.main.fragment_sign_up.view.progress_bar
+import kotlinx.android.synthetic.main.fragment_sign_up.view.signup_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -48,7 +52,7 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
-) : Fragment(), CreateElectionListener {
+) : Fragment() {
   lateinit var binding: FragmentCreateElectionBinding
   private var sDay = 0
   private var sMonth: Int = 0
@@ -89,11 +93,43 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_election, container, false)
 
-    createElectionViewModel.createElectionListener = this
+
 
     initView()
 
     initListeners()
+
+    createElectionViewModel.getCreateElectionData.observe(viewLifecycleOwner,{
+      when(it.status){
+        ResponseUI.Status.LOADING ->  {
+
+            binding.progressBar.show()
+            binding.submitDetailsBtn.toggleIsEnable()
+
+
+
+        }
+        ResponseUI.Status.SUCCESS ->{
+
+
+            binding.progressBar.hide()
+            binding.submitDetailsBtn.toggleIsEnable()
+            if (!it.message.isNullOrBlank()) binding.root.snackbar(it.message?:"")
+            prefs.setUpdateNeeded(true)
+            electionDetailsSharedPrefs.clearElectionData()
+            Navigation.findNavController(binding.root)
+              .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+
+        }
+        ResponseUI.Status.ERROR ->{
+
+          binding.progressBar.hide()
+            binding.root.snackbar(it.message?:"")
+            binding.submitDetailsBtn.toggleIsEnable()
+
+        }
+      }
+    })
 
     return binding.root
   }
@@ -412,24 +448,5 @@ constructor(
     }
   }
 
-  override fun onStarted() {
-    binding.progressBar.show()
-    binding.submitDetailsBtn.toggleIsEnable()
-  }
 
-  override fun onSuccess(message: String?) {
-    binding.progressBar.hide()
-    binding.submitDetailsBtn.toggleIsEnable()
-    if (message != null) binding.root.snackbar(message)
-    prefs.setUpdateNeeded(true)
-    electionDetailsSharedPrefs.clearElectionData()
-    Navigation.findNavController(binding.root)
-      .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
-  }
-
-  override fun onFailure(message: String) {
-    binding.progressBar.hide()
-    binding.root.snackbar(message)
-    binding.submitDetailsBtn.toggleIsEnable()
-  }
 }

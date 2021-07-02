@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -8,6 +9,7 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import javax.inject.Inject
 
 internal class CreateElectionViewModel
@@ -17,10 +19,11 @@ constructor(
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
-  lateinit var createElectionListener: CreateElectionListener
+  private val _getCreateElectionData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  val getCreateElectionData = _getCreateElectionData
 
   fun createElection() {
-    createElectionListener.onStarted()
+    _getCreateElectionData.value = ResponseUI.loading()
     viewModelScope.launch(Dispatchers.Main) {
       try {
         val response = electionsRepository.createElection(
@@ -39,13 +42,13 @@ constructor(
             electionDetailsSharedPrefs.votingAlgo
           )
         )
-        createElectionListener.onSuccess(response[1])
+        _getCreateElectionData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        createElectionListener.onFailure(e.message!!)
+       _getCreateElectionData.value = ResponseUI.error(e.message?:"")
       } catch (e: NoInternetException) {
-        createElectionListener.onFailure(e.message!!)
+       _getCreateElectionData.value = ResponseUI.error(e.message?:"")
       } catch (e: Exception) {
-        createElectionListener.onFailure(e.message!!)
+       _getCreateElectionData.value = ResponseUI.error(e.message?:"")
       }
     }
   }

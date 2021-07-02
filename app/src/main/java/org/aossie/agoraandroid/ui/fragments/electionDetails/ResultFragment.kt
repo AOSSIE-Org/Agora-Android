@@ -20,7 +20,9 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -35,7 +37,7 @@ class ResultFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-  DisplayElectionListener {
+  SessionExpiredListener {
   lateinit var binding: FragmentResultBinding
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
@@ -56,7 +58,7 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
     binding.tvNoResult.hide()
-    electionDetailsViewModel.displayElectionListener = this
+    electionDetailsViewModel.sessionExpiredListener = this
 
     id = VotersFragmentArgs.fromBundle(
       requireArguments()
@@ -88,69 +90,67 @@ constructor(
   }
 
   private fun observeResult() {
-    electionDetailsViewModel.resultResponse.observe(
-      viewLifecycleOwner,
-      {
-        if (it != null) {
-          initResultView(it)
-        } else {
-          binding.resultView.visibility = View.GONE
-          binding.tvNoResult.text = resources.getString(string.no_result)
-          binding.tvNoResult.show()
-        }
+
+electionDetailsViewModel.getResultResponseLiveData.observe(viewLifecycleOwner, { responseUI ->
+  when (responseUI.status) {
+    ResponseUI.Status.LOADING -> {binding.resultView.visibility = View.GONE
+      binding.progressBar.show()
+    }
+    ResponseUI.Status.SUCCESS -> {
+      if (responseUI.message.isNullOrBlank()) binding.root.snackbar(responseUI.message?:"")
+      binding.progressBar.hide()
+      responseUI.data?.let {
+        initResultView(it)
+      }?: kotlin.run {
+        binding.resultView.visibility = View.GONE
+        binding.tvNoResult.text = resources.getString(string.no_result)
+        binding.tvNoResult.show()
       }
-    )
+    }
+    ResponseUI.Status.ERROR -> {
+      binding.root.snackbar(responseUI.message?:"")
+      binding.progressBar.hide()
+      binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
+      binding.tvNoResult.show()
+    }
   }
+})
 
-  private fun initResultView(winner: WinnerDto) {
-    binding.tvNoResult.hide()
-    binding.resultView.visibility = View.VISIBLE
-    val pieChart = binding.pieChart
-    pieChart.setUsePercentValues(true)
 
-    val description = Description()
-    description.text = getString(R.string.election_result)
-    description.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-    pieChart.description = description
+}
 
-    val value: ArrayList<PieEntry> = ArrayList()
-    value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
-    value.add(
-      PieEntry(winner.score.denominator?.toFloat()!!, resources.getString(R.string.others))
-    )
+private fun initResultView(winner: WinnerDto) {
+binding.tvNoResult.hide()
+binding.resultView.visibility = View.VISIBLE
+val pieChart = binding.pieChart
+pieChart.setUsePercentValues(true)
 
-    val pieDataSet = PieDataSet(value, "")
-    val pieData = PieData(pieDataSet)
-    pieChart.data = pieData
-    val legend = pieChart.legend
-    legend.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-    pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
-    pieChart.animateXY(1400, 1400)
-    binding.textViewWinnerName.text = winner.candidate?.name
-  }
+val description = Description()
+description.text = getString(R.string.election_result)
+description.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+pieChart.description = description
 
-  override fun onDeleteElectionSuccess() {
-    // do nothing
-  }
+val value: ArrayList<PieEntry> = ArrayList()
+value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
+value.add(
+ PieEntry(winner.score.denominator?.toFloat()!!, resources.getString(R.string.others))
+)
 
-  override fun onStarted() {
-    binding.resultView.visibility = View.GONE
-    binding.progressBar.show()
-  }
+val pieDataSet = PieDataSet(value, "")
+val pieData = PieData(pieDataSet)
+pieChart.data = pieData
+val legend = pieChart.legend
+legend.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
+pieChart.animateXY(1400, 1400)
+binding.textViewWinnerName.text = winner.candidate?.name
+}
 
-  override fun onSuccess(message: String?) {
-    if (message != null) binding.root.snackbar(message)
-    binding.progressBar.hide()
-  }
 
-  override fun onFailure(message: String) {
-    binding.root.snackbar(message)
-    binding.progressBar.hide()
-    binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
-    binding.tvNoResult.show()
-  }
 
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
-  }
+
+
+override fun onSessionExpired() {
+hostViewModel.setLogout(true)
+}
 }

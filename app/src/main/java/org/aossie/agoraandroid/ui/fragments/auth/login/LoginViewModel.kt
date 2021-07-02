@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -9,9 +10,11 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,8 +26,12 @@ constructor(
   private val prefs: PreferenceProvider
 ) : ViewModel() {
 
-  var authListener: AuthListener? = null
+  var sessionExpiredListener: SessionExpiredListener? = null
   var loginListener: LoginListener? = null
+
+  private val _getLoginLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  val getLoginLiveData = _getLoginLiveData
+
 
   fun getLoggedInUser() = userRepository.getUser()
 
@@ -33,9 +40,9 @@ constructor(
     password: String,
     trustedDevice: String? = null
   ) {
-    authListener?.onStarted()
+   _getLoginLiveData.value = ResponseUI.loading()
     if (identifier.isEmpty() || password.isEmpty()) {
-      authListener?.onFailure("Invalid Email or Password")
+      _getLoginLiveData.value = ResponseUI.error(AppConstants.INVALID_CREDENTIALS_MESSAGE)
       return
     }
     viewModelScope.launch(Dispatchers.Main) {
@@ -52,19 +59,23 @@ constructor(
           userRepository.saveUser(user)
           Timber.d(user.toString())
           if (!it.twoFactorAuthentication!!) {
-            authListener?.onSuccess()
+            _getLoginLiveData.value = ResponseUI.success()
           } else {
             loginListener?.onTwoFactorAuthentication(user.crypto!!)
           }
         }
       } catch (e: ApiException) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
       } catch (e: SessionExpirationException) {
-        authListener?.onSessionExpired()
+        sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
       } catch (e: Exception) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
+
       }
     }
   }
@@ -85,26 +96,32 @@ constructor(
           userRepository.saveUser(user)
         }
       } catch (e: Exception) {
-        authListener?.onSessionExpired()
+        sessionExpiredListener?.onSessionExpired()
       }
     }
   }
 
   fun facebookLogInRequest() {
-    authListener!!.onStarted()
+    _getLoginLiveData.value = ResponseUI.loading()
     viewModelScope.launch(Dispatchers.Main) {
       try {
         val authResponse = userRepository.fbLogin()
         getUserData(authResponse)
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
+
       } catch (e: SessionExpirationException) {
-        authListener?.onSessionExpired()
+        sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
+
       } catch (e: Exception) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
+
       }
     }
   }
@@ -122,15 +139,21 @@ constructor(
         userRepository.saveUser(user)
         Timber.d(authResponse.toString())
         prefs.setIsFacebookUser(true)
-        authListener?.onSuccess()
+        _getLoginLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
+
       } catch (e: SessionExpirationException) {
-        authListener?.onSessionExpired()
+        sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
+
       } catch (e: Exception) {
-        authListener?.onFailure(e.message!!)
+              _getLoginLiveData.value = ResponseUI.error(e.message?:"")
+
+
       }
     }
   }

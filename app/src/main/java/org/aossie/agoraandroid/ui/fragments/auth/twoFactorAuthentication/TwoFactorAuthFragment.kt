@@ -17,13 +17,12 @@ import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.otp_til
 import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
 import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.ResponseResult
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -33,7 +32,7 @@ class TwoFactorAuthFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment() {
+) : Fragment(),SessionExpiredListener {
 
   private lateinit var rootView: View
 
@@ -56,6 +55,7 @@ constructor(
     rootView = inflater.inflate(R.layout.fragment_two_factor_auth, container, false)
 
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
+    viewModel.sessionExpiredListener = this
 
     viewModel.user.observe(
       viewLifecycleOwner,
@@ -113,32 +113,36 @@ constructor(
     return rootView
   }
 
-  private fun handleVerifyOtp(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handleVerifyOtp(response: ResponseUI<Any>) = when (response.status) {
+     ResponseUI.Status.SUCCESS -> {
       rootView.progress_bar.hide()
       Navigation.findNavController(rootView)
         .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
-    is Error -> {
+    ResponseUI.Status.ERROR -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.error.toString())
+      rootView.snackbar(response.message?:"")
     }
-    is SessionExpired -> {
-      hostViewModel.setLogout(true)
-    }
+
+    else -> {//Do Nothing
+            }
   }
 
-  private fun handleResendOtp(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handleResendOtp(response: ResponseUI<Any>) = when (response.status) {
+     ResponseUI.Status.SUCCESS -> {
       rootView.progress_bar.hide()
-      rootView.snackbar("OTP is sent to your registered email address")
+      rootView.snackbar(getString(string.otp_sent))
     }
-    is Error -> {
+    ResponseUI.Status.ERROR -> {
       rootView.progress_bar.hide()
-      rootView.snackbar(response.error.toString())
+      rootView.snackbar(response.message?:"")
     }
-    is SessionExpired -> {
-      hostViewModel.setLogout(true)
+    else -> {//Do Nothing
     }
+
+  }
+
+  override fun onSessionExpired() {
+    hostViewModel.setLogout(true)
   }
 }

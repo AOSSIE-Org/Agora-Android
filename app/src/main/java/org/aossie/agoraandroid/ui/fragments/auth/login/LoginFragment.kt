@@ -21,8 +21,9 @@ import com.facebook.login.LoginResult
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentLoginBinding
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.disableView
 import org.aossie.agoraandroid.utilities.enableView
 import org.aossie.agoraandroid.utilities.hide
@@ -40,7 +41,7 @@ class LoginFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), AuthListener, LoginListener {
+) : Fragment(), SessionExpiredListener, LoginListener {
 
   private lateinit var binding: FragmentLoginBinding
 
@@ -66,8 +67,28 @@ constructor(
   }
 
   private fun initObjects() {
-    loginViewModel.authListener = this
+    loginViewModel.sessionExpiredListener = this
     loginViewModel.loginListener = this
+    loginViewModel.getLoginLiveData.observe(viewLifecycleOwner,{
+      when(it.status){
+        ResponseUI.Status.LOADING ->  {
+          binding.progressBar.show()
+          binding.loginBtn.toggleIsEnable()
+        }
+        ResponseUI.Status.SUCCESS ->{
+          binding.loginBtn.toggleIsEnable()
+          binding.progressBar.hide()
+          Navigation.findNavController(binding.root)
+            .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+        }
+        ResponseUI.Status.ERROR ->{
+          binding.progressBar.hide()
+          binding.root.snackbar(it.message?:"")
+          binding.loginBtn.toggleIsEnable()
+          enableBtnFacebook()
+        }
+      }
+    })
 
     callbackManager = Factory.create()
 
@@ -121,7 +142,7 @@ constructor(
     }
 
     binding.btnFacebookLogin.setOnClickListener {
-      disableBtnFacebook()
+      binding.btnFacebookLogin.disableView()
       LoginManager.getInstance()
         .logInWithReadPermissions(
           activity,
@@ -149,24 +170,6 @@ constructor(
     callbackManager!!.onActivityResult(requestCode, resultCode, data)
   }
 
-  override fun onSuccess(message: String?) {
-    binding.loginBtn.toggleIsEnable()
-    binding.progressBar.hide()
-    Navigation.findNavController(binding.root)
-      .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-  }
-
-  override fun onStarted() {
-    binding.progressBar.show()
-    binding.loginBtn.toggleIsEnable()
-  }
-
-  override fun onFailure(message: String) {
-    binding.progressBar.hide()
-    binding.root.snackbar(message)
-    binding.loginBtn.toggleIsEnable()
-    enableBtnFacebook()
-  }
 
   override fun onSessionExpired() {
     // do nothing
@@ -176,9 +179,6 @@ constructor(
     binding.btnFacebookLogin.enableView()
   }
 
-  private fun disableBtnFacebook() {
-    binding.btnFacebookLogin.disableView()
-  }
 
   override fun onTwoFactorAuthentication(
     crypto: String
