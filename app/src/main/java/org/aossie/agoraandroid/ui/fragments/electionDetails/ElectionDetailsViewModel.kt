@@ -221,5 +221,4 @@ constructor(
       shareResultListener.onShareExportFailure(context.getString(string.cannot_write_file))
     }
   }
-
 }

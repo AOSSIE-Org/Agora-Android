@@ -43,7 +43,8 @@ class ResultFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-  DisplayElectionListener, ShareResultListener {
+  DisplayElectionListener,
+  ShareResultListener {
   lateinit var binding: FragmentResultBinding
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
