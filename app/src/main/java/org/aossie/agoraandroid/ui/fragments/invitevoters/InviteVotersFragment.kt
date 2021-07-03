@@ -48,8 +48,9 @@ class InviteVotersFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), InviteVoterListener,
-  ReadVotersListener{
+) : Fragment(),
+  InviteVoterListener,
+  ReadVotersListener {
 
   lateinit var binding: FragmentInviteVotersBinding
 

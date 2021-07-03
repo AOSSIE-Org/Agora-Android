@@ -57,7 +57,8 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
-) : Fragment(), CreateElectionListener,
+) : Fragment(),
+  CreateElectionListener,
   ReadCandidatesListener {
   lateinit var binding: FragmentCreateElectionBinding
   private var sDay = 0
