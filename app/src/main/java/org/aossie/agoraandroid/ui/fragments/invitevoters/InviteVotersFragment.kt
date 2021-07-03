@@ -78,13 +78,13 @@ constructor(
         viewHolder: ViewHolder,
         direction: Int
       ) {
+        val deletedVoter = mVoters[viewHolder.absoluteAdapterPosition]
         Snackbar.make(binding.root, string.voter_removed, Snackbar.LENGTH_LONG)
           .setAction(AppConstants.undo) {
-            addCandidate(mVoters[viewHolder.adapterPosition])
+            addVoter(deletedVoter)
           }
           .show()
-
-        mVoters.removeAt(viewHolder.adapterPosition)
+        mVoters.removeAt(viewHolder.absoluteAdapterPosition)
         voterRecyclerAdapter?.notifyDataSetChanged()
       }
     }
@@ -145,13 +145,13 @@ constructor(
         ?.text
         .toString()
       if (inviteValidator(email, name)) {
-        addCandidate(VotersDto(name, email))
+        addVoter(VotersDto(name, email))
       } else {
         binding.root.snackbar(getString(string.enter_valid_details))
       }
     }
 
-    binding.importCandidates.setOnClickListener {
+    binding.importVoter.setOnClickListener {
       if (ActivityCompat.checkSelfPermission(
           requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
@@ -178,16 +178,16 @@ constructor(
     )
   }
 
-  private fun addCandidate(
+  private fun addVoter(
     voter: VotersDto,
   ) {
     mVoters.add(voter)
-    voterRecyclerAdapter!!.notifyDataSetChanged()
+    voterRecyclerAdapter?.notifyDataSetChanged()
     binding.textInputVoterName.editText?.setText("")
     binding.textInputVoterEmail.editText?.setText("")
   }
 
-  private fun importCandidates(
+  private fun importVoters(
     voters: List<VotersDto>,
   ) {
     mVoters.addAll(voters)
@@ -306,7 +306,7 @@ constructor(
     val filteredList = list.filter {
       importValidator(it.voterEmail.toString(), it.voterName.toString())
     }
-    if (filteredList.isNotEmpty()) importCandidates(filteredList)
+    if (filteredList.isNotEmpty()) importVoters(filteredList)
   }
 
   override fun onReadFailure(message: String) {

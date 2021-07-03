@@ -268,11 +268,12 @@
   <string name="enter_voter_email">Please enter Voter\'s Email</string>
   <string name="enter_valid_voter_email">Please enter valid email address</string>
   <string name="enter_voter_name">Please enter Voter\'s Name</string>
+  <string name="search_hint">Search…</string>
   <string name="invalid_url">Invalid URL</string>
   <string name="select_candidate">Please select a candidate first</string>
   <string name="confirm_vote">Confirm Vote?</string>
   <string name="confirm_vote_message">Are you sure you want to vote for this election?</string>
   <string name="confirm_button">Confirm</string>
   <string name="cancel_button">Cancel</string>
-=</resources>
+</resources>
 

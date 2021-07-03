@@ -144,6 +144,9 @@ dependencies {
   kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
   implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
+  //recyclerView
+  implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+
   //POI
   implementation "com.github.SUPERCILEX.poi-android:poi:$poi"
 }
