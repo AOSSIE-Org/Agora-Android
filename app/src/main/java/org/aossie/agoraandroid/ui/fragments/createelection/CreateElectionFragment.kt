@@ -221,7 +221,7 @@ constructor(
         viewHolder: ViewHolder,
         direction: Int
       ) {
-        mCandidates.removeAt(viewHolder.adapterPosition)
+        mCandidates.removeAt(viewHolder.absoluteAdapterPosition)
         candidateRecyclerAdapter!!.notifyDataSetChanged()
         if (mCandidates.isEmpty()) binding.textViewSwipe.hide()
       }
