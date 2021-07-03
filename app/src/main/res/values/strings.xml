@@ -262,6 +262,7 @@
   <string name="file_not_available">File not available!</string>
   <string name="cannot_read_file">Error reading the file</string>
   <string name="permission_denied">Permission denied</string>
+  <string name="no_sheet">No sheet found</string>
   <string name="not_excel">Not an excel file</string>
   <string name="enter_valid_details">Enter valid name and email address</string>
   <string name="enter_voter_email">Please enter Voter\'s Email</string>

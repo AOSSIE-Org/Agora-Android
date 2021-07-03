@@ -41,14 +41,6 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException
-import org.apache.poi.xssf.usermodel.XSSFSheet
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.InputStream
 import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
@@ -65,7 +57,8 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
-) : Fragment(), CreateElectionListener {
+) : Fragment(), CreateElectionListener,
+  ReadCandidatesListener {
   lateinit var binding: FragmentCreateElectionBinding
   private var sDay = 0
   private var sMonth: Int = 0
@@ -107,6 +100,7 @@ constructor(
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_election, container, false)
 
     createElectionViewModel.createElectionListener = this
+    createElectionViewModel.readCandidatesListener = this
 
     initView()
 
@@ -457,7 +451,7 @@ constructor(
     if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
       val fileUri = intentData?.data ?: return
       FileUtils.getPathFromUri(requireContext(), fileUri)
-        ?.let { readExcelData(it) }
+        ?.let { createElectionViewModel.readExcelData(requireContext(), it) }
     }
   }
 
@@ -475,24 +469,11 @@ constructor(
     }
   }
 
-  private fun readExcelData(excelFilePath: String) {
-    try {
-      val inputStream: InputStream = FileInputStream(File(excelFilePath))
-      val workbook = XSSFWorkbook(inputStream)
-      val sheet: XSSFSheet = workbook.getSheetAt(0) ?: return
-      val list: ArrayList<String> = ArrayList()
-      for (row in sheet.rowIterator()) {
-        row.getCell(0)?.let {
-          if (it.stringCellValue.isNotEmpty()) list.add(it.stringCellValue)
-        }
-      }
-      if (list.isNotEmpty()) importCandidates(list)
-    } catch (e: NotOfficeXmlFileException) {
-      binding.root.snackbar(getString(string.not_excel))
-    } catch (e: FileNotFoundException) {
-      binding.root.snackbar(getString(string.file_not_available))
-    } catch (e: IOException) {
-      binding.root.snackbar(getString(string.cannot_read_file))
-    }
+  override fun onReadSuccess(list: ArrayList<String>) {
+    if (list.isNotEmpty()) importCandidates(list)
+  }
+
+  override fun onReadFailure(message: String) {
+    binding.root.snackbar(message)
   }
 }
