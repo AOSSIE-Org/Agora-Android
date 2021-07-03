@@ -31,6 +31,7 @@ constructor(
 ) : ViewModel() {
   lateinit var inviteVoterListener: InviteVoterListener
   lateinit var readVotersListener: ReadVotersListener
+  var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
   fun inviteVoters(
     mVoters: ArrayList<VotersDto>,
@@ -62,9 +63,29 @@ constructor(
     }
   }
 
+  private fun importValidator(
+    email: String,
+    name: String,
+    mVoters: ArrayList<VotersDto>
+  ): Boolean {
+    val isNameValid = name.isNotEmpty()
+    val isEmailValid =
+      email.isNotEmpty() && email.matches(emailPattern.toRegex()) && !getEmailList(mVoters).contains(email)
+    return isNameValid && isEmailValid
+  }
+
+  fun getEmailList(mVoters: ArrayList<VotersDto>): ArrayList<String> {
+    val list: ArrayList<String> = ArrayList()
+    for (voter in mVoters) {
+      voter.voterEmail?.let { list.add(it) }
+    }
+    return list
+  }
+
   fun readExcelData(
     context: Context,
-    excelFilePath: String
+    excelFilePath: String,
+    existingVoters: ArrayList<VotersDto>
   ) {
     viewModelScope.launch(Dispatchers.IO) {
       try {
@@ -80,7 +101,7 @@ constructor(
         for (row in sheet.rowIterator()) {
           val name = row.getCell(0)?.stringCellValue ?: ""
           val email = row.getCell(1)?.stringCellValue ?: ""
-          list.add(VotersDto(name, email))
+          if (importValidator(email, name, existingVoters)) list.add(VotersDto(name, email))
         }
         withContext(Dispatchers.Main) {
           readVotersListener.onReadSuccess(list)

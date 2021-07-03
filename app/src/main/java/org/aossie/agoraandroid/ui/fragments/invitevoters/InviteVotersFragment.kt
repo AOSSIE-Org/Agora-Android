@@ -78,13 +78,13 @@ constructor(
         viewHolder: ViewHolder,
         direction: Int
       ) {
+        val deletedVoter = mVoters[viewHolder.absoluteAdapterPosition]
         Snackbar.make(binding.root, string.voter_removed, Snackbar.LENGTH_LONG)
           .setAction(AppConstants.undo) {
-            addCandidate(mVoters[viewHolder.adapterPosition])
+            addVoter(deletedVoter)
           }
           .show()
-
-        mVoters.removeAt(viewHolder.adapterPosition)
+        mVoters.removeAt(viewHolder.absoluteAdapterPosition)
         voterRecyclerAdapter?.notifyDataSetChanged()
       }
     }
@@ -145,13 +145,13 @@ constructor(
         ?.text
         .toString()
       if (inviteValidator(email, name)) {
-        addCandidate(VotersDto(name, email))
+        addVoter(VotersDto(name, email))
       } else {
         binding.root.snackbar(getString(string.enter_valid_details))
       }
     }
 
-    binding.importCandidates.setOnClickListener {
+    binding.importVoter.setOnClickListener {
       if (ActivityCompat.checkSelfPermission(
           requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
@@ -178,16 +178,16 @@ constructor(
     )
   }
 
-  private fun addCandidate(
+  private fun addVoter(
     voter: VotersDto,
   ) {
     mVoters.add(voter)
-    voterRecyclerAdapter!!.notifyDataSetChanged()
+    voterRecyclerAdapter?.notifyDataSetChanged()
     binding.textInputVoterName.editText?.setText("")
     binding.textInputVoterEmail.editText?.setText("")
   }
 
-  private fun importCandidates(
+  private fun importVoters(
     voters: List<VotersDto>,
   ) {
     mVoters.addAll(voters)
@@ -229,7 +229,7 @@ constructor(
     } else if (!email.matches(emailPattern.toRegex())) {
       binding.textInputVoterEmail.error = getString(string.enter_valid_voter_email)
       return false
-    } else if (getEmailList().contains(email)) {
+    } else if (inviteVotersViewModel.getEmailList(mVoters).contains(email)) {
       binding.textInputVoterEmail.error = getString(string.voter_same_email)
       return false
     }
@@ -255,24 +255,6 @@ constructor(
     return isNameValid && isEmailValid
   }
 
-  private fun importValidator(
-    email: String,
-    name: String,
-  ): Boolean {
-    val isNameValid = name.isNotEmpty()
-    val isEmailValid =
-      email.isNotEmpty() && email.matches(emailPattern.toRegex()) && !getEmailList().contains(email)
-    return isNameValid && isEmailValid
-  }
-
-  private fun getEmailList(): ArrayList<String> {
-    val list: ArrayList<String> = ArrayList()
-    for (voter in mVoters) {
-      voter.voterEmail?.let { list.add(it) }
-    }
-    return list
-  }
-
   override fun onActivityResult(
     requestCode: Int,
     resultCode: Int,
@@ -284,7 +266,7 @@ constructor(
     if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
       val fileUri = intentData?.data ?: return
       FileUtils.getPathFromUri(requireContext(), fileUri)
-        ?.let { inviteVotersViewModel.readExcelData(requireContext(), it) }
+        ?.let { inviteVotersViewModel.readExcelData(requireContext(), it, mVoters) }
     }
   }
 
@@ -303,10 +285,7 @@ constructor(
   }
 
   override fun onReadSuccess(list: ArrayList<VotersDto>) {
-    val filteredList = list.filter {
-      importValidator(it.voterEmail.toString(), it.voterName.toString())
-    }
-    if (filteredList.isNotEmpty()) importCandidates(filteredList)
+    if (list.isNotEmpty()) importVoters(list)
   }
 
   override fun onReadFailure(message: String) {
