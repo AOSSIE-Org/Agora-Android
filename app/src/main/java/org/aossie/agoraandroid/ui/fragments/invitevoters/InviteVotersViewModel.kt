@@ -101,7 +101,7 @@ constructor(
         for (row in sheet.rowIterator()) {
           val name = row.getCell(0)?.stringCellValue ?: ""
           val email = row.getCell(1)?.stringCellValue ?: ""
-          if(importValidator(email, name, existingVoters)) list.add(VotersDto(name, email))
+          if (importValidator(email, name, existingVoters)) list.add(VotersDto(name, email))
         }
         withContext(Dispatchers.Main) {
           readVotersListener.onReadSuccess(list)
