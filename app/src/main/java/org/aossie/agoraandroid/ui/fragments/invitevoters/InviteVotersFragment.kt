@@ -75,15 +75,15 @@ constructor(
         viewHolder: ViewHolder,
         direction: Int
       ) {
-        val lastName = mVoterNames[viewHolder.adapterPosition]
-        val lastEmail = mVoterEmails[viewHolder.adapterPosition]
+        val lastName = mVoterNames[viewHolder.absoluteAdapterPosition]
+        val lastEmail = mVoterEmails[viewHolder.absoluteAdapterPosition]
         Snackbar.make(rootView, R.string.voter_removed, Snackbar.LENGTH_LONG)
           .setAction(AppConstants.undo) {
             addCandidate(lastName, lastEmail)
           }.show()
 
-        mVoterNames.removeAt(viewHolder.adapterPosition)
-        mVoterEmails.removeAt(viewHolder.adapterPosition)
+        mVoterNames.removeAt(viewHolder.absoluteAdapterPosition)
+        mVoterEmails.removeAt(viewHolder.absoluteAdapterPosition)
         voterRecyclerAdapter!!.notifyDataSetChanged()
       }
     }
