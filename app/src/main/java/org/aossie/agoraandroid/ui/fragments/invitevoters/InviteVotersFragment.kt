@@ -37,16 +37,7 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException
-import org.apache.poi.xssf.usermodel.XSSFSheet
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.json.JSONException
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.InputStream
-import java.util.ArrayList
 import javax.inject.Inject
 
 /**
@@ -57,7 +48,9 @@ class InviteVotersFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), InviteVoterListener {
+) : Fragment(),
+  InviteVoterListener,
+  ReadVotersListener {
 
   lateinit var binding: FragmentInviteVotersBinding
 
@@ -105,6 +98,7 @@ constructor(
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_invite_voters, container, false)
 
     inviteVotersViewModel.inviteVoterListener = this
+    inviteVotersViewModel.readVotersListener = this
 
     initView()
     initListeners()
@@ -194,7 +188,7 @@ constructor(
   }
 
   private fun importCandidates(
-    voters: ArrayList<VotersDto>,
+    voters: List<VotersDto>,
   ) {
     mVoters.addAll(voters)
     voterRecyclerAdapter!!.notifyDataSetChanged()
@@ -290,7 +284,7 @@ constructor(
     if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
       val fileUri = intentData?.data ?: return
       FileUtils.getPathFromUri(requireContext(), fileUri)
-        ?.let { readExcelData(it) }
+        ?.let { inviteVotersViewModel.readExcelData(requireContext(), it) }
     }
   }
 
@@ -308,24 +302,14 @@ constructor(
     }
   }
 
-  private fun readExcelData(excelFilePath: String) {
-    try {
-      val inputStream: InputStream = FileInputStream(File(excelFilePath))
-      val workbook = XSSFWorkbook(inputStream)
-      val sheet: XSSFSheet = workbook.getSheetAt(0) ?: return
-      val list: ArrayList<VotersDto> = ArrayList()
-      for (row in sheet.rowIterator()) {
-        val name = row.getCell(0)?.stringCellValue ?: ""
-        val email = row.getCell(1)?.stringCellValue ?: ""
-        if (importValidator(email, name)) list.add(VotersDto(name, email))
-      }
-      if (list.isNotEmpty()) importCandidates(list)
-    } catch (e: NotOfficeXmlFileException) {
-      binding.root.snackbar(getString(string.not_excel))
-    } catch (e: FileNotFoundException) {
-      binding.root.snackbar(getString(string.file_not_available))
-    } catch (e: IOException) {
-      binding.root.snackbar(getString(string.cannot_read_file))
+  override fun onReadSuccess(list: ArrayList<VotersDto>) {
+    val filteredList = list.filter {
+      importValidator(it.voterEmail.toString(), it.voterName.toString())
     }
+    if (filteredList.isNotEmpty()) importCandidates(filteredList)
+  }
+
+  override fun onReadFailure(message: String) {
+    binding.root.snackbar(message)
   }
 }
