@@ -116,7 +116,7 @@ constructor(
       .toString()
     val securityQuestion = securityQuestionOfSignUp
     if (!Patterns.EMAIL_ADDRESS.matcher(userEmail)
-        .matches()
+      .matches()
     ) {
       binding.signupEmail.error = "Enter a valid email address!!!"
     } else {

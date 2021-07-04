@@ -18,17 +18,20 @@ class HeaderInterceptor(private val preferenceProvider: PreferenceProvider) : In
           when {
             chain.request().url.toString()
               .contains(AppConstants.FACEBOOK) -> addHeader(
-              AppConstants.ACCESS_TOKEN, preferenceProvider.getFacebookAccessToken()
-              .first() ?: ""
+              AppConstants.ACCESS_TOKEN,
+              preferenceProvider.getFacebookAccessToken()
+                .first() ?: ""
             )
             chain.request().url.toString()
               .contains(AppConstants.REFRESH_ACCESS_TOKEN) -> addHeader(
-              AppConstants.X_REFRESH_TOKEN, preferenceProvider.getRefreshToken()
-              .first() ?: ""
+              AppConstants.X_REFRESH_TOKEN,
+              preferenceProvider.getRefreshToken()
+                .first() ?: ""
             )
             else -> addHeader(
-              AppConstants.X_AUTH_TOKEN, preferenceProvider.getAccessToken()
-              .first() ?: ""
+              AppConstants.X_AUTH_TOKEN,
+              preferenceProvider.getAccessToken()
+                .first() ?: ""
             )
           }
           addHeader(AppConstants.ACCEPT, AppConstants.APPLICATION_JSON)

@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     GlobalScope.launch {
       prefs.setUpdateNeeded(true)
       if (prefs.getIsLoggedIn()
-          .first()
+        .first()
       ) {
         navController.navigate(R.id.homeFragment)
       }

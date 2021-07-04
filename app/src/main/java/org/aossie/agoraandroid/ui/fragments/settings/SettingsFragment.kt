@@ -149,7 +149,7 @@ constructor(
     binding.progressBar.hide()
     lifecycleScope.launch {
       if (prefs.getIsFacebookUser()
-          .first()
+        .first()
       ) {
         LoginManager.getInstance()
           .logOut()

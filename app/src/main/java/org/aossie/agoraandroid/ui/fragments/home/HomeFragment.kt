@@ -106,7 +106,7 @@ constructor(
                     .d(expireOn.toString())
                   lifecycleScope.launch {
                     if (preferenceProvider.getIsFacebookUser()
-                        .first()
+                      .first()
                     ) {
                       loginViewModel.facebookLogInRequest()
                     } else {
