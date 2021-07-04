@@ -5,23 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.btn_verify_otp
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.cb_trusted_device
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.otp_til
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.responses.ResponseResult
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
 import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.hide
@@ -35,7 +32,7 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment() {
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentTwoFactorAuthBinding
 
   private var crypto: String? = null
   private var user: User? = null
@@ -53,7 +50,7 @@ constructor(
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    rootView = inflater.inflate(R.layout.fragment_two_factor_auth, container, false)
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_two_factor_auth, container, false)
 
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
 
@@ -66,34 +63,34 @@ constructor(
       }
     )
 
-    rootView.btn_verify_otp.setOnClickListener {
-      rootView.progress_bar.show()
-      val otp = rootView.otp_til.editText
+    binding.btnVerifyOtp.setOnClickListener {
+      binding.progressBar.show()
+      val otp = binding.otpTil.editText
         ?.text
         .toString()
         .trim { it <= ' ' }
       if (otp.isEmpty()) {
-        rootView.snackbar("Please Enter OTP")
-        rootView.progress_bar.hide()
+        binding.root.snackbar("Please Enter OTP")
+        binding.progressBar.hide()
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        if (rootView.cb_trusted_device.isChecked) {
+        if (binding.cbTrustedDevice.isChecked) {
           viewModel.verifyOTP(
-            otp, rootView.cb_trusted_device.isChecked, user!!.crypto!!
+            otp, binding.cbTrustedDevice.isChecked, user!!.crypto!!
           )
         } else {
-          rootView.progress_bar.hide()
-          rootView.snackbar("Please, tap on the checkbox to proceed")
+          binding.progressBar.hide()
+          binding.root.snackbar("Please, tap on the checkbox to proceed")
         }
       }
     }
 
-    rootView.tv_resend_otp.setOnClickListener {
+    binding.tvResendOtp.setOnClickListener {
       if (user != null) {
-        rootView.progress_bar.show()
+        binding.progressBar.show()
         viewModel.resendOTP(user!!.username!!)
       } else {
-        rootView.snackbar("Please try again")
+        binding.root.snackbar("Please try again")
       }
     }
 
@@ -110,18 +107,18 @@ constructor(
       }
     )
 
-    return rootView
+    return binding.root
   }
 
   private fun handleVerifyOtp(response: ResponseResult) = when (response) {
     is Success -> {
-      rootView.progress_bar.hide()
-      Navigation.findNavController(rootView)
+      binding.progressBar.hide()
+      Navigation.findNavController(binding.root)
         .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
     is Error -> {
-      rootView.progress_bar.hide()
-      rootView.snackbar(response.error.toString())
+      binding.progressBar.hide()
+      binding.root.snackbar(response.error.toString())
     }
     is SessionExpired -> {
       hostViewModel.setLogout(true)
@@ -130,12 +127,12 @@ constructor(
 
   private fun handleResendOtp(response: ResponseResult) = when (response) {
     is Success -> {
-      rootView.progress_bar.hide()
-      rootView.snackbar("OTP is sent to your registered email address")
+      binding.progressBar.hide()
+      binding.root.snackbar("OTP is sent to your registered email address")
     }
     is Error -> {
-      rootView.progress_bar.hide()
-      rootView.snackbar(response.error.toString())
+      binding.progressBar.hide()
+      binding.root.snackbar(response.error.toString())
     }
     is SessionExpired -> {
       hostViewModel.setLogout(true)

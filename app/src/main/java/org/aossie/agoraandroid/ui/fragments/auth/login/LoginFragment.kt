@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.CallbackManager
 import com.facebook.CallbackManager.Factory
@@ -18,6 +19,8 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentLoginBinding
@@ -77,7 +80,9 @@ constructor(
         object : FacebookCallback<LoginResult?> {
           override fun onSuccess(loginResult: LoginResult?) {
             Timber.d("Success")
-            prefs.setFacebookAccessToken(loginResult!!.accessToken.token)
+            lifecycleScope.launch {
+              prefs.setFacebookAccessToken(loginResult?.accessToken?.token)
+            }
             loginViewModel.facebookLogInRequest()
           }
 

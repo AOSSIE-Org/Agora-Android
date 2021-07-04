@@ -1,107 +1,106 @@
 package org.aossie.agoraandroid.data.db
 
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import org.aossie.agoraandroid.utilities.dataStore
 import javax.inject.Inject
-
-private const val IS_LOGGED_IN = "isLoggedIn"
-private const val IS_FACEBOOK_USER = "isFacebookUser"
-private const val IS_UPDATE_NEEDED = "isUpdateNeeded"
-private const val ACCESS_TOKEN = "accessToken"
-private const val REFRESH_TOKEN = "refreshToken"
-private const val FACEBOOK_ACCESS_TOKEN = "facebookAccessToken"
 
 class PreferenceProvider
 @Inject
 constructor(
-  context: Context
+  context: Context,
 ) {
-  private val appContext = context.applicationContext
-  private val preferences: SharedPreferences
-    get() = PreferenceManager.getDefaultSharedPreferences(appContext)
 
-  fun setIsLoggedIn(boolean: Boolean) {
-    preferences.edit()
-      .putBoolean(
-        IS_LOGGED_IN,
-        boolean
-      )
-      .apply()
+  companion object {
+    private val IS_LOGGED_IN = booleanPreferencesKey("isLoggedIn")
+    private val IS_FACEBOOK_USER = booleanPreferencesKey("isFacebookUser")
+    private val IS_UPDATE_NEEDED = booleanPreferencesKey("isUpdateNeeded")
+    private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
+    private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
+    private val FACEBOOK_ACCESS_TOKEN = stringPreferencesKey("facebookAccessToken")
   }
 
-  fun getIsLoggedIn(): Boolean {
-    return preferences.getBoolean(IS_LOGGED_IN, false)
+  private val dataStore = context.dataStore
+
+  suspend fun setIsLoggedIn(boolean: Boolean) {
+    dataStore.edit {
+      it[IS_LOGGED_IN] = boolean
+    }
   }
 
-  fun setIsFacebookUser(boolean: Boolean) {
-    preferences.edit()
-      .putBoolean(
-        IS_FACEBOOK_USER,
-        boolean
-      )
-      .apply()
+  fun getIsLoggedIn(): Flow<Boolean> {
+    return dataStore.data.map {
+      it[IS_LOGGED_IN] ?: false
+    }
   }
 
-  fun getIsFacebookUser(): Boolean {
-    return preferences.getBoolean(IS_FACEBOOK_USER, false)
+  suspend fun setIsFacebookUser(boolean: Boolean) {
+    dataStore.edit {
+      it[IS_FACEBOOK_USER] = boolean
+    }
   }
 
-  fun setUpdateNeeded(isNeeded: Boolean) {
-    preferences.edit()
-      .putBoolean(
-        IS_UPDATE_NEEDED,
-        isNeeded
-      )
-      .apply()
+  fun getIsFacebookUser(): Flow<Boolean> {
+    return dataStore.data.map {
+      it[IS_FACEBOOK_USER] ?: false
+    }
   }
 
-  fun getUpdateNeeded(): Boolean {
-    return preferences.getBoolean(IS_UPDATE_NEEDED, true)
+  suspend fun setUpdateNeeded(isNeeded: Boolean) {
+    dataStore.edit {
+      it[IS_UPDATE_NEEDED] = isNeeded
+    }
   }
 
-  fun setAccessToken(token: String?) {
-    preferences.edit()
-      .putString(
-        ACCESS_TOKEN,
-        token
-      )
-      .apply()
+  fun getUpdateNeeded(): Flow<Boolean> {
+    return dataStore.data.map {
+      it[IS_UPDATE_NEEDED] ?: true
+    }
   }
 
-  fun getAccessToken(): String? {
-    return preferences.getString(ACCESS_TOKEN, null)
+  suspend fun setAccessToken(token: String?) {
+    dataStore.edit {
+      it[ACCESS_TOKEN] = token ?: ""
+    }
   }
 
-  fun setRefreshToken(token: String?) {
-    preferences.edit()
-      .putString(
-        REFRESH_TOKEN,
-        token
-      )
-      .apply()
+  fun getAccessToken(): Flow<String?> {
+    return dataStore.data.map {
+      it[ACCESS_TOKEN]
+    }
   }
 
-  fun getRefreshToken(): String? {
-    return preferences.getString(REFRESH_TOKEN, null)
+  suspend fun setRefreshToken(token: String?) {
+    dataStore.edit {
+      it[REFRESH_TOKEN] = token ?: ""
+    }
   }
 
-  fun setFacebookAccessToken(accessToken: String?) {
-    preferences.edit()
-      .putString(
-        FACEBOOK_ACCESS_TOKEN,
-        accessToken
-      )
-      .apply()
+  fun getRefreshToken(): Flow<String?> {
+    return dataStore.data.map {
+      it[REFRESH_TOKEN]
+    }
   }
 
-  fun getFacebookAccessToken(): String? {
-    return preferences.getString(FACEBOOK_ACCESS_TOKEN, null)
+  suspend fun setFacebookAccessToken(accessToken: String?) {
+    dataStore.edit {
+      it[FACEBOOK_ACCESS_TOKEN] = accessToken ?: ""
+    }
   }
 
-  fun clearData() {
-    preferences.edit()
-      .clear()
-      .apply()
+  fun getFacebookAccessToken(): Flow<String?> {
+    return dataStore.data.map {
+      it[FACEBOOK_ACCESS_TOKEN]
+    }
+  }
+
+  suspend fun clearData() {
+    dataStore.edit {
+      it.clear()
+    }
   }
 }

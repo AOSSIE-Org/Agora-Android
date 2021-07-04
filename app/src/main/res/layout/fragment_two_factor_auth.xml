@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context=".ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment"
+  >
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment"
     >
-  <FrameLayout
+    <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
 
-    <androidx.core.widget.NestedScrollView
+      <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           >
 
-        <androidx.appcompat.widget.AppCompatButton
+          <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_verify_otp"
             style="@style/MainButtonStyle"
             android:layout_width="match_parent"
@@ -36,7 +38,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cb_trusted_device"
             />
 
-        <ImageView
+          <ImageView
             android:id="@+id/imageView"
             android:layout_width="@dimen/size_180dp"
             android:layout_height="@dimen/size_220dp"
@@ -51,7 +53,7 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <TextView
+          <TextView
             android:id="@+id/textView"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
@@ -66,7 +68,7 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <TextView
+          <TextView
             android:id="@+id/textView14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +83,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView"
             />
 
-        <com.google.android.material.textfield.TextInputLayout
+          <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/otp_til"
             style="@style/TextInputLayoutStyle"
             android:layout_width="0dp"
@@ -96,12 +98,12 @@
             app:layout_constraintTop_toBottomOf="@+id/textView14"
             >
 
-          <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               />
-        </com.google.android.material.textfield.TextInputLayout>
-        <TextView
+          </com.google.android.material.textfield.TextInputLayout>
+          <TextView
             android:id="@+id/tv_resend_otp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,19 +115,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/otp_til"
             />
-        <CheckBox
+          <CheckBox
             android:id="@+id/cb_trusted_device"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/do_you_trust_this_device"
             android:layout_marginTop="@dimen/size_10dp"
+            android:text="@string/do_you_trust_this_device"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_resend_otp"/>
-      </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+            app:layout_constraintTop_toBottomOf="@+id/tv_resend_otp"
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </androidx.core.widget.NestedScrollView>
 
-    <ProgressBar
+      <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -134,5 +137,6 @@
         android:padding="@dimen/size_10dp"
         android:visibility="invisible"
         />
-  </FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

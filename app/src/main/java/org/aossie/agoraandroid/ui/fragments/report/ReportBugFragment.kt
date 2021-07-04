@@ -6,21 +6,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_report_bug.view.button_report_bug
-import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.databinding.FragmentReportBugBinding
 
 /**
  * A simple [Fragment] subclass.
  */
 class ReportBugFragment : Fragment() {
+
+  private lateinit var binding: FragmentReportBugBinding
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    val view = inflater.inflate(layout.fragment_report_bug, container, false)
-    view.button_report_bug.setOnClickListener {
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_report_bug, container, false)
+    binding.buttonReportBug.setOnClickListener {
       startActivity(
         Intent(
           Intent.ACTION_VIEW,
@@ -28,6 +32,6 @@ class ReportBugFragment : Fragment() {
         )
       )
     }
-    return view
+    return binding.root
   }
 }

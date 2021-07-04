@@ -16,7 +16,6 @@ import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
-import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -32,12 +31,6 @@ class AppModule {
   @Singleton
   fun providesPreferenceProvider(context: Context): PreferenceProvider {
     return PreferenceProvider(context)
-  }
-
-  @Provides
-  @Singleton
-  fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs {
-    return ElectionDetailsSharedPrefs(context)
   }
 
   @Provides

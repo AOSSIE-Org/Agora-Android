@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -11,12 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_voters.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_voters.view.recycler_view_voters
-import kotlinx.android.synthetic.main.fragment_voters.view.tv_no_voters_for_this_election
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.VotersAdapter
 import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.databinding.FragmentVotersBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
@@ -35,7 +34,7 @@ constructor(
 ) : Fragment(),
   DisplayElectionListener {
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentVotersBinding
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
@@ -53,11 +52,11 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_voters, container, false)
-    rootView.tv_no_voters_for_this_election.hide()
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voters, container, false)
+    binding.tvNoVotersForThisElection.hide()
     electionDetailsViewModel.displayElectionListener = this
 
-    rootView.recycler_view_voters.apply {
+    binding.recyclerViewVoters.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       val arr = ArrayList<VotersDto>()
       adapter = VotersAdapter(arr)
@@ -68,7 +67,7 @@ constructor(
     ).id
     electionDetailsViewModel.getVoter(id)
 
-    return rootView
+    return binding.root
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -80,7 +79,7 @@ constructor(
           if (it != null) {
             initRecyclerView(it)
           } else {
-            rootView.tv_no_voters_for_this_election.show()
+            binding.tvNoVotersForThisElection.show()
           }
         }
       )
@@ -97,10 +96,10 @@ constructor(
 
   private fun initRecyclerView(voters: List<VotersDto>) {
     if (voters.isEmpty()) {
-      rootView.tv_no_voters_for_this_election.show()
+      binding.tvNoVotersForThisElection.show()
     }
     val votersAdapter = VotersAdapter(voters)
-    rootView.recycler_view_voters.apply {
+    binding.recyclerViewVoters.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = votersAdapter
     }
@@ -108,15 +107,16 @@ constructor(
 
   private fun getVotersFromDb() {
     Coroutines.main {
-      electionDetailsViewModel.getElectionById(id!!).observe(
-        viewLifecycleOwner,
-        Observer {
-          if (it != null) {
-            initRecyclerView(it.voterList as List<VotersDto>)
-            rootView.progress_bar.hide()
+      electionDetailsViewModel.getElectionById(id!!)
+        .observe(
+          viewLifecycleOwner,
+          Observer {
+            if (it != null) {
+              initRecyclerView(it.voterList as List<VotersDto>)
+              binding.progressBar.hide()
+            }
           }
-        }
-      )
+        )
     }
   }
 
@@ -125,17 +125,17 @@ constructor(
   }
 
   override fun onSuccess(message: String?) {
-    if (message != null) rootView.snackbar(message)
-    rootView.progress_bar.hide()
+    if (message != null) binding.root.snackbar(message)
+    binding.progressBar.hide()
   }
 
   override fun onStarted() {
-    rootView.progress_bar.show()
+    binding.progressBar.show()
   }
 
   override fun onFailure(message: String) {
-    rootView.snackbar(message)
-    rootView.progress_bar.hide()
+    binding.root.snackbar(message)
+    binding.progressBar.hide()
   }
 
   override fun onSessionExpired() {

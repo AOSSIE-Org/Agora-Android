@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.data.network.interceptors
 
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -27,15 +28,15 @@ class AuthorizationInterceptor(
 
     // if response code is 401, network call has encountered authentication error
     if (mainResponse.code == AppConstants.UNAUTHENTICATED_CODE) {
-      if (prefs.getIsLoggedIn()) {
-        runBlocking {
+      return runBlocking {
+        if (prefs.getIsLoggedIn().first()) {
           val newToken = renewTokenAndUpdateUser()
           prefs.setAccessToken(newToken)
+          mainResponse.close()
+          chain.proceed(updateRequestWithToken(request))
+        } else {
+          throw SessionExpirationException()
         }
-        mainResponse.close()
-        return chain.proceed(updateRequestWithToken(request))
-      } else {
-        throw SessionExpirationException()
       }
     }
     return mainResponse
@@ -62,9 +63,9 @@ class AuthorizationInterceptor(
     }
   }
 
-  private fun updateRequestWithToken(request: Request): Request {
+  private suspend fun updateRequestWithToken(request: Request): Request {
     return request.newBuilder()
-      .header(AppConstants.X_AUTH_TOKEN, prefs.getAccessToken() ?: "")
+      .header(AppConstants.X_AUTH_TOKEN, prefs.getAccessToken().first() ?: "")
       .build()
   }
 }

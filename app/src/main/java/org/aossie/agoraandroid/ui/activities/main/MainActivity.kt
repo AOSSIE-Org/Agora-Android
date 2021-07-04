@@ -9,16 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions.Builder
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.facebook.login.LoginManager
-import kotlinx.android.synthetic.main.activity_main.bottom_navigation
-import kotlinx.android.synthetic.main.activity_main.iv_back
-import kotlinx.android.synthetic.main.activity_main.toolbar
-import kotlinx.android.synthetic.main.activity_main.tv_title
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -61,12 +61,13 @@ class MainActivity : AppCompatActivity() {
     setTheme(R.style.AppTheme)
     super.onCreate(savedInstanceState)
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-    setSupportActionBar(toolbar)
+    setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(false)
 
-    intent?.getStringExtra(AppConstants.SHOW_SNACKBAR_KEY)?.let {
-      binding.root.snackbar(it)
-    }
+    intent?.getStringExtra(AppConstants.SHOW_SNACKBAR_KEY)
+      ?.let {
+        binding.root.snackbar(it)
+      }
     val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
     if (hostFragment is NavHostFragment)
       navController = hostFragment.navController
@@ -77,14 +78,14 @@ class MainActivity : AppCompatActivity() {
       handleStatusBar(destination.id)
     }
 
-    NavigationUI.setupWithNavController(bottom_navigation, navController)
-    prefs.setUpdateNeeded(true)
-    if (prefs.getIsLoggedIn()) {
-      navController.navigate(R.id.homeFragment)
-    }
-
-    bottom_navigation.setOnNavigationItemReselectedListener {
-      println()
+    NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
+    GlobalScope.launch {
+      prefs.setUpdateNeeded(true)
+      if (prefs.getIsLoggedIn()
+          .first()
+      ) {
+        navController.navigate(R.id.homeFragment)
+      }
     }
 
     initObservers()
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun setToolbar(destination: NavDestination) {
     handleBackButton(destination.id)
-    tv_title.text = destination.label
+    binding.tvTitle.text = destination.label
   }
 
   private fun handleBottomNavVisibility(id: Int) {
@@ -101,8 +102,8 @@ class MainActivity : AppCompatActivity() {
       R.id.homeFragment,
       R.id.electionsFragment,
       R.id.settingsFragment
-      -> bottom_navigation.animVisible()
-      else -> bottom_navigation.animGone()
+      -> binding.bottomNavigation.animVisible()
+      else -> binding.bottomNavigation.animGone()
     }
   }
 
@@ -145,11 +146,11 @@ class MainActivity : AppCompatActivity() {
       R.id.reportBugFragment,
       R.id.shareWithOthersFragment,
       R.id.contactUsFragment,
-      R.id.profileFragment -> iv_back.let {
+      R.id.profileFragment -> binding.ivBack.let {
         it.visibility = View.VISIBLE
         it.setOnClickListener { onBackPressed() }
       }
-      else -> iv_back.visibility = View.GONE
+      else -> binding.ivBack.visibility = View.GONE
     }
   }
 
@@ -173,11 +174,13 @@ class MainActivity : AppCompatActivity() {
     childFragments?.forEach { it.onActivityResult(requestCode, resultCode, data) }
   }
 
-  fun logout() {
-    if (prefs.getIsLoggedIn()) binding.root.snackbar(resources.getString(R.string.token_expired))
-    if (prefs.getIsFacebookUser()) {
-      LoginManager.getInstance()
-        .logOut()
+  private fun logout() {
+    lifecycleScope.launch {
+      if (prefs.getIsLoggedIn().first()) binding.root.snackbar(resources.getString(R.string.token_expired))
+      if (prefs.getIsFacebookUser().first()) {
+        LoginManager.getInstance()
+          .logOut()
+      }
     }
     viewModel.deleteUserData()
     val navBuilder = Builder()
@@ -190,8 +193,9 @@ class MainActivity : AppCompatActivity() {
 
   override fun onNewIntent(intent: Intent?) {
     super.onNewIntent(intent)
-    intent?.getStringExtra(AppConstants.SHOW_SNACKBAR_KEY)?.let {
-      binding.root.snackbar(it)
-    }
+    intent?.getStringExtra(AppConstants.SHOW_SNACKBAR_KEY)
+      ?.let {
+        binding.root.snackbar(it)
+      }
   }
 }

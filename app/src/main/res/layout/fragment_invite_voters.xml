@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context=".ui.fragments.invitevoters.InviteVotersFragment"
+  >
+
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.invitevoters.InviteVotersFragment"
     android:background="@color/grey_color"
     >
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/size_12dp"
       android:layout_marginEnd="@dimen/size_12dp"
       >
 
-    <androidx.appcompat.widget.AppCompatButton
+      <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_add_voter"
         style="@style/MainButtonStyle"
         android:layout_marginTop="10dp"
@@ -28,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_input_voter_email"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+      <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_invite_voter"
         style="@style/MainButtonStyle"
         android:layout_marginTop="15dp"
@@ -44,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_view_swipe"
         />
 
-    <TextView
+      <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +62,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <TextView
+      <TextView
         android:id="@+id/text_view_swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recycler_view_voters"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
+      <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_voters"
         android:layout_width="match_parent"
         android:layout_height="380dp"
@@ -86,7 +89,7 @@
         tools:item_layout="@layout/list_item_voter_details"
         />
 
-    <com.google.android.material.textfield.TextInputLayout
+      <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_voter_name"
         style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
@@ -100,15 +103,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13"
         >
 
-      <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:inputType="textPersonName"
           android:maxLines="1"
           />
-    </com.google.android.material.textfield.TextInputLayout>
+      </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+      <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_voter_email"
         style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
@@ -122,29 +125,30 @@
         app:layout_constraintTop_toBottomOf="@+id/text_input_voter_name"
         >
 
-      <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:inputType="textEmailAddress"
           android:imeOptions="actionDone"
+          android:inputType="textEmailAddress"
           android:maxLines="1"
           />
-    </com.google.android.material.textfield.TextInputLayout>
+      </com.google.android.material.textfield.TextInputLayout>
 
-    <ProgressBar
+      <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:padding="@dimen/size_10dp"
         android:background="@drawable/progressbar_background"
+        android:padding="@dimen/size_10dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+  </ScrollView>
+</layout>

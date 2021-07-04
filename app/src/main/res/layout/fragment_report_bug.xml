@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context=".ui.fragments.report.ReportBugFragment"
+  >
+
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.report.ReportBugFragment"
     >
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       >
 
-    <Button
+      <Button
         android:id="@+id/button_report_bug"
         android:layout_width="0dp"
         android:layout_height="50dp"
@@ -38,7 +41,7 @@
         app:layout_constraintVertical_bias="1.0"
         />
 
-    <ImageView
+      <ImageView
         android:id="@+id/imageView4"
         android:layout_width="150dp"
         android:layout_height="154dp"
@@ -55,7 +58,7 @@
         app:srcCompat="@drawable/agora"
         />
 
-    <TextView
+      <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +75,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
         />
 
-    <TextView
+      <TextView
         android:id="@+id/textView9"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -90,7 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         />
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</ScrollView>
+  </ScrollView>
+</layout>

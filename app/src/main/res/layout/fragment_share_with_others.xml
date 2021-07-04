@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context=".ui.fragments.share.ShareWithOthersFragment"
+  >
+
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_color"
-    tools:context=".ui.fragments.share.ShareWithOthersFragment"
     >
 
-  <RelativeLayout
+    <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/size_10dp"
       >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+      <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
-        android:clipToPadding="false"
-        android:clipChildren="false"
         android:background="@drawable/white_cornered_background"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:padding="@dimen/size_20dp"
         >
 
-      <ImageView
+        <ImageView
           android:id="@+id/image"
           android:layout_width="match_parent"
           android:layout_height="@dimen/size_300dp"
@@ -38,7 +41,7 @@
           />
 
 
-      <TextView
+        <TextView
           android:id="@+id/tv_contact_message"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -53,7 +56,7 @@
           app:layout_constraintTop_toBottomOf="@+id/image"
           />
 
-      <androidx.appcompat.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
           android:id="@+id/btn_share"
           style="@style/MainButtonStyle"
           android:layout_width="match_parent"
@@ -67,8 +70,9 @@
           app:layout_constraintTop_toBottomOf="@+id/tv_contact_message"
           />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+      </androidx.constraintlayout.widget.ConstraintLayout>
 
-  </RelativeLayout>
+    </RelativeLayout>
 
-</ScrollView>
+  </ScrollView>
+</layout>

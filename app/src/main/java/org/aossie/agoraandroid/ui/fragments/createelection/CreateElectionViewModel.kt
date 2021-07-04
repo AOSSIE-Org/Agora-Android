@@ -13,32 +13,16 @@ import javax.inject.Inject
 internal class CreateElectionViewModel
 @Inject
 constructor(
-  private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
   lateinit var createElectionListener: CreateElectionListener
 
-  fun createElection() {
+  fun createElection(election: ElectionDto) {
     createElectionListener.onStarted()
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val response = electionsRepository.createElection(
-          ElectionDto(
-            listOf(), electionDetailsSharedPrefs.ballotVisibility,
-            electionDetailsSharedPrefs.getCandidates(),
-            electionDetailsSharedPrefs.electionDesc,
-            "Election",
-            electionDetailsSharedPrefs.endTime,
-            electionDetailsSharedPrefs.isInvite,
-            electionDetailsSharedPrefs.isRealTime,
-            electionDetailsSharedPrefs.electionName,
-            1,
-            electionDetailsSharedPrefs.startTime,
-            electionDetailsSharedPrefs.voterListVisibility,
-            electionDetailsSharedPrefs.votingAlgo
-          )
-        )
+        val response = electionsRepository.createElection(election)
         createElectionListener.onSuccess(response[1])
       } catch (e: ApiException) {
         createElectionListener.onFailure(e.message!!)

@@ -1,62 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context=".ui.fragments.welcome.WelcomeFragment"
+  >
+
   <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom"
-        android:clipToPadding="false"
-        android:clipChildren="false"
-        android:paddingBottom="@dimen/size_40dp"
-        >
-      <ImageView
-          android:id="@+id/image"
-          android:layout_width="wrap_content"
-          android:layout_height="0dp"
-          android:layout_weight="1"
-          android:padding="@dimen/size_20dp"
-          android:contentDescription="@string/agora"
-          android:src="@drawable/boy_ship"
-          android:background="@drawable/corner_gradient"
-          />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/size_40dp"
+    >
+    <ImageView
+      android:id="@+id/image"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:background="@drawable/corner_gradient"
+      android:contentDescription="@string/agora"
+      android:padding="@dimen/size_20dp"
+      android:src="@drawable/boy_ship"
+      />
 
     <TextView
-          android:id="@+id/welcome_message"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/welcome_message"
-          android:layout_gravity="center"
-          android:layout_marginTop="@dimen/size_40dp"
-          android:textColor="@color/black_text_color"
-          android:textSize="@dimen/size_28sp"
-          android:layout_marginBottom="@dimen/size_15dp"
-          android:textStyle="bold" />
+      android:id="@+id/welcome_message"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="@dimen/size_40dp"
+      android:layout_marginBottom="@dimen/size_15dp"
+      android:text="@string/welcome_message"
+      android:textColor="@color/black_text_color"
+      android:textSize="@dimen/size_28sp"
+      android:textStyle="bold"
+      />
 
-      <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/btn_signup"
-          style="@style/MainButtonStyle"
-          android:layout_width="@dimen/size_300dp"
-          android:layout_height="@dimen/size_48sp"
-          android:layout_gravity="center"
-          android:background="@drawable/yellow_border"
-          android:clickable="true"
-          android:focusable="true"
-          android:textColor="@color/black_text_color"
-          android:text="@string/get_started" />
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/btn_signup"
+      style="@style/MainButtonStyle"
+      android:layout_width="@dimen/size_300dp"
+      android:layout_height="@dimen/size_48sp"
+      android:layout_gravity="center"
+      android:background="@drawable/yellow_border"
+      android:clickable="true"
+      android:focusable="true"
+      android:text="@string/get_started"
+      android:textColor="@color/black_text_color"
+      />
 
-      <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/btn_login"
-          style="@style/MainButtonStyle"
-          android:layout_width="@dimen/size_300dp"
-          android:layout_gravity="center"
-          android:layout_height="@dimen/size_48sp"
-          android:layout_marginTop="@dimen/size_15dp"
-          android:clickable="true"
-          android:focusable="true"
-          android:text="@string/login" />
-    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/btn_login"
+      style="@style/MainButtonStyle"
+      android:layout_width="@dimen/size_300dp"
+      android:layout_height="@dimen/size_48sp"
+      android:layout_gravity="center"
+      android:layout_marginTop="@dimen/size_15dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:text="@string/login"
+      />
+  </LinearLayout>
 </layout>
 
 

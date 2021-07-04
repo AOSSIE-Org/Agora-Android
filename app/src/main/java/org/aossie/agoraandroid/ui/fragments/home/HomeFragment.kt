@@ -4,28 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_home.view.button_create_election
-import kotlinx.android.synthetic.main.fragment_home.view.card_view_active_elections
-import kotlinx.android.synthetic.main.fragment_home.view.card_view_finished_elections
-import kotlinx.android.synthetic.main.fragment_home.view.card_view_pending_elections
-import kotlinx.android.synthetic.main.fragment_home.view.card_view_total_elections
-import kotlinx.android.synthetic.main.fragment_home.view.constraintLayout
-import kotlinx.android.synthetic.main.fragment_home.view.shimmer_view_container
-import kotlinx.android.synthetic.main.fragment_home.view.swipe_refresh
-import kotlinx.android.synthetic.main.fragment_home.view.text_view_active_count
-import kotlinx.android.synthetic.main.fragment_home.view.text_view_finished_count
-import kotlinx.android.synthetic.main.fragment_home.view.text_view_pending_count
-import kotlinx.android.synthetic.main.fragment_home.view.text_view_total_count
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
-import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
@@ -45,6 +37,8 @@ constructor(
   private val preferenceProvider: PreferenceProvider
 ) : Fragment(), AuthListener {
 
+  private lateinit var binding: FragmentHomeBinding
+
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
   }
@@ -57,38 +51,37 @@ constructor(
     viewModelFactory
   }
 
-  private lateinit var rootView: View
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    rootView = inflater.inflate(layout.fragment_home, container, false)
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
     loginViewModel.authListener = this
-    rootView.swipe_refresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
+    binding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
 
-    rootView.card_view_active_elections.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.cardViewActiveElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToActiveElectionsFragment())
     }
-    rootView.card_view_pending_elections.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.cardViewPendingElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToPendingElectionsFragment())
     }
-    rootView.card_view_finished_elections.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.cardViewFinishedElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToFinishedElectionsFragment())
     }
-    rootView.card_view_total_elections.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.cardViewTotalElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToElectionsFragment())
     }
-    rootView.button_create_election.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.buttonCreateElection.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToCreateElectionFragment())
     }
-    rootView.swipe_refresh.setOnRefreshListener { doYourUpdate() }
+    binding.swipeRefresh.setOnRefreshListener { doYourUpdate() }
 
     loginViewModel.getLoggedInUser()
       .observe(
@@ -111,10 +104,14 @@ constructor(
                 if (currentDate.after(expiresOn)) {
                   Timber.tag("expired")
                     .d(expireOn.toString())
-                  if (preferenceProvider.getIsFacebookUser()) {
-                    loginViewModel.facebookLogInRequest()
-                  } else {
-                    loginViewModel.refreshAccessToken(user.trustedDevice)
+                  lifecycleScope.launch {
+                    if (preferenceProvider.getIsFacebookUser()
+                        .first()
+                    ) {
+                      loginViewModel.facebookLogInRequest()
+                    } else {
+                      loginViewModel.refreshAccessToken(user.trustedDevice)
+                    }
                   }
                 }
               }
@@ -137,23 +134,23 @@ constructor(
               totalElectionCount.observe(
                 viewLifecycleOwner,
                 Observer {
-                  rootView.text_view_total_count.text = it.toString()
+                  binding.textViewTotalCount.text = it.toString()
                   pendingElectionCount.observe(
                     viewLifecycleOwner,
                     Observer { pending ->
-                      rootView.text_view_pending_count.text = pending.toString()
+                      binding.textViewPendingCount.text = pending.toString()
                       finishedElectionCount.observe(
                         viewLifecycleOwner,
                         Observer { finished ->
-                          rootView.text_view_finished_count.text = finished.toString()
+                          binding.textViewFinishedCount.text = finished.toString()
                           activeElectionCount.observe(
                             viewLifecycleOwner,
                             Observer { active ->
-                              rootView.text_view_active_count.text = active.toString()
-                              rootView.shimmer_view_container.stopShimmer()
-                              rootView.shimmer_view_container.visibility = View.GONE
-                              rootView.constraintLayout.visibility = View.VISIBLE
-                              rootView.swipe_refresh.isRefreshing =
+                              binding.textViewActiveCount.text = active.toString()
+                              binding.shimmerViewContainer.stopShimmer()
+                              binding.shimmerViewContainer.visibility = View.GONE
+                              binding.constraintLayout.visibility = View.VISIBLE
+                              binding.swipeRefresh.isRefreshing =
                                 false // Disables the refresh icon
                             }
                           )
@@ -167,29 +164,31 @@ constructor(
           )
       }
     }
-    return rootView
+    return binding.root
   }
 
   override fun onResume() {
     super.onResume()
-    rootView.shimmer_view_container.startShimmer()
+    binding.shimmerViewContainer.startShimmer()
   }
 
   override fun onPause() {
-    rootView.shimmer_view_container.stopShimmer()
+    binding.shimmerViewContainer.stopShimmer()
     super.onPause()
   }
 
   override fun onDestroyView() {
-    rootView.swipe_refresh.setOnRefreshListener(null)
+    binding.swipeRefresh.setOnRefreshListener(null)
     homeViewModel.authListener = null
     loginViewModel.authListener = null
     super.onDestroyView()
   }
 
   private fun doYourUpdate() {
-    preferenceProvider.setUpdateNeeded(true)
-    Navigation.findNavController(rootView)
+    lifecycleScope.launch {
+      preferenceProvider.setUpdateNeeded(true)
+    }
+    Navigation.findNavController(binding.root)
       .navigate(R.id.homeFragment)
   }
 
@@ -202,7 +201,7 @@ constructor(
   }
 
   override fun onFailure(message: String) {
-    rootView.snackbar(message)
+    binding.root.snackbar(message)
   }
 
   override fun onSessionExpired() {

@@ -11,11 +11,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.drawable
@@ -233,7 +235,9 @@ constructor(
   }
 
   private fun doYourUpdate() {
-    prefs.setUpdateNeeded(true)
+    lifecycleScope.launch {
+      prefs.setUpdateNeeded(true)
+    }
     Navigation.findNavController(binding.root)
       .navigate(R.id.calendarViewElectionFragment)
   }

@@ -24,9 +24,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -417,7 +420,8 @@ constructor(
   }
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
-    if (s.toString() == binding.confirmPasswordTiet.text.toString().trim()
+    if (s.toString() == binding.confirmPasswordTiet.text.toString()
+        .trim()
     ) {
       binding.confirmPasswordTil.error = null
     } else {
@@ -431,9 +435,11 @@ constructor(
   override fun onSuccess(message: String?) {
     binding.progressBar.hide()
     toggleIsEnable()
-    if (prefs.getIsFacebookUser()) {
-      LoginManager.getInstance()
-        .logOut()
+    lifecycleScope.launch {
+      if (prefs.getIsFacebookUser().first()) {
+        LoginManager.getInstance()
+          .logOut()
+      }
     }
     homeViewModel.deleteUserData()
     Navigation.findNavController(binding.root)

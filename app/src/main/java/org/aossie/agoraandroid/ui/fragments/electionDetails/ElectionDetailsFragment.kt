@@ -10,7 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
@@ -204,7 +207,9 @@ constructor(
   }
 
   override fun onDeleteElectionSuccess() {
-    prefs.setUpdateNeeded(true)
+    lifecycleScope.launch {
+      prefs.setUpdateNeeded(true)
+    }
     Navigation.findNavController(binding.root)
       .navigate(
         ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()

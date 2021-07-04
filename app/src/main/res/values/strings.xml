@@ -264,5 +264,6 @@
   <string name="confirm_vote_message">Are you sure you want to vote for this election?</string>
   <string name="confirm_button">Confirm</string>
   <string name="cancel_button">Cancel</string>
+  <string name="activation_link_sent">An activation link has been sent to registered email id to verify your account</string>
 </resources>
 

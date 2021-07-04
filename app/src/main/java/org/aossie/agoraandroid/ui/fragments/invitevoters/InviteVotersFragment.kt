@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
@@ -17,17 +20,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_add_voter
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_invite_voter
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.recycler_view_voters
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.text_input_voter_email
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.text_input_voter_name
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.databinding.FragmentInviteVotersBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.hide
@@ -48,7 +46,7 @@ constructor(
   private val prefs: PreferenceProvider
 ) : Fragment(), InviteVoterListener {
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentInviteVotersBinding
 
   var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
@@ -77,7 +75,7 @@ constructor(
       ) {
         val lastName = mVoterNames[viewHolder.absoluteAdapterPosition]
         val lastEmail = mVoterEmails[viewHolder.absoluteAdapterPosition]
-        Snackbar.make(rootView, R.string.voter_removed, Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.root, R.string.voter_removed, Snackbar.LENGTH_LONG)
           .setAction(AppConstants.undo) {
             addCandidate(lastName, lastEmail)
           }.show()
@@ -94,42 +92,26 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_invite_voters, container, false)
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_invite_voters, container, false)
 
     inviteVotersViewModel.inviteVoterListener = this
 
     voterRecyclerAdapter = VoterRecyclerAdapter(mVoterNames, mVoterEmails)
-    rootView.recycler_view_voters.layoutManager = LinearLayoutManager(context)
-    ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rootView.recycler_view_voters)
-    rootView.recycler_view_voters.adapter = voterRecyclerAdapter
-    rootView.text_input_voter_name.editText
-      ?.addTextChangedListener(object : TextWatcherAdapter() {
-        override fun onTextChanged(
-          p0: CharSequence?,
-          p1: Int,
-          p2: Int,
-          p3: Int
-        ) {
-          if (rootView.text_input_voter_name.editText!!.text.isNotEmpty()) {
-            rootView.text_input_voter_name.error = null
-          }
-        }
-      })
-    rootView.text_input_voter_email.editText
-      ?.addTextChangedListener(object : TextWatcherAdapter() {
-        override fun onTextChanged(
-          p0: CharSequence?,
-          p1: Int,
-          p2: Int,
-          p3: Int
-        ) {
-          if (rootView.text_input_voter_email.editText!!.text.isNotEmpty()) {
-            rootView.text_input_voter_email.error = null
-          }
-        }
-      })
+    binding.recyclerViewVoters.layoutManager = LinearLayoutManager(context)
+    ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.recyclerViewVoters)
+    binding.recyclerViewVoters.adapter = voterRecyclerAdapter
+    binding.textInputVoterName.editText?.doAfterTextChanged {
+      if (it.toString().isNotEmpty()) {
+        binding.textInputVoterName.error = null
+      }
+    }
+    binding.textInputVoterEmail.editText?.doAfterTextChanged {
+      if (it.toString().isNotEmpty()) {
+        binding.textInputVoterEmail.error = null
+      }
+    }
 
-    rootView.button_invite_voter.setOnClickListener {
+    binding.buttonInviteVoter.setOnClickListener {
       try {
         val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(requireArguments())
         val id: String = inviteVotersFragmentArgs.id
@@ -139,21 +121,21 @@ constructor(
       }
     }
 
-    rootView.button_add_voter.setOnClickListener {
-      val name = rootView.text_input_voter_name.editText
+    binding.buttonAddVoter.setOnClickListener {
+      val name = binding.textInputVoterName.editText
         ?.text
         .toString()
-      val email = rootView.text_input_voter_email.editText
+      val email = binding.textInputVoterEmail.editText
         ?.text
         .toString()
       if (inviteValidator(email, name, mVoterEmails)) {
         addCandidate(name, email)
       } else {
-        rootView.snackbar("Enter valid name and email address")
+        binding.root.snackbar("Enter valid name and email address")
       }
     }
 
-    return rootView
+    return binding.root
   }
 
   private fun addCandidate(
@@ -163,29 +145,31 @@ constructor(
     mVoterNames.add(voterName)
     mVoterEmails.add(voterEmail)
     voterRecyclerAdapter!!.notifyDataSetChanged()
-    rootView.text_input_voter_name.editText?.setText("")
-    rootView.text_input_voter_email.editText?.setText("")
+    binding.textInputVoterName.editText?.setText("")
+    binding.textInputVoterEmail.editText?.setText("")
   }
 
   override fun onStarted() {
-    rootView.progress_bar.show()
-    rootView.button_invite_voter.toggleIsEnable()
+    binding.progressBar.show()
+    binding.buttonInviteVoter.toggleIsEnable()
   }
 
   override fun onFailure(message: String) {
-    rootView.progress_bar.hide()
-    rootView.button_invite_voter.toggleIsEnable()
+    binding.progressBar.hide()
+    binding.buttonInviteVoter.toggleIsEnable()
     val mMessage = StringBuilder()
     mMessage.append(message)
-    rootView.snackbar(mMessage.toString())
+    binding.root.snackbar(mMessage.toString())
   }
 
   override fun onSuccess(message: String) {
-    rootView.progress_bar.hide()
-    rootView.button_invite_voter.toggleIsEnable()
-    prefs.setUpdateNeeded(true)
-    rootView.snackbar(message)
-    Navigation.findNavController(rootView)
+    binding.progressBar.hide()
+    binding.buttonInviteVoter.toggleIsEnable()
+    lifecycleScope.launch {
+      prefs.setUpdateNeeded(true)
+    }
+    binding.root.snackbar(message)
+    Navigation.findNavController(binding.root)
       .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
   }
 
