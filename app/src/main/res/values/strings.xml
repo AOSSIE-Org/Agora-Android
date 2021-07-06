@@ -259,10 +259,10 @@
   <string name="otp_sent">OTP is sent to your registered email address</string>
   <string name="import_xlsx">Import</string>
   <string name="export_xlsx">Export</string>
+  <string name="cannot_write_file">Error writing the file</string>
   <string name="file_not_found">File not found!</string>
   <string name="file_not_available">File not available!</string>
   <string name="cannot_read_file">Error reading the file</string>
-  <string name="cannot_write_file">Error writing the file</string>
   <string name="permission_denied">Permission denied</string>
   <string name="no_sheet">No sheet found</string>
   <string name="not_excel">Not an excel file</string>
