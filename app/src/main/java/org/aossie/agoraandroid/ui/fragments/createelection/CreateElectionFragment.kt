@@ -1,8 +1,12 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
+import android.Manifest
 import android.R.layout
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -12,6 +16,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,10 +32,12 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
@@ -41,6 +48,9 @@ import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
 
+const val STORAGE_PERMISSION_REQUEST_CODE = 2
+const val STORAGE_INTENT_REQUEST_CODE = 4
+
 /**
  * A simple [Fragment] subclass.
  */
@@ -49,7 +59,9 @@ class CreateElectionFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), CreateElectionListener {
+) : Fragment(),
+  CreateElectionListener,
+  ReadCandidatesListener {
   lateinit var binding: FragmentCreateElectionBinding
   private var sDay = 0
   private var sMonth: Int = 0
@@ -86,6 +98,7 @@ constructor(
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_election, container, false)
 
     createElectionViewModel.createElectionListener = this
+    createElectionViewModel.readCandidatesListener = this
 
     initView()
 
@@ -217,6 +230,32 @@ constructor(
         ballotVisibility = resources.getStringArray(array.security_questions)[0]
       }
     }
+
+    binding.importCandidates.setOnClickListener {
+      if (ActivityCompat.checkSelfPermission(
+          requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+      ) {
+        searchExcelFile()
+      } else {
+        askReadStoragePermission()
+      }
+    }
+  }
+
+  private fun searchExcelFile() {
+    val excelIntent = Intent()
+    excelIntent.let {
+      it.action = Intent.ACTION_GET_CONTENT
+      it.type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+    startActivityForResult(excelIntent, STORAGE_INTENT_REQUEST_CODE)
+  }
+
+  private fun askReadStoragePermission() {
+    requestPermissions(
+      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
+    )
   }
 
   private fun afterTextChanged() {
@@ -262,6 +301,12 @@ constructor(
     mCandidates.add(cName)
     candidateRecyclerAdapter!!.notifyDataSetChanged()
     binding.candidateTil.editText?.setText("")
+    binding.textViewSwipe.show()
+  }
+
+  private fun importCandidates(cNames: List<String>) {
+    mCandidates.addAll(cNames)
+    candidateRecyclerAdapter!!.notifyDataSetChanged()
     binding.textViewSwipe.show()
   }
 
@@ -399,5 +444,42 @@ constructor(
     binding.progressBar.hide()
     binding.root.snackbar(message)
     binding.submitDetailsBtn.toggleIsEnable()
+  }
+
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    intentData: Intent?
+  ) {
+    super.onActivityResult(requestCode, resultCode, intentData)
+    if (resultCode != Activity.RESULT_OK) return
+
+    if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
+      val fileUri = intentData?.data ?: return
+      FileUtils.getPathFromUri(requireContext(), fileUri)
+        ?.let { createElectionViewModel.readExcelData(requireContext(), it) }
+    }
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<String>,
+    grantResults: IntArray
+  ) {
+    if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        searchExcelFile()
+      } else {
+        binding.root.snackbar(getString(string.permission_denied))
+      }
+    }
+  }
+
+  override fun onReadSuccess(list: ArrayList<String>) {
+    if (list.isNotEmpty()) importCandidates(list)
+  }
+
+  override fun onReadFailure(message: String) {
+    binding.root.snackbar(message)
   }
 }

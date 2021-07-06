@@ -146,6 +146,9 @@ dependencies {
   //recyclerView
   implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
 
+  //POI
+  implementation "com.github.SUPERCILEX.poi-android:poi:$poi"
+
   //DataStore
   implementation("androidx.datastore:datastore-preferences:$dataStore")
 }
