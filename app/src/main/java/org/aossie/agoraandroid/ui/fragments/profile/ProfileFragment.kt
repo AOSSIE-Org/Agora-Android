@@ -478,7 +478,7 @@ constructor(
           mUser
         )
       } catch (e: FileNotFoundException) {
-        binding.root.snackbar("File not found !")
+        binding.root.snackbar(getString(string.file_not_found))
       }
     } else if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
       val bitmap = intentData?.extras?.get("data")
@@ -518,13 +518,13 @@ constructor(
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         openGallery()
       } else {
-        binding.root.snackbar("Permission denied")
+        binding.root.snackbar(getString(string.permission_denied))
       }
     } else if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         openCamera()
       } else {
-        binding.root.snackbar("Permission denied")
+        binding.root.snackbar(getString(string.permission_denied))
       }
     }
   }

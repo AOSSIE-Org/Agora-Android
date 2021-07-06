@@ -138,51 +138,69 @@
             android:background="@drawable/grey_cornered_background"
             />
 
-          <LinearLayout
+          <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
-              android:id="@+id/candidate_til"
-              style="@style/TextInputLayoutStyle"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:layout_weight="3"
-              android:hint="@string/name_of_candidate"
-              app:boxStrokeColor="@color/colorPrimary"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintHorizontal_bias="0.0"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@+id/enter_candidate_name_label_tv"
-              >
-
-              <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_candidate_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_candidates"
-                android:drawablePadding="@dimen/size_16dp"
-                android:paddingTop="@dimen/size_5dp"
-                android:textSize="@dimen/size_16sp"
-                />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-              android:id="@+id/add_candidate_btn"
-              style="@style/MainButtonStyle"
-              android:layout_width="0dp"
-              android:layout_height="34dp"
-              android:layout_gravity="center"
-              android:layout_weight="1"
-              android:enabled="false"
-              android:text="@string/add"
-              android:textColor="@color/white"
-              android:textSize="@dimen/size_14sp"
+            <ImageView
+              android:id="@+id/import_candidates"
+              android:layout_width="@dimen/size_24dp"
+              android:layout_height="@dimen/size_24dp"
+              android:layout_alignParentEnd="true"
+              android:layout_centerVertical="true"
+              android:tooltipText="@string/import_xlsx"
+              android:src="@drawable/import_xlsx"
               />
 
-          </LinearLayout>
+            <LinearLayout
+              android:layout_toStartOf="@id/import_candidates"
+              android:layout_marginEnd="@dimen/size_10dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              >
+
+              <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/candidate_til"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:hint="@string/name_of_candidate"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enter_candidate_name_label_tv"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                  android:id="@+id/et_candidate_name"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@android:color/transparent"
+                  android:drawableStart="@drawable/ic_candidates"
+                  android:drawablePadding="@dimen/size_16dp"
+                  android:paddingTop="@dimen/size_5dp"
+                  android:textSize="@dimen/size_16sp"
+                  />
+              </com.google.android.material.textfield.TextInputLayout>
+
+              <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_candidate_btn"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="@string/add"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_14sp"
+                />
+
+            </LinearLayout>
+
+          </RelativeLayout>
 
           <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/names_rv"

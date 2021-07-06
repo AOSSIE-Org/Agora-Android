@@ -257,6 +257,17 @@
   <string name="winner_is">Winner is</string>
   <string name="login_cancelled">Login Cancelled</string>
   <string name="otp_sent">OTP is sent to your registered email address</string>
+  <string name="import_xlsx">Import</string>
+  <string name="file_not_found">File not found!</string>
+  <string name="file_not_available">File not available!</string>
+  <string name="cannot_read_file">Error reading the file</string>
+  <string name="permission_denied">Permission denied</string>
+  <string name="no_sheet">No sheet found</string>
+  <string name="not_excel">Not an excel file</string>
+  <string name="enter_valid_details">Enter valid name and email address</string>
+  <string name="enter_voter_email">Please enter Voter\'s Email</string>
+  <string name="enter_valid_voter_email">Please enter valid email address</string>
+  <string name="enter_voter_name">Please enter Voter\'s Name</string>
   <string name="search_hint">Search…</string>
   <string name="invalid_url">Invalid URL</string>
   <string name="select_candidate">Please select a candidate first</string>
