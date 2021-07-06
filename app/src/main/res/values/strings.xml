@@ -278,5 +278,6 @@
   <string name="confirm_button">Confirm</string>
   <string name="cancel_button">Cancel</string>
   <string name="share_result">Share Result</string>
+  <string name="votes">Votes</string>
 </resources>
 

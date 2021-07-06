@@ -175,9 +175,9 @@ constructor(
     val sheet: XSSFSheet = workbook.createSheet(context.getString(string.result))
     val title = sheet.createRow(0)
     title.createCell(0)
-      .setCellValue("Candidate")
+      .setCellValue(context.getString(string.candidate))
     title.createCell(1)
-      .setCellValue("Votes")
+      .setCellValue(context.getString(string.votes))
     val winner = sheet.createRow(1)
     winner.createCell(0)
       .setCellValue(winnerDto.candidate?.name)
@@ -197,7 +197,7 @@ constructor(
     id: String
   ) {
     val folderName = context.getExternalFilesDir(null)?.absolutePath
-    val folder = File("$folderName", "Results")
+    val folder = File("$folderName", context.getString(string.result))
     if (!folder.exists()) {
       folder.mkdirs()
     }
