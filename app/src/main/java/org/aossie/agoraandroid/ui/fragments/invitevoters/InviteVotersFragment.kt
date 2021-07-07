@@ -121,7 +121,7 @@ constructor(
       {
         when (it.status) {
           ResponseUI.Status.LOADING -> {
-           //Do Nothing
+            // Do Nothing
           }
           ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
           ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
