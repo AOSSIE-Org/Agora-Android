@@ -1,10 +1,16 @@
 package org.aossie.agoraandroid.ui.fragments.invitevoters
 
+import android.Manifest
 import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.widget.doAfterTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -16,28 +22,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_add_voter
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.button_invite_voter
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.recycler_view_voters
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.text_input_voter_email
-import kotlinx.android.synthetic.main.fragment_invite_voters.view.text_input_voter_name
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.adapters.TextWatcherAdapter
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.databinding.FragmentInviteVotersBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_INTENT_REQUEST_CODE
+import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_PERMISSION_REQUEST_CODE
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import org.json.JSONException
-import java.util.ArrayList
 import javax.inject.Inject
 
 /**
@@ -50,12 +52,11 @@ constructor(
   private val prefs: PreferenceProvider
 ) : Fragment(), SessionExpiredListener {
 
-  private lateinit var rootView: View
+  lateinit var binding: FragmentInviteVotersBinding
 
   var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-  private val mVoterNames = ArrayList<String>()
-  private val mVoterEmails = ArrayList<String>()
+  private val mVoters = ArrayList<VotersDto>()
   private val inviteVotersViewModel: InviteVotersViewModel by viewModels {
     viewModelFactory
   }
@@ -77,16 +78,14 @@ constructor(
         viewHolder: ViewHolder,
         direction: Int
       ) {
-        val lastName = mVoterNames[viewHolder.adapterPosition]
-        val lastEmail = mVoterEmails[viewHolder.adapterPosition]
-        Snackbar.make(rootView, R.string.voter_removed, Snackbar.LENGTH_LONG)
+        val deletedVoter = mVoters[viewHolder.absoluteAdapterPosition]
+        Snackbar.make(binding.root, string.voter_removed, Snackbar.LENGTH_LONG)
           .setAction(AppConstants.undo) {
-            addCandidate(lastName, lastEmail)
-          }.show()
-
-        mVoterNames.removeAt(viewHolder.adapterPosition)
-        mVoterEmails.removeAt(viewHolder.adapterPosition)
-        voterRecyclerAdapter!!.notifyDataSetChanged()
+            addVoter(deletedVoter)
+          }
+          .show()
+        mVoters.removeAt(viewHolder.absoluteAdapterPosition)
+        voterRecyclerAdapter?.notifyDataSetChanged()
       }
     }
 
@@ -96,65 +95,17 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_invite_voters, container, false)
-
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_invite_voters, container, false)
     inviteVotersViewModel.sessionExpiredListener = this
 
-    voterRecyclerAdapter = VoterRecyclerAdapter(mVoterNames, mVoterEmails)
-    rootView.recycler_view_voters.layoutManager = LinearLayoutManager(context)
-    ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rootView.recycler_view_voters)
-    rootView.recycler_view_voters.adapter = voterRecyclerAdapter
-    rootView.text_input_voter_name.editText
-      ?.addTextChangedListener(object : TextWatcherAdapter() {
-        override fun onTextChanged(
-          p0: CharSequence?,
-          p1: Int,
-          p2: Int,
-          p3: Int
-        ) {
-          if (rootView.text_input_voter_name.editText!!.text.isNotEmpty()) {
-            rootView.text_input_voter_name.error = null
-          }
-        }
-      })
-    rootView.text_input_voter_email.editText
-      ?.addTextChangedListener(object : TextWatcherAdapter() {
-        override fun onTextChanged(
-          p0: CharSequence?,
-          p1: Int,
-          p2: Int,
-          p3: Int
-        ) {
-          if (rootView.text_input_voter_email.editText!!.text.isNotEmpty()) {
-            rootView.text_input_voter_email.error = null
-          }
-        }
-      })
+    initView()
+    initListeners()
+    initObserver()
 
-    rootView.button_invite_voter.setOnClickListener {
-      try {
-        val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(requireArguments())
-        val id: String = inviteVotersFragmentArgs.id
-        inviteVotersViewModel.inviteVoters(mVoterNames, mVoterEmails, id)
-      } catch (e: JSONException) {
-        e.printStackTrace()
-      }
-    }
+    return binding.root
+  }
 
-    rootView.button_add_voter.setOnClickListener {
-      val name = rootView.text_input_voter_name.editText
-        ?.text
-        .toString()
-      val email = rootView.text_input_voter_email.editText
-        ?.text
-        .toString()
-      if (inviteValidator(email, name, mVoterEmails)) {
-        addCandidate(name, email)
-      } else {
-        rootView.snackbar("Enter valid name and email address")
-      }
-    }
-
+  private fun initObserver() {
     inviteVotersViewModel.getSendVoterLiveData.observe(
       viewLifecycleOwner,
       {
@@ -165,40 +116,127 @@ constructor(
         }
       }
     )
-
-    return rootView
+    inviteVotersViewModel.getImportVotersLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+           //Do Nothing
+          }
+          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+        }
+      }
+    )
   }
 
-  private fun addCandidate(
-    voterName: String,
-    voterEmail: String
+  private fun initView() {
+    voterRecyclerAdapter = VoterRecyclerAdapter(mVoters)
+    binding.recyclerViewVoters.apply {
+      layoutManager = LinearLayoutManager(context)
+      ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this)
+      adapter = voterRecyclerAdapter
+    }
+  }
+
+  private fun initListeners() {
+    binding.textInputVoterName.editText?.doAfterTextChanged {
+      if (it?.isNotEmpty() == true) {
+        binding.textInputVoterName.error = null
+      }
+    }
+    binding.textInputVoterEmail.editText?.doAfterTextChanged {
+      if (it?.isNotEmpty() == true) {
+        binding.textInputVoterEmail.error = null
+      }
+    }
+
+    binding.buttonInviteVoter.setOnClickListener {
+      try {
+        val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(requireArguments())
+        val id: String = inviteVotersFragmentArgs.id
+        inviteVotersViewModel.inviteVoters(mVoters, id)
+      } catch (e: JSONException) {
+        e.printStackTrace()
+      }
+    }
+
+    binding.buttonAddVoter.setOnClickListener {
+      val name = binding.textInputVoterName.editText
+        ?.text
+        .toString()
+      val email = binding.textInputVoterEmail.editText
+        ?.text
+        .toString()
+      if (inviteValidator(email, name)) {
+        addVoter(VotersDto(name, email))
+      } else {
+        binding.root.snackbar(getString(string.enter_valid_details))
+      }
+    }
+
+    binding.importVoter.setOnClickListener {
+      if (ActivityCompat.checkSelfPermission(
+          requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+      ) {
+        searchExcelFile()
+      } else {
+        askReadStoragePermission()
+      }
+    }
+  }
+
+  private fun searchExcelFile() {
+    val excelIntent = Intent()
+    excelIntent.let {
+      it.action = Intent.ACTION_GET_CONTENT
+      it.type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+    startActivityForResult(excelIntent, STORAGE_INTENT_REQUEST_CODE)
+  }
+
+  private fun askReadStoragePermission() {
+    requestPermissions(
+      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
+    )
+  }
+
+  private fun addVoter(
+    voter: VotersDto,
   ) {
-    mVoterNames.add(voterName)
-    mVoterEmails.add(voterEmail)
+    mVoters.add(voter)
+    voterRecyclerAdapter?.notifyDataSetChanged()
+    binding.textInputVoterName.editText?.setText("")
+    binding.textInputVoterEmail.editText?.setText("")
+  }
+
+  private fun importVoters(
+    voters: List<VotersDto>,
+  ) {
+    mVoters.addAll(voters)
     voterRecyclerAdapter!!.notifyDataSetChanged()
-    rootView.text_input_voter_name.editText?.setText("")
-    rootView.text_input_voter_email.editText?.setText("")
   }
 
   fun onStarted() {
-    rootView.progress_bar.show()
-    rootView.button_invite_voter.toggleIsEnable()
+    binding.progressBar.show()
+    binding.buttonInviteVoter.toggleIsEnable()
   }
 
   fun onFailure(message: String) {
-    rootView.progress_bar.hide()
-    rootView.button_invite_voter.toggleIsEnable()
+    binding.progressBar.hide()
+    binding.buttonInviteVoter.toggleIsEnable()
     val mMessage = StringBuilder()
     mMessage.append(message)
-    rootView.snackbar(mMessage.toString())
+    binding.root.snackbar(mMessage.toString())
   }
 
   fun onSuccess(message: String) {
-    rootView.progress_bar.hide()
-    rootView.button_invite_voter.toggleIsEnable()
+    binding.progressBar.hide()
+    binding.buttonInviteVoter.toggleIsEnable()
     prefs.setUpdateNeeded(true)
-    rootView.snackbar(message)
-    Navigation.findNavController(rootView)
+    binding.root.snackbar(message)
+    Navigation.findNavController(binding.root)
       .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
   }
 
@@ -208,65 +246,75 @@ constructor(
 
   private fun emailValidator(
     email: String,
-    mVoterEmails: ArrayList<String>
   ): Boolean {
-    val base = context as Activity
     if (email.isEmpty()) {
-      (
-        base.findViewById<View>(
-          R.id.text_input_voter_email
-        ) as TextInputLayout
-        ).error = "Please enter Voter's Email"
-      return false
-    } else if (mVoterEmails.contains(email)) {
-      (
-        base.findViewById<View>(
-          R.id.text_input_voter_email
-        ) as TextInputLayout
-        ).error = base.resources
-        .getString(string.voter_same_email)
+      binding.textInputVoterEmail.error = getString(string.enter_voter_email)
       return false
     } else if (!email.matches(emailPattern.toRegex())) {
-      (
-        base.findViewById<View>(
-          R.id.text_input_voter_email
-        ) as TextInputLayout
-        ).error = "Please enter valid email address"
+      binding.textInputVoterEmail.error = getString(string.enter_valid_voter_email)
+      return false
+    } else if (inviteVotersViewModel.getEmailList(mVoters).contains(email)) {
+      binding.textInputVoterEmail.error = getString(string.voter_same_email)
       return false
     }
-    (
-      base.findViewById<View>(
-        R.id.text_input_voter_email
-      ) as TextInputLayout
-      ).error = null
+    binding.textInputVoterEmail.error = null
     return true
   }
 
   private fun nameValidator(name: String): Boolean {
-    val base = context as Activity
     if (name.isEmpty()) {
-      (
-        base.findViewById<View>(
-          R.id.text_input_voter_name
-        ) as TextInputLayout
-        ).error = "Please enter Voter's Name"
+      binding.textInputVoterName.error = getString(string.enter_voter_name)
       return false
     }
-    (
-      base.findViewById<View>(
-        R.id.text_input_voter_name
-      ) as TextInputLayout
-      ).error = null
+    binding.textInputVoterName.error = null
     return true
   }
 
   private fun inviteValidator(
     email: String,
     name: String,
-    mVoterEmails: ArrayList<String>
   ): Boolean {
     val isNameValid = nameValidator(name)
-    val isEmailValid = emailValidator(email, mVoterEmails)
+    val isEmailValid = emailValidator(email)
     return isNameValid && isEmailValid
+  }
+
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    intentData: Intent?
+  ) {
+    super.onActivityResult(requestCode, resultCode, intentData)
+    if (resultCode != Activity.RESULT_OK) return
+
+    if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
+      val fileUri = intentData?.data ?: return
+      FileUtils.getPathFromUri(requireContext(), fileUri)
+        ?.let { inviteVotersViewModel.readExcelData(requireContext(), it, mVoters) }
+    }
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<String>,
+    grantResults: IntArray
+  ) {
+    if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        searchExcelFile()
+      } else {
+        binding.root.snackbar(getString(string.permission_denied))
+      }
+    }
+  }
+
+  private fun onReadSuccess(list: List<VotersDto>?) {
+    list?.let {
+      if (list.isNotEmpty()) importVoters(list)
+    }
+  }
+
+  fun onReadFailure(message: String) {
+    binding.root.snackbar(message)
   }
 }

@@ -1,11 +1,13 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
+import android.Manifest
 import android.R.layout
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,8 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,9 +30,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.errorDialog
@@ -40,6 +46,9 @@ import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
 
+const val STORAGE_PERMISSION_REQUEST_CODE = 2
+const val STORAGE_INTENT_REQUEST_CODE = 4
+
 /**
  * A simple [Fragment] subclass.
  */
@@ -50,6 +59,7 @@ constructor(
   private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
 ) : Fragment() {
+
   lateinit var binding: FragmentCreateElectionBinding
   private var sDay = 0
   private var sMonth: Int = 0
@@ -93,7 +103,12 @@ constructor(
     initView()
 
     initListeners()
+    initObserver()
 
+    return binding.root
+  }
+
+  private fun initObserver() {
     createElectionViewModel.getCreateElectionData.observe(
       viewLifecycleOwner,
       {
@@ -123,7 +138,19 @@ constructor(
       }
     )
 
-    return binding.root
+    createElectionViewModel.getImportVotersLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> { // Do Nothing
+          }
+
+          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+
+          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+        }
+      }
+    )
   }
 
   private fun initView() {
@@ -158,13 +185,13 @@ constructor(
 
     binding.etEndDate.setOnClickListener { handleEndDateTime() }
 
-    binding.etElectionName.addTextChangedListener(textWatcher)
+    binding.etElectionName.doAfterTextChanged { doAfterTextChange() }
 
-    binding.etElectionDescription.addTextChangedListener(textWatcher)
+    binding.etElectionDescription.doAfterTextChanged { doAfterTextChange() }
 
-    binding.etStartDate.addTextChangedListener(textWatcher)
+    binding.etStartDate.doAfterTextChanged { doAfterTextChange() }
 
-    binding.etEndDate.addTextChangedListener(textWatcher)
+    binding.etEndDate.doAfterTextChanged { doAfterTextChange() }
 
     binding.submitDetailsBtn.setOnClickListener {
       mElectionName = binding.electionNameTil.editText?.text.toString()
@@ -194,7 +221,12 @@ constructor(
       }
     }
 
-    binding.etCandidateName.addTextChangedListener(candidateTextWatcher)
+    binding.etCandidateName.doAfterTextChanged {
+      val candidateNameInput: String = binding.etCandidateName.text
+        .toString()
+        .trim()
+      binding.addCandidateBtn.isEnabled = candidateNameInput.isNotEmpty()
+    }
 
     binding.addCandidateBtn.setOnClickListener {
       val name = binding.candidateTil.editText?.text.toString()
@@ -233,6 +265,32 @@ constructor(
         ballotVisibility = resources.getStringArray(array.security_questions)[0]
       }
     }
+
+    binding.importCandidates.setOnClickListener {
+      if (ActivityCompat.checkSelfPermission(
+          requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+      ) {
+        searchExcelFile()
+      } else {
+        askReadStoragePermission()
+      }
+    }
+  }
+
+  private fun searchExcelFile() {
+    val excelIntent = Intent()
+    excelIntent.let {
+      it.action = Intent.ACTION_GET_CONTENT
+      it.type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+    startActivityForResult(excelIntent, STORAGE_INTENT_REQUEST_CODE)
+  }
+
+  private fun askReadStoragePermission() {
+    requestPermissions(
+      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
+    )
   }
 
   private val itemTouchHelperCallback: SimpleCallback =
@@ -249,7 +307,7 @@ constructor(
         viewHolder: ViewHolder,
         direction: Int
       ) {
-        mCandidates.removeAt(viewHolder.adapterPosition)
+        mCandidates.removeAt(viewHolder.absoluteAdapterPosition)
         candidateRecyclerAdapter!!.notifyDataSetChanged()
         if (mCandidates.isEmpty()) binding.textViewSwipe.hide()
       }
@@ -262,28 +320,10 @@ constructor(
     binding.textViewSwipe.show()
   }
 
-  private val candidateTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(
-      s: CharSequence,
-      start: Int,
-      count: Int,
-      after: Int
-    ) {
-    }
-
-    override fun afterTextChanged(s: Editable) {}
-
-    override fun onTextChanged(
-      s: CharSequence,
-      start: Int,
-      before: Int,
-      count: Int
-    ) {
-      val candidateNameInput: String = binding.etCandidateName.text
-        .toString()
-        .trim()
-      binding.addCandidateBtn.isEnabled = candidateNameInput.isNotEmpty()
-    }
+  private fun importCandidates(cNames: List<String>) {
+    mCandidates.addAll(cNames)
+    candidateRecyclerAdapter!!.notifyDataSetChanged()
+    binding.textViewSwipe.show()
   }
 
   private fun validateInputs(): Boolean {
@@ -404,39 +444,59 @@ constructor(
     }
   }
 
-  private val textWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(
-      s: CharSequence,
-      start: Int,
-      count: Int,
-      after: Int
-    ) {
-    }
+  private fun doAfterTextChange() {
+    val electionNameInput: String = binding.etElectionName.text
+      .toString()
+      .trim()
+    val electionDescriptionInput: String = binding.etElectionDescription.text
+      .toString()
+      .trim()
+    val startDateInput: String = binding.etStartDate.text
+      .toString()
+      .trim()
+    val endDateInput: String = binding.etEndDate.text
+      .toString()
+      .trim()
+    binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
+      electionDescriptionInput.isNotEmpty() &&
+      startDateInput.isNotEmpty() &&
+      endDateInput.isNotEmpty()
+  }
 
-    override fun afterTextChanged(s: Editable) {}
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    intentData: Intent?
+  ) {
+    super.onActivityResult(requestCode, resultCode, intentData)
+    if (resultCode != Activity.RESULT_OK) return
 
-    override fun onTextChanged(
-      s: CharSequence,
-      start: Int,
-      before: Int,
-      count: Int
-    ) {
-      val electionNameInput: String = binding.etElectionName.text
-        .toString()
-        .trim()
-      val electionDescriptionInput: String = binding.etElectionDescription.text
-        .toString()
-        .trim()
-      val startDateInput: String = binding.etStartDate.text
-        .toString()
-        .trim()
-      val endDateInput: String = binding.etEndDate.text
-        .toString()
-        .trim()
-      binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
-        electionDescriptionInput.isNotEmpty() &&
-        startDateInput.isNotEmpty() &&
-        endDateInput.isNotEmpty()
+    if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
+      val fileUri = intentData?.data ?: return
+      FileUtils.getPathFromUri(requireContext(), fileUri)
+        ?.let { createElectionViewModel.readExcelData(requireContext(), it) }
     }
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<String>,
+    grantResults: IntArray
+  ) {
+    if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        searchExcelFile()
+      } else {
+        binding.root.snackbar(getString(string.permission_denied))
+      }
+    }
+  }
+
+  private fun onReadSuccess(list: List<String>?) {
+    list?.let { if (list.isNotEmpty()) importCandidates(list) }
+  }
+
+  private fun onReadFailure(message: String) {
+    binding.root.snackbar(message)
   }
 }
