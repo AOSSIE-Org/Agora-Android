@@ -18,7 +18,9 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.BallotsAdapter
 import org.aossie.agoraandroid.data.dto.BallotDto
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -33,7 +35,7 @@ class BallotFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-  DisplayElectionListener {
+  SessionExpiredListener {
 
   private lateinit var rootView: View
 
@@ -56,7 +58,7 @@ constructor(
     rootView = inflater.inflate(R.layout.fragment_ballot, container, false)
 
     rootView.tv_empty_ballots.hide()
-    electionDetailsViewModel.displayElectionListener = this
+    electionDetailsViewModel.sessionExpiredListener = this
 
     rootView.recycler_view_ballots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -75,16 +77,28 @@ constructor(
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
-      electionDetailsViewModel.ballotResponse.observe(
+
+      electionDetailsViewModel.getBallotResponseLiveData.observe(
         viewLifecycleOwner,
-        Observer {
-          if (it != null) {
-            initRecyclerView(it)
-          } else {
-            rootView.tv_empty_ballots.show()
+        { responseUI ->
+          when (responseUI.status) {
+            ResponseUI.Status.LOADING -> rootView.progress_bar.hide()
+            ResponseUI.Status.SUCCESS -> {
+              if (responseUI.message.isNullOrBlank()) rootView.snackbar(responseUI.message ?: "")
+              rootView.progress_bar.hide()
+
+              responseUI.dataList?.let {
+                initRecyclerView(it)
+              } ?: rootView.tv_empty_ballots.show()
+            }
+            ResponseUI.Status.ERROR -> {
+              rootView.snackbar(responseUI.message ?: "")
+              rootView.progress_bar.hide()
+            }
           }
         }
       )
+
       electionDetailsViewModel.notConnected.observe(
         viewLifecycleOwner,
         Observer {
@@ -117,24 +131,6 @@ constructor(
         }
       )
     }
-  }
-
-  override fun onDeleteElectionSuccess() {
-    // do nothing
-  }
-
-  override fun onSuccess(message: String?) {
-    if (message != null) rootView.snackbar(message)
-    rootView.progress_bar.hide()
-  }
-
-  override fun onStarted() {
-    rootView.progress_bar.show()
-  }
-
-  override fun onFailure(message: String) {
-    rootView.snackbar(message)
-    rootView.progress_bar.hide()
   }
 
   override fun onSessionExpired() {

@@ -16,10 +16,12 @@ import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.data.dto.BallotDto
 import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -36,17 +38,20 @@ constructor(
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
-  private val mVoterResponse = MutableLiveData<List<VotersDto>>()
-  var voterResponse: LiveData<List<VotersDto>> = mVoterResponse
+  private val _getVoterResponseLiveData = MutableLiveData<ResponseUI<VotersDto>>()
+  var getVoterResponseLiveData: LiveData<ResponseUI<VotersDto>> = _getVoterResponseLiveData
   private val mNotConnected = MutableLiveData<Boolean>()
   var notConnected: LiveData<Boolean> = mNotConnected
-  private val mBallotResponse = MutableLiveData<List<BallotDto>>()
-  var ballotResponse: LiveData<List<BallotDto>> = mBallotResponse
-  private val mResultResponse = MutableLiveData<WinnerDto>()
-  var resultResponse: LiveData<WinnerDto> = mResultResponse
+  private val _getBallotResponseLiveData = MutableLiveData<ResponseUI<BallotDto>>()
+  var getBallotResponseLiveData: LiveData<ResponseUI<BallotDto>> = _getBallotResponseLiveData
+  private val _getShareResponseLiveData = MutableLiveData<ResponseUI<Uri>>()
+  var getShareResponseLiveData: LiveData<ResponseUI<Uri>> = _getShareResponseLiveData
+  private val _getResultResponseLiveData = MutableLiveData<ResponseUI<WinnerDto>>()
+  var getResultResponseLiveData: LiveData<ResponseUI<WinnerDto>> = _getResultResponseLiveData
+  private val _getDeleteElectionLiveData = MutableLiveData<ResponseUI<WinnerDto>>()
+  var getDeleteElectionLiveData: LiveData<ResponseUI<WinnerDto>> = _getDeleteElectionLiveData
 
-  lateinit var displayElectionListener: DisplayElectionListener
-  lateinit var shareResultListener: ShareResultListener
+  lateinit var sessionExpiredListener: SessionExpiredListener
 
   suspend fun getElectionById(id: String): LiveData<Election> {
     return electionsRepository.getElectionById(id)
@@ -55,21 +60,20 @@ constructor(
   fun getBallot(
     id: String?
   ) {
-    displayElectionListener.onStarted()
+    _getBallotResponseLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
-        val response = electionsRepository.getBallots(id!!).ballots
+        val response: List<BallotDto> = electionsRepository.getBallots(id!!).ballots
         Timber.d(response.toString())
-        mBallotResponse.postValue(response)
-        displayElectionListener.onSuccess()
+        _getBallotResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
-        displayElectionListener.onFailure(e.message!!)
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onSessionExpired()
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
-        displayElectionListener.onFailure(e.message!!)
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -77,21 +81,20 @@ constructor(
   fun getVoter(
     id: String?
   ) {
-    displayElectionListener.onStarted()
+    _getVoterResponseLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
         val response = electionsRepository.getVoters(id!!)
         Timber.d(response.toString())
-        mVoterResponse.postValue(response)
-        displayElectionListener.onSuccess()
+        _getVoterResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
-        displayElectionListener.onFailure(e.message!!)
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onSessionExpired()
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
-        displayElectionListener.onFailure(e.message!!)
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -99,21 +102,20 @@ constructor(
   fun deleteElection(
     id: String?
   ) {
-    displayElectionListener.onStarted()
+    _getDeleteElectionLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
         val response = electionsRepository.deleteElection(id!!)
         Timber.d(response.toString())
-        displayElectionListener.onSuccess(response[1])
-        displayElectionListener.onDeleteElectionSuccess()
+        _getDeleteElectionLiveData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        displayElectionListener.onFailure(e.message!!)
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onSessionExpired()
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        displayElectionListener.onFailure(e.message!!)
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        displayElectionListener.onFailure(e.message!!)
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -121,21 +123,23 @@ constructor(
   fun getResult(
     id: String?
   ) {
-    displayElectionListener.onStarted()
+    _getResultResponseLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
         val response = electionsRepository.getResult(id!!)
-        mResultResponse.postValue(response?.get(0))
-        displayElectionListener.onSuccess()
+        if (!response.isNullOrEmpty())
+          _getResultResponseLiveData.value = ResponseUI.success(response[0])
+        else
+          _getResultResponseLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        displayElectionListener.onFailure(e.message!!)
+        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-        displayElectionListener.onSessionExpired()
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
-        displayElectionListener.onFailure(e.message!!)
+        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        displayElectionListener.onFailure(e.message!!)
+        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -147,11 +151,9 @@ constructor(
     viewModelScope.launch(Dispatchers.IO) {
       FileUtils.saveBitmap(context, bitmap)
         ?.let {
-          shareResultListener.onShareSuccess(it)
+          _getShareResponseLiveData.value = ResponseUI.success(it)
         } ?: run {
-        shareResultListener.onShareExportFailure(
-          context.getString(string.something_went_wrong_please_try_again_later)
-        )
+        _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
       }
     }
   }
@@ -214,11 +216,11 @@ constructor(
         "${context.packageName}.provider",
         file
       )
-      shareResultListener.onExportSuccess(uri)
+      _getShareResponseLiveData.value = ResponseUI.success(uri)
     } catch (e: FileNotFoundException) {
-      shareResultListener.onShareExportFailure(context.getString(string.file_not_available))
+      _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.file_not_available))
     } catch (e: IOException) {
-      shareResultListener.onShareExportFailure(context.getString(string.cannot_write_file))
+      _getShareResponseLiveData.value = ResponseUI.success(context.getString(string.cannot_write_file))
     }
   }
 }

@@ -1,16 +1,18 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import java.text.SimpleDateFormat
@@ -24,7 +26,9 @@ constructor(
   private val electionsRepository: ElectionsRepository,
   private val userRepository: UserRepository
 ) : ViewModel() {
-  var authListener: AuthListener ? = null
+  private val _getLogoutLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  val getLogoutLiveData = _getLogoutLiveData
+  var sessionExpiredListener: SessionExpiredListener ? = null
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
   private val currentDate: Date = Calendar.getInstance()
     .time
@@ -57,19 +61,19 @@ constructor(
   }
 
   fun doLogout() {
-    authListener?.onStarted()
+    _getLogoutLiveData.value = ResponseUI.loading()
     Coroutines.main {
       try {
         userRepository.logout()
-        authListener?.onSuccess()
+        _getLogoutLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        authListener?.onFailure(e.message!!)
+        _getLogoutLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: SessionExpirationException) {
-        authListener?.onSessionExpired()
+        sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener?.onFailure(e.message!!)
+        _getLogoutLiveData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        authListener?.onFailure(e.message!!)
+        _getLogoutLiveData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
