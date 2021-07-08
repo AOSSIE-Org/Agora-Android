@@ -1,10 +1,15 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,6 +34,8 @@ import org.aossie.agoraandroid.utilities.snackbar
 import java.util.ArrayList
 import javax.inject.Inject
 
+const val STORAGE_PERMISSION_REQUEST_CODE = 2
+
 /**
  * A simple [Fragment] subclass.
  */
@@ -38,6 +45,7 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
   SessionExpiredListener {
+
   lateinit var binding: FragmentResultBinding
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
@@ -49,6 +57,7 @@ constructor(
   }
 
   private var id: String? = null
+  private lateinit var winnerDto: WinnerDto
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -64,7 +73,7 @@ constructor(
       requireArguments()
     ).id
     electionDetailsViewModel.getResult(id)
-
+    initListeners()
     return binding.root
   }
 
@@ -119,6 +128,71 @@ constructor(
         }
       }
     )
+
+    electionDetailsViewModel.getShareResponseLiveData.observe(
+      viewLifecycleOwner,
+      { responseUI ->
+        when (responseUI.status) {
+          ResponseUI.Status.LOADING -> {
+            // Do Nothing
+          }
+          ResponseUI.Status.SUCCESS -> {
+            responseUI.data?.let { uri ->
+              val shareIntent = Intent()
+              shareIntent.let {
+                it.action = Intent.ACTION_SEND
+                it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                it.setDataAndType(uri, requireContext().contentResolver.getType(uri))
+                it.putExtra(Intent.EXTRA_STREAM, uri)
+              }
+              startActivity(Intent.createChooser(shareIntent, getString(string.share_result)))
+            }
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(responseUI.message ?: "")
+          }
+        }
+      }
+    )
+  }
+
+  private fun initListeners() {
+    binding.shareResult.setOnClickListener {
+      createImageAndShare()
+    }
+    binding.exportResult.setOnClickListener {
+      if (ActivityCompat.checkSelfPermission(
+          requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+      ) {
+        createExcelFileAndShare()
+      } else {
+        askReadStoragePermission()
+      }
+    }
+  }
+
+  private fun askReadStoragePermission() {
+    requestPermissions(
+      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
+    )
+  }
+
+  private fun createImageAndShare() {
+    binding.resultView.drawToBitmap()
+      .let {
+        electionDetailsViewModel.createImage(requireContext(), it)
+      }
+  }
+
+  private fun createExcelFileAndShare() {
+    if (!this::winnerDto.isInitialized) {
+      binding.root.snackbar(getString(string.something_went_wrong_please_try_again_later))
+      return
+    }
+    id?.let {
+      electionDetailsViewModel.createExcelFile(requireContext(), winnerDto, it)
+    }
   }
 
   private fun initResultView(winner: WinnerDto) {
@@ -128,14 +202,14 @@ constructor(
     pieChart.setUsePercentValues(true)
 
     val description = Description()
-    description.text = getString(R.string.election_result)
+    description.text = getString(string.election_result)
     description.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
     pieChart.description = description
 
     val value: ArrayList<PieEntry> = ArrayList()
     value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
     value.add(
-      PieEntry(winner.score.denominator?.toFloat()!!, resources.getString(R.string.others))
+      PieEntry(winner.score.denominator?.toFloat()!!, getString(string.others))
     )
 
     val pieDataSet = PieDataSet(value, "")
@@ -150,5 +224,19 @@ constructor(
 
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<String>,
+    grantResults: IntArray
+  ) {
+    if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        createExcelFileAndShare()
+      } else {
+        binding.root.snackbar(getString(string.permission_denied))
+      }
+    }
   }
 }
