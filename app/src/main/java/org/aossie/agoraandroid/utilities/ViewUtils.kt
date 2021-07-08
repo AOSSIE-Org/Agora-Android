@@ -34,14 +34,15 @@ fun TextView.show() {
 }
 
 fun View.snackbar(message: String) {
-  Snackbar
-    .make(this, message, Snackbar.LENGTH_INDEFINITE)
-    .also { snackbar ->
-      snackbar.setAction(AppConstants.ok) {
-        snackbar.dismiss()
+  if (message.isNotBlank())
+    Snackbar
+      .make(this, message, Snackbar.LENGTH_INDEFINITE)
+      .also { snackbar ->
+        snackbar.setAction(AppConstants.ok) {
+          snackbar.dismiss()
+        }
+          .show()
       }
-        .show()
-    }
 }
 
 fun View.errorDialog(message: String) {

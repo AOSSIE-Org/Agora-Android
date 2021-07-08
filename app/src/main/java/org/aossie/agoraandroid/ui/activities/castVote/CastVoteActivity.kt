@@ -19,13 +19,10 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidatesAdapter
 import org.aossie.agoraandroid.adapters.SelectedCandidateAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.network.responses.ResponseResult
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isConnected
 import org.aossie.agoraandroid.utilities.show
@@ -39,8 +36,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 class CastVoteActivity :
-  AppCompatActivity(),
-  GetResolvedPathListener {
+  AppCompatActivity() {
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -84,7 +80,6 @@ class CastVoteActivity :
     window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
     binding = DataBindingUtil.setContentView(this, R.layout.activity_cast_vote)
-    viewModel.getResolvedPathListener = this
     initObservers()
     processURL()
   }
@@ -169,6 +164,24 @@ class CastVoteActivity :
       }
     )
 
+    viewModel.getDeepLinkLiveData.observe(
+      this,
+      Observer {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> binding.progressBar.show()
+          ResponseUI.Status.SUCCESS -> {
+            it.message?.let { message ->
+              val strings = message.split("/")
+              passCode = strings[3]
+              id = strings[2]
+              viewModel.verifyVoter(strings[2])
+            }
+          }
+          ResponseUI.Status.ERROR -> navigateToMainActivity(it.message ?: getString(string.invalid_url))
+        }
+      }
+    )
+
     viewModel.castVoteResponse.observe(
       this,
       Observer {
@@ -177,21 +190,21 @@ class CastVoteActivity :
     )
   }
 
-  private fun handleCastVote(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handleCastVote(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       navigateToMainActivity(getString(string.vote_successful))
     }
-    is Error -> {
+    ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      binding.root.snackbar(response.error.toString())
+      binding.root.snackbar(response.message ?: "")
     }
-    is SessionExpired -> {
-      // do nothing
+    else -> {
+      // Do Nothing
     }
   }
 
-  private fun handleVerifyVoter(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handleVerifyVoter(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       viewModel.election.observe(
         this,
         Observer {
@@ -223,11 +236,11 @@ class CastVoteActivity :
         }
       )
     }
-    is Error -> {
-      navigateToMainActivity(response.error.toString())
+    ResponseUI.Status.ERROR -> {
+      navigateToMainActivity(response.message ?: "")
     }
-    is SessionExpired -> {
-      // do nothing
+    else -> {
+      // Do Nothing
     }
   }
 
@@ -304,21 +317,6 @@ class CastVoteActivity :
     intent.putExtra(AppConstants.SHOW_SNACKBAR_KEY, message)
     startActivity(intent)
     finish()
-  }
-
-  override fun onStarted() {
-    binding.progressBar.show()
-  }
-
-  override fun onSuccess(message: String) {
-    val strings = message.split("/")
-    passCode = strings[3]
-    id = strings[2]
-    viewModel.verifyVoter(strings[2])
-  }
-
-  override fun onFailure(message: String?) {
-    navigateToMainActivity(message ?: getString(string.invalid_url))
   }
 
   override fun onNewIntent(intent: Intent?) {

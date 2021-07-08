@@ -29,10 +29,12 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentInviteVotersBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_INTENT_REQUEST_CODE
 import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_PERMISSION_REQUEST_CODE
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.FileUtils
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -48,9 +50,7 @@ class InviteVotersFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(),
-  InviteVoterListener,
-  ReadVotersListener {
+) : Fragment(), SessionExpiredListener {
 
   lateinit var binding: FragmentInviteVotersBinding
 
@@ -96,14 +96,38 @@ constructor(
   ): View? {
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_invite_voters, container, false)
-
-    inviteVotersViewModel.inviteVoterListener = this
-    inviteVotersViewModel.readVotersListener = this
+    inviteVotersViewModel.sessionExpiredListener = this
 
     initView()
     initListeners()
+    initObserver()
 
     return binding.root
+  }
+
+  private fun initObserver() {
+    inviteVotersViewModel.getSendVoterLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> onStarted()
+          ResponseUI.Status.SUCCESS -> onSuccess(it.message ?: "")
+          ResponseUI.Status.ERROR -> onFailure(it.message ?: "")
+        }
+      }
+    )
+    inviteVotersViewModel.getImportVotersLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            // Do Nothing
+          }
+          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+        }
+      }
+    )
   }
 
   private fun initView() {
@@ -194,12 +218,12 @@ constructor(
     voterRecyclerAdapter!!.notifyDataSetChanged()
   }
 
-  override fun onStarted() {
+  fun onStarted() {
     binding.progressBar.show()
     binding.buttonInviteVoter.toggleIsEnable()
   }
 
-  override fun onFailure(message: String) {
+  fun onFailure(message: String) {
     binding.progressBar.hide()
     binding.buttonInviteVoter.toggleIsEnable()
     val mMessage = StringBuilder()
@@ -207,7 +231,7 @@ constructor(
     binding.root.snackbar(mMessage.toString())
   }
 
-  override fun onSuccess(message: String) {
+  fun onSuccess(message: String) {
     binding.progressBar.hide()
     binding.buttonInviteVoter.toggleIsEnable()
     prefs.setUpdateNeeded(true)
@@ -284,11 +308,13 @@ constructor(
     }
   }
 
-  override fun onReadSuccess(list: ArrayList<VotersDto>) {
-    if (list.isNotEmpty()) importVoters(list)
+  private fun onReadSuccess(list: List<VotersDto>?) {
+    list?.let {
+      if (list.isNotEmpty()) importVoters(list)
+    }
   }
 
-  override fun onReadFailure(message: String) {
+  fun onReadFailure(message: String) {
     binding.root.snackbar(message)
   }
 }
