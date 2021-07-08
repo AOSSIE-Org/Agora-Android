@@ -29,9 +29,10 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.loadImage
@@ -54,7 +55,7 @@ class SettingsFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), AuthListener {
+) : Fragment(), SessionExpiredListener {
 
   private lateinit var rootView: View
   private val homeViewModel: HomeViewModel by viewModels {
@@ -110,7 +111,36 @@ constructor(
       }
     )
 
-    homeViewModel.authListener = this
+    homeViewModel.getLogoutLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.ERROR -> {
+            rootView.progress_bar.hide()
+            rootView.snackbar(it.message ?: "")
+            rootView.tv_logout.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            rootView.progress_bar.hide()
+            if (prefs.getIsFacebookUser()) {
+              LoginManager.getInstance()
+                .logOut()
+            }
+            homeViewModel.deleteUserData()
+            rootView.shortSnackbar("Logged Out")
+            Navigation.findNavController(rootView)
+              .navigate(
+                SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
+              )
+          }
+          ResponseUI.Status.LOADING -> {
+            rootView.progress_bar.show()
+            rootView.tv_logout.toggleIsEnable()
+          }
+        }
+      }
+    )
+    homeViewModel.sessionExpiredListener = this
 
     rootView.tv_account_settings.setOnClickListener {
       Navigation.findNavController(rootView)
@@ -149,31 +179,6 @@ constructor(
     rootView.image_view.loadImage(url, OFFLINE) {
       rootView.image_view.loadImage(url)
     }
-  }
-
-  override fun onSuccess(message: String?) {
-    rootView.progress_bar.hide()
-    if (prefs.getIsFacebookUser()) {
-      LoginManager.getInstance()
-        .logOut()
-    }
-    homeViewModel.deleteUserData()
-    rootView.shortSnackbar("Logged Out")
-    Navigation.findNavController(rootView)
-      .navigate(
-        SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
-      )
-  }
-
-  override fun onStarted() {
-    rootView.progress_bar.show()
-    rootView.tv_logout.toggleIsEnable()
-  }
-
-  override fun onFailure(message: String) {
-    rootView.progress_bar.hide()
-    rootView.snackbar(message)
-    rootView.tv_logout.toggleIsEnable()
   }
 
   override fun onSessionExpired() {

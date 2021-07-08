@@ -31,10 +31,12 @@ import kotlinx.android.synthetic.main.fragment_sign_up.view.sign_up_security_que
 import kotlinx.android.synthetic.main.fragment_sign_up.view.signup_btn
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.NewUserDto
 import org.aossie.agoraandroid.data.dto.SecurityQuestionDto
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -48,7 +50,7 @@ class SignUpFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(), AuthListener {
+) : Fragment(), SessionExpiredListener {
 
   private var securityQuestionOfSignUp: String? = null
 
@@ -65,7 +67,7 @@ constructor(
   ): View? {
     // Inflate the layout for this fragment
     rootView = inflater.inflate(R.layout.fragment_sign_up, container, false)
-    signUpViewModel.authListener = this
+    signUpViewModel.sessionExpiredListener = this
 
     rootView.signup_btn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
@@ -103,6 +105,28 @@ constructor(
     rootView.et_email.addTextChangedListener(signUpTextWatcher)
     rootView.et_answer.addTextChangedListener(signUpTextWatcher)
     rootView.et_password.addTextChangedListener(signUpTextWatcher)
+
+    signUpViewModel.getSignUpLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            rootView.progress_bar.show()
+            rootView.signup_btn.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            rootView.progress_bar.hide()
+            rootView.snackbar(getString(string.verify_account))
+            rootView.signup_btn.toggleIsEnable()
+          }
+          ResponseUI.Status.ERROR -> {
+            rootView.snackbar(it.message ?: "")
+            rootView.progress_bar.hide()
+            rootView.signup_btn.toggleIsEnable()
+          }
+        }
+      }
+    )
 
     return rootView
   }
@@ -167,23 +191,6 @@ constructor(
         emailInput.isNotEmpty() &&
         answerInput.isNotEmpty()
     }
-  }
-
-  override fun onSuccess(message: String?) {
-    rootView.progress_bar.hide()
-    rootView.snackbar("An activation link has been sent to registered email id to verify your account")
-    rootView.signup_btn.toggleIsEnable()
-  }
-
-  override fun onStarted() {
-    rootView.progress_bar.show()
-    rootView.signup_btn.toggleIsEnable()
-  }
-
-  override fun onFailure(message: String) {
-    rootView.snackbar(message)
-    rootView.progress_bar.hide()
-    rootView.signup_btn.toggleIsEnable()
   }
 
   override fun onSessionExpired() {

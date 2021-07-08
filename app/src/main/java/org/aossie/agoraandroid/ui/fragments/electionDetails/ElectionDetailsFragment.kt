@@ -17,8 +17,10 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isConnected
 import org.aossie.agoraandroid.utilities.show
@@ -42,7 +44,7 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
 ) : Fragment(),
-  DisplayElectionListener {
+  SessionExpiredListener {
   lateinit var binding: FragmentElectionDetailsBinding
   private var id: String? = null
   private var status: AppConstants.Status? = null
@@ -65,12 +67,40 @@ constructor(
         requireArguments()
       )
     id = args.id
-    electionDetailsViewModel.displayElectionListener = this
+    electionDetailsViewModel.sessionExpiredListener = this
+    setObserver()
     initListeners()
 
     getElectionById()
 
     return binding.root
+  }
+
+  private fun setObserver() {
+
+    electionDetailsViewModel.getDeleteElectionLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            binding.progressBar.show()
+            binding.buttonDelete.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            prefs.setUpdateNeeded(true)
+            Navigation.findNavController(binding.root)
+              .navigate(
+                ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
+              )
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(it.message ?: "")
+            binding.progressBar.hide()
+            binding.buttonDelete.toggleIsEnable()
+          }
+        }
+      }
+    )
   }
 
   private fun initListeners() {
@@ -201,31 +231,6 @@ constructor(
       currentDate.after(formattedEndingDate) -> drawable.finished_election_label
       else -> drawable.finished_election_label
     }
-  }
-
-  override fun onDeleteElectionSuccess() {
-    prefs.setUpdateNeeded(true)
-    Navigation.findNavController(binding.root)
-      .navigate(
-        ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
-      )
-  }
-
-  override fun onSuccess(message: String?) {
-    if (message != null) binding.root.snackbar(message)
-    binding.progressBar.hide()
-    binding.buttonDelete.toggleIsEnable()
-  }
-
-  override fun onStarted() {
-    binding.progressBar.show()
-    binding.buttonDelete.toggleIsEnable()
-  }
-
-  override fun onFailure(message: String) {
-    binding.root.snackbar(message)
-    binding.progressBar.hide()
-    binding.buttonDelete.toggleIsEnable()
   }
 
   override fun onSessionExpired() {
