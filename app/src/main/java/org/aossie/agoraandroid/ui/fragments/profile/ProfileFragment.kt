@@ -34,18 +34,15 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.ResponseResult
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.SessionExpired
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.loadImage
@@ -70,7 +67,7 @@ class ProfileFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), AuthListener {
+) : Fragment(), SessionExpiredListener {
 
   private lateinit var binding: FragmentProfileBinding
 
@@ -94,36 +91,21 @@ constructor(
   }
 
   private lateinit var mUser: User
-
+// TODO Handle passchange
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    homeViewModel.authListener = this
+    homeViewModel.sessionExpiredListener = this
+    loginViewModel.sessionExpiredListener = this
 
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-    viewModel.user.observe(
-      viewLifecycleOwner,
-      Observer {
-        if (it != null) {
-          binding.user = it
-          mUser = it
-          if (it.avatarURL != null) {
-            if (it.avatarURL.isUrl())
-              cacheAndSaveImage(it.avatarURL)
-            else {
-              val bitmap = decodeBitmap(it.avatarURL)
-              setAvatarFile(bitmap.toByteArray())
-            }
-          }
-        }
-      }
-    )
     binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
     binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
     binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
     binding.confirmPasswordTiet.addTextChangedListener(getTextWatcher(4))
+    setObserver()
 
     binding.updateProfileBtn.setOnClickListener {
       binding.progressBar.show()
@@ -186,13 +168,6 @@ constructor(
       showChangeProfileDialog()
     }
 
-    mAvatar.observe(
-      viewLifecycleOwner,
-      Observer {
-        binding.ivProfilePic.loadImageFromMemoryNoCache(it)
-      }
-    )
-
     binding.changePasswordBtn.setOnClickListener {
       val newPass = binding.newPasswordTiet.text.toString()
       val conPass = binding.confirmPasswordTiet.text.toString()
@@ -207,10 +182,70 @@ constructor(
       }
     }
 
+    return binding.root
+  }
+
+  private fun updateUIAndChangePassword() {
+    binding.progressBar.show()
+    toggleIsEnable()
+    hideKeyboardInFrag(this@ProfileFragment)
+    viewModel.changePassword(binding.newPasswordTiet.text.toString())
+  }
+
+  private fun decodeBitmap(encodedBitmap: String): Bitmap {
+    val decodedString = Base64.decode(encodedBitmap, Base64.NO_WRAP)
+    return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+  }
+
+  private fun cacheAndSaveImage(url: String) {
+    binding.ivProfilePic.loadImage(url, OFFLINE) {
+      binding.ivProfilePic.loadImage(url)
+    }
+  }
+
+  private fun setObserver() {
+    mAvatar.observe(
+      viewLifecycleOwner,
+      Observer {
+        binding.ivProfilePic.loadImageFromMemoryNoCache(it)
+      }
+    )
+
+    viewModel.user.observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it != null) {
+          binding.user = it
+          mUser = it
+          if (it.avatarURL != null) {
+            if (it.avatarURL.isUrl())
+              cacheAndSaveImage(it.avatarURL)
+            else {
+              val bitmap = decodeBitmap(it.avatarURL)
+              setAvatarFile(bitmap.toByteArray())
+            }
+          }
+        }
+      }
+    )
+
     viewModel.passwordRequestCode.observe(
       viewLifecycleOwner,
       Observer {
         handlePassword(it)
+      }
+    )
+
+    loginViewModel.getLoginLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> onLoadingStarted()
+          ResponseUI.Status.SUCCESS -> binding.progressBar.hide()
+          ResponseUI.Status.ERROR -> {
+            onError(it.message ?: "")
+          }
+        }
       }
     )
     viewModel.userUpdateResponse.observe(
@@ -234,25 +269,42 @@ constructor(
         handleChangeAvatar(it)
       }
     )
-    return binding.root
+    homeViewModel.getLogoutLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.ERROR -> onError(it.message ?: "")
+
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            toggleIsEnable()
+            lifecycleScope.launch {
+              if (prefs.getIsFacebookUser().first()) {
+                LoginManager.getInstance()
+                  .logOut()
+              }
+            }
+            homeViewModel.deleteUserData()
+            Navigation.findNavController(binding.root)
+              .navigate(
+                ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
+              )
+          }
+          ResponseUI.Status.LOADING -> onLoadingStarted()
+        }
+      }
+    )
   }
 
-  private fun updateUIAndChangePassword() {
+  private fun onLoadingStarted() {
     binding.progressBar.show()
     toggleIsEnable()
-    hideKeyboardInFrag(this@ProfileFragment)
-    viewModel.changePassword(binding.newPasswordTiet.text.toString())
   }
 
-  private fun decodeBitmap(encodedBitmap: String): Bitmap {
-    val decodedString = Base64.decode(encodedBitmap, Base64.NO_WRAP)
-    return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-  }
-
-  private fun cacheAndSaveImage(url: String) {
-    binding.ivProfilePic.loadImage(url, OFFLINE) {
-      binding.ivProfilePic.loadImage(url)
-    }
+  private fun onError(message: String) {
+    binding.progressBar.hide()
+    binding.root.snackbar(message)
+    toggleIsEnable()
   }
 
   private fun showChangeProfileDialog() {
@@ -299,56 +351,39 @@ constructor(
     requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
   }
 
-  private fun handleChangeAvatar(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handleChangeAvatar(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.profile_updated))
     }
-    is Error -> {
-      binding.progressBar.hide()
-      toggleIsEnable()
-      binding.root.snackbar(response.error.toString())
-    }
-    is SessionExpired -> {
-      hostViewModel.setLogout(true)
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: getString(string.something_went_wrong_please_try_again_later))
+
+    else -> onStarted()
   }
 
-  private fun handleUser(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handleUser(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.user_updated))
     }
-    is Error -> {
-      binding.progressBar.hide()
-      toggleIsEnable()
-      binding.root.snackbar(response.error.toString())
-    }
-    is SessionExpired -> {
-      hostViewModel.setLogout(true)
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: getString(string.something_went_wrong_please_try_again_later))
+    else -> onStarted()
   }
 
-  private fun handleTwoFactorAuthentication(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handleTwoFactorAuthentication(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.authentication_updated))
     }
-    is Error -> {
-      toggleIsEnable()
-      binding.progressBar.hide()
-      binding.root.snackbar(response.error.toString())
-    }
-    is SessionExpired -> {
-      hostViewModel.setLogout(true)
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    else -> onStarted()
   }
 
-  private fun handlePassword(response: ResponseResult) = when (response) {
-    is Success -> {
+  private fun handlePassword(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
       binding.root.snackbar(getString(string.password_updated))
@@ -356,14 +391,9 @@ constructor(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
-    is Error -> {
-      binding.progressBar.hide()
-      toggleIsEnable()
-      binding.root.snackbar(response.error.toString())
-    }
-    is SessionExpired -> {
-      hostViewModel.setLogout(true)
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+
+    else -> onStarted()
   }
 
   private fun getTextWatcher(code: Int): TextWatcher {
@@ -432,28 +462,12 @@ constructor(
     }
   }
 
-  override fun onSuccess(message: String?) {
-    binding.progressBar.hide()
-    toggleIsEnable()
-    lifecycleScope.launch {
-      if (prefs.getIsFacebookUser().first()) {
-        LoginManager.getInstance()
-          .logOut()
-      }
-    }
-    homeViewModel.deleteUserData()
-    Navigation.findNavController(binding.root)
-      .navigate(
-        ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
-      )
-  }
-
-  override fun onStarted() {
+  private fun onStarted() {
     binding.progressBar.show()
     toggleIsEnable()
   }
 
-  override fun onFailure(message: String) {
+  private fun onFailure(message: String) {
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()

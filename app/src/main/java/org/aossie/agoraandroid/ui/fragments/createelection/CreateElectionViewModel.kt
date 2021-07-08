@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +12,7 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -28,21 +30,23 @@ constructor(
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
-  lateinit var createElectionListener: CreateElectionListener
-  lateinit var readCandidatesListener: ReadCandidatesListener
+  private val _getCreateElectionData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  val getCreateElectionData = _getCreateElectionData
+  private val _getImportVotersLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
+  val getImportVotersLiveData = _getImportVotersLiveData
 
   fun createElection(election: ElectionDto) {
-    createElectionListener.onStarted()
+    _getCreateElectionData.value = ResponseUI.loading()
     viewModelScope.launch(Dispatchers.Main) {
       try {
         val response = electionsRepository.createElection(election)
-        createElectionListener.onSuccess(response[1])
+        _getCreateElectionData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        createElectionListener.onFailure(e.message!!)
+        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
       } catch (e: NoInternetException) {
-        createElectionListener.onFailure(e.message!!)
+        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        createElectionListener.onFailure(e.message!!)
+        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -57,7 +61,7 @@ constructor(
         val workbook = XSSFWorkbook(inputStream)
         val sheet: XSSFSheet = workbook.getSheetAt(0) ?: run {
           withContext(Dispatchers.Main) {
-            readCandidatesListener.onReadFailure(context.getString(string.no_sheet))
+            _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.no_sheet))
           }
           return@launch
         }
@@ -69,19 +73,19 @@ constructor(
             }
         }
         withContext(Dispatchers.Main) {
-          readCandidatesListener.onReadSuccess(list)
+          _getImportVotersLiveData.value = ResponseUI.success(list)
         }
       } catch (e: NotOfficeXmlFileException) {
         withContext(Dispatchers.Main) {
-          readCandidatesListener.onReadFailure(context.getString(string.not_excel))
+          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.not_excel))
         }
       } catch (e: FileNotFoundException) {
         withContext(Dispatchers.Main) {
-          readCandidatesListener.onReadFailure(context.getString(string.file_not_available))
+          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.file_not_available))
         }
       } catch (e: IOException) {
         withContext(Dispatchers.Main) {
-          readCandidatesListener.onReadFailure(context.getString(string.cannot_read_file))
+          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.cannot_read_file))
         }
       }
     }

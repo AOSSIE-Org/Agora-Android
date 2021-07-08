@@ -39,6 +39,7 @@ import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -59,9 +60,8 @@ class CreateElectionFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(),
-  CreateElectionListener,
-  ReadCandidatesListener {
+) : Fragment() {
+
   lateinit var binding: FragmentCreateElectionBinding
   private var sDay = 0
   private var sMonth: Int = 0
@@ -97,14 +97,57 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_election, container, false)
 
-    createElectionViewModel.createElectionListener = this
-    createElectionViewModel.readCandidatesListener = this
-
     initView()
-
     initListeners()
+    initObserver()
 
     return binding.root
+  }
+
+  private fun initObserver() {
+    createElectionViewModel.getCreateElectionData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+
+            binding.progressBar.show()
+            binding.submitDetailsBtn.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+
+            binding.progressBar.hide()
+            binding.submitDetailsBtn.toggleIsEnable()
+            binding.root.snackbar(it.message ?: "")
+            lifecycleScope.launch {
+              prefs.setUpdateNeeded(true)
+            }
+            Navigation.findNavController(binding.root)
+              .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+          }
+          ResponseUI.Status.ERROR -> {
+
+            binding.progressBar.hide()
+            binding.root.snackbar(it.message ?: "")
+            binding.submitDetailsBtn.toggleIsEnable()
+          }
+        }
+      }
+    )
+
+    createElectionViewModel.getImportVotersLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> { // Do Nothing
+          }
+
+          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+
+          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+        }
+      }
+    )
   }
 
   private fun initView() {
@@ -424,26 +467,23 @@ constructor(
     }
   }
 
-  override fun onStarted() {
-    binding.progressBar.show()
-    binding.submitDetailsBtn.toggleIsEnable()
-  }
-
-  override fun onSuccess(message: String?) {
-    binding.progressBar.hide()
-    binding.submitDetailsBtn.toggleIsEnable()
-    if (message != null) binding.root.snackbar(message)
-    lifecycleScope.launch {
-      prefs.setUpdateNeeded(true)
-    }
-    Navigation.findNavController(binding.root)
-      .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
-  }
-
-  override fun onFailure(message: String) {
-    binding.progressBar.hide()
-    binding.root.snackbar(message)
-    binding.submitDetailsBtn.toggleIsEnable()
+  private fun doAfterTextChange() {
+    val electionNameInput: String = binding.etElectionName.text
+      .toString()
+      .trim()
+    val electionDescriptionInput: String = binding.etElectionDescription.text
+      .toString()
+      .trim()
+    val startDateInput: String = binding.etStartDate.text
+      .toString()
+      .trim()
+    val endDateInput: String = binding.etEndDate.text
+      .toString()
+      .trim()
+    binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
+      electionDescriptionInput.isNotEmpty() &&
+      startDateInput.isNotEmpty() &&
+      endDateInput.isNotEmpty()
   }
 
   override fun onActivityResult(
@@ -475,11 +515,11 @@ constructor(
     }
   }
 
-  override fun onReadSuccess(list: ArrayList<String>) {
-    if (list.isNotEmpty()) importCandidates(list)
+  private fun onReadSuccess(list: List<String>?) {
+    list?.let { if (list.isNotEmpty()) importCandidates(list) }
   }
 
-  override fun onReadFailure(message: String) {
+  private fun onReadFailure(message: String) {
     binding.root.snackbar(message)
   }
 }

@@ -17,7 +17,9 @@ import org.aossie.agoraandroid.adapters.BallotsAdapter
 import org.aossie.agoraandroid.data.dto.BallotDto
 import org.aossie.agoraandroid.databinding.FragmentBallotBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -32,7 +34,7 @@ class BallotFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-  DisplayElectionListener {
+  SessionExpiredListener {
 
   private lateinit var binding: FragmentBallotBinding
 
@@ -55,7 +57,7 @@ constructor(
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ballot, container, false)
 
     binding.tvEmptyBallots.hide()
-    electionDetailsViewModel.displayElectionListener = this
+    electionDetailsViewModel.sessionExpiredListener = this
 
     binding.recyclerViewBallots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -74,16 +76,30 @@ constructor(
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     Coroutines.main {
-      electionDetailsViewModel.ballotResponse.observe(
+
+      electionDetailsViewModel.getBallotResponseLiveData.observe(
         viewLifecycleOwner,
-        Observer {
-          if (it != null) {
-            initRecyclerView(it)
-          } else {
-            binding.tvEmptyBallots.show()
+        { responseUI ->
+          when (responseUI.status) {
+            ResponseUI.Status.LOADING -> binding.progressBar.hide()
+            ResponseUI.Status.SUCCESS -> {
+              if (responseUI.message.isNullOrBlank()) binding.root.snackbar(
+                responseUI.message ?: ""
+              )
+              binding.progressBar.hide()
+
+              responseUI.dataList?.let {
+                initRecyclerView(it)
+              } ?: binding.tvEmptyBallots.show()
+            }
+            ResponseUI.Status.ERROR -> {
+              binding.root.snackbar(responseUI.message ?: "")
+              binding.progressBar.hide()
+            }
           }
         }
       )
+
       electionDetailsViewModel.notConnected.observe(
         viewLifecycleOwner,
         Observer {
@@ -117,24 +133,6 @@ constructor(
           }
         )
     }
-  }
-
-  override fun onDeleteElectionSuccess() {
-    // do nothing
-  }
-
-  override fun onSuccess(message: String?) {
-    if (message != null) binding.root.snackbar(message)
-    binding.progressBar.hide()
-  }
-
-  override fun onStarted() {
-    binding.progressBar.show()
-  }
-
-  override fun onFailure(message: String) {
-    binding.root.snackbar(message)
-    binding.progressBar.hide()
   }
 
   override fun onSessionExpired() {

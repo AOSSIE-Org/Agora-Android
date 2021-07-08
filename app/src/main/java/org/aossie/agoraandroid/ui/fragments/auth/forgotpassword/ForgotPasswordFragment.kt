@@ -13,8 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.databinding.FragmentForgotPasswordBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -27,7 +28,7 @@ class ForgotPasswordFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(), AuthListener {
+) : Fragment(), SessionExpiredListener {
 
   private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels {
     viewModelFactory
@@ -47,13 +48,8 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_forgot_password, container, false)
 
-    forgotPasswordViewModel.authListener = this
-
     binding.buttonSendLink.setOnClickListener {
-      val userName = binding.editTextUserName.editText
-        ?.text
-        .toString()
-        .trim { it <= ' ' }
+      val userName = binding.editTextUserName.editText?.text.toString().trim()
       if (userName.isEmpty()) {
         binding.root.snackbar("Please Enter User Name")
       } else {
@@ -63,21 +59,24 @@ constructor(
       }
     }
 
+    forgotPasswordViewModel.getSendResetLinkLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> binding.progressBar.show()
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            binding.root.snackbar(getString(R.string.link_sent_please_check_your_email))
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.progressBar.hide()
+            binding.root.snackbar(it.message ?: "")
+          }
+        }
+      }
+    )
+
     return binding.root
-  }
-
-  override fun onSuccess(message: String?) {
-    binding.progressBar.hide()
-    binding.root.snackbar(requireContext().getString(R.string.link_sent_please_check_your_email))
-  }
-
-  override fun onStarted() {
-    binding.progressBar.show()
-  }
-
-  override fun onFailure(message: String) {
-    binding.progressBar.hide()
-    binding.root.snackbar(message)
   }
 
   override fun onSessionExpired() {

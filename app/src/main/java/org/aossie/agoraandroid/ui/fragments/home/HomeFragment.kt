@@ -19,9 +19,10 @@ import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
 import java.text.ParseException
@@ -35,7 +36,7 @@ class HomeFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val preferenceProvider: PreferenceProvider
-) : Fragment(), AuthListener {
+) : Fragment(), SessionExpiredListener {
 
   private lateinit var binding: FragmentHomeBinding
 
@@ -58,7 +59,7 @@ constructor(
   ): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-    loginViewModel.authListener = this
+    loginViewModel.sessionExpiredListener = this
     binding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
 
     binding.cardViewActiveElections.setOnClickListener {
@@ -81,7 +82,24 @@ constructor(
       Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToCreateElectionFragment())
     }
-    binding.swipeRefresh.setOnRefreshListener { doYourUpdate() }
+    binding.swipeRefresh.setOnRefreshListener { updateUi() }
+
+    loginViewModel.getLoginLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            // Do Nothing
+          }
+          ResponseUI.Status.SUCCESS -> {
+            updateUi()
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(it.message ?: "")
+          }
+        }
+      }
+    )
 
     loginViewModel.getLoggedInUser()
       .observe(
@@ -179,29 +197,17 @@ constructor(
 
   override fun onDestroyView() {
     binding.swipeRefresh.setOnRefreshListener(null)
-    homeViewModel.authListener = null
-    loginViewModel.authListener = null
+    homeViewModel.sessionExpiredListener = null
+    loginViewModel.sessionExpiredListener = null
     super.onDestroyView()
   }
 
-  private fun doYourUpdate() {
+  private fun updateUi() {
     lifecycleScope.launch {
       preferenceProvider.setUpdateNeeded(true)
     }
     Navigation.findNavController(binding.root)
       .navigate(R.id.homeFragment)
-  }
-
-  override fun onSuccess(message: String?) {
-    doYourUpdate()
-  }
-
-  override fun onStarted() {
-    // do nothing
-  }
-
-  override fun onFailure(message: String) {
-    binding.root.snackbar(message)
   }
 
   override fun onSessionExpired() {

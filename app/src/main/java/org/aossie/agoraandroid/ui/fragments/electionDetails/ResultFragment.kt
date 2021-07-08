@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.ui.fragments.electionDetails
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,9 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -43,8 +44,8 @@ class ResultFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(),
-  DisplayElectionListener,
-  ShareResultListener {
+  SessionExpiredListener {
+
   lateinit var binding: FragmentResultBinding
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
@@ -66,8 +67,7 @@ constructor(
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
     binding.tvNoResult.hide()
-    electionDetailsViewModel.displayElectionListener = this
-    electionDetailsViewModel.shareResultListener = this
+    electionDetailsViewModel.sessionExpiredListener = this
 
     id = VotersFragmentArgs.fromBundle(
       requireArguments()
@@ -99,15 +99,58 @@ constructor(
   }
 
   private fun observeResult() {
-    electionDetailsViewModel.resultResponse.observe(
+
+    electionDetailsViewModel.getResultResponseLiveData.observe(
       viewLifecycleOwner,
-      {
-        if (it != null) {
-          initResultView(it)
-        } else {
-          binding.resultView.visibility = View.GONE
-          binding.tvNoResult.text = resources.getString(string.no_result)
-          binding.tvNoResult.show()
+      { responseUI ->
+        when (responseUI.status) {
+          ResponseUI.Status.LOADING -> {
+            binding.resultView.visibility = View.GONE
+            binding.progressBar.show()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            if (responseUI.message.isNullOrBlank()) binding.root.snackbar(responseUI.message ?: "")
+            binding.progressBar.hide()
+            responseUI.data?.let {
+              initResultView(it)
+            } ?: kotlin.run {
+              binding.resultView.visibility = View.GONE
+              binding.tvNoResult.text = resources.getString(string.no_result)
+              binding.tvNoResult.show()
+            }
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(responseUI.message ?: "")
+            binding.progressBar.hide()
+            binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
+            binding.tvNoResult.show()
+          }
+        }
+      }
+    )
+
+    electionDetailsViewModel.getShareResponseLiveData.observe(
+      viewLifecycleOwner,
+      { responseUI ->
+        when (responseUI.status) {
+          ResponseUI.Status.LOADING -> {
+            // Do Nothing
+          }
+          ResponseUI.Status.SUCCESS -> {
+            responseUI.data?.let { uri ->
+              val shareIntent = Intent()
+              shareIntent.let {
+                it.action = Intent.ACTION_SEND
+                it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                it.setDataAndType(uri, requireContext().contentResolver.getType(uri))
+                it.putExtra(Intent.EXTRA_STREAM, uri)
+              }
+              startActivity(Intent.createChooser(shareIntent, getString(string.share_result)))
+            }
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(responseUI.message ?: "")
+          }
         }
       }
     )
@@ -152,17 +195,6 @@ constructor(
     }
   }
 
-  private fun shareResult(uri: Uri) {
-    val shareIntent = Intent()
-    shareIntent.let {
-      it.action = Intent.ACTION_SEND
-      it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-      it.setDataAndType(uri, requireContext().contentResolver.getType(uri))
-      it.putExtra(Intent.EXTRA_STREAM, uri)
-    }
-    startActivity(Intent.createChooser(shareIntent, getString(string.share_result)))
-  }
-
   private fun initResultView(winner: WinnerDto) {
     binding.tvNoResult.hide()
     binding.resultView.visibility = View.VISIBLE
@@ -190,27 +222,6 @@ constructor(
     binding.textViewWinnerName.text = winner.candidate?.name
   }
 
-  override fun onDeleteElectionSuccess() {
-    // do nothing
-  }
-
-  override fun onStarted() {
-    binding.resultView.visibility = View.GONE
-    binding.progressBar.show()
-  }
-
-  override fun onSuccess(message: String?) {
-    if (message != null) binding.root.snackbar(message)
-    binding.progressBar.hide()
-  }
-
-  override fun onFailure(message: String) {
-    binding.root.snackbar(message)
-    binding.progressBar.hide()
-    binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
-    binding.tvNoResult.show()
-  }
-
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)
   }
@@ -227,17 +238,5 @@ constructor(
         binding.root.snackbar(getString(string.permission_denied))
       }
     }
-  }
-
-  override fun onShareSuccess(uri: Uri) {
-    shareResult(uri)
-  }
-
-  override fun onExportSuccess(uri: Uri) {
-    shareResult(uri)
-  }
-
-  override fun onShareExportFailure(message: String) {
-    binding.root.snackbar(message)
   }
 }

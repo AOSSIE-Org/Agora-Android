@@ -10,12 +10,10 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.dto.ElectionDto
-import org.aossie.agoraandroid.data.network.responses.ResponseResult
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -28,16 +26,19 @@ constructor(
   val userRepository: UserRepository
 ) : ViewModel() {
 
-  lateinit var getResolvedPathListener: GetResolvedPathListener
+  private val mVerifyVoterResponse = MutableLiveData<ResponseUI<Any>>()
 
-  private val mVerifyVoterResponse = MutableLiveData<ResponseResult>()
-
-  val verifyVoterResponse: LiveData<ResponseResult>
+  val verifyVoterResponse: LiveData<ResponseUI<Any>>
     get() = mVerifyVoterResponse
 
-  private val mCastVoteResponse = MutableLiveData<ResponseResult>()
+  private val _getDeepLinkLiveData = MutableLiveData<ResponseUI<String>>()
 
-  val castVoteResponse: LiveData<ResponseResult>
+  val getDeepLinkLiveData: LiveData<ResponseUI<String>>
+    get() = _getDeepLinkLiveData
+
+  private val mCastVoteResponse = MutableLiveData<ResponseUI<Any>>()
+
+  val castVoteResponse: LiveData<ResponseUI<Any>>
     get() = mCastVoteResponse
 
   private val mElection = MutableLiveData<ElectionDto>()
@@ -50,14 +51,14 @@ constructor(
       try {
         val electionDto = electionsRepository.verifyVoter(id)
         electionDto._id = id
-        mVerifyVoterResponse.value = Success
+        mVerifyVoterResponse.value = ResponseUI.success()
         mElection.value = electionDto
       } catch (e: ApiException) {
-        mVerifyVoterResponse.value = Error(e.message.toString())
+        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: NoInternetException) {
-        mVerifyVoterResponse.value = Error(e.message.toString())
+        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        mVerifyVoterResponse.value = Error(e.message.toString())
+        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
@@ -70,19 +71,19 @@ constructor(
     Coroutines.main {
       try {
         electionsRepository.castVote(id, ballotInput, passCode)
-        mCastVoteResponse.value = Success
+        mCastVoteResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        mCastVoteResponse.value = Error(e.message.toString())
+        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: NoInternetException) {
-        mCastVoteResponse.value = Error(e.message.toString())
+        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
       } catch (e: Exception) {
-        mCastVoteResponse.value = Error(e.message.toString())
+        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
       }
     }
   }
 
   fun getResolvedPath(encodedURL: String) {
-    getResolvedPathListener.onStarted()
+    _getDeepLinkLiveData.value = ResponseUI.loading()
     viewModelScope.launch(Dispatchers.IO) {
       try {
         val originalURL = URL(encodedURL)
@@ -90,15 +91,15 @@ constructor(
         con.instanceFollowRedirects = false
         val resolvedURL = URL(con.getHeaderField("Location"))
         withContext(Dispatchers.Main) {
-          getResolvedPathListener.onSuccess(resolvedURL.path.toString())
+          _getDeepLinkLiveData.value = ResponseUI.success(resolvedURL.path.toString())
         }
       } catch (ex: MalformedURLException) {
         withContext(Dispatchers.Main) {
-          getResolvedPathListener.onFailure()
+          _getDeepLinkLiveData.value = ResponseUI.error("")
         }
       } catch (ex: Exception) {
         withContext(Dispatchers.Main) {
-          getResolvedPathListener.onFailure(ex.message)
+          _getDeepLinkLiveData.value = ResponseUI.error(ex.message ?: "")
         }
       }
     }

@@ -21,8 +21,9 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.NewUserDto
 import org.aossie.agoraandroid.data.dto.SecurityQuestionDto
 import org.aossie.agoraandroid.databinding.FragmentSignUpBinding
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
@@ -36,7 +37,7 @@ class SignUpFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(), AuthListener {
+) : Fragment(), SessionExpiredListener {
 
   private var securityQuestionOfSignUp: String? = null
 
@@ -53,7 +54,7 @@ constructor(
   ): View? {
     // Inflate the layout for this fragment
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
-    signUpViewModel.authListener = this
+    signUpViewModel.sessionExpiredListener = this
 
     binding.signupBtn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
@@ -91,6 +92,28 @@ constructor(
     binding.etEmail.addTextChangedListener(signUpTextWatcher)
     binding.etAnswer.addTextChangedListener(signUpTextWatcher)
     binding.etPassword.addTextChangedListener(signUpTextWatcher)
+
+    signUpViewModel.getSignUpLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
+            binding.progressBar.show()
+            binding.signupBtn.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            binding.root.snackbar(getString(string.verify_account))
+            binding.signupBtn.toggleIsEnable()
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(it.message ?: "")
+            binding.progressBar.hide()
+            binding.signupBtn.toggleIsEnable()
+          }
+        }
+      }
+    )
 
     return binding.root
   }
@@ -172,23 +195,6 @@ constructor(
         emailInput.isNotEmpty() &&
         answerInput.isNotEmpty()
     }
-  }
-
-  override fun onSuccess(message: String?) {
-    binding.progressBar.hide()
-    binding.root.snackbar(getString(string.activation_link_sent))
-    binding.signupBtn.toggleIsEnable()
-  }
-
-  override fun onStarted() {
-    binding.progressBar.show()
-    binding.signupBtn.toggleIsEnable()
-  }
-
-  override fun onFailure(message: String) {
-    binding.root.snackbar(message)
-    binding.progressBar.hide()
-    binding.signupBtn.toggleIsEnable()
   }
 
   override fun onSessionExpired() {
