@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  >
+  <data>
+
+  </data>
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.home.HomeFragment"
     >
 
-  <ScrollView
+    <ScrollView
       android:background="@color/grey_color"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:fillViewport="true"
       >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+      <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
           android:id="@+id/constraintLayout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -31,7 +36,7 @@
           android:clipToPadding="false"
           android:clipChildren="false"
           >
-        <TextView
+          <TextView
             android:id="@+id/tv_dashboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,9 +44,10 @@
             android:textColor="@color/black_text_color"
             android:textSize="@dimen/size_24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+          <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_create_election"
             style="@style/MainButtonStyle"
             android:layout_marginHorizontal="@dimen/size_24dp"
@@ -54,7 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_view_finished_elections"
             />
-        <androidx.cardview.widget.CardView
+          <androidx.cardview.widget.CardView
             android:id="@+id/card_view_total_elections"
             android:layout_width="0dp"
             app:cardCornerRadius="@dimen/size_10dp"
@@ -65,12 +71,12 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_dashboard"
             >
 
-          <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               >
 
-            <TextView
+              <TextView
                 android:id="@+id/total_elections"
                 android:layout_width="@dimen/size_200dp"
                 android:layout_height="wrap_content"
@@ -85,7 +91,7 @@
                 />
 
 
-            <TextView
+              <TextView
                 android:id="@+id/text_view_total_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,32 +105,32 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.484"
                 />
-            <androidx.constraintlayout.widget.ConstraintLayout
-                  android:id="@+id/constraintLayout1"
-                  android:layout_width="@dimen/size_35dp"
-                  android:layout_height="@dimen/size_35dp"
-                  android:layout_margin="@dimen/size_16dp"
-                  app:layout_constraintTop_toTopOf="parent"
-                  app:layout_constraintBottom_toBottomOf="parent"
-                  app:layout_constraintStart_toStartOf="parent"
-                  >
+              <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout1"
+                android:layout_width="@dimen/size_35dp"
+                android:layout_height="@dimen/size_35dp"
+                android:layout_margin="@dimen/size_16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                >
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/app_name"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_total"
-                    />
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:contentDescription="@string/app_name"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:srcCompat="@drawable/ic_total"
+                  />
               </androidx.constraintlayout.widget.ConstraintLayout>
 
-          </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+          </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
+          <androidx.cardview.widget.CardView
             android:id="@+id/card_view_pending_elections"
             android:layout_width="0dp"
             app:cardCornerRadius="@dimen/size_10dp"
@@ -135,12 +141,12 @@
             app:layout_constraintTop_toBottomOf="@+id/card_view_total_elections"
             >
 
-          <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               >
 
-            <TextView
+              <TextView
                 android:id="@+id/pending_elections"
                 android:layout_width="@dimen/size_200dp"
                 android:layout_height="wrap_content"
@@ -154,7 +160,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
-            <TextView
+              <TextView
                 android:id="@+id/text_view_pending_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -169,7 +175,7 @@
                 />
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+              <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="@dimen/size_35dp"
                 android:layout_height="@dimen/size_35dp"
@@ -179,7 +185,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 >
 
-              <ImageView
+                <ImageView
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:contentDescription="@string/app_name"
@@ -189,12 +195,12 @@
                   app:layout_constraintTop_toTopOf="parent"
                   app:srcCompat="@drawable/ic_hourglass"
                   />
+              </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+          </androidx.cardview.widget.CardView>
 
-          </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
+          <androidx.cardview.widget.CardView
             android:id="@+id/card_view_active_elections"
             android:layout_width="0dp"
             app:cardCornerRadius="@dimen/size_10dp"
@@ -205,12 +211,12 @@
             app:layout_constraintTop_toBottomOf="@+id/card_view_pending_elections"
             >
 
-          <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               >
 
-            <TextView
+              <TextView
                 android:id="@+id/active_elections"
                 android:layout_width="@dimen/size_200dp"
                 android:layout_height="wrap_content"
@@ -224,7 +230,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
-            <TextView
+              <TextView
                 android:id="@+id/text_view_active_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -239,7 +245,7 @@
                 />
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+              <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
                 android:layout_width="@dimen/size_35dp"
                 android:layout_height="@dimen/size_35dp"
@@ -249,7 +255,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 >
 
-              <ImageView
+                <ImageView
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:contentDescription="@string/app_name"
@@ -259,12 +265,12 @@
                   app:layout_constraintTop_toTopOf="parent"
                   app:srcCompat="@drawable/ic_vote"
                   />
+              </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+          </androidx.cardview.widget.CardView>
 
-          </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
+          <androidx.cardview.widget.CardView
             android:id="@+id/card_view_finished_elections"
             android:layout_width="0dp"
             app:cardCornerRadius="@dimen/size_10dp"
@@ -275,12 +281,12 @@
             app:layout_constraintTop_toBottomOf="@+id/card_view_active_elections"
             >
 
-          <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               >
 
-            <TextView
+              <TextView
                 android:id="@+id/finished_elections"
                 android:layout_width="@dimen/size_200dp"
                 android:layout_height="wrap_content"
@@ -294,7 +300,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
-            <TextView
+              <TextView
                 android:id="@+id/text_view_finished_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -309,7 +315,7 @@
                 />
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+              <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
                 android:layout_width="@dimen/size_35dp"
                 android:layout_height="@dimen/size_35dp"
@@ -319,7 +325,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 >
 
-              <ImageView
+                <ImageView
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:contentDescription="@string/app_name"
@@ -329,24 +335,26 @@
                   app:layout_constraintTop_toTopOf="parent"
                   app:srcCompat="@drawable/ic_tick"
                   />
+              </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+          </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-          </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
-      <com.facebook.shimmer.ShimmerFrameLayout
+        <com.facebook.shimmer.ShimmerFrameLayout
           android:id="@+id/shimmer_view_container"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="0dp"
           android:layout_marginTop="0dp"
           app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-          app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+          app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+          >
 
-        <include layout="@layout/data_placeholder_shimmer_layout" />
-      </com.facebook.shimmer.ShimmerFrameLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-  </ScrollView>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+          <include layout="@layout/data_placeholder_shimmer_layout" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>
 
