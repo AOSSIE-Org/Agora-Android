@@ -164,7 +164,6 @@ constructor(
     mBinding.shimmerViewContainer.startShimmer()
     mBinding.shimmerViewContainer.visibility = View.VISIBLE
     mBinding.constraintLayout.visibility = View.GONE
-
   }
 
   override fun onSessionExpired() {
