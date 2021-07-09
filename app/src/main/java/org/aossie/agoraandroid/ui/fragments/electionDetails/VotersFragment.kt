@@ -73,7 +73,6 @@ constructor(
     return binding.root
   }
 
-
   private fun setObserver() {
     electionDetailsViewModel.getVoterResponseLiveData.observe(
       viewLifecycleOwner,
