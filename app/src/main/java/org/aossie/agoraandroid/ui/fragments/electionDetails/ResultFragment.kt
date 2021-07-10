@@ -109,7 +109,7 @@ constructor(
             binding.progressBar.show()
           }
           ResponseUI.Status.SUCCESS -> {
-            if (responseUI.message.isNullOrBlank()) binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message ?: "")
             binding.progressBar.hide()
             responseUI.data?.let {
               initResultView(it)
@@ -120,7 +120,7 @@ constructor(
             }
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message)
             binding.progressBar.hide()
             binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
             binding.tvNoResult.show()
@@ -149,7 +149,7 @@ constructor(
             }
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message)
           }
         }
       }

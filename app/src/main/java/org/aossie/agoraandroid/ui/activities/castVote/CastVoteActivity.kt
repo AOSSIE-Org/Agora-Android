@@ -196,7 +196,7 @@ class CastVoteActivity :
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      binding.root.snackbar(response.message ?: "")
+      binding.root.snackbar(response.message)
     }
     else -> {
       // Do Nothing
@@ -237,7 +237,7 @@ class CastVoteActivity :
       )
     }
     ResponseUI.Status.ERROR -> {
-      navigateToMainActivity(response.message ?: "")
+      navigateToMainActivity(response.message ?: getString(string.something_went_wrong_please_try_again_later))
     }
     else -> {
       // Do Nothing

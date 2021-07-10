@@ -118,7 +118,7 @@ constructor(
 
             binding.progressBar.hide()
             binding.submitDetailsBtn.toggleIsEnable()
-            binding.root.snackbar(it.message ?: "")
+            binding.root.snackbar(it.message)
             lifecycleScope.launch {
               prefs.setUpdateNeeded(true)
             }
@@ -128,7 +128,7 @@ constructor(
           ResponseUI.Status.ERROR -> {
 
             binding.progressBar.hide()
-            binding.root.snackbar(it.message ?: "")
+            binding.root.snackbar(it.message)
             binding.submitDetailsBtn.toggleIsEnable()
           }
         }
@@ -144,7 +144,7 @@ constructor(
 
           ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
 
-          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+          ResponseUI.Status.ERROR -> onReadFailure(it.message)
         }
       }
     )
@@ -519,7 +519,7 @@ constructor(
     list?.let { if (list.isNotEmpty()) importCandidates(list) }
   }
 
-  private fun onReadFailure(message: String) {
+  private fun onReadFailure(message: String?) {
     binding.root.snackbar(message)
   }
 }

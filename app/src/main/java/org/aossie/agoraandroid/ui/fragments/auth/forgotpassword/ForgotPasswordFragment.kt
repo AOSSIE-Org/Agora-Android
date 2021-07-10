@@ -70,7 +70,7 @@ constructor(
           }
           ResponseUI.Status.ERROR -> {
             binding.progressBar.hide()
-            binding.root.snackbar(it.message ?: "")
+            binding.root.snackbar(it.message)
           }
         }
       }

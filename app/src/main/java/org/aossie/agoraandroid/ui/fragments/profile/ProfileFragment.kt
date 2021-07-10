@@ -243,7 +243,7 @@ constructor(
           ResponseUI.Status.LOADING -> onLoadingStarted()
           ResponseUI.Status.SUCCESS -> binding.progressBar.hide()
           ResponseUI.Status.ERROR -> {
-            onError(it.message ?: "")
+            onError(it.message)
           }
         }
       }
@@ -273,7 +273,7 @@ constructor(
       viewLifecycleOwner,
       {
         when (it.status) {
-          ResponseUI.Status.ERROR -> onError(it.message ?: "")
+          ResponseUI.Status.ERROR -> onError(it.message)
 
           ResponseUI.Status.SUCCESS -> {
             binding.progressBar.hide()
@@ -301,7 +301,7 @@ constructor(
     toggleIsEnable()
   }
 
-  private fun onError(message: String) {
+  private fun onError(message: String?) {
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()
@@ -357,7 +357,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(getString(string.profile_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: getString(string.something_went_wrong_please_try_again_later))
+    ResponseUI.Status.ERROR -> onFailure(response.message)
 
     else -> onStarted()
   }
@@ -368,7 +368,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(getString(string.user_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: getString(string.something_went_wrong_please_try_again_later))
+    ResponseUI.Status.ERROR -> onFailure(response.message)
     else -> onStarted()
   }
 
@@ -378,7 +378,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(getString(string.authentication_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    ResponseUI.Status.ERROR -> onFailure(response.message)
     else -> onStarted()
   }
 
@@ -391,7 +391,7 @@ constructor(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    ResponseUI.Status.ERROR -> onFailure(response.message)
 
     else -> onStarted()
   }
@@ -467,7 +467,7 @@ constructor(
     toggleIsEnable()
   }
 
-  private fun onFailure(message: String) {
+  private fun onFailure(message: String?) {
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()

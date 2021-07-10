@@ -59,13 +59,13 @@ constructor(
         Timber.d(response.toString())
         _getSendVoterLiveData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        _getSendVoterLiveData.value = ResponseUI.error(e.message ?: "")
+        _getSendVoterLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getSendVoterLiveData.value = ResponseUI.error(e.message ?: "")
+        _getSendVoterLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getSendVoterLiveData.value = ResponseUI.error(e.message ?: "")
+        _getSendVoterLiveData.value = ResponseUI.error(e.message)
       }
     }
   }

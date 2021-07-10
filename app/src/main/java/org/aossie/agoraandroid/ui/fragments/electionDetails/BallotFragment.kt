@@ -83,9 +83,7 @@ constructor(
           when (responseUI.status) {
             ResponseUI.Status.LOADING -> binding.progressBar.hide()
             ResponseUI.Status.SUCCESS -> {
-              if (responseUI.message.isNullOrBlank()) binding.root.snackbar(
-                responseUI.message ?: ""
-              )
+              binding.root.snackbar(responseUI.message)
               binding.progressBar.hide()
 
               responseUI.dataList?.let {
@@ -93,7 +91,7 @@ constructor(
               } ?: binding.tvEmptyBallots.show()
             }
             ResponseUI.Status.ERROR -> {
-              binding.root.snackbar(responseUI.message ?: "")
+              binding.root.snackbar(responseUI.message)
               binding.progressBar.hide()
             }
           }

@@ -114,7 +114,7 @@ constructor(
         when (it.status) {
           ResponseUI.Status.LOADING -> onStarted()
           ResponseUI.Status.SUCCESS -> onSuccess(it.message ?: "")
-          ResponseUI.Status.ERROR -> onFailure(it.message ?: "")
+          ResponseUI.Status.ERROR -> onFailure(it.message)
         }
       }
     )
@@ -126,7 +126,7 @@ constructor(
             // Do Nothing
           }
           ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
-          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+          ResponseUI.Status.ERROR -> onReadFailure(it.message)
         }
       }
     )
@@ -225,7 +225,7 @@ constructor(
     binding.buttonInviteVoter.toggleIsEnable()
   }
 
-  fun onFailure(message: String) {
+  fun onFailure(message: String?) {
     binding.progressBar.hide()
     binding.buttonInviteVoter.toggleIsEnable()
     val mMessage = StringBuilder()
@@ -318,7 +318,7 @@ constructor(
     }
   }
 
-  fun onReadFailure(message: String) {
+  fun onReadFailure(message: String?) {
     binding.root.snackbar(message)
   }
 }

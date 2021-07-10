@@ -107,7 +107,7 @@ constructor(
             binding.signupBtn.toggleIsEnable()
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(it.message ?: "")
+            binding.root.snackbar(it.message)
             binding.progressBar.hide()
             binding.signupBtn.toggleIsEnable()
           }

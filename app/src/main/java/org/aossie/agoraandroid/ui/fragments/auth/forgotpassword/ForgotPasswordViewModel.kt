@@ -27,12 +27,12 @@ constructor(
       if (e.message == "412") {
         _getSendResetLinkLiveData.value = ResponseUI.error(AppConstants.INVALID_USERNAME_MESSAGE)
       } else {
-        getSendResetLinkLiveData.value = ResponseUI.error(e.message ?: "")
+        getSendResetLinkLiveData.value = ResponseUI.error(e.message)
       }
     } catch (e: NoInternetException) {
-      getSendResetLinkLiveData.value = ResponseUI.error(e.message ?: "")
+      getSendResetLinkLiveData.value = ResponseUI.error(e.message)
     } catch (e: Exception) {
-      getSendResetLinkLiveData.value = ResponseUI.error(e.message ?: "")
+      getSendResetLinkLiveData.value = ResponseUI.error(e.message)
     }
   }
 }

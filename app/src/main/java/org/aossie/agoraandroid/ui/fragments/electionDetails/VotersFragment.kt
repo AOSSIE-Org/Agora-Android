@@ -80,14 +80,14 @@ constructor(
         when (responseUI.status) {
           ResponseUI.Status.LOADING -> binding.progressBar.show()
           ResponseUI.Status.SUCCESS -> {
-            if (responseUI.message.isNullOrBlank()) binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message ?: "")
             binding.progressBar.hide()
             responseUI.dataList?.let {
               initRecyclerView(it)
             } ?: binding.tvNoVotersForThisElection.show()
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message)
             binding.progressBar.hide()
           }
         }

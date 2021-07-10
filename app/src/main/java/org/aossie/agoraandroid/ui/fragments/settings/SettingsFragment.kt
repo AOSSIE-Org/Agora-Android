@@ -111,7 +111,7 @@ constructor(
         when (it.status) {
           ResponseUI.Status.ERROR -> {
             binding.progressBar.hide()
-            binding.root.snackbar(it.message ?: "")
+            binding.root.snackbar(it.message)
             binding.tvLogout.toggleIsEnable()
           }
           ResponseUI.Status.SUCCESS -> {

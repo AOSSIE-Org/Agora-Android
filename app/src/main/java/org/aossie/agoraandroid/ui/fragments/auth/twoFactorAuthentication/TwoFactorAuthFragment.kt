@@ -118,7 +118,7 @@ constructor(
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      binding.root.snackbar(response.message ?: "")
+      binding.root.snackbar(response.message)
     }
 
     else -> { // Do Nothing
@@ -132,7 +132,7 @@ constructor(
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      binding.root.snackbar(response.message ?: "")
+      binding.root.snackbar(response.message)
     }
     else -> { // Do Nothing
     }
