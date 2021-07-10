@@ -35,7 +35,7 @@ fun TextView.show() {
 
 fun View.snackbar(message: String?) {
   val msg: String = message ?: context.getString(R.string.something_went_wrong_please_try_again_later)
-  if(msg.isNotEmpty()) {
+  if (msg.isNotEmpty()) {
     Snackbar.make(this, msg, Snackbar.LENGTH_INDEFINITE)
       .also { snackbar ->
         snackbar.setAction(AppConstants.ok) {
