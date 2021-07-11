@@ -7,6 +7,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def fbApiScheme = properties.getProperty('fbApiScheme')
 def fbApiKey = properties.getProperty('fbApiKey')
+def secretKey = properties.getProperty('secretKey')
 
 android {
   def keystoreProperties = new Properties()
@@ -22,6 +23,7 @@ android {
   defaultConfig {
     resValue("string", "fbApiKey", fbApiKey)
     resValue("string", "fbApiScheme", fbApiScheme)
+    resValue("string", "secretKey", secretKey)
     vectorDrawables.useSupportLibrary = true
     applicationId "org.aossie.agoraandroid"
     minSdkVersion rootProject.ext.minSdk

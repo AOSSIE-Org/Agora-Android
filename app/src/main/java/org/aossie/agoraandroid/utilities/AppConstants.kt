@@ -28,6 +28,11 @@ object AppConstants {
   const val INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error. Please enter valid input"
   const val URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$"
   const val BASE_URL = "https://agora-rest-api.herokuapp.com/api/v1/"
+  const val SECRET_KEY_FACTORY_ALGORITHM = "PBKDF2WithHmacSHA1"
+  const val SECRET_KEY_SPEC_ALGORITHM = "AES"
+  const val CIPHER_TRANSFORMATION = "AES/CBC/PKCS7Padding"
+  const val SALT = "QWlGNHNhMTJTQWZ2bGhpV3U="
+  const val IV = "bVQzNFNhRkQ1Njc4UUFaWA=="
   enum class Status {
     PENDING, ACTIVE, FINISHED
   }

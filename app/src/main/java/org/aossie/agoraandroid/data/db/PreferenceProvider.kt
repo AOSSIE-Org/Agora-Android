@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.aossie.agoraandroid.utilities.SecurityUtil
 import org.aossie.agoraandroid.utilities.dataStore
 import javax.inject.Inject
 
@@ -13,6 +14,7 @@ class PreferenceProvider
 @Inject
 constructor(
   context: Context,
+  private val securityUtil: SecurityUtil
 ) {
 
   companion object {
@@ -64,37 +66,49 @@ constructor(
 
   suspend fun setAccessToken(token: String?) {
     dataStore.edit {
-      it[ACCESS_TOKEN] = token ?: ""
+      it[ACCESS_TOKEN] = token?.let { _token ->
+        securityUtil.encryptToken(_token)
+      } ?: ""
     }
   }
 
   fun getAccessToken(): Flow<String?> {
     return dataStore.data.map {
-      it[ACCESS_TOKEN]
+      it[ACCESS_TOKEN]?.let { _token ->
+        securityUtil.decryptToken(_token)
+      }
     }
   }
 
   suspend fun setRefreshToken(token: String?) {
     dataStore.edit {
-      it[REFRESH_TOKEN] = token ?: ""
+      it[REFRESH_TOKEN] = token?.let { _token ->
+        securityUtil.encryptToken(_token)
+      } ?: ""
     }
   }
 
   fun getRefreshToken(): Flow<String?> {
     return dataStore.data.map {
-      it[REFRESH_TOKEN]
+      it[REFRESH_TOKEN]?.let { _token ->
+        securityUtil.decryptToken(_token)
+      }
     }
   }
 
   suspend fun setFacebookAccessToken(accessToken: String?) {
     dataStore.edit {
-      it[FACEBOOK_ACCESS_TOKEN] = accessToken ?: ""
+      it[FACEBOOK_ACCESS_TOKEN] = accessToken?.let { _token ->
+        securityUtil.encryptToken(_token)
+      } ?: ""
     }
   }
 
   fun getFacebookAccessToken(): Flow<String?> {
     return dataStore.data.map {
-      it[FACEBOOK_ACCESS_TOKEN]
+      it[FACEBOOK_ACCESS_TOKEN]?.let { _token ->
+        securityUtil.decryptToken(_token)
+      }
     }
   }
 
