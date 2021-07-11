@@ -1,25 +1,29 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
-import org.aossie.agoraandroid.utilities.lazyDeferred
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+
+const val TOTAL_ELECTION_COUNT = "totalElectionsCount"
+const val PENDING_ELECTION_COUNT = "pendingElectionsCount"
+const val FINISHED_ELECTION_COUNT = "finishedElectionsCount"
+const val ACTIVE_ELECTION_COUNT = "activeElectionsCount"
 
 class HomeViewModel @Inject
 constructor(
@@ -34,24 +38,51 @@ constructor(
     .time
   private val date: String = formatter.format(currentDate)
 
-  val totalElectionsCount by lazyDeferred {
-    electionsRepository.getTotalElectionsCount()
-  }
-  val pendingElectionsCount by lazyDeferred {
-    electionsRepository.getPendingElectionsCount(date)
-  }
-  val finishedElectionsCount by lazyDeferred {
-    electionsRepository.getFinishedElectionsCount(date)
-  }
-  val activeElectionsCount by lazyDeferred {
-    electionsRepository.getActiveElectionsCount(date)
+  private val _countMediatorLiveData = MediatorLiveData<MutableMap<String, Int>>()
+  val countMediatorLiveData = _countMediatorLiveData
+  init {
+    _countMediatorLiveData.value = mutableMapOf()
+    addSource()
   }
 
-  fun getElections(): LiveData<List<Election>> {
+  fun getElections() {
     GlobalScope.launch {
       electionsRepository.fetchAndSaveElections()
     }
-    return electionsRepository.getElections()
+  }
+
+  private fun addSource() {
+    viewModelScope.launch {
+      _countMediatorLiveData.addSource(electionsRepository.getTotalElectionsCount()) { value ->
+        _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
+          this?.let {
+            this[TOTAL_ELECTION_COUNT] = value
+          }
+        }
+      }
+      _countMediatorLiveData.addSource(electionsRepository.getPendingElectionsCount(date)) { value ->
+        _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
+          this?.let {
+            this[PENDING_ELECTION_COUNT] = value
+          }
+        }
+      }
+      _countMediatorLiveData.addSource(electionsRepository.getActiveElectionsCount(date)) { value ->
+        _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
+          this?.let {
+            this[ACTIVE_ELECTION_COUNT] = value
+          }
+        }
+      }
+
+      _countMediatorLiveData.addSource(electionsRepository.getFinishedElectionsCount(date)) { value ->
+        _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
+          this?.let {
+            this[FINISHED_ELECTION_COUNT] = value
+          }
+        }
+      }
+    }
   }
 
   fun deleteUserData() {

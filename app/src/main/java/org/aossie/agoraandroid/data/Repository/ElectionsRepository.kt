@@ -109,7 +109,6 @@ constructor(
       try {
         val response = apiRequest { api.getAllElections() }
         elections.postValue(response.elections)
-        Timber.d(isNeeded.toString())
         Timber.d(response.toString())
       } catch (e: NoInternetException) {
       } catch (e: ApiException) {

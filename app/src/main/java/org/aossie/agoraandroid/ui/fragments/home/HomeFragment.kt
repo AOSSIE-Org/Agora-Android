@@ -21,7 +21,6 @@ import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
@@ -57,6 +56,7 @@ constructor(
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
+
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
     loginViewModel.sessionExpiredListener = this
@@ -139,60 +139,27 @@ constructor(
           }
         }
       )
-    Coroutines.main {
-      val totalElectionCount = homeViewModel.totalElectionsCount.await()
-      val pendingElectionCount = homeViewModel.pendingElectionsCount.await()
-      val activeElectionCount = homeViewModel.activeElectionsCount.await()
-      val finishedElectionCount = homeViewModel.finishedElectionsCount.await()
-      if (view != null) {
-        homeViewModel.getElections()
-          .observe(
-            viewLifecycleOwner,
-            androidx.lifecycle.Observer {
-              totalElectionCount.observe(
-                viewLifecycleOwner,
-                Observer {
-                  binding.textViewTotalCount.text = it.toString()
-                  pendingElectionCount.observe(
-                    viewLifecycleOwner,
-                    Observer { pending ->
-                      binding.textViewPendingCount.text = pending.toString()
-                      finishedElectionCount.observe(
-                        viewLifecycleOwner,
-                        Observer { finished ->
-                          binding.textViewFinishedCount.text = finished.toString()
-                          activeElectionCount.observe(
-                            viewLifecycleOwner,
-                            Observer { active ->
-                              binding.textViewActiveCount.text = active.toString()
-                              binding.shimmerViewContainer.stopShimmer()
-                              binding.shimmerViewContainer.visibility = View.GONE
-                              binding.constraintLayout.visibility = View.VISIBLE
-                              binding.swipeRefresh.isRefreshing =
-                                false // Disables the refresh icon
-                            }
-                          )
-                        }
-                      )
-                    }
-                  )
-                }
-              )
-            }
-          )
+
+    homeViewModel.countMediatorLiveData.observe(
+      viewLifecycleOwner,
+      {
+        binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
+        binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
+        binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
+        binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
+        binding.shimmerViewContainer.stopShimmer()
+        binding.shimmerViewContainer.visibility = View.GONE
+        binding.constraintLayout.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
       }
-    }
+    )
+
     return binding.root
   }
 
   override fun onResume() {
     super.onResume()
-    binding.shimmerViewContainer.startShimmer()
-  }
-
-  override fun onPause() {
-    binding.shimmerViewContainer.stopShimmer()
-    super.onPause()
+    updateUi()
   }
 
   override fun onDestroyView() {
@@ -205,9 +172,11 @@ constructor(
   private fun updateUi() {
     lifecycleScope.launch {
       preferenceProvider.setUpdateNeeded(true)
+      homeViewModel.getElections()
     }
-    Navigation.findNavController(binding.root)
-      .navigate(R.id.homeFragment)
+    binding.shimmerViewContainer.startShimmer()
+    binding.shimmerViewContainer.visibility = View.VISIBLE
+    binding.constraintLayout.visibility = View.GONE
   }
 
   override fun onSessionExpired() {
