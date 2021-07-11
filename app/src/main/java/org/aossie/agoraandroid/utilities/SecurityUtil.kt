@@ -45,11 +45,11 @@ class SecurityUtil(
         PBEKeySpec(
           secretKey.toCharArray(), Base64.decode(AppConstants.SALT, Base64.DEFAULT), 10000, 256
         )
-      val tmp = factory.generateSecret(spec);
+      val tmp = factory.generateSecret(spec)
       val secretKey = SecretKeySpec(tmp.encoded, AppConstants.SECRET_KEY_SPEC_ALGORITHM)
 
-      val cipher = Cipher.getInstance(AppConstants.CIPHER_TRANSFORMATION);
-      cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
+      val cipher = Cipher.getInstance(AppConstants.CIPHER_TRANSFORMATION)
+      cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec)
       return String(cipher.doFinal(Base64.decode(encryptedToken, Base64.DEFAULT)))
     } catch (e: Exception) {
       Timber.d(e.toString())

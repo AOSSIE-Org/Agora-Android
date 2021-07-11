@@ -83,7 +83,7 @@ constructor(
       Observer {
         if (it != null) {
           binding.tvEmailId.text = it.email
-          binding.tvName.text = (it.firstName?:"") + " " + (it.lastName?:"")
+          binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
           mUser = it
           if (it.avatarURL != null) {
             if (it.avatarURL.isUrl())
