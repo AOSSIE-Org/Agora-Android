@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -62,9 +61,8 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    binding =
-      DataBindingUtil.inflate(inflater, layout.fragment_calendar_view_election, container, false)
+  ): View {
+    binding = FragmentCalendarViewElectionBinding.inflate(layoutInflater)
 
     initView()
 

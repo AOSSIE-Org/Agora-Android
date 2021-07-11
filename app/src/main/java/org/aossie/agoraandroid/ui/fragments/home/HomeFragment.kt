@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -14,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
@@ -55,9 +53,9 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
 
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+    binding = FragmentHomeBinding.inflate(layoutInflater)
 
     loginViewModel.sessionExpiredListener = this
     binding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)

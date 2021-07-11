@@ -7,7 +7,6 @@ import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -79,7 +78,8 @@ class CastVoteActivity :
     super.onCreate(savedInstanceState)
     window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-    binding = DataBindingUtil.setContentView(this, R.layout.activity_cast_vote)
+    binding = ActivityCastVoteBinding.inflate(layoutInflater)
+    setContentView(binding.root)
     initObservers()
     processURL()
   }
@@ -209,9 +209,10 @@ class CastVoteActivity :
         this,
         Observer {
           Timber.d(it.toString())
-          binding.election = it
           if (it != null) {
             try {
+              binding.tvName.text = it.name
+              binding.tvDescription.text = it.description
               val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
               val formattedStartingDate: Date = formatter.parse(it.startingDate!!) as Date
               val formattedEndingDate: Date = formatter.parse(it.endingDate!!) as Date

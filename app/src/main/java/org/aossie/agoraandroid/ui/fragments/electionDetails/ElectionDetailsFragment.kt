@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -61,9 +59,8 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    binding =
-      DataBindingUtil.inflate(inflater, R.layout.fragment_election_details, container, false)
+  ): View {
+    binding = FragmentElectionDetailsBinding.inflate(layoutInflater)
     val args =
       ElectionDetailsFragmentArgs.fromBundle(
         requireArguments()
@@ -170,8 +167,9 @@ constructor(
         Observer {
           if (it != null) {
             Timber.d(it.toString())
-            binding.election = it
             try {
+              binding.tvName.text = it.name
+              binding.tvDescription.text = it.description
               val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
               val formattedStartingDate: Date = formatter.parse(it.start!!) as Date
               val formattedEndingDate: Date = formatter.parse(it.end!!) as Date
@@ -200,7 +198,6 @@ constructor(
               }
             }
             binding.tvCandidateList.text = mCandidatesName
-            binding.executePendingBindings()
           }
         }
       )

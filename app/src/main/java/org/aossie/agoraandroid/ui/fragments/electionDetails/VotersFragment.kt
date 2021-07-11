@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -12,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.VotersAdapter
 import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentVotersBinding
@@ -52,9 +50,9 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voters, container, false)
+    binding = FragmentVotersBinding.inflate(layoutInflater)
     binding.tvNoVotersForThisElection.hide()
     electionDetailsViewModel.sessionExpiredListener = this
 

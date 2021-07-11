@@ -2,11 +2,9 @@ package org.aossie.agoraandroid.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.databinding.ListItemAddCandidateBinding
 
 class CandidatesAdapter(
@@ -19,10 +17,7 @@ class CandidatesAdapter(
     parent: ViewGroup,
     viewType: Int
   ): CandidatesViewHolder {
-    val binding: ListItemAddCandidateBinding =
-      DataBindingUtil.inflate(
-        LayoutInflater.from(parent.context), layout.list_item_add_candidate, parent, false
-      )
+    val binding = ListItemAddCandidateBinding.inflate(LayoutInflater.from(parent.context))
     return CandidatesViewHolder(binding, onItemClicked)
   }
 

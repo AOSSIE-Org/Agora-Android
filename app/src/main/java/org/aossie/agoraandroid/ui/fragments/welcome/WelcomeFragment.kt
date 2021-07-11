@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.databinding.FragmentWelcomeBinding
 
 /**
@@ -21,10 +19,9 @@ class WelcomeFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding =
-      DataBindingUtil.inflate(inflater, R.layout.fragment_welcome, container, false)
+    binding = FragmentWelcomeBinding.inflate(layoutInflater)
 //    hideActionBar()
 
     binding.btnLogin.setOnClickListener {

@@ -11,11 +11,9 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.NewUserDto
@@ -51,9 +49,9 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
+    binding = FragmentSignUpBinding.inflate(layoutInflater)
     signUpViewModel.sessionExpiredListener = this
 
     binding.signupBtn.setOnClickListener {

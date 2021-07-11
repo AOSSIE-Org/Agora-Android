@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
@@ -48,8 +46,8 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_two_factor_auth, container, false)
+  ): View {
+    binding = FragmentTwoFactorAuthBinding.inflate(layoutInflater)
 
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
     viewModel.sessionExpiredListener = this

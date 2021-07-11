@@ -7,7 +7,6 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,7 +19,6 @@ import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
@@ -75,16 +73,17 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
+    binding = FragmentSettingsBinding.inflate(layoutInflater)
 
     val user = viewModel.user
     user.observe(
       viewLifecycleOwner,
       Observer {
         if (it != null) {
-          binding.user = it
+          binding.tvEmailId.text = it.email
+          binding.tvName.text = (it.firstName?:"") + " " + (it.lastName?:"")
           mUser = it
           if (it.avatarURL != null) {
             if (it.avatarURL.isUrl())

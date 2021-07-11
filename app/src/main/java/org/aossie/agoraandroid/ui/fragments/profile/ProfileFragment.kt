@@ -17,7 +17,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -30,7 +29,6 @@ import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
@@ -96,11 +94,11 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     homeViewModel.sessionExpiredListener = this
     loginViewModel.sessionExpiredListener = this
 
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+    binding = FragmentProfileBinding.inflate(layoutInflater)
     binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
     binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
     binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
@@ -215,16 +213,7 @@ constructor(
       viewLifecycleOwner,
       Observer {
         if (it != null) {
-          binding.user = it
-          mUser = it
-          if (it.avatarURL != null) {
-            if (it.avatarURL.isUrl())
-              cacheAndSaveImage(it.avatarURL)
-            else {
-              val bitmap = decodeBitmap(it.avatarURL)
-              setAvatarFile(bitmap.toByteArray())
-            }
-          }
+          updateUI(it)
         }
       }
     )
@@ -294,6 +283,25 @@ constructor(
         }
       }
     )
+  }
+
+  private fun updateUI(
+    it: User,
+  ) {
+    binding.userNameTv.text = it.username
+    binding.emailIdTv.text = it.email
+    binding.firstNameTiet.setText(it.firstName)
+    binding.lastNameTiet.setText(it.lastName)
+    binding.switchWidget.isChecked = it.twoFactorAuthentication ?: false
+    mUser = it
+    if (it.avatarURL != null) {
+      if (it.avatarURL.isUrl())
+        cacheAndSaveImage(it.avatarURL)
+      else {
+        val bitmap = decodeBitmap(it.avatarURL)
+        setAvatarFile(bitmap.toByteArray())
+      }
+    }
   }
 
   private fun onLoadingStarted() {

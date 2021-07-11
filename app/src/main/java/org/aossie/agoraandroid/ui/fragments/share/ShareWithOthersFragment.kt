@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.facebook.FacebookSdk
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.databinding.FragmentShareWithOthersBinding
 
 /**
@@ -23,9 +21,8 @@ class ShareWithOthersFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    binding =
-      DataBindingUtil.inflate(inflater, R.layout.fragment_share_with_others, container, false)
+  ): View {
+    binding = FragmentShareWithOthersBinding.inflate(layoutInflater)
     binding.btnShare.setOnClickListener {
       val shareIntent = Intent(Intent.ACTION_SEND)
 
