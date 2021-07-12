@@ -225,7 +225,7 @@ constructor(
             )
           )
         } else {
-          binding.root.snackbar("Please Add At least One Candidate")
+          binding.root.snackbar(getString(string.add_one_candidate))
         }
       }
     }
@@ -353,11 +353,11 @@ constructor(
 
   private fun validateInputs(): Boolean {
     return if (startDateCalendar == null || endDateCalendar == null) {
-      binding.root.errorDialog("Please enter all the details")
+      binding.root.errorDialog(getString(string.enter_details))
       false
     } else {
       if (endDateCalendar!!.before(startDateCalendar)) {
-        binding.root.errorDialog("End date should be after starting date and time i.e. $mStartDate")
+        binding.root.errorDialog(getString(string.end_date_after_starting_date) + "i.e. $mStartDate")
         false
       } else {
         true
@@ -403,7 +403,7 @@ constructor(
         startDateCalendar?.set(Calendar.MONTH, sMonth)
         startDateCalendar?.set(Calendar.DAY_OF_MONTH, sDay)
         if (startDateCalendar != null && startDateCalendar!!.before(Calendar.getInstance())) {
-          binding.root.errorDialog("Start date should be after current date and time")
+          binding.root.errorDialog(getString(string.start_date_after_current_date))
         } else {
           binding.startDateTil.editText?.setText(mStartDate)
         }
@@ -451,7 +451,7 @@ constructor(
         endDateCalendar?.set(Calendar.MONTH, eMonth)
         endDateCalendar?.set(Calendar.DAY_OF_MONTH, eDay)
         if (endDateCalendar != null && endDateCalendar!!.before(Calendar.getInstance())) {
-          binding.root.errorDialog("End date should be after current date and time")
+          binding.root.errorDialog(getString(string.end_date_after_starting_date))
         } else {
           binding.endDateTil.editText?.setText(mEndDate)
         }

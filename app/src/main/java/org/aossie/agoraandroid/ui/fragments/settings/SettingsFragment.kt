@@ -19,6 +19,7 @@ import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
@@ -199,7 +200,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      binding.root.snackbar("Error while loading the image")
+      binding.root.snackbar(getString(string.error_loading_image))
     }
   }
 }

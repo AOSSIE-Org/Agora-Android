@@ -68,7 +68,7 @@ constructor(
         .toString()
         .trim { it <= ' ' }
       if (otp.isEmpty()) {
-        binding.root.snackbar("Please Enter OTP")
+        binding.root.snackbar(getString(string.enter_otp))
         binding.progressBar.hide()
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
@@ -78,7 +78,7 @@ constructor(
           )
         } else {
           binding.progressBar.hide()
-          binding.root.snackbar("Please, tap on the checkbox to proceed")
+          binding.root.snackbar(getString(string.tap_on_checkbox))
         }
       }
     }
@@ -88,7 +88,7 @@ constructor(
         binding.progressBar.show()
         viewModel.resendOTP(user!!.username!!)
       } else {
-        binding.root.snackbar("Please try again")
+        binding.root.snackbar(getString(string.something_went_wrong_please_try_again_later))
       }
     }
 

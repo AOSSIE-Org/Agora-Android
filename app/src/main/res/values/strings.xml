@@ -52,7 +52,6 @@
   <string name="election_name">Election Name</string>
   <string name="start_date_format">Start Date</string>
   <string name="end_date_format">End Date</string>
-  <string name="enter_details">Enter Details</string>
   <string name="datePicker">datePicker</string>
   <string name="select_voting_algorithm">Select Voting Algorithm</string>
   <string name="baldwin">Baldwin</string>
@@ -281,5 +280,12 @@
   <string name="share_result">Share Result</string>
   <string name="votes">Votes</string>
   <string name="activation_link_sent">An activation link has been sent to registered email id to verify your account</string>
+  <string name="enter_otp">Please Enter OTP</string>
+  <string name="tap_on_checkbox">Please, tap on the checkbox to proceed</string>
+  <string name="add_one_candidate">Please Add At least One Candidate</string>
+  <string name="enter_details">Please enter all the details</string>
+  <string name="end_date_after_starting_date">\"End date should be after starting date and time"</string>
+  <string name="start_date_after_current_date">Start date should be after current date and time</string>
+  <string name="error_loading_image">Error while loading the image</string>
 </resources>
 

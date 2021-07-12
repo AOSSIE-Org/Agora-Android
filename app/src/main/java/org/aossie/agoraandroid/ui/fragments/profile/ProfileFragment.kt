@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
-import android.text.TextWatcher
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -99,10 +99,34 @@ constructor(
     loginViewModel.sessionExpiredListener = this
 
     binding = FragmentProfileBinding.inflate(layoutInflater)
-    binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
-    binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
-    binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
-    binding.confirmPasswordTiet.addTextChangedListener(getTextWatcher(4))
+    binding.firstNameTiet.doAfterTextChanged {
+      if (it.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
+      else binding.firstNameTil.error = null
+    }
+    binding.lastNameTiet.doAfterTextChanged {
+      if (it.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
+      else binding.lastNameTil.error = null
+    }
+    binding.newPasswordTiet.doAfterTextChanged {
+      when {
+        it.isNullOrEmpty() ->
+          binding.newPasswordTil.error =
+            getString(string.password_empty_warn)
+        else -> binding.newPasswordTil.error = null
+      }
+      checkNewPasswordAndConfirmPassword(it)
+    }
+    binding.confirmPasswordTiet.doAfterTextChanged {
+      when {
+        it.isNullOrEmpty() ->
+          binding.confirmPasswordTil.error =
+            getString(string.password_empty_warn)
+        it.toString() != binding.newPasswordTiet.text.toString() ->
+          binding.confirmPasswordTil.error =
+            getString(string.password_not_match_warn)
+        else -> binding.confirmPasswordTil.error = null
+      }
+    }
     setObserver()
 
     binding.updateProfileBtn.setOnClickListener {
@@ -404,59 +428,6 @@ constructor(
     else -> onStarted()
   }
 
-  private fun getTextWatcher(code: Int): TextWatcher {
-    return object : TextWatcher {
-      override fun afterTextChanged(s: Editable?) {
-        when (code) {
-          1 -> {
-            if (s.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
-            else binding.firstNameTil.error = null
-          }
-          2 -> {
-            if (s.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
-            else binding.lastNameTil.error = null
-          }
-          3 -> {
-            when {
-              s.isNullOrEmpty() ->
-                binding.newPasswordTil.error =
-                  getString(string.password_empty_warn)
-              else -> binding.newPasswordTil.error = null
-            }
-            checkNewPasswordAndConfirmPassword(s)
-          }
-          4 -> {
-            when {
-              s.isNullOrEmpty() ->
-                binding.confirmPasswordTil.error =
-                  getString(string.password_empty_warn)
-              s.toString() != binding.newPasswordTiet.text.toString() ->
-                binding.confirmPasswordTil.error =
-                  getString(string.password_not_match_warn)
-              else -> binding.confirmPasswordTil.error = null
-            }
-          }
-        }
-      }
-
-      override fun beforeTextChanged(
-        s: CharSequence?,
-        start: Int,
-        count: Int,
-        after: Int
-      ) {
-      }
-
-      override fun onTextChanged(
-        s: CharSequence?,
-        start: Int,
-        before: Int,
-        count: Int
-      ) {
-      }
-    }
-  }
-
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
     if (s.toString() == binding.confirmPasswordTiet.text.toString()
       .trim()
@@ -582,7 +553,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      binding.root.snackbar("Error while loading the image")
+      binding.root.snackbar(getString(string.error_loading_image))
     }
   }
 
