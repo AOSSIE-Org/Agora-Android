@@ -51,13 +51,13 @@ constructor(
         userRepository.changePassword(password)
         _passwordRequestCode.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _passwordRequestCode.value = ResponseUI.error(e.message ?: "")
+        _passwordRequestCode.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _passwordRequestCode.value = ResponseUI.error(e.message ?: "")
+        _passwordRequestCode.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _passwordRequestCode.value = ResponseUI.error(e.message ?: "")
+        _passwordRequestCode.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -83,13 +83,13 @@ constructor(
         }
         _changeAvatarResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _changeAvatarResponse.value = ResponseUI.error(e.message ?: "")
+        _changeAvatarResponse.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _changeAvatarResponse.value = ResponseUI.error(e.message ?: "")
+        _changeAvatarResponse.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _changeAvatarResponse.value = ResponseUI.error(e.message ?: "")
+        _changeAvatarResponse.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -100,13 +100,13 @@ constructor(
         userRepository.toggleTwoFactorAuth()
         _toggleTwoFactorAuthResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message ?: "")
+        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message ?: "")
+        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message ?: "")
+        _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -130,13 +130,13 @@ constructor(
         userRepository.saveUser(user)
         _userUpdateResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _userUpdateResponse.value = ResponseUI.error(e.message ?: "")
+        _userUpdateResponse.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _userUpdateResponse.value = ResponseUI.error(e.message ?: "")
+        _userUpdateResponse.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _userUpdateResponse.value = ResponseUI.error(e.message ?: "")
+        _userUpdateResponse.value = ResponseUI.error(e.message)
       }
     }
   }

@@ -1,8 +1,6 @@
 package org.aossie.agoraandroid.ui.fragments.auth.signup
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -11,29 +9,15 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_sign_up.security_answer
-import kotlinx.android.synthetic.main.fragment_sign_up.signup_email
-import kotlinx.android.synthetic.main.fragment_sign_up.signup_first_name
-import kotlinx.android.synthetic.main.fragment_sign_up.signup_last_name
-import kotlinx.android.synthetic.main.fragment_sign_up.signup_password
-import kotlinx.android.synthetic.main.fragment_sign_up.signup_user_name
-import kotlinx.android.synthetic.main.fragment_sign_up.view.et_answer
-import kotlinx.android.synthetic.main.fragment_sign_up.view.et_email
-import kotlinx.android.synthetic.main.fragment_sign_up.view.et_first_name
-import kotlinx.android.synthetic.main.fragment_sign_up.view.et_last_name
-import kotlinx.android.synthetic.main.fragment_sign_up.view.et_password
-import kotlinx.android.synthetic.main.fragment_sign_up.view.et_username
-import kotlinx.android.synthetic.main.fragment_sign_up.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_sign_up.view.sign_up_security_question
-import kotlinx.android.synthetic.main.fragment_sign_up.view.signup_btn
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.NewUserDto
 import org.aossie.agoraandroid.data.dto.SecurityQuestionDto
+import org.aossie.agoraandroid.databinding.FragmentSignUpBinding
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -54,7 +38,7 @@ constructor(
 
   private var securityQuestionOfSignUp: String? = null
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentSignUpBinding
 
   private val signUpViewModel: SignUpViewModel by viewModels {
     viewModelFactory
@@ -64,12 +48,12 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_sign_up, container, false)
+    binding = FragmentSignUpBinding.inflate(layoutInflater)
     signUpViewModel.sessionExpiredListener = this
 
-    rootView.signup_btn.setOnClickListener {
+    binding.signupBtn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
       validateAllFields()
     }
@@ -80,9 +64,9 @@ constructor(
     )
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-    rootView.sign_up_security_question.adapter = adapter
+    binding.signUpSecurityQuestion.adapter = adapter
 
-    rootView.sign_up_security_question.onItemSelectedListener = object : OnItemSelectedListener {
+    binding.signUpSecurityQuestion.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
         view: View,
@@ -99,98 +83,98 @@ constructor(
     }
 
     // Attach text watcher to different text input edit texts
-    rootView.et_username.addTextChangedListener(signUpTextWatcher)
-    rootView.et_first_name.addTextChangedListener(signUpTextWatcher)
-    rootView.et_last_name.addTextChangedListener(signUpTextWatcher)
-    rootView.et_email.addTextChangedListener(signUpTextWatcher)
-    rootView.et_answer.addTextChangedListener(signUpTextWatcher)
-    rootView.et_password.addTextChangedListener(signUpTextWatcher)
+    binding.etUsername.doAfterTextChanged { doAfterTextChange() }
+    binding.etFirstName.doAfterTextChanged { doAfterTextChange() }
+    binding.etLastName.doAfterTextChanged { doAfterTextChange() }
+    binding.etEmail.doAfterTextChanged { doAfterTextChange() }
+    binding.etAnswer.doAfterTextChanged { doAfterTextChange() }
+    binding.etPassword.doAfterTextChanged { doAfterTextChange() }
 
     signUpViewModel.getSignUpLiveData.observe(
       viewLifecycleOwner,
       {
         when (it.status) {
           ResponseUI.Status.LOADING -> {
-            rootView.progress_bar.show()
-            rootView.signup_btn.toggleIsEnable()
+            binding.progressBar.show()
+            binding.signupBtn.toggleIsEnable()
           }
           ResponseUI.Status.SUCCESS -> {
-            rootView.progress_bar.hide()
-            rootView.snackbar(getString(string.verify_account))
-            rootView.signup_btn.toggleIsEnable()
+            binding.progressBar.hide()
+            binding.root.snackbar(getString(string.verify_account))
+            binding.signupBtn.toggleIsEnable()
           }
           ResponseUI.Status.ERROR -> {
-            rootView.snackbar(it.message ?: "")
-            rootView.progress_bar.hide()
-            rootView.signup_btn.toggleIsEnable()
+            binding.root.snackbar(it.message)
+            binding.progressBar.hide()
+            binding.signupBtn.toggleIsEnable()
           }
         }
       }
     )
 
-    return rootView
+    return binding.root
   }
 
   private fun validateAllFields() {
-    val userName = signup_user_name.editText
+    val userName = binding.signupUserName.editText
       ?.text
       .toString()
-    val firstName = signup_first_name.editText
+    val firstName = binding.signupFirstName.editText
       ?.text
       .toString()
-    val lastName = signup_last_name.editText
+    val lastName = binding.signupLastName.editText
       ?.text
       .toString()
-    val userEmail = signup_email.editText
+    val userEmail = binding.signupEmail.editText
       ?.text
       .toString()
-    val userPass = signup_password.editText
+    val userPass = binding.signupPassword.editText
       ?.text
       .toString()
-    val securityQuestionAnswer = security_answer.editText
+    val securityQuestionAnswer = binding.securityAnswer.editText
       ?.text
       .toString()
     val securityQuestion = securityQuestionOfSignUp
     if (!Patterns.EMAIL_ADDRESS.matcher(userEmail)
       .matches()
     ) {
-      signup_email.error = "Enter a valid email address!!!"
+      binding.signupEmail.error = "Enter a valid email address!!!"
     } else {
-      signup_email.error = null
-      signUpViewModel.signUpRequest(NewUserDto(userEmail, firstName, userName, lastName, userPass, SecurityQuestionDto(securityQuestionAnswer, "", securityQuestion!!)))
+      binding.signupEmail.error = null
+      signUpViewModel.signUpRequest(
+        NewUserDto(
+          userEmail, firstName, userName, lastName, userPass,
+          SecurityQuestionDto(securityQuestionAnswer, "", securityQuestion!!)
+        )
+      )
     }
   }
 
-  private val signUpTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-    override fun afterTextChanged(s: Editable) {}
-
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-      val usernameInput: String = rootView.et_username.text
-        .toString()
-        .trim()
-      val passwordInput: String = rootView.et_password.text
-        .toString()
-        .trim()
-      val firstNameInput: String = rootView.et_first_name.text
-        .toString()
-        .trim()
-      val lastNameInput: String = rootView.et_last_name.text
-        .toString()
-        .trim()
-      val emailInput: String = rootView.et_email.text
-        .toString()
-        .trim()
-      val answerInput: String = rootView.et_answer.text
-        .toString()
-        .trim()
-      rootView.signup_btn.isEnabled = usernameInput.isNotEmpty() &&
-        passwordInput.isNotEmpty() &&
-        firstNameInput.isNotEmpty() &&
-        lastNameInput.isNotEmpty() &&
-        emailInput.isNotEmpty() &&
-        answerInput.isNotEmpty()
-    }
+  private fun doAfterTextChange() {
+    val usernameInput: String = binding.etUsername.text
+      .toString()
+      .trim()
+    val passwordInput: String = binding.etPassword.text
+      .toString()
+      .trim()
+    val firstNameInput: String = binding.etFirstName.text
+      .toString()
+      .trim()
+    val lastNameInput: String = binding.etLastName.text
+      .toString()
+      .trim()
+    val emailInput: String = binding.etEmail.text
+      .toString()
+      .trim()
+    val answerInput: String = binding.etAnswer.text
+      .toString()
+      .trim()
+    binding.signupBtn.isEnabled = usernameInput.isNotEmpty() &&
+      passwordInput.isNotEmpty() &&
+      firstNameInput.isNotEmpty() &&
+      lastNameInput.isNotEmpty() &&
+      emailInput.isNotEmpty() &&
+      answerInput.isNotEmpty()
   }
 
   override fun onSessionExpired() {

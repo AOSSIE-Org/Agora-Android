@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.data.Repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -103,12 +104,11 @@ constructor(
   }
 
   private suspend fun fetchElections() {
-    val isNeeded = prefs.getUpdateNeeded()
+    val isNeeded = prefs.getUpdateNeeded().first()
     if (isNeeded) {
       try {
         val response = apiRequest { api.getAllElections() }
         elections.postValue(response.elections)
-        Timber.d(isNeeded.toString())
         Timber.d(response.toString())
       } catch (e: NoInternetException) {
       } catch (e: ApiException) {

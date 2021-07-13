@@ -38,14 +38,14 @@ constructor(
         if (e.message == "409") {
           _getSignUpLiveData.value = ResponseUI.error(AppConstants.USER_ALREADY_FOUND_MESSAGE)
         } else {
-          _getSignUpLiveData.value = ResponseUI.error(e.message ?: "")
+          _getSignUpLiveData.value = ResponseUI.error(e.message)
         }
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getSignUpLiveData.value = ResponseUI.error(e.message ?: "")
+        _getSignUpLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getSignUpLiveData.value = ResponseUI.error(e.message ?: "")
+        _getSignUpLiveData.value = ResponseUI.error(e.message)
       }
     }
   }

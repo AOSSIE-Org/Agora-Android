@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -63,9 +62,9 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
+    binding = FragmentResultBinding.inflate(layoutInflater)
     binding.tvNoResult.hide()
     electionDetailsViewModel.sessionExpiredListener = this
 
@@ -109,7 +108,7 @@ constructor(
             binding.progressBar.show()
           }
           ResponseUI.Status.SUCCESS -> {
-            if (responseUI.message.isNullOrBlank()) binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message ?: "")
             binding.progressBar.hide()
             responseUI.data?.let {
               initResultView(it)
@@ -120,7 +119,7 @@ constructor(
             }
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message)
             binding.progressBar.hide()
             binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
             binding.tvNoResult.show()
@@ -149,7 +148,7 @@ constructor(
             }
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(responseUI.message ?: "")
+            binding.root.snackbar(responseUI.message)
           }
         }
       }

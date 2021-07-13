@@ -11,14 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.btn_verify_otp
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.cb_trusted_device
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.otp_til
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_two_factor_auth.view.tv_resend_otp
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
@@ -34,7 +29,7 @@ constructor(
   private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(), SessionExpiredListener {
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentTwoFactorAuthBinding
 
   private var crypto: String? = null
   private var user: User? = null
@@ -51,8 +46,8 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    rootView = inflater.inflate(R.layout.fragment_two_factor_auth, container, false)
+  ): View {
+    binding = FragmentTwoFactorAuthBinding.inflate(layoutInflater)
 
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
     viewModel.sessionExpiredListener = this
@@ -66,34 +61,34 @@ constructor(
       }
     )
 
-    rootView.btn_verify_otp.setOnClickListener {
-      rootView.progress_bar.show()
-      val otp = rootView.otp_til.editText
+    binding.btnVerifyOtp.setOnClickListener {
+      binding.progressBar.show()
+      val otp = binding.otpTil.editText
         ?.text
         .toString()
         .trim { it <= ' ' }
       if (otp.isEmpty()) {
-        rootView.snackbar("Please Enter OTP")
-        rootView.progress_bar.hide()
+        binding.root.snackbar(getString(string.enter_otp))
+        binding.progressBar.hide()
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        if (rootView.cb_trusted_device.isChecked) {
+        if (binding.cbTrustedDevice.isChecked) {
           viewModel.verifyOTP(
-            otp, rootView.cb_trusted_device.isChecked, user!!.crypto!!
+            otp, binding.cbTrustedDevice.isChecked, user!!.crypto!!
           )
         } else {
-          rootView.progress_bar.hide()
-          rootView.snackbar("Please, tap on the checkbox to proceed")
+          binding.progressBar.hide()
+          binding.root.snackbar(getString(string.tap_on_checkbox))
         }
       }
     }
 
-    rootView.tv_resend_otp.setOnClickListener {
+    binding.tvResendOtp.setOnClickListener {
       if (user != null) {
-        rootView.progress_bar.show()
+        binding.progressBar.show()
         viewModel.resendOTP(user!!.username!!)
       } else {
-        rootView.snackbar("Please try again")
+        binding.root.snackbar(getString(string.something_went_wrong_please_try_again_later))
       }
     }
 
@@ -110,18 +105,18 @@ constructor(
       }
     )
 
-    return rootView
+    return binding.root
   }
 
   private fun handleVerifyOtp(response: ResponseUI<Any>) = when (response.status) {
     ResponseUI.Status.SUCCESS -> {
-      rootView.progress_bar.hide()
-      Navigation.findNavController(rootView)
+      binding.progressBar.hide()
+      Navigation.findNavController(binding.root)
         .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
     }
     ResponseUI.Status.ERROR -> {
-      rootView.progress_bar.hide()
-      rootView.snackbar(response.message ?: "")
+      binding.progressBar.hide()
+      binding.root.snackbar(response.message)
     }
 
     else -> { // Do Nothing
@@ -130,12 +125,12 @@ constructor(
 
   private fun handleResendOtp(response: ResponseUI<Any>) = when (response.status) {
     ResponseUI.Status.SUCCESS -> {
-      rootView.progress_bar.hide()
-      rootView.snackbar(getString(string.otp_sent))
+      binding.progressBar.hide()
+      binding.root.snackbar(getString(string.otp_sent))
     }
     ResponseUI.Status.ERROR -> {
-      rootView.progress_bar.hide()
-      rootView.snackbar(response.message ?: "")
+      binding.progressBar.hide()
+      binding.root.snackbar(response.message)
     }
     else -> { // Do Nothing
     }

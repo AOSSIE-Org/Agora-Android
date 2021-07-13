@@ -7,24 +7,19 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
-import kotlinx.android.synthetic.main.fragment_settings.view.image_view
-import kotlinx.android.synthetic.main.fragment_settings.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_about
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_account_settings
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_contact_us
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_logout
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_share
-import org.aossie.agoraandroid.R
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
@@ -57,7 +52,6 @@ constructor(
   private val prefs: PreferenceProvider
 ) : Fragment(), SessionExpiredListener {
 
-  private lateinit var rootView: View
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
   }
@@ -80,17 +74,17 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
-    rootView = binding.root
+    binding = FragmentSettingsBinding.inflate(layoutInflater)
 
     val user = viewModel.user
     user.observe(
       viewLifecycleOwner,
       Observer {
         if (it != null) {
-          binding.user = it
+          binding.tvEmailId.text = it.email
+          binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
           mUser = it
           if (it.avatarURL != null) {
             if (it.avatarURL.isUrl())
@@ -107,7 +101,7 @@ constructor(
     mAvatar.observe(
       viewLifecycleOwner,
       Observer {
-        rootView.image_view.loadImageFromMemoryNoCache(it)
+        binding.imageView.loadImageFromMemoryNoCache(it)
       }
     )
 
@@ -116,68 +110,70 @@ constructor(
       {
         when (it.status) {
           ResponseUI.Status.ERROR -> {
-            rootView.progress_bar.hide()
-            rootView.snackbar(it.message ?: "")
-            rootView.tv_logout.toggleIsEnable()
+            binding.progressBar.hide()
+            binding.root.snackbar(it.message)
+            binding.tvLogout.toggleIsEnable()
           }
           ResponseUI.Status.SUCCESS -> {
-            rootView.progress_bar.hide()
-            if (prefs.getIsFacebookUser()) {
-              LoginManager.getInstance()
-                .logOut()
+            binding.progressBar.hide()
+            lifecycleScope.launch {
+              if (prefs.getIsFacebookUser().first()) {
+                LoginManager.getInstance()
+                  .logOut()
+              }
             }
             homeViewModel.deleteUserData()
-            rootView.shortSnackbar("Logged Out")
-            Navigation.findNavController(rootView)
+            binding.root.shortSnackbar("Logged Out")
+            Navigation.findNavController(binding.root)
               .navigate(
                 SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
               )
           }
           ResponseUI.Status.LOADING -> {
-            rootView.progress_bar.show()
-            rootView.tv_logout.toggleIsEnable()
+            binding.progressBar.show()
+            binding.tvLogout.toggleIsEnable()
           }
         }
       }
     )
     homeViewModel.sessionExpiredListener = this
 
-    rootView.tv_account_settings.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvAccountSettings.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(SettingsFragmentDirections.actionSettingsFragmentToProfileFragment())
     }
 
-    rootView.tv_share.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvShare.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(
           SettingsFragmentDirections.actionSettingsFragmentToShareWithOthersFragment()
         )
     }
 
-    rootView.tv_about.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvAbout.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(
           SettingsFragmentDirections.actionSettingsFragmentToAboutFragment()
         )
     }
 
-    rootView.tv_contact_us.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvContactUs.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(
           SettingsFragmentDirections.actionSettingsFragmentToContactUsFragment()
         )
     }
 
-    rootView.tv_logout.setOnClickListener {
+    binding.tvLogout.setOnClickListener {
       homeViewModel.doLogout()
     }
 
-    return rootView
+    return binding.root
   }
 
   private fun cacheAndSaveImage(url: String) {
-    rootView.image_view.loadImage(url, OFFLINE) {
-      rootView.image_view.loadImage(url)
+    binding.imageView.loadImage(url, OFFLINE) {
+      binding.imageView.loadImage(url)
     }
   }
 
@@ -204,7 +200,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      rootView.snackbar("Error while loading the image")
+      binding.root.snackbar(getString(string.error_loading_image))
     }
   }
 }

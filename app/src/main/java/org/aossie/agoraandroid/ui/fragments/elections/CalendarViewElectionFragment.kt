@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.drawable
@@ -60,9 +61,8 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    binding =
-      DataBindingUtil.inflate(inflater, layout.fragment_calendar_view_election, container, false)
+  ): View {
+    binding = FragmentCalendarViewElectionBinding.inflate(layoutInflater)
 
     initView()
 
@@ -233,7 +233,9 @@ constructor(
   }
 
   private fun doYourUpdate() {
-    prefs.setUpdateNeeded(true)
+    lifecycleScope.launch {
+      prefs.setUpdateNeeded(true)
+    }
     Navigation.findNavController(binding.root)
       .navigate(R.id.calendarViewElectionFragment)
   }

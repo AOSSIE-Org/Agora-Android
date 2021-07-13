@@ -54,11 +54,11 @@ constructor(
         mVerifyVoterResponse.value = ResponseUI.success()
         mElection.value = electionDto
       } catch (e: ApiException) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
+        mVerifyVoterResponse.value = ResponseUI.error(e.message)
       } catch (e: NoInternetException) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
+        mVerifyVoterResponse.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message ?: "")
+        mVerifyVoterResponse.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -73,11 +73,11 @@ constructor(
         electionsRepository.castVote(id, ballotInput, passCode)
         mCastVoteResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
-        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
+        mCastVoteResponse.value = ResponseUI.error(e.message)
       } catch (e: NoInternetException) {
-        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
+        mCastVoteResponse.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        mCastVoteResponse.value = ResponseUI.error(e.message ?: "")
+        mCastVoteResponse.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -99,7 +99,7 @@ constructor(
         }
       } catch (ex: Exception) {
         withContext(Dispatchers.Main) {
-          _getDeepLinkLiveData.value = ResponseUI.error(ex.message ?: "")
+          _getDeepLinkLiveData.value = ResponseUI.error(ex.message)
         }
       }
     }

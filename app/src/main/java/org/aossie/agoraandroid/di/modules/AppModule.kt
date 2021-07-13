@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
 import org.aossie.agoraandroid.BuildConfig
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.AppDatabase
@@ -16,8 +17,8 @@ import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
-import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.SecurityUtil
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
@@ -30,14 +31,8 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesPreferenceProvider(context: Context): PreferenceProvider {
-    return PreferenceProvider(context)
-  }
-
-  @Provides
-  @Singleton
-  fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs {
-    return ElectionDetailsSharedPrefs(context)
+  fun providesPreferenceProvider(context: Context, securityUtil: SecurityUtil): PreferenceProvider {
+    return PreferenceProvider(context, securityUtil)
   }
 
   @Provides
@@ -177,5 +172,13 @@ class AppModule {
     preferenceProvider: PreferenceProvider
   ): ElectionsRepository {
     return ElectionsRepository(api, appDatabase, preferenceProvider)
+  }
+
+  @Provides
+  @Singleton
+  fun providesSecurityUtil(
+    context: Context
+  ): SecurityUtil {
+    return SecurityUtil(context.resources.getString(R.string.secretKey))
   }
 }

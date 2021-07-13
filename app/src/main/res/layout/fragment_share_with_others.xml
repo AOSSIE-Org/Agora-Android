@@ -1,71 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_color"
-    tools:context=".ui.fragments.share.ShareWithOthersFragment"
-    >
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/grey_color"
+  tools:context=".ui.fragments.share.ShareWithOthersFragment"
+  >
 
   <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/size_10dp"
-      >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_10dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/relative_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:clipToPadding="false"
-        android:clipChildren="false"
-        android:background="@drawable/white_cornered_background"
-        android:padding="@dimen/size_20dp"
-        >
+      android:id="@+id/relative_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_marginStart="0dp"
+      android:background="@drawable/white_cornered_background"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:padding="@dimen/size_20dp"
+      >
 
       <ImageView
-          android:id="@+id/image"
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/size_300dp"
-          android:contentDescription="@string/agora"
-          android:src="@drawable/ic_share"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          />
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_300dp"
+        android:contentDescription="@string/agora"
+        android:src="@drawable/ic_share"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 
       <TextView
-          android:id="@+id/tv_contact_message"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/image"
-          android:layout_centerInParent="true"
-          android:layout_marginTop="@dimen/size_10dp"
-          android:text="@string/share_with_others_to_make_open_source_a_more_beautiful_place"
-          android:textColor="@color/black_text_color"
-          android:textSize="@dimen/size_18sp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/image"
-          />
+        android:id="@+id/tv_contact_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/size_10dp"
+        android:text="@string/share_with_others_to_make_open_source_a_more_beautiful_place"
+        android:textColor="@color/black_text_color"
+        android:textSize="@dimen/size_18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        />
 
       <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/btn_share"
-          style="@style/MainButtonStyle"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/size_20dp"
-          android:paddingStart="@dimen/size_40dp"
-          android:paddingEnd="@dimen/size_40dp"
-          android:text="@string/share"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_contact_message"
-          />
+        android:id="@+id/btn_share"
+        style="@style/MainButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:paddingStart="@dimen/size_40dp"
+        android:paddingEnd="@dimen/size_40dp"
+        android:text="@string/share"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_contact_message"
+        />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
