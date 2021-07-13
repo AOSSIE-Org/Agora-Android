@@ -11,12 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_ballot.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_ballot.view.recycler_view_ballots
-import kotlinx.android.synthetic.main.fragment_ballot.view.tv_empty_ballots
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.BallotsAdapter
 import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.databinding.FragmentBallotBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.Coroutines
@@ -37,7 +34,7 @@ constructor(
 ) : Fragment(),
   SessionExpiredListener {
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentBallotBinding
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
@@ -53,14 +50,14 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_ballot, container, false)
+    binding = FragmentBallotBinding.inflate(layoutInflater)
 
-    rootView.tv_empty_ballots.hide()
+    binding.tvEmptyBallots.hide()
     electionDetailsViewModel.sessionExpiredListener = this
 
-    rootView.recycler_view_ballots.apply {
+    binding.recyclerViewBallots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       val arr = ArrayList<BallotDto>()
       adapter = BallotsAdapter(arr)
@@ -71,7 +68,7 @@ constructor(
     ).id
     electionDetailsViewModel.getBallot(id)
 
-    return rootView
+    return binding.root
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -82,18 +79,18 @@ constructor(
         viewLifecycleOwner,
         { responseUI ->
           when (responseUI.status) {
-            ResponseUI.Status.LOADING -> rootView.progress_bar.hide()
+            ResponseUI.Status.LOADING -> binding.progressBar.hide()
             ResponseUI.Status.SUCCESS -> {
-              if (responseUI.message.isNullOrBlank()) rootView.snackbar(responseUI.message ?: "")
-              rootView.progress_bar.hide()
+              binding.root.snackbar(responseUI.message)
+              binding.progressBar.hide()
 
               responseUI.dataList?.let {
                 initRecyclerView(it)
-              } ?: rootView.tv_empty_ballots.show()
+              } ?: binding.tvEmptyBallots.show()
             }
             ResponseUI.Status.ERROR -> {
-              rootView.snackbar(responseUI.message ?: "")
-              rootView.progress_bar.hide()
+              binding.root.snackbar(responseUI.message)
+              binding.progressBar.hide()
             }
           }
         }
@@ -112,10 +109,10 @@ constructor(
 
   private fun initRecyclerView(ballots: List<BallotDto>) {
     if (ballots.isEmpty()) {
-      rootView.tv_empty_ballots.show()
+      binding.tvEmptyBallots.show()
     }
     val ballotsAdapter = BallotsAdapter(ballots)
-    rootView.recycler_view_ballots.apply {
+    binding.recyclerViewBallots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = ballotsAdapter
     }
@@ -123,13 +120,14 @@ constructor(
 
   private fun getBallotsFromDb() {
     Coroutines.main {
-      electionDetailsViewModel.getElectionById(id!!).observe(
-        viewLifecycleOwner,
-        Observer {
-          initRecyclerView(it.ballot as List<BallotDto>)
-          rootView.progress_bar.hide()
-        }
-      )
+      electionDetailsViewModel.getElectionById(id!!)
+        .observe(
+          viewLifecycleOwner,
+          Observer {
+            initRecyclerView(it.ballot as List<BallotDto>)
+            binding.progressBar.hide()
+          }
+        )
     }
   }
 

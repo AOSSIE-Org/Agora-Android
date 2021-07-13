@@ -8,28 +8,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.facebook.FacebookSdk
-import kotlinx.android.synthetic.main.fragment_share_with_others.view.btn_share
-import org.aossie.agoraandroid.R.layout
+import org.aossie.agoraandroid.databinding.FragmentShareWithOthersBinding
 
 /**
  * A simple [Fragment] subclass.
  */
 class ShareWithOthersFragment : Fragment() {
+
+  private lateinit var binding: FragmentShareWithOthersBinding
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    val view =
-      inflater.inflate(layout.fragment_share_with_others, container, false)
-    view.btn_share.setOnClickListener {
+  ): View {
+    binding = FragmentShareWithOthersBinding.inflate(layoutInflater)
+    binding.btnShare.setOnClickListener {
       val shareIntent = Intent(Intent.ACTION_SEND)
 
       // Get the app link in the Play Store
       val appPackageName = FacebookSdk.getApplicationContext()
         .packageName
-      val strAppLink: String
-      strAppLink = try {
+      val strAppLink: String = try {
         "https://play.google.com/store/apps/details?id=$appPackageName"
       } catch (activityNotFound: ActivityNotFoundException) {
         "https://play.google.com/store/apps/details?id=$appPackageName"
@@ -47,6 +47,6 @@ class ShareWithOthersFragment : Fragment() {
       shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
       startActivity(Intent.createChooser(shareIntent, "Share Agora Vote Using"))
     }
-    return view
+    return binding.root
   }
 }

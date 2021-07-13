@@ -27,7 +27,6 @@ import javax.inject.Inject
 internal class CreateElectionViewModel
 @Inject
 constructor(
-  private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
@@ -36,33 +35,18 @@ constructor(
   private val _getImportVotersLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
   val getImportVotersLiveData = _getImportVotersLiveData
 
-  fun createElection() {
+  fun createElection(election: ElectionDto) {
     _getCreateElectionData.value = ResponseUI.loading()
     viewModelScope.launch(Dispatchers.Main) {
       try {
-        val response = electionsRepository.createElection(
-          ElectionDto(
-            listOf(), electionDetailsSharedPrefs.ballotVisibility,
-            electionDetailsSharedPrefs.getCandidates(),
-            electionDetailsSharedPrefs.electionDesc,
-            "Election",
-            electionDetailsSharedPrefs.endTime,
-            electionDetailsSharedPrefs.isInvite,
-            electionDetailsSharedPrefs.isRealTime,
-            electionDetailsSharedPrefs.electionName,
-            1,
-            electionDetailsSharedPrefs.startTime,
-            electionDetailsSharedPrefs.voterListVisibility,
-            electionDetailsSharedPrefs.votingAlgo
-          )
-        )
+        val response = electionsRepository.createElection(election)
         _getCreateElectionData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
+        _getCreateElectionData.value = ResponseUI.error(e.message)
       } catch (e: NoInternetException) {
-        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
+        _getCreateElectionData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getCreateElectionData.value = ResponseUI.error(e.message ?: "")
+        _getCreateElectionData.value = ResponseUI.error(e.message)
       }
     }
   }

@@ -6,36 +6,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_welcome.view.btn_login
-import kotlinx.android.synthetic.main.fragment_welcome.view.btn_signup
-import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.databinding.FragmentWelcomeBinding
 
 /**
  * A simple [Fragment] subclass.
  */
 class WelcomeFragment : Fragment() {
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentWelcomeBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_welcome, container, false)
+    binding = FragmentWelcomeBinding.inflate(layoutInflater)
 //    hideActionBar()
 
-    rootView.btn_login.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.btnLogin.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToLoginFragment())
     }
 
-    rootView.btn_signup.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.btnSignup.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToSignUpFragment())
     }
 
-    return rootView
+    return binding.root
   }
 }

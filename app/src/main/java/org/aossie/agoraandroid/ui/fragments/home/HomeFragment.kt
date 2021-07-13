@@ -9,7 +9,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
@@ -32,6 +35,8 @@ constructor(
   private val preferenceProvider: PreferenceProvider
 ) : Fragment(), SessionExpiredListener {
 
+  private lateinit var binding: FragmentHomeBinding
+
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
   }
@@ -44,38 +49,38 @@ constructor(
     viewModelFactory
   }
 
-  private lateinit var mBinding: FragmentHomeBinding
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    mBinding = FragmentHomeBinding.inflate(inflater)
-    loginViewModel.sessionExpiredListener = this
-    mBinding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
+  ): View {
 
-    mBinding.cardViewActiveElections.setOnClickListener {
-      Navigation.findNavController(mBinding.root)
+    binding = FragmentHomeBinding.inflate(layoutInflater)
+
+    loginViewModel.sessionExpiredListener = this
+    binding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
+
+    binding.cardViewActiveElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToActiveElectionsFragment())
     }
-    mBinding.cardViewPendingElections.setOnClickListener {
-      Navigation.findNavController(mBinding.root)
+    binding.cardViewPendingElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToPendingElectionsFragment())
     }
-    mBinding.cardViewFinishedElections.setOnClickListener {
-      Navigation.findNavController(mBinding.root)
+    binding.cardViewFinishedElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToFinishedElectionsFragment())
     }
-    mBinding.cardViewTotalElections.setOnClickListener {
-      Navigation.findNavController(mBinding.root)
+    binding.cardViewTotalElections.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToElectionsFragment())
     }
-    mBinding.buttonCreateElection.setOnClickListener {
-      Navigation.findNavController(mBinding.root)
+    binding.buttonCreateElection.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(HomeFragmentDirections.actionHomeFragmentToCreateElectionFragment())
     }
-    mBinding.swipeRefresh.setOnRefreshListener { updateUi() }
+    binding.swipeRefresh.setOnRefreshListener { updateUi() }
 
     loginViewModel.getLoginLiveData.observe(
       viewLifecycleOwner,
@@ -88,7 +93,7 @@ constructor(
             updateUi()
           }
           ResponseUI.Status.ERROR -> {
-            mBinding.root.snackbar(it.message ?: "")
+            binding.root.snackbar(it.message)
           }
         }
       }
@@ -115,10 +120,14 @@ constructor(
                 if (currentDate.after(expiresOn)) {
                   Timber.tag("expired")
                     .d(expireOn.toString())
-                  if (preferenceProvider.getIsFacebookUser()) {
-                    loginViewModel.facebookLogInRequest()
-                  } else {
-                    loginViewModel.refreshAccessToken(user.trustedDevice)
+                  lifecycleScope.launch {
+                    if (preferenceProvider.getIsFacebookUser()
+                      .first()
+                    ) {
+                      loginViewModel.facebookLogInRequest()
+                    } else {
+                      loginViewModel.refreshAccessToken(user.trustedDevice)
+                    }
                   }
                 }
               }
@@ -128,22 +137,22 @@ constructor(
           }
         }
       )
+
     homeViewModel.countMediatorLiveData.observe(
       viewLifecycleOwner,
       {
-        mBinding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
-        mBinding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
-        mBinding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
-        mBinding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
-        mBinding.shimmerViewContainer.stopShimmer()
-        mBinding.shimmerViewContainer.visibility = View.GONE
-        mBinding.constraintLayout.visibility = View.VISIBLE
-        mBinding.swipeRefresh.isRefreshing =
-          false // Disables the refresh icon
+        binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
+        binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
+        binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
+        binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
+        binding.shimmerViewContainer.stopShimmer()
+        binding.shimmerViewContainer.visibility = View.GONE
+        binding.constraintLayout.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
       }
     )
 
-    return mBinding.root
+    return binding.root
   }
 
   override fun onResume() {
@@ -152,18 +161,20 @@ constructor(
   }
 
   override fun onDestroyView() {
-    mBinding.swipeRefresh.setOnRefreshListener(null)
+    binding.swipeRefresh.setOnRefreshListener(null)
     homeViewModel.sessionExpiredListener = null
     loginViewModel.sessionExpiredListener = null
     super.onDestroyView()
   }
 
   private fun updateUi() {
-    preferenceProvider.setUpdateNeeded(true)
-    homeViewModel.getElections()
-    mBinding.shimmerViewContainer.startShimmer()
-    mBinding.shimmerViewContainer.visibility = View.VISIBLE
-    mBinding.constraintLayout.visibility = View.GONE
+    lifecycleScope.launch {
+      preferenceProvider.setUpdateNeeded(true)
+      homeViewModel.getElections()
+    }
+    binding.shimmerViewContainer.startShimmer()
+    binding.shimmerViewContainer.visibility = View.VISIBLE
+    binding.constraintLayout.visibility = View.GONE
   }
 
   override fun onSessionExpired() {

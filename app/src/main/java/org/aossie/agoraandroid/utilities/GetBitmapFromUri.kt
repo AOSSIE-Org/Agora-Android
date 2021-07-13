@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Build.VERSION
 import org.aossie.agoraandroid.BuildConfig
 import java.io.IOException
-import java.util.Objects
 import kotlin.math.roundToInt
 
 object GetBitmapFromUri {
@@ -31,7 +30,7 @@ object GetBitmapFromUri {
     var imageStream = context.contentResolver
       .openInputStream(selectedImage)
     BitmapFactory.decodeStream(imageStream, null, options)
-    imageStream!!.close()
+    imageStream?.close()
 
     // Calculate inSampleSize
     options.inSampleSize = calculateInSampleSize(options, MAX_WIDTH, MAX_HEIGHT)
@@ -88,16 +87,15 @@ object GetBitmapFromUri {
   ): Bitmap? {
     val input = context.contentResolver
       .openInputStream(selectedImage)
-    val ei: ExifInterface
-    ei = if (VERSION.SDK_INT > 23) {
+    val ei = if (VERSION.SDK_INT > 23) {
       if (BuildConfig.DEBUG && input == null) {
         error("Assertion failed")
       }
-      ExifInterface(input)
-    } else ExifInterface(
-      Objects.requireNonNull(selectedImage.path)
-    )
-    val orientation = ei.getAttributeInt(
+      input?.let { ExifInterface(it) }
+    } else selectedImage.path?.let {
+      ExifInterface(it)
+    }
+    val orientation = ei?.getAttributeInt(
       ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
     )
     return when (orientation) {

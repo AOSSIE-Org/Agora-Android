@@ -67,13 +67,13 @@ constructor(
         Timber.d(response.toString())
         _getBallotResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
-        _getBallotResponseLiveData.value = ResponseUI.error(e.message ?: "")
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
-        _getBallotResponseLiveData.value = ResponseUI.error(e.message ?: "")
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -88,13 +88,13 @@ constructor(
         Timber.d(response.toString())
         _getVoterResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
-        _getVoterResponseLiveData.value = ResponseUI.error(e.message ?: "")
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
       } catch (e: Exception) {
-        _getVoterResponseLiveData.value = ResponseUI.error(e.message ?: "")
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -109,13 +109,13 @@ constructor(
         Timber.d(response.toString())
         _getDeleteElectionLiveData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getDeleteElectionLiveData.value = ResponseUI.error(e.message ?: "")
+        _getDeleteElectionLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -132,14 +132,14 @@ constructor(
         else
           _getResultResponseLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
+        _getResultResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
         mNotConnected.postValue(true)
-        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
+        _getResultResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getResultResponseLiveData.value = ResponseUI.error(e.message ?: "")
+        _getResultResponseLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -220,7 +220,7 @@ constructor(
     } catch (e: FileNotFoundException) {
       _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.file_not_available))
     } catch (e: IOException) {
-      _getShareResponseLiveData.value = ResponseUI.success(context.getString(string.cannot_write_file))
+      _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.cannot_write_file))
     }
   }
 }

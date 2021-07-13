@@ -48,7 +48,7 @@ class ResponseUI<T> {
       return ResponseUI<T>(Status.SUCCESS, dataList, null, null)
     }
 
-    fun <T> error(msg: String): ResponseUI<T> {
+    fun <T> error(msg: String?): ResponseUI<T> {
       return ResponseUI<T>(Status.ERROR, null, msg)
     }
 

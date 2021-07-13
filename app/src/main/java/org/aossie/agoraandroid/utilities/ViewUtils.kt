@@ -33,16 +33,17 @@ fun TextView.show() {
   visibility = TextView.VISIBLE
 }
 
-fun View.snackbar(message: String) {
-  if (message.isNotBlank())
-    Snackbar
-      .make(this, message, Snackbar.LENGTH_INDEFINITE)
+fun View.snackbar(message: String?) {
+  val msg: String = message ?: context.getString(R.string.something_went_wrong_please_try_again_later)
+  if (msg.isNotEmpty()) {
+    Snackbar.make(this, msg, Snackbar.LENGTH_INDEFINITE)
       .also { snackbar ->
         snackbar.setAction(AppConstants.ok) {
           snackbar.dismiss()
         }
           .show()
       }
+  }
 }
 
 fun View.errorDialog(message: String) {
@@ -57,10 +58,13 @@ fun View.errorDialog(message: String) {
     .show()
 }
 
-fun View.shortSnackbar(message: String) {
-  Snackbar
-    .make(this, message, Snackbar.LENGTH_SHORT)
-    .show()
+fun View.shortSnackbar(message: String?) {
+  val msg: String = message ?: context.getString(R.string.something_went_wrong_please_try_again_later)
+  if (msg.isNotEmpty()) {
+    Snackbar
+      .make(this, msg, Snackbar.LENGTH_SHORT)
+      .show()
+  }
 }
 
 fun BottomNavigationView.animVisible() {
