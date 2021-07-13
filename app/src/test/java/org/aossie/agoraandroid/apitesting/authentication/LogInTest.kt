@@ -8,7 +8,6 @@ import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.dto.LoginDtoJsonAdapter
 import org.aossie.agoraandroid.utilities.MockFileParser
-import org.apache.tools.ant.taskdefs.Execute.launch
 import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response

@@ -9,10 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_forgot_password.view.button_send_link
-import kotlinx.android.synthetic.main.fragment_forgot_password.view.edit_text_user_name
-import kotlinx.android.synthetic.main.fragment_forgot_password.view.progress_bar
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.databinding.FragmentForgotPasswordBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.HideKeyboard
@@ -39,26 +37,23 @@ constructor(
     viewModelFactory
   }
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentForgotPasswordBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_forgot_password, container, false)
+    binding = FragmentForgotPasswordBinding.inflate(layoutInflater)
 
-    rootView.button_send_link.setOnClickListener {
-      val userName = rootView.edit_text_user_name.editText
-        ?.text
-        .toString()
-        .trim { it <= ' ' }
+    binding.buttonSendLink.setOnClickListener {
+      val userName = binding.editTextUserName.editText?.text.toString().trim()
       if (userName.isEmpty()) {
-        rootView.snackbar("Please Enter User Name")
+        binding.root.snackbar("Please Enter User Name")
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        rootView.progress_bar.show()
+        binding.progressBar.show()
         forgotPasswordViewModel.sendResetLink(userName)
       }
     }
@@ -67,20 +62,20 @@ constructor(
       viewLifecycleOwner,
       {
         when (it.status) {
-          ResponseUI.Status.LOADING -> rootView.progress_bar.show()
+          ResponseUI.Status.LOADING -> binding.progressBar.show()
           ResponseUI.Status.SUCCESS -> {
-            rootView.progress_bar.hide()
-            rootView.snackbar(requireContext().getString(R.string.link_sent_please_check_your_email))
+            binding.progressBar.hide()
+            binding.root.snackbar(getString(R.string.link_sent_please_check_your_email))
           }
           ResponseUI.Status.ERROR -> {
-            rootView.progress_bar.hide()
-            rootView.snackbar(it.message ?: "")
+            binding.progressBar.hide()
+            binding.root.snackbar(it.message)
           }
         }
       }
     )
 
-    return rootView
+    return binding.root
   }
 
   override fun onSessionExpired() {

@@ -18,21 +18,22 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import org.aossie.agoraandroid.R
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
@@ -56,7 +57,6 @@ class CreateElectionFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
-  private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
 ) : Fragment() {
 
@@ -67,12 +67,10 @@ constructor(
   private var eDay = 0
   private var eMonth: Int = 0
   private var eYear: Int = 0
-  private var mElectionName: String? = null
-  private var mElectionDescription: String? = null
   private var mStartDate: String? = null
   private var mEndDate: String? = null
-  private var calendar2: Calendar? = null
-  private var calendar3: Calendar? = null
+  private var startDateCalendar: Calendar? = null
+  private var endDateCalendar: Calendar? = null
   private var datePickerDialog: DatePickerDialog? = null
   private var timePickerDialog: TimePickerDialog? = null
 
@@ -88,20 +86,16 @@ constructor(
   private val createElectionViewModel: CreateElectionViewModel by viewModels {
     viewModelFactory
   }
-  private var mFinalIsInvite: Boolean? = null
-  private var mFinalIsRealTime: Boolean? = null
-  private var voterListVisibility: Boolean? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_election, container, false)
+    binding = FragmentCreateElectionBinding.inflate(layoutInflater)
 
     initView()
-
     initListeners()
     initObserver()
 
@@ -122,16 +116,17 @@ constructor(
 
             binding.progressBar.hide()
             binding.submitDetailsBtn.toggleIsEnable()
-            if (!it.message.isNullOrBlank()) binding.root.snackbar(it.message ?: "")
-            prefs.setUpdateNeeded(true)
-            electionDetailsSharedPrefs.clearElectionData()
+            binding.root.snackbar(it.message)
+            lifecycleScope.launch {
+              prefs.setUpdateNeeded(true)
+            }
             Navigation.findNavController(binding.root)
               .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
           }
           ResponseUI.Status.ERROR -> {
 
             binding.progressBar.hide()
-            binding.root.snackbar(it.message ?: "")
+            binding.root.snackbar(it.message)
             binding.submitDetailsBtn.toggleIsEnable()
           }
         }
@@ -147,7 +142,7 @@ constructor(
 
           ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
 
-          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+          ResponseUI.Status.ERROR -> onReadFailure(it.message)
         }
       }
     )
@@ -185,52 +180,63 @@ constructor(
 
     binding.etEndDate.setOnClickListener { handleEndDateTime() }
 
-    binding.etElectionName.doAfterTextChanged { doAfterTextChange() }
+    binding.etElectionName.doAfterTextChanged {
+      afterTextChanged()
+    }
 
-    binding.etElectionDescription.doAfterTextChanged { doAfterTextChange() }
+    binding.etElectionDescription.doAfterTextChanged {
+      afterTextChanged()
+    }
 
-    binding.etStartDate.doAfterTextChanged { doAfterTextChange() }
+    binding.etStartDate.doAfterTextChanged {
+      afterTextChanged()
+    }
 
-    binding.etEndDate.doAfterTextChanged { doAfterTextChange() }
+    binding.etEndDate.doAfterTextChanged {
+      afterTextChanged()
+    }
 
     binding.submitDetailsBtn.setOnClickListener {
-      mElectionName = binding.electionNameTil.editText?.text.toString()
-      mElectionDescription = binding.electionDescriptionTil.editText?.text.toString()
-      mStartDate = binding.startDateTil.editText?.text.toString()
-      mEndDate = binding.endDateTil.editText?.text.toString()
+      HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
       if (validateInputs()) {
-        HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        binding.endDateTil.error = null
-        electionDetailsSharedPrefs.saveElectionName(mElectionName)
-        electionDetailsSharedPrefs.saveElectionDesc(mElectionDescription)
         if (mCandidates.isNotEmpty()) {
-          HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-          electionDetailsSharedPrefs.saveCandidates(mCandidates)
-          mFinalIsInvite = binding.checkboxInvite.isChecked
-          mFinalIsRealTime = binding.checkboxRealTime.isChecked
-          voterListVisibility = binding.checkboxVoterVisibility.isChecked
-          electionDetailsSharedPrefs.saveIsInvite(mFinalIsInvite)
-          electionDetailsSharedPrefs.saveIsRealTime(mFinalIsRealTime)
-          electionDetailsSharedPrefs.saveVoterListVisibility(voterListVisibility)
-          electionDetailsSharedPrefs.saveVotingAlgo(votingAlgorithm)
-          electionDetailsSharedPrefs.saveBallotVisibility(ballotVisibility)
-          createElectionViewModel.createElection()
+          val mElectionName = binding.electionNameTil.editText?.text.toString()
+          val mElectionDescription = binding.electionDescriptionTil.editText?.text.toString()
+          val mFinalIsInvite = binding.checkboxInvite.isChecked
+          val mFinalIsRealTime = binding.checkboxRealTime.isChecked
+          val voterListVisibility = binding.checkboxVoterVisibility.isChecked
+          val startTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", startDateCalendar)
+          val endTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", endDateCalendar)
+          createElectionViewModel.createElection(
+            ElectionDto(
+              listOf(),
+              ballotVisibility,
+              mCandidates,
+              mElectionDescription,
+              "Election",
+              endTime.toString(),
+              mFinalIsInvite,
+              mFinalIsRealTime,
+              mElectionName,
+              1,
+              startTime.toString(),
+              voterListVisibility,
+              votingAlgorithm
+            )
+          )
         } else {
-          binding.root.snackbar("Please Add At least One Candidate")
+          binding.root.snackbar(getString(string.add_one_candidate))
         }
       }
     }
 
     binding.etCandidateName.doAfterTextChanged {
-      val candidateNameInput: String = binding.etCandidateName.text
-        .toString()
-        .trim()
+      val candidateNameInput = it.toString().trim()
       binding.addCandidateBtn.isEnabled = candidateNameInput.isNotEmpty()
     }
 
     binding.addCandidateBtn.setOnClickListener {
-      val name = binding.candidateTil.editText?.text.toString()
-        .trim { it <= ' ' }
+      val name = binding.candidateTil.editText?.text.toString().trim()
       addCandidate(name)
     }
 
@@ -293,6 +299,25 @@ constructor(
     )
   }
 
+  private fun afterTextChanged() {
+    val electionNameInput: String = binding.etElectionName.text
+      .toString()
+      .trim()
+    val electionDescriptionInput: String = binding.etElectionDescription.text
+      .toString()
+      .trim()
+    val startDateInput: String = binding.etStartDate.text
+      .toString()
+      .trim()
+    val endDateInput: String = binding.etEndDate.text
+      .toString()
+      .trim()
+    binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
+      electionDescriptionInput.isNotEmpty() &&
+      startDateInput.isNotEmpty() &&
+      endDateInput.isNotEmpty()
+  }
+
   private val itemTouchHelperCallback: SimpleCallback =
     object : SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
       override fun onMove(
@@ -327,12 +352,12 @@ constructor(
   }
 
   private fun validateInputs(): Boolean {
-    return if (calendar2 == null || calendar3 == null) {
-      binding.root.errorDialog("Please enter all the details")
+    return if (startDateCalendar == null || endDateCalendar == null) {
+      binding.root.errorDialog(getString(string.enter_details))
       false
     } else {
-      if (calendar3!!.before(calendar2)) {
-        binding.root.errorDialog("End date should be after starting date and time i.e. $mStartDate")
+      if (endDateCalendar!!.before(startDateCalendar)) {
+        binding.root.errorDialog(getString(string.end_date_after_starting_date) + "i.e. $mStartDate")
         false
       } else {
         true
@@ -371,18 +396,16 @@ constructor(
         else if (minute < 10) "$mStartDate at $hourOfDay:0$minute"
         else "$mStartDate at $hourOfDay:$minute"
         // Formatting the starting date in Date-Time format
-        calendar2 = Calendar.getInstance()
-        calendar2?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        calendar2?.set(Calendar.MINUTE, minute)
-        calendar2?.set(Calendar.YEAR, sYear)
-        calendar2?.set(Calendar.MONTH, sMonth)
-        calendar2?.set(Calendar.DAY_OF_MONTH, sDay)
-        if (calendar2 != null && calendar2!!.before(Calendar.getInstance())) {
-          binding.root.errorDialog("Start date should be after current date and time")
+        startDateCalendar = Calendar.getInstance()
+        startDateCalendar?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        startDateCalendar?.set(Calendar.MINUTE, minute)
+        startDateCalendar?.set(Calendar.YEAR, sYear)
+        startDateCalendar?.set(Calendar.MONTH, sMonth)
+        startDateCalendar?.set(Calendar.DAY_OF_MONTH, sDay)
+        if (startDateCalendar != null && startDateCalendar!!.before(Calendar.getInstance())) {
+          binding.root.errorDialog(getString(string.start_date_after_current_date))
         } else {
           binding.startDateTil.editText?.setText(mStartDate)
-          val charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2)
-          electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
         }
       },
       HOUR, MINUTE, true
@@ -421,18 +444,16 @@ constructor(
         else if (hourOfDay < 10) "$mEndDate at 0$hourOfDay:$minute"
         else if (minute < 10) "$mEndDate at $hourOfDay:0$minute"
         else "$mEndDate at $hourOfDay:$minute"
-        calendar3 = Calendar.getInstance()
-        calendar3?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        calendar3?.set(Calendar.MINUTE, minute)
-        calendar3?.set(Calendar.YEAR, eYear)
-        calendar3?.set(Calendar.MONTH, eMonth)
-        calendar3?.set(Calendar.DAY_OF_MONTH, eDay)
-        if (calendar3 != null && calendar3!!.before(Calendar.getInstance())) {
-          binding.root.errorDialog("End date should be after current date and time")
+        endDateCalendar = Calendar.getInstance()
+        endDateCalendar?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        endDateCalendar?.set(Calendar.MINUTE, minute)
+        endDateCalendar?.set(Calendar.YEAR, eYear)
+        endDateCalendar?.set(Calendar.MONTH, eMonth)
+        endDateCalendar?.set(Calendar.DAY_OF_MONTH, eDay)
+        if (endDateCalendar != null && endDateCalendar!!.before(Calendar.getInstance())) {
+          binding.root.errorDialog(getString(string.end_date_after_starting_date))
         } else {
           binding.endDateTil.editText?.setText(mEndDate)
-          val charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3)
-          electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
         }
       },
       HOUR, MINUTE, true
@@ -496,7 +517,7 @@ constructor(
     list?.let { if (list.isNotEmpty()) importCandidates(list) }
   }
 
-  private fun onReadFailure(message: String) {
+  private fun onReadFailure(message: String?) {
     binding.root.snackbar(message)
   }
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.datastore.preferences.preferencesDataStore
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 
@@ -18,6 +19,8 @@ fun Context.browse(url: String) {
     throw e
   }
 }
+
+val Context.dataStore by preferencesDataStore("myPrefs")
 
 fun Bitmap.toByteArray(type: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG): ByteArray {
   val bos = ByteArrayOutputStream()

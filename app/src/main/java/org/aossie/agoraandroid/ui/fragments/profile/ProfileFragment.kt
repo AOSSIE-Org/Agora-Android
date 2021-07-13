@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
-import android.text.TextWatcher
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
@@ -17,17 +16,19 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
-import androidx.databinding.DataBindingUtil
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
-import org.aossie.agoraandroid.R
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
@@ -93,15 +94,39 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     homeViewModel.sessionExpiredListener = this
     loginViewModel.sessionExpiredListener = this
 
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-    binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
-    binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
-    binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
-    binding.confirmPasswordTiet.addTextChangedListener(getTextWatcher(4))
+    binding = FragmentProfileBinding.inflate(layoutInflater)
+    binding.firstNameTiet.doAfterTextChanged {
+      if (it.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
+      else binding.firstNameTil.error = null
+    }
+    binding.lastNameTiet.doAfterTextChanged {
+      if (it.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
+      else binding.lastNameTil.error = null
+    }
+    binding.newPasswordTiet.doAfterTextChanged {
+      when {
+        it.isNullOrEmpty() ->
+          binding.newPasswordTil.error =
+            getString(string.password_empty_warn)
+        else -> binding.newPasswordTil.error = null
+      }
+      checkNewPasswordAndConfirmPassword(it)
+    }
+    binding.confirmPasswordTiet.doAfterTextChanged {
+      when {
+        it.isNullOrEmpty() ->
+          binding.confirmPasswordTil.error =
+            getString(string.password_empty_warn)
+        it.toString() != binding.newPasswordTiet.text.toString() ->
+          binding.confirmPasswordTil.error =
+            getString(string.password_not_match_warn)
+        else -> binding.confirmPasswordTil.error = null
+      }
+    }
     setObserver()
 
     binding.updateProfileBtn.setOnClickListener {
@@ -199,7 +224,8 @@ constructor(
       binding.ivProfilePic.loadImage(url)
     }
   }
-  fun setObserver() {
+
+  private fun setObserver() {
     mAvatar.observe(
       viewLifecycleOwner,
       Observer {
@@ -211,16 +237,7 @@ constructor(
       viewLifecycleOwner,
       Observer {
         if (it != null) {
-          binding.user = it
-          mUser = it
-          if (it.avatarURL != null) {
-            if (it.avatarURL.isUrl())
-              cacheAndSaveImage(it.avatarURL)
-            else {
-              val bitmap = decodeBitmap(it.avatarURL)
-              setAvatarFile(bitmap.toByteArray())
-            }
-          }
+          updateUI(it)
         }
       }
     )
@@ -239,7 +256,7 @@ constructor(
           ResponseUI.Status.LOADING -> onLoadingStarted()
           ResponseUI.Status.SUCCESS -> binding.progressBar.hide()
           ResponseUI.Status.ERROR -> {
-            onError(it.message ?: "")
+            onError(it.message)
           }
         }
       }
@@ -269,14 +286,16 @@ constructor(
       viewLifecycleOwner,
       {
         when (it.status) {
-          ResponseUI.Status.ERROR -> onError(it.message ?: "")
+          ResponseUI.Status.ERROR -> onError(it.message)
 
           ResponseUI.Status.SUCCESS -> {
             binding.progressBar.hide()
             toggleIsEnable()
-            if (prefs.getIsFacebookUser()) {
-              LoginManager.getInstance()
-                .logOut()
+            lifecycleScope.launch {
+              if (prefs.getIsFacebookUser().first()) {
+                LoginManager.getInstance()
+                  .logOut()
+              }
             }
             homeViewModel.deleteUserData()
             Navigation.findNavController(binding.root)
@@ -289,16 +308,37 @@ constructor(
       }
     )
   }
+
+  private fun updateUI(
+    it: User,
+  ) {
+    binding.userNameTv.text = it.username
+    binding.emailIdTv.text = it.email
+    binding.firstNameTiet.setText(it.firstName)
+    binding.lastNameTiet.setText(it.lastName)
+    binding.switchWidget.isChecked = it.twoFactorAuthentication ?: false
+    mUser = it
+    if (it.avatarURL != null) {
+      if (it.avatarURL.isUrl())
+        cacheAndSaveImage(it.avatarURL)
+      else {
+        val bitmap = decodeBitmap(it.avatarURL)
+        setAvatarFile(bitmap.toByteArray())
+      }
+    }
+  }
+
   private fun onLoadingStarted() {
     binding.progressBar.show()
     toggleIsEnable()
   }
 
-  private fun onError(message: String) {
+  private fun onError(message: String?) {
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()
   }
+
   private fun showChangeProfileDialog() {
     val dialogView = DialogChangeAvatarBinding.inflate(LayoutInflater.from(context))
 
@@ -349,7 +389,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(getString(string.profile_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    ResponseUI.Status.ERROR -> onFailure(response.message)
 
     else -> onStarted()
   }
@@ -360,7 +400,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(getString(string.user_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    ResponseUI.Status.ERROR -> onFailure(response.message)
     else -> onStarted()
   }
 
@@ -370,7 +410,7 @@ constructor(
       toggleIsEnable()
       binding.root.snackbar(getString(string.authentication_updated))
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    ResponseUI.Status.ERROR -> onFailure(response.message)
     else -> onStarted()
   }
 
@@ -383,66 +423,14 @@ constructor(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
-    ResponseUI.Status.ERROR -> onFailure(response.message ?: "")
+    ResponseUI.Status.ERROR -> onFailure(response.message)
 
     else -> onStarted()
   }
 
-  private fun getTextWatcher(code: Int): TextWatcher {
-    return object : TextWatcher {
-      override fun afterTextChanged(s: Editable?) {
-        when (code) {
-          1 -> {
-            if (s.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
-            else binding.firstNameTil.error = null
-          }
-          2 -> {
-            if (s.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
-            else binding.lastNameTil.error = null
-          }
-          3 -> {
-            when {
-              s.isNullOrEmpty() ->
-                binding.newPasswordTil.error =
-                  getString(string.password_empty_warn)
-              else -> binding.newPasswordTil.error = null
-            }
-            checkNewPasswordAndConfirmPassword(s)
-          }
-          4 -> {
-            when {
-              s.isNullOrEmpty() ->
-                binding.confirmPasswordTil.error =
-                  getString(string.password_empty_warn)
-              s.toString() != binding.newPasswordTiet.text.toString() ->
-                binding.confirmPasswordTil.error =
-                  getString(string.password_not_match_warn)
-              else -> binding.confirmPasswordTil.error = null
-            }
-          }
-        }
-      }
-
-      override fun beforeTextChanged(
-        s: CharSequence?,
-        start: Int,
-        count: Int,
-        after: Int
-      ) {
-      }
-
-      override fun onTextChanged(
-        s: CharSequence?,
-        start: Int,
-        before: Int,
-        count: Int
-      ) {
-      }
-    }
-  }
-
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
-    if (s.toString() == binding.confirmPasswordTiet.text.toString().trim()
+    if (s.toString() == binding.confirmPasswordTiet.text.toString()
+      .trim()
     ) {
       binding.confirmPasswordTil.error = null
     } else {
@@ -458,7 +446,7 @@ constructor(
     toggleIsEnable()
   }
 
-  private fun onFailure(message: String) {
+  private fun onFailure(message: String?) {
     binding.progressBar.hide()
     binding.root.snackbar(message)
     toggleIsEnable()
@@ -565,7 +553,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      binding.root.snackbar("Error while loading the image")
+      binding.root.snackbar(getString(string.error_loading_image))
     }
   }
 

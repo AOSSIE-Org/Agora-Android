@@ -10,11 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.snackbar.Snackbar
-import org.aossie.agoraandroid.R
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -52,7 +52,7 @@ constructor(
   private val prefs: PreferenceProvider
 ) : Fragment(), SessionExpiredListener {
 
-  lateinit var binding: FragmentInviteVotersBinding
+  private lateinit var binding: FragmentInviteVotersBinding
 
   var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
@@ -93,9 +93,9 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_invite_voters, container, false)
+    binding = FragmentInviteVotersBinding.inflate(layoutInflater)
     inviteVotersViewModel.sessionExpiredListener = this
 
     initView()
@@ -112,7 +112,7 @@ constructor(
         when (it.status) {
           ResponseUI.Status.LOADING -> onStarted()
           ResponseUI.Status.SUCCESS -> onSuccess(it.message ?: "")
-          ResponseUI.Status.ERROR -> onFailure(it.message ?: "")
+          ResponseUI.Status.ERROR -> onFailure(it.message)
         }
       }
     )
@@ -124,7 +124,7 @@ constructor(
             // Do Nothing
           }
           ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
-          ResponseUI.Status.ERROR -> onReadFailure(it.message ?: "")
+          ResponseUI.Status.ERROR -> onReadFailure(it.message)
         }
       }
     )
@@ -141,12 +141,12 @@ constructor(
 
   private fun initListeners() {
     binding.textInputVoterName.editText?.doAfterTextChanged {
-      if (it?.isNotEmpty() == true) {
+      if (it.toString().isNotEmpty()) {
         binding.textInputVoterName.error = null
       }
     }
     binding.textInputVoterEmail.editText?.doAfterTextChanged {
-      if (it?.isNotEmpty() == true) {
+      if (it.toString().isNotEmpty()) {
         binding.textInputVoterEmail.error = null
       }
     }
@@ -223,7 +223,7 @@ constructor(
     binding.buttonInviteVoter.toggleIsEnable()
   }
 
-  fun onFailure(message: String) {
+  fun onFailure(message: String?) {
     binding.progressBar.hide()
     binding.buttonInviteVoter.toggleIsEnable()
     val mMessage = StringBuilder()
@@ -234,7 +234,9 @@ constructor(
   fun onSuccess(message: String) {
     binding.progressBar.hide()
     binding.buttonInviteVoter.toggleIsEnable()
-    prefs.setUpdateNeeded(true)
+    lifecycleScope.launch {
+      prefs.setUpdateNeeded(true)
+    }
     binding.root.snackbar(message)
     Navigation.findNavController(binding.root)
       .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
@@ -314,7 +316,7 @@ constructor(
     }
   }
 
-  fun onReadFailure(message: String) {
+  fun onReadFailure(message: String?) {
     binding.root.snackbar(message)
   }
 }

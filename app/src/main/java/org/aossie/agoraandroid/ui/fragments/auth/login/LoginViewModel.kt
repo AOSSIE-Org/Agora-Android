@@ -63,13 +63,13 @@ constructor(
           }
         }
       } catch (e: ApiException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -103,13 +103,13 @@ constructor(
         getUserData(authResponse)
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -129,13 +129,13 @@ constructor(
         prefs.setIsFacebookUser(true)
         _getLoginLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getLoginLiveData.value = ResponseUI.error(e.message ?: "")
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       }
     }
   }

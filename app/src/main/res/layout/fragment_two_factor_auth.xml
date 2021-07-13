@@ -1,138 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment"
+  >
+
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment"
     >
-  <FrameLayout
+
+    <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
 
-    <androidx.core.widget.NestedScrollView
+      <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.AppCompatButton
+          android:id="@+id/btn_verify_otp"
+          style="@style/MainButtonStyle"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          >
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_verify_otp"
-            style="@style/MainButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/size_28dp"
-            android:layout_marginTop="@dimen/size_30dp"
-            android:text="@string/verify"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cb_trusted_device"
-            />
+          android:layout_marginHorizontal="@dimen/size_28dp"
+          android:layout_marginTop="@dimen/size_30dp"
+          android:text="@string/verify"
+          android:textColor="@android:color/white"
+          android:textStyle="bold"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/cb_trusted_device"
+          />
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="@dimen/size_180dp"
-            android:layout_height="@dimen/size_220dp"
-            android:layout_marginStart="@dimen/size_8dp"
-            android:layout_marginTop="@dimen/size_100dp"
-            android:layout_marginEnd="@dimen/size_8dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/signup_illustration"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.898"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+          android:id="@+id/imageView"
+          android:layout_width="@dimen/size_180dp"
+          android:layout_height="@dimen/size_220dp"
+          android:layout_marginStart="@dimen/size_8dp"
+          android:layout_marginTop="@dimen/size_100dp"
+          android:layout_marginEnd="@dimen/size_8dp"
+          android:contentDescription="@string/app_name"
+          android:src="@drawable/signup_illustration"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.898"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/size_30dp"
-            android:layout_marginTop="@dimen/size_200dp"
-            android:gravity="start"
-            android:text="@string/two_factor_authentication"
-            android:textColor="@color/black_text_color"
-            android:textSize="@dimen/size_22sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+          android:id="@+id/textView"
+          android:layout_width="180dp"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/size_30dp"
+          android:layout_marginTop="@dimen/size_200dp"
+          android:gravity="start"
+          android:text="@string/two_factor_authentication"
+          android:textColor="@color/black_text_color"
+          android:textSize="@dimen/size_22sp"
+          android:textStyle="bold"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
 
         <TextView
-            android:id="@+id/textView14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/size_10dp"
-            android:layout_marginTop="@dimen/size_16dp"
-            android:gravity="start"
-            android:paddingHorizontal="@dimen/size_20dp"
-            android:text="@string/please_enter_the_one_time_password_we_have_sent_to_your_registered_email_address"
-            android:textColor="@color/black_text_color"
-            android:textSize="@dimen/size_18sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            />
+          android:id="@+id/textView14"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/size_10dp"
+          android:layout_marginTop="@dimen/size_16dp"
+          android:gravity="start"
+          android:paddingHorizontal="@dimen/size_20dp"
+          android:text="@string/please_enter_the_one_time_password_we_have_sent_to_your_registered_email_address"
+          android:textColor="@color/black_text_color"
+          android:textSize="@dimen/size_18sp"
+          android:textStyle="bold"
+          app:layout_constraintTop_toBottomOf="@+id/imageView"
+          />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/otp_til"
-            style="@style/TextInputLayoutStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/size_8dp"
-            android:layout_marginTop="@dimen/size_25dp"
-            android:hint="@string/one_time_password"
-            android:paddingHorizontal="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14"
-            >
+          android:id="@+id/otp_til"
+          style="@style/TextInputLayoutStyle"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/size_8dp"
+          android:layout_marginTop="@dimen/size_25dp"
+          android:hint="@string/one_time_password"
+          android:paddingHorizontal="20dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textView14"
+          >
 
           <com.google.android.material.textfield.TextInputEditText
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
-            android:id="@+id/tv_resend_otp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_12dp"
-            android:layout_marginEnd="@dimen/size_8dp"
-            android:text="@string/resend_otp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/com_facebook_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/otp_til"
-            />
+          android:id="@+id/tv_resend_otp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/size_12dp"
+          android:layout_marginEnd="@dimen/size_8dp"
+          android:text="@string/resend_otp"
+          android:textAppearance="@style/TextAppearance.AppCompat.Small"
+          android:textColor="@color/com_facebook_blue"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/otp_til"
+          />
         <CheckBox
-            android:id="@+id/cb_trusted_device"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/do_you_trust_this_device"
-            android:layout_marginTop="@dimen/size_10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_resend_otp"/>
+          android:id="@+id/cb_trusted_device"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/size_10dp"
+          android:text="@string/do_you_trust_this_device"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tv_resend_otp"
+          />
       </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/progressbar_background"
-        android:padding="@dimen/size_10dp"
-        android:visibility="invisible"
-        />
+      android:id="@+id/progress_bar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:background="@drawable/progressbar_background"
+      android:padding="@dimen/size_10dp"
+      android:visibility="invisible"
+      />
   </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
