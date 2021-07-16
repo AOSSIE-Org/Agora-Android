@@ -49,11 +49,11 @@ Libraries used in this project are listed below:
 
 We started working on the project on time but I was a bit uncomfortable with the Agora Web API and this make me behind my timeline. We decided to go feature by feature and the first features that we implemented were login and signup with email baed accounts. We left the implementation of splash screen because it will slow down the process of debugging the application on real device.
 
-After that we worked on specific action on by one, we created navigation drawer using jetpack's navigation commponent and displayed he number of elections on it. Then we worked on all the fragments assosiated with the Dashbpard which are "About agora", "Profile", "Report bug", "Contact us", "Share with others".
+After that we worked on specific action on by one, we created navigation drawer using jetpack's navigation component and displayed a number of elections on it. Then we worked on all the fragments assosiated with the Dashboard which are "About Agora", "Profile", "Report bug", "Contact us", "Share with others".
 
-Then we worken on the most important feature of the application i.e., create election and then we worked on change password and forgot password. Then we moved forward to the manage the application state(login and logout). After fixing some bugs related to input validation and backward compatibility we worked on displaying the details of elections into 4 parts(Total elections, Active elections, Pending elections, Finished elections).
+Then we worked on the most important feature of the application i.e., create election and then we worked on change password and forgot password. Then we moved forward to the manage the application state(login and logout). After fixing some bugs related to input validation and backward compatibility we worked on displaying the details of elections into 4 parts(Total elections, Active elections, Pending elections, Finished elections).
 
-After that we implemented Splash screen, share with others feature facebook login and delete election.
+After that we implemented Splash screen, share with others feature, facebook login and delete election.
 During the end of coding period we worked on invite voters, view ballot, view result, view voters and managed login session. Due to some time constraints one feature "Cast votes" is pending but still we can vote through the website using android devices(thanks to agora web). I would like to complete it as soon as possible and love to mentor students if given a chance in future.
 
 I would like to thank every AOSSIE member, especially my mentors, **Thuvarakan Tharmarajasingam**, **Abanda Ludovic**, **Prudhvi Reddy** and **Bruno Woltzenlogel Paleo** for being so nice and helpful. I have learnt a lot in the past 3 months and it has been a great experience to be a part of this wonderful community. 
@@ -74,7 +74,7 @@ A special thanks to **Prudhvi** again because whenever I need help he was there 
 
 4. [Merge Request !4](https://gitlab.com/aossie/agora-android/merge_requests/5)-Completed Navigation Drawer and Home Activity-status:**Merged**
 * Created Dashboard
-* Implemnted "view profile"
+* Implemented "view profile"
 * Implemented "Contact us" feature
 * Implemented "Report a bug" feature
 
