@@ -201,7 +201,10 @@
   <string name="empty_elections">Empty Elections</string>
   <string name="get_started">Get Started</string>
   <string name="agora">AGORA</string>
-  <string name="welcome_message">Don\'t just be there,\nbe present</string>
+  <string name="first_welcome_message">Don\'t just be there,\nbe present</string>
+  <string name="second_welcome_message">Create election and\ninvite users to vote</string>
+  <string name="third_welcome_message">Vote and elect\nthe candidate</string>
+  <string name="fourth_welcome_message">Visualize results\nand declare</string>
   <string name="secret_security_question">Secret Security Question</string>
   <string name="welcome_string">Welcome,</string>
   <string name="or">——————— OR ———————</string>

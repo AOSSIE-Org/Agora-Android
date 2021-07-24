@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.Navigation
 import org.aossie.agoraandroid.databinding.FragmentWelcomeBinding
 
@@ -22,7 +24,8 @@ class WelcomeFragment : Fragment() {
   ): View {
     // Inflate the layout for this fragment
     binding = FragmentWelcomeBinding.inflate(layoutInflater)
-//    hideActionBar()
+
+    binding.viewPager.adapter = MyPagerAdapter(childFragmentManager)
 
     binding.btnLogin.setOnClickListener {
       Navigation.findNavController(binding.root)
@@ -35,5 +38,22 @@ class WelcomeFragment : Fragment() {
     }
 
     return binding.root
+  }
+
+  private class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(
+    fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+  ) {
+    override fun getItem(pos: Int): Fragment {
+      return when (pos) {
+        0 -> FirstWelcomeFragment.newInstance()
+        1 -> SecondWelcomeFragment.newInstance()
+        2 -> ThirdWelcomeFragment.newInstance()
+        else -> FourthWelcomeFragment.newInstance()
+      }
+    }
+
+    override fun getCount(): Int {
+      return 4
+    }
   }
 }
