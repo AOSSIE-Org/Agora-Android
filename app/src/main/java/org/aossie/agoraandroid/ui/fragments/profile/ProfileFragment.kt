@@ -6,19 +6,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.util.Base64
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -34,8 +29,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
@@ -46,7 +40,6 @@ import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.loadImage
 import org.aossie.agoraandroid.utilities.loadImageFromMemoryNoCache
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toByteArray
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.io.File
@@ -65,9 +58,12 @@ class ProfileFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), SessionExpiredListener {
+) : BaseFragment<FragmentProfileBinding>(viewModelFactory) {
 
-  private lateinit var binding: FragmentProfileBinding
+  override val bindingInflater: (LayoutInflater) -> FragmentProfileBinding
+    get() = {
+      FragmentProfileBinding.inflate(it)
+    }
 
   private var mAvatar = MutableLiveData<File>()
 
@@ -84,21 +80,13 @@ constructor(
     viewModelFactory
   }
 
-  private val hostViewModel: MainActivityViewModel by activityViewModels {
-    viewModelFactory
-  }
-
   private lateinit var mUser: User
-// TODO Handle passchange
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
+
+  override fun onFragmentInitiated() {
+
     homeViewModel.sessionExpiredListener = this
     loginViewModel.sessionExpiredListener = this
 
-    binding = FragmentProfileBinding.inflate(layoutInflater)
     binding.firstNameTiet.doAfterTextChanged {
       if (it.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
       else binding.firstNameTil.error = null
@@ -203,8 +191,6 @@ constructor(
         else -> updateUIAndChangePassword()
       }
     }
-
-    return binding.root
   }
 
   private fun updateUIAndChangePassword() {
@@ -335,7 +321,7 @@ constructor(
 
   private fun onError(message: String?) {
     binding.progressBar.hide()
-    binding.root.snackbar(message)
+    notify(message)
     toggleIsEnable()
   }
 
@@ -387,7 +373,7 @@ constructor(
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.profile_updated))
+      notify(getString(string.profile_updated))
     }
     ResponseUI.Status.ERROR -> onFailure(response.message)
 
@@ -398,7 +384,7 @@ constructor(
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.user_updated))
+      notify(getString(string.user_updated))
     }
     ResponseUI.Status.ERROR -> onFailure(response.message)
     else -> onStarted()
@@ -408,7 +394,7 @@ constructor(
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.authentication_updated))
+      notify(getString(string.authentication_updated))
     }
     ResponseUI.Status.ERROR -> onFailure(response.message)
     else -> onStarted()
@@ -418,7 +404,7 @@ constructor(
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.password_updated))
+      notify(getString(string.password_updated))
       loginViewModel.logInRequest(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
@@ -448,12 +434,8 @@ constructor(
 
   private fun onFailure(message: String?) {
     binding.progressBar.hide()
-    binding.root.snackbar(message)
+    notify(message)
     toggleIsEnable()
-  }
-
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
   }
 
   override fun onActivityResult(
@@ -477,7 +459,7 @@ constructor(
           mUser
         )
       } catch (e: FileNotFoundException) {
-        binding.root.snackbar(getString(string.file_not_found))
+        notify(getString(string.file_not_found))
       }
     } else if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
       val bitmap = intentData?.extras?.get("data")
@@ -517,13 +499,13 @@ constructor(
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         openGallery()
       } else {
-        binding.root.snackbar(getString(string.permission_denied))
+        notify(getString(string.permission_denied))
       }
     } else if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         openCamera()
       } else {
-        binding.root.snackbar(getString(string.permission_denied))
+        notify(getString(string.permission_denied))
       }
     }
   }
@@ -553,7 +535,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      binding.root.snackbar(getString(string.error_loading_image))
+      notify(getString(string.error_loading_image))
     }
   }
 

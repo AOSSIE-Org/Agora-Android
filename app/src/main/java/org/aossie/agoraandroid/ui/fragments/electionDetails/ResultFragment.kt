@@ -3,15 +3,12 @@ package org.aossie.agoraandroid.ui.fragments.electionDetails
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.components.Description
@@ -23,13 +20,10 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -42,29 +36,22 @@ class ResultFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),
-  SessionExpiredListener {
+) : BaseFragment<FragmentResultBinding>(viewModelFactory) {
 
-  lateinit var binding: FragmentResultBinding
+  override val bindingInflater: (LayoutInflater) -> FragmentResultBinding
+    get() = {
+      FragmentResultBinding.inflate(it)
+    }
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
-    viewModelFactory
-  }
-
-  private val hostViewModel: MainActivityViewModel by activityViewModels {
     viewModelFactory
   }
 
   private var id: String? = null
   private lateinit var winnerDto: WinnerDto
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentResultBinding.inflate(layoutInflater)
+  override fun onFragmentInitiated() {
+
     binding.tvNoResult.hide()
     electionDetailsViewModel.sessionExpiredListener = this
 
@@ -73,28 +60,7 @@ constructor(
     ).id
     electionDetailsViewModel.getResult(id)
     initListeners()
-    return binding.root
-  }
-
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
-    Coroutines.main {
-      observeResult()
-      observeConnectivity()
-    }
-  }
-
-  private fun observeConnectivity() {
-    electionDetailsViewModel.notConnected.observe(
-      viewLifecycleOwner,
-      {
-        if (it) {
-          binding.resultView.visibility = View.GONE
-          binding.tvNoResult.text = resources.getString(string.fetch_result_failed)
-          binding.tvNoResult.show()
-        }
-      }
-    )
+    observeResult()
   }
 
   private fun observeResult() {
@@ -108,7 +74,7 @@ constructor(
             binding.progressBar.show()
           }
           ResponseUI.Status.SUCCESS -> {
-            binding.root.snackbar(responseUI.message ?: "")
+            notify(responseUI.message ?: "")
             binding.progressBar.hide()
             responseUI.data?.let {
               initResultView(it)
@@ -119,7 +85,7 @@ constructor(
             }
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(responseUI.message)
+            notify(responseUI.message)
             binding.progressBar.hide()
             binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
             binding.tvNoResult.show()
@@ -148,7 +114,7 @@ constructor(
             }
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(responseUI.message)
+            notify(responseUI.message)
           }
         }
       }
@@ -186,7 +152,7 @@ constructor(
 
   private fun createExcelFileAndShare() {
     if (!this::winnerDto.isInitialized) {
-      binding.root.snackbar(getString(string.something_went_wrong_please_try_again_later))
+      notify(getString(string.something_went_wrong_please_try_again_later))
       return
     }
     id?.let {
@@ -221,10 +187,6 @@ constructor(
     binding.textViewWinnerName.text = winner.candidate?.name
   }
 
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
-  }
-
   override fun onRequestPermissionsResult(
     requestCode: Int,
     permissions: Array<String>,
@@ -234,7 +196,7 @@ constructor(
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         createExcelFileAndShare()
       } else {
-        binding.root.snackbar(getString(string.permission_denied))
+        notify(getString(string.permission_denied))
       }
     }
   }

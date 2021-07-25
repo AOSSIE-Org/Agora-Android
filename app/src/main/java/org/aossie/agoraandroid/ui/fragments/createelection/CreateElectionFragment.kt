@@ -7,11 +7,9 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -35,13 +33,13 @@ import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.errorDialog
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.util.ArrayList
 import java.util.Calendar
@@ -58,9 +56,12 @@ class CreateElectionFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment() {
+) : BaseFragment<FragmentCreateElectionBinding>(viewModelFactory) {
 
-  lateinit var binding: FragmentCreateElectionBinding
+  override val bindingInflater: (LayoutInflater) -> FragmentCreateElectionBinding
+    get() = {
+      FragmentCreateElectionBinding.inflate(it)
+    }
   private var sDay = 0
   private var sMonth: Int = 0
   private var sYear: Int = 0
@@ -87,19 +88,10 @@ constructor(
     viewModelFactory
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentCreateElectionBinding.inflate(layoutInflater)
-
+  override fun onFragmentInitiated() {
     initView()
     initListeners()
     initObserver()
-
-    return binding.root
   }
 
   private fun initObserver() {
@@ -116,7 +108,7 @@ constructor(
 
             binding.progressBar.hide()
             binding.submitDetailsBtn.toggleIsEnable()
-            binding.root.snackbar(it.message)
+            notify(it.message)
             lifecycleScope.launch {
               prefs.setUpdateNeeded(true)
             }
@@ -126,7 +118,7 @@ constructor(
           ResponseUI.Status.ERROR -> {
 
             binding.progressBar.hide()
-            binding.root.snackbar(it.message)
+            notify(it.message)
             binding.submitDetailsBtn.toggleIsEnable()
           }
         }
@@ -148,6 +140,9 @@ constructor(
     )
   }
 
+  override fun onNetworkConnected() {
+    initView()
+  }
   private fun initView() {
     candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
     binding.namesRv.layoutManager = LinearLayoutManager(context)
@@ -225,7 +220,7 @@ constructor(
             )
           )
         } else {
-          binding.root.snackbar(getString(string.add_one_candidate))
+          notify(getString(string.add_one_candidate))
         }
       }
     }
@@ -508,7 +503,7 @@ constructor(
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         searchExcelFile()
       } else {
-        binding.root.snackbar(getString(string.permission_denied))
+        notify(getString(string.permission_denied))
       }
     }
   }
@@ -518,6 +513,6 @@ constructor(
   }
 
   private fun onReadFailure(message: String?) {
-    binding.root.snackbar(message)
+    notify(message)
   }
 }

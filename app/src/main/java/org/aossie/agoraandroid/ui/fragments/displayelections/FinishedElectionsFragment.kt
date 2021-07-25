@@ -2,8 +2,6 @@ package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentFinishedElectionsBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -28,9 +27,12 @@ class FinishedElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment() {
+) : BaseFragment<FragmentFinishedElectionsBinding>(viewModelFactory) {
 
-  private lateinit var binding: FragmentFinishedElectionsBinding
+  override val bindingInflater: (LayoutInflater) -> FragmentFinishedElectionsBinding
+    get() = {
+      FragmentFinishedElectionsBinding.inflate(it)
+    }
 
   private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
     viewModelFactory
@@ -46,13 +48,7 @@ constructor(
       .navigate(action)
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentFinishedElectionsBinding.inflate(layoutInflater)
+  override fun onFragmentInitiated() {
     mElections = ArrayList()
     electionsAdapter = ElectionsAdapter(onItemClicked)
     binding.rvFinishedElections.apply {
@@ -62,7 +58,10 @@ constructor(
     binding.searchView.doAfterTextChanged {
       filter(it.toString())
     }
-    return binding.root
+  }
+
+  override fun onNetworkConnected() {
+    bindUI()
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {

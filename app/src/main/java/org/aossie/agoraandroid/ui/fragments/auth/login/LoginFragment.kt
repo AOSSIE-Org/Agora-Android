@@ -1,10 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,14 +19,13 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentLoginBinding
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.disableView
 import org.aossie.agoraandroid.utilities.enableView
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,9 +38,11 @@ class LoginFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), SessionExpiredListener {
-
-  private lateinit var binding: FragmentLoginBinding
+) : BaseFragment<FragmentLoginBinding>(viewModelFactory) {
+  override val bindingInflater: (LayoutInflater) -> FragmentLoginBinding
+    get() = {
+      FragmentLoginBinding.inflate(it)
+    }
 
   private val loginViewModel: LoginViewModel by viewModels {
     viewModelFactory
@@ -52,19 +50,11 @@ constructor(
 
   private var callbackManager: CallbackManager? = null
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentLoginBinding.inflate(layoutInflater)
+  override fun onFragmentInitiated() {
 
     initObjects()
 
     initListeners()
-
-    return binding.root
   }
 
   private fun initObjects() {
@@ -89,7 +79,7 @@ constructor(
           }
           ResponseUI.Status.ERROR -> {
             binding.progressBar.hide()
-            binding.root.snackbar(it.message)
+            notify(it.message)
             binding.loginBtn.toggleIsEnable()
             enableBtnFacebook()
           }
@@ -113,12 +103,12 @@ constructor(
 
           override fun onCancel() {
             enableBtnFacebook()
-            binding.root.snackbar(resources.getString(R.string.login_cancelled))
+            notify(resources.getString(R.string.login_cancelled))
           }
 
           override fun onError(exception: FacebookException) {
             enableBtnFacebook()
-            binding.root.snackbar(exception.message.toString())
+            notify(exception.message.toString())
           }
         }
       )
@@ -196,7 +186,7 @@ constructor(
         Observer {
           if (it != null) {
             if (it.twoFactorAuthentication!!) {
-              binding.root.snackbar(getString(R.string.otp_sent))
+              notify(getString(R.string.otp_sent))
               val action =
                 LoginFragmentDirections.actionLoginFragmentToTwoFactorAuthFragment(crypto)
               Navigation.findNavController(binding.root)

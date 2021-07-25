@@ -4,14 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -28,8 +24,7 @@ import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentInviteVotersBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_INTENT_REQUEST_CODE
 import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_PERMISSION_REQUEST_CODE
 import org.aossie.agoraandroid.utilities.AppConstants
@@ -37,7 +32,6 @@ import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import org.json.JSONException
 import javax.inject.Inject
@@ -50,9 +44,12 @@ class InviteVotersFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), SessionExpiredListener {
+) : BaseFragment<FragmentInviteVotersBinding>(viewModelFactory) {
 
-  private lateinit var binding: FragmentInviteVotersBinding
+  override val bindingInflater: (LayoutInflater) -> FragmentInviteVotersBinding
+    get() = {
+      FragmentInviteVotersBinding.inflate(it)
+    }
 
   var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
@@ -60,9 +57,7 @@ constructor(
   private val inviteVotersViewModel: InviteVotersViewModel by viewModels {
     viewModelFactory
   }
-  private val hostViewModel: MainActivityViewModel by activityViewModels {
-    viewModelFactory
-  }
+
   private var voterRecyclerAdapter: VoterRecyclerAdapter? = null
   private val itemTouchHelperCallback: SimpleCallback =
     object : SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
@@ -89,20 +84,13 @@ constructor(
       }
     }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentInviteVotersBinding.inflate(layoutInflater)
+  override fun onFragmentInitiated() {
+
     inviteVotersViewModel.sessionExpiredListener = this
 
     initView()
     initListeners()
     initObserver()
-
-    return binding.root
   }
 
   private fun initObserver() {
@@ -171,7 +159,7 @@ constructor(
       if (inviteValidator(email, name)) {
         addVoter(VotersDto(name, email))
       } else {
-        binding.root.snackbar(getString(string.enter_valid_details))
+        notify(getString(string.enter_valid_details))
       }
     }
 
@@ -228,7 +216,7 @@ constructor(
     binding.buttonInviteVoter.toggleIsEnable()
     val mMessage = StringBuilder()
     mMessage.append(message)
-    binding.root.snackbar(mMessage.toString())
+    notify(mMessage.toString())
   }
 
   fun onSuccess(message: String) {
@@ -237,13 +225,9 @@ constructor(
     lifecycleScope.launch {
       prefs.setUpdateNeeded(true)
     }
-    binding.root.snackbar(message)
+    notify(message)
     Navigation.findNavController(binding.root)
       .navigate(InviteVotersFragmentDirections.actionInviteVotersFragmentToHomeFragment())
-  }
-
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
   }
 
   private fun emailValidator(
@@ -305,7 +289,7 @@ constructor(
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         searchExcelFile()
       } else {
-        binding.root.snackbar(getString(string.permission_denied))
+        notify(getString(string.permission_denied))
       }
     }
   }
@@ -317,6 +301,6 @@ constructor(
   }
 
   fun onReadFailure(message: String?) {
-    binding.root.snackbar(message)
+    notify(message)
   }
 }

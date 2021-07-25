@@ -1,10 +1,8 @@
 package org.aossie.agoraandroid.ui.fragments.auth.signup
 
-import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -18,12 +16,11 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.dto.NewUserDto
 import org.aossie.agoraandroid.data.dto.SecurityQuestionDto
 import org.aossie.agoraandroid.databinding.FragmentSignUpBinding
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import javax.inject.Inject
 
@@ -34,23 +31,19 @@ class SignUpFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(), SessionExpiredListener {
+) : BaseFragment<FragmentSignUpBinding>(viewModelFactory) {
 
   private var securityQuestionOfSignUp: String? = null
-
-  private lateinit var binding: FragmentSignUpBinding
 
   private val signUpViewModel: SignUpViewModel by viewModels {
     viewModelFactory
   }
+  override val bindingInflater: (LayoutInflater) -> FragmentSignUpBinding
+    get() = {
+      FragmentSignUpBinding.inflate(it)
+    }
+  override fun onFragmentInitiated() {
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentSignUpBinding.inflate(layoutInflater)
     signUpViewModel.sessionExpiredListener = this
 
     binding.signupBtn.setOnClickListener {
@@ -100,19 +93,17 @@ constructor(
           }
           ResponseUI.Status.SUCCESS -> {
             binding.progressBar.hide()
-            binding.root.snackbar(getString(string.verify_account))
+            notify(getString(string.verify_account))
             binding.signupBtn.toggleIsEnable()
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(it.message)
+            notify(it.message)
             binding.progressBar.hide()
             binding.signupBtn.toggleIsEnable()
           }
         }
       }
     )
-
-    return binding.root
   }
 
   private fun validateAllFields() {

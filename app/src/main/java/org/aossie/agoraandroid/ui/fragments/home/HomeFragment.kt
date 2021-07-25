@@ -1,11 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,11 +12,9 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -33,9 +27,12 @@ class HomeFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val preferenceProvider: PreferenceProvider
-) : Fragment(), SessionExpiredListener {
+) : BaseFragment<FragmentHomeBinding>(viewModelFactory) {
 
-  private lateinit var binding: FragmentHomeBinding
+  override val bindingInflater: (LayoutInflater) -> FragmentHomeBinding
+    get() = {
+      FragmentHomeBinding.inflate(it)
+    }
 
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
@@ -45,18 +42,7 @@ constructor(
     viewModelFactory
   }
 
-  private val hostViewModel: MainActivityViewModel by activityViewModels {
-    viewModelFactory
-  }
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-
-    binding = FragmentHomeBinding.inflate(layoutInflater)
-
+  override fun onFragmentInitiated() {
     loginViewModel.sessionExpiredListener = this
     binding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
 
@@ -93,7 +79,7 @@ constructor(
             updateUi()
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(it.message)
+            notify(it.message)
           }
         }
       }
@@ -151,12 +137,10 @@ constructor(
         binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
       }
     )
-
-    return binding.root
+    updateUi()
   }
 
-  override fun onResume() {
-    super.onResume()
+  override fun onNetworkConnected() {
     updateUi()
   }
 
@@ -175,9 +159,5 @@ constructor(
     binding.shimmerViewContainer.startShimmer()
     binding.shimmerViewContainer.visibility = View.VISIBLE
     binding.constraintLayout.visibility = View.GONE
-  }
-
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
   }
 }
