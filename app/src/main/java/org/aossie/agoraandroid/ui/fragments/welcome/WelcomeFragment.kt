@@ -28,7 +28,6 @@ class WelcomeFragment : Fragment() {
 
     binding.viewPager.adapter = MyPagerAdapter(this)
     TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ ->
-
     }.attach()
     binding.btnLogin.setOnClickListener {
       Navigation.findNavController(binding.root)

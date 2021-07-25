@@ -33,7 +33,8 @@ class IntroFragment : Fragment() {
     // Inflate the layout for this fragment
     binding = FragmentIntroBinding.inflate(layoutInflater)
     binding.imageView.setImageDrawable(
-      drawableResource?.let { ContextCompat.getDrawable(requireContext(), it) })
+      drawableResource?.let { ContextCompat.getDrawable(requireContext(), it) }
+    )
     binding.textView.text = textResource?.let { getString(it) }
     return binding.root
   }
