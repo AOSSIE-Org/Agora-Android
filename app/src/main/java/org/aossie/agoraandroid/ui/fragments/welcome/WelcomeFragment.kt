@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.Navigation
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.databinding.FragmentWelcomeBinding
 
 /**
@@ -25,8 +26,10 @@ class WelcomeFragment : Fragment() {
     // Inflate the layout for this fragment
     binding = FragmentWelcomeBinding.inflate(layoutInflater)
 
-    binding.viewPager.adapter = MyPagerAdapter(childFragmentManager)
+    binding.viewPager.adapter = MyPagerAdapter(this)
+    TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ ->
 
+    }.attach()
     binding.btnLogin.setOnClickListener {
       Navigation.findNavController(binding.root)
         .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToLoginFragment())
@@ -36,23 +39,20 @@ class WelcomeFragment : Fragment() {
       Navigation.findNavController(binding.root)
         .navigate(WelcomeFragmentDirections.actionWelcomeFragmentToSignUpFragment())
     }
-
     return binding.root
   }
 
-  private class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(
-    fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-  ) {
-    override fun getItem(pos: Int): Fragment {
+  private class MyPagerAdapter(f: Fragment) : FragmentStateAdapter(f) {
+    override fun createFragment(pos: Int): Fragment {
       return when (pos) {
-        0 -> FirstWelcomeFragment.newInstance()
-        1 -> SecondWelcomeFragment.newInstance()
-        2 -> ThirdWelcomeFragment.newInstance()
-        else -> FourthWelcomeFragment.newInstance()
+        0 -> IntroFragment.newInstance(R.string.first_welcome_message, R.drawable.boy_ship)
+        1 -> IntroFragment.newInstance(R.string.second_welcome_message, R.drawable.election)
+        2 -> IntroFragment.newInstance(R.string.third_welcome_message, R.drawable.vote)
+        else -> IntroFragment.newInstance(R.string.fourth_welcome_message, R.drawable.visualize)
       }
     }
 
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
       return 4
     }
   }

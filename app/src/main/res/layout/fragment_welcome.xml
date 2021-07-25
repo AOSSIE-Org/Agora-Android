@@ -8,30 +8,27 @@
   tools:context=".ui.fragments.welcome.WelcomeFragment"
   >
 
-  <androidx.viewpager.widget.ViewPager
+  <androidx.viewpager2.widget.ViewPager2
     android:id="@+id/view_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@id/btn_layout"
+    android:layout_above="@id/tab_layout"
     android:overScrollMode="never"
-    >
+    />
 
-    <com.google.android.material.tabs.TabLayout
-      android:id="@+id/tab_layout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|center"
-      android:background="@android:color/transparent"
-      app:tabBackground="@drawable/tab_selector"
-      app:tabGravity="center"
-      app:tabIndicatorHeight="0dp"
-      app:tabPaddingEnd="@dimen/size_10dp"
-      app:tabPaddingStart="@dimen/size_10dp"
-      app:tabRippleColor="@android:color/transparent"
-      app:tabSelectedTextColor="@android:color/transparent"
-      app:tabTextColor="@android:color/transparent"
-      />
-  </androidx.viewpager.widget.ViewPager>
+  <com.google.android.material.tabs.TabLayout
+    android:id="@+id/tab_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/btn_layout"
+    android:layout_gravity="bottom|center"
+    app:tabBackground="@drawable/tab_selector"
+    app:tabGravity="center"
+    app:tabIndicatorHeight="0dp"
+    app:tabPaddingEnd="@dimen/size_10dp"
+    app:tabPaddingStart="@dimen/size_10dp"
+    app:tabRippleColor="@android:color/transparent"
+    />
 
   <LinearLayout
     android:id="@+id/btn_layout"
