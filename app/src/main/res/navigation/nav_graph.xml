@@ -149,13 +149,6 @@
       app:popEnterAnim="@anim/slide_in_left"
       app:popExitAnim="@anim/slide_out_right" />
     <action
-      android:id="@+id/action_moreOptionsFragment_to_reportBugFragment"
-      app:destination="@+id/reportBugFragment"
-      app:enterAnim="@anim/slide_in_right"
-      app:exitAnim="@anim/slide_out_left"
-      app:popEnterAnim="@anim/slide_in_left"
-      app:popExitAnim="@anim/slide_out_right" />
-    <action
       android:id="@+id/action_settingsFragment_to_shareWithOthersFragment"
       app:destination="@+id/shareWithOthersFragment"
       app:enterAnim="@anim/slide_in_right"
@@ -184,11 +177,6 @@
       app:popEnterAnim="@anim/slide_in_left"
       app:popExitAnim="@anim/slide_out_right" />
   </fragment>
-  <fragment
-    android:id="@+id/reportBugFragment"
-    android:name="org.aossie.agoraandroid.ui.fragments.report.ReportBugFragment"
-    android:label="Report"
-    tools:layout="@layout/fragment_report_bug" />
   <fragment
     android:id="@+id/contactUsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.contactUs.ContactUsFragment"
