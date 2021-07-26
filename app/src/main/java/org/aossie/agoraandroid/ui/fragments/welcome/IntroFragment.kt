@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.squareup.picasso.Picasso
 import org.aossie.agoraandroid.databinding.FragmentIntroBinding
 
-private const val ARG_PARAM1 = "textResource"
-private const val ARG_PARAM2 = "drawableResource"
+private const val TEXT_RESOURCE = "textResource"
+private const val DRAWABLE_RESOURCE = "drawableResource"
 
 class IntroFragment : Fragment() {
 
@@ -20,8 +20,8 @@ class IntroFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     arguments?.let {
-      textResource = it.getInt(ARG_PARAM1)
-      drawableResource = it.getInt(ARG_PARAM2)
+      textResource = it.getInt(TEXT_RESOURCE)
+      drawableResource = it.getInt(DRAWABLE_RESOURCE)
     }
   }
 
@@ -32,21 +32,24 @@ class IntroFragment : Fragment() {
   ): View {
     // Inflate the layout for this fragment
     binding = FragmentIntroBinding.inflate(layoutInflater)
-    binding.imageView.setImageDrawable(
-      drawableResource?.let { ContextCompat.getDrawable(requireContext(), it) }
-    )
+    drawableResource?.let {
+      Picasso.get()
+        .load(it)
+        .placeholder(it)
+        .into(binding.imageView)
+    }
     binding.textView.text = textResource?.let { getString(it) }
     return binding.root
   }
 
   companion object {
     fun newInstance(
-      param1: Int,
-      param2: Int
+      textResource: Int,
+      drawableResource: Int
     ) = IntroFragment().apply {
       arguments = Bundle().apply {
-        putInt(ARG_PARAM1, param1)
-        putInt(ARG_PARAM2, param2)
+        putInt(TEXT_RESOURCE, textResource)
+        putInt(DRAWABLE_RESOURCE, drawableResource)
       }
     }
   }
