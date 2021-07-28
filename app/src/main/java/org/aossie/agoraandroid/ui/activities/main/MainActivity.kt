@@ -145,7 +145,6 @@ class MainActivity : AppCompatActivity() {
   private fun handleBackButton(id: Int) {
     when (id) {
       R.id.aboutFragment,
-      R.id.reportBugFragment,
       R.id.shareWithOthersFragment,
       R.id.contactUsFragment,
       R.id.profileFragment -> binding.ivBack.let {
