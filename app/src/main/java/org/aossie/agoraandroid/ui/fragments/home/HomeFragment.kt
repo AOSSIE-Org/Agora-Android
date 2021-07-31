@@ -198,12 +198,15 @@ constructor(
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!preferenceProvider.isDisplayed(binding.root.id.toString())
-          .first()
+        .first()
       ) {
         spotlightTargets = getSpotlightTargets()
-        Handler(Looper.getMainLooper()).postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed(
+          {
             showSpotlight()
-          }, AppConstants.SPOTLIGHT_INIT_DURATION)
+          },
+          AppConstants.SPOTLIGHT_INIT_DURATION
+        )
         preferenceProvider.setDisplayed(binding.root.id.toString())
       }
     }
@@ -213,13 +216,17 @@ constructor(
     spotlightTargets?.let {
       if (currentSpotlightIndex in it.indices) {
         scrollToView(binding.scrollView, it[currentSpotlightIndex].targetView)
-        spotlight = requireActivity().getSpotlight(it[currentSpotlightIndex++], {
-          destroySpotlight()
-        }, {
-          if (isAdded) {
-            showSpotlight()
+        spotlight = requireActivity().getSpotlight(
+          it[currentSpotlightIndex++],
+          {
+            destroySpotlight()
+          },
+          {
+            if (isAdded) {
+              showSpotlight()
+            }
           }
-        })
+        )
         spotlight?.start()
       }
     }

@@ -141,10 +141,10 @@ fun scrollToView(
   val childOffset = Point()
   getDeepChildOffset(scrollViewParent, view.parent, view, childOffset)
   val rHeight = scrollViewParent.height
-  scrollViewParent.scrollBy(0, 1);
+  scrollViewParent.scrollBy(0, 1)
   ObjectAnimator.ofInt(scrollViewParent, "scrollY", childOffset.y - (rHeight / 3))
     .setDuration(SPOTLIGHT_SCROLL_DURATION)
-    .start();
+    .start()
 }
 
 private fun getDeepChildOffset(

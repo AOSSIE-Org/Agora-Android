@@ -297,7 +297,8 @@
   <string name="election_method_spotlight">Choose a method for your election</string>
   <string name="election_description_spotlight">Enter a description for your election</string>
   <string name="election_candidates_spotlight">Enter all candidates for your election</string>
-  <string name="election_import_spotlight">You can import candidates from excel sheet</string>
+  <string name="election_import_candidates">Import Candidates</string>
+  <string name="election_import_spotlight">Import candidates\nfrom excel sheet</string>
   <string name="election_visibility_spotlight">Choose who can view your election</string>
   <string name="election_voter_visibility_spotlight">Select to make voter list public</string>
   <string name="election_start_date_spotlight">Pick the start date for your election</string>

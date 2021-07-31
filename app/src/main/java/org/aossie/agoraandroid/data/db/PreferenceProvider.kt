@@ -32,8 +32,7 @@ constructor(
 
   fun isDisplayed(id: String): Flow<Boolean> {
     return spotlightDataStore.data.map {
-      false
-//      it[booleanPreferencesKey(id)] ?: false
+      it[booleanPreferencesKey(id)] ?: false
     }
   }
 

@@ -53,9 +53,7 @@ fun Activity.getSpotlight(
       }
 
       override fun onStarted() {
-
       }
-
     })
     .build()
 }
