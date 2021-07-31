@@ -1,6 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
+import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
@@ -21,14 +26,18 @@ import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.TargetData
+import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isConnected
+import org.aossie.agoraandroid.utilities.scrollToView
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.ArrayList
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -55,6 +64,10 @@ constructor(
     viewModelFactory
   }
 
+  private var spotlight: Spotlight? = null
+  private var spotlightTargets: ArrayList<TargetData>? = null
+  private var currentSpotlightIndex = 0
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -71,7 +84,7 @@ constructor(
     initListeners()
 
     getElectionById()
-
+    checkIsFirstOpen()
     return binding.root
   }
 
@@ -236,5 +249,91 @@ constructor(
 
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)
+  }
+
+  private fun checkIsFirstOpen() {
+    lifecycleScope.launch {
+      if (!prefs.isDisplayed(binding.root.id.toString())
+          .first()
+      ) {
+        spotlightTargets = getSpotlightTargets()
+        Handler(Looper.getMainLooper()).postDelayed({
+          showSpotlight()
+        }, AppConstants.SPOTLIGHT_INIT_DURATION)
+        prefs.setDisplayed(binding.root.id.toString())
+      }
+    }
+  }
+
+  private fun showSpotlight() {
+    spotlightTargets?.let {
+      if (currentSpotlightIndex in it.indices) {
+        scrollToView(binding.scrollView, it[currentSpotlightIndex].targetView)
+        spotlight = requireActivity().getSpotlight(it[currentSpotlightIndex++], {
+          destroySpotlight()
+        }, {
+          if (isAdded) {
+            showSpotlight()
+          }
+        })
+        spotlight?.start()
+      }
+    }
+  }
+
+  private fun getSpotlightTargets(): ArrayList<TargetData> {
+    val targetData = ArrayList<TargetData>()
+    targetData.add(
+      TargetData(
+        binding.label, getString(string.election_status),
+        getString(string.status_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.buttonDelete, getString(string.delete),
+        getString(string.delete_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.buttonInviteVoters, getString(string.invite_voter),
+        getString(string.invite_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.buttonVoters, getString(string.voters),
+       getString(string.voters_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.buttonBallot, getString(string.ballot),
+        getString(string.ballot_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.buttonResult, getString(string.result),
+        getString(string.result_spotlight)
+      )
+    )
+    return targetData
+  }
+
+  private fun destroySpotlight() {
+    spotlight?.finish()
+    spotlight = null
+  }
+
+  override fun onPause() {
+    super.onPause()
+    destroySpotlight()
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    destroySpotlight()
   }
 }

@@ -7,7 +7,10 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +31,8 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
@@ -35,11 +40,15 @@ import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.utilities.AppConstants.SPOTLIGHT_INIT_DURATION
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.errorDialog
+import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.scrollToView
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
@@ -83,6 +92,10 @@ constructor(
   lateinit var ballotVisibilityAdapter: ArrayAdapter<CharSequence>
   private var ballotVisibility: String? = null
 
+  private var spotlight: Spotlight? = null
+  private var spotlightTargets: ArrayList<TargetData>? = null
+  private var currentSpotlightIndex = 0
+
   private val createElectionViewModel: CreateElectionViewModel by viewModels {
     viewModelFactory
   }
@@ -98,7 +111,7 @@ constructor(
     initView()
     initListeners()
     initObserver()
-
+    checkIsFirstOpen()
     return binding.root
   }
 
@@ -519,5 +532,122 @@ constructor(
 
   private fun onReadFailure(message: String?) {
     binding.root.snackbar(message)
+  }
+
+  private fun checkIsFirstOpen() {
+    lifecycleScope.launch {
+      if (!prefs.isDisplayed(binding.root.id.toString())
+          .first()
+      ) {
+        spotlightTargets = getSpotlightTargets()
+        Handler(Looper.getMainLooper()).postDelayed({
+          showSpotlight()
+        }, SPOTLIGHT_INIT_DURATION)
+        prefs.setDisplayed(binding.root.id.toString())
+      }
+    }
+  }
+
+  private fun showSpotlight() {
+    spotlightTargets?.let {
+      if (currentSpotlightIndex in it.indices) {
+        scrollToView(binding.scrollView, it[currentSpotlightIndex].targetView)
+        spotlight = requireActivity().getSpotlight(it[currentSpotlightIndex++], {
+          destroySpotlight()
+        }, {
+          if (isAdded) {
+            showSpotlight()
+          }
+        })
+        spotlight?.start()
+      }
+    }
+  }
+
+  private fun getSpotlightTargets(): ArrayList<TargetData> {
+    val targetData = ArrayList<TargetData>()
+    targetData.add(
+      TargetData(
+        binding.etElectionName, getString(string.Create_Election),
+        getString(string.create_election_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.linearLayout, getString(string.election_method),
+        getString(string.election_method_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.etElectionDescription, getString(string.election_description),
+        getString(string.election_description_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.etCandidateName, getString(string.candidates),
+        getString(string.election_candidates_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.importCandidates, getString(string.import_xlsx),
+        getString(string.election_import_spotlight),
+        false
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.linearLayout2, getString(string.election_visibility),
+        getString(string.election_visibility_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxVoterVisibility, getString(string.election_voter_visibility),
+        getString(string.election_voter_visibility_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.startDateTil, getString(string.start_date_format),
+        getString(string.election_start_date_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.endDateTil, getString(string.end_date_format),
+        getString(string.election_end_date_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxRealTime, getString(string.real_time),
+        getString(string.election_real_time_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxInvite, getString(string.invite),
+        getString(string.election_invite_spotlight)
+      )
+    )
+    return targetData
+  }
+
+  private fun destroySpotlight() {
+    spotlight?.finish()
+    spotlight = null
+  }
+
+  override fun onPause() {
+    super.onPause()
+    destroySpotlight()
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    destroySpotlight()
   }
 }

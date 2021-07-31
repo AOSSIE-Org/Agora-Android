@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/scroll_view"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -159,7 +160,7 @@
                   <TextView
                     android:id="@+id/label"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/size_22dp"
+                    android:layout_height="27dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/active_election_label"
