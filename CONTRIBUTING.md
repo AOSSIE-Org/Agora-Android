@@ -63,12 +63,18 @@ For creating a merge request, it is very **important** to follow the [best pract
 
 If you face **any** problems, feel free to ask our community at [Gitter](https://gitter.im/AOSSIE/Agora-Android)
 
+## Firebase API key
+1. Go to Firebase console and add a new project.
+2. download and paste google-services.json file inside  /app
+
+
 ## Running the application
 1) Update your local.properties with this variables
       1.1) "secretKey" and enter your personal secret key
       
 2) CI/CD variables
       2.1) "SECRET_KEY" and enter your personal secret key
+      2.2) "FIREBASE_JSON" and enter your google-services.json file content
       
 To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https://developers.facebook.com/apps/).And then add these following variables.
    1) Update your local.properties with these two variables
