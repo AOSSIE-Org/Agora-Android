@@ -16,6 +16,7 @@ object AppConstants {
   const val UNAUTHENTICATED_CODE = 401
   const val INVALID_CREDENTIALS_CODE = 403
   const val NOT_FOUND_CODE = 404
+  const val NOTIFICATION_DESCRIPTION = "Default Notification Channel"
   const val INTERNAL_SERVER_ERROR_CODE = 500
   const val BAD_REQUEST_MESSAGE = "Please verify your email id"
   const val UNAUTHENTICATED_MESSAGE = "Unauthenticated"
