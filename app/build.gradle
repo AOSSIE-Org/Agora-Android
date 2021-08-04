@@ -2,12 +2,19 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'com.squareup.leakcanary.deobfuscation'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def fbApiScheme = properties.getProperty('fbApiScheme')
 def fbApiKey = properties.getProperty('fbApiKey')
 def secretKey = properties.getProperty('secretKey')
+
+leakCanary {
+  filterObfuscatedVariants { variant ->
+    variant.name == "debug"
+  }
+}
 
 android {
   def keystoreProperties = new Properties()
@@ -54,10 +61,15 @@ android {
           signingConfig signingConfigs.release
         }
       }
-      minifyEnabled false
+
+      shrinkResources true
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
     debug {
+      shrinkResources true
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
       debuggable true
     }
   }
