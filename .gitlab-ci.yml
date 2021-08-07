@@ -22,6 +22,7 @@ before_script:
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
   - touch local.properties && echo -e "fbApiKey=$FB_API_KEY\nfbApiScheme=$FB_API_SCHEME\nsecretKey=$SECRET_KEY" > local.properties
+  - touch app/google-services.json && echo $FIREBASE_JSON > app/google-services.json
   - touch signing.properties && echo -e "storeFile=keystore.jks\nstorePassword=$KEYSTORE_PASSWORD\nkeyAlias=$KEY_ALIAS\nkeyPassword=$KEY_PASSWORD" > signing.properties
   - touch app/keystore.jks && echo $KEYSTORE | base64 --decode > app/keystore.jks
   - chmod +x ./gradlew

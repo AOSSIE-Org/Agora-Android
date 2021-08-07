@@ -2,9 +2,7 @@ package org.aossie.agoraandroid.data.Repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -41,44 +39,32 @@ constructor(
     }
   }
 
-  suspend fun fetchAndSaveElections() {
-    withContext(Dispatchers.IO) {
-      fetchElections()
-    }
-  }
+  suspend fun fetchAndSaveElections() = fetchElections()
 
   fun getElections(): LiveData<List<Election>> {
     return db.getElectionDao()
       .getElections()
   }
 
-  suspend fun getFinishedElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getFinishedElectionsCount(currentDate)
-    }
-  }
+  fun getFinishedElectionsCount(currentDate: String): LiveData<Int> =
 
-  suspend fun getPendingElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getPendingElectionsCount(currentDate)
-    }
-  }
+    db.getElectionDao()
+      .getFinishedElectionsCount(currentDate)
 
-  suspend fun getTotalElectionsCount(): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getTotalElectionsCount()
-    }
-  }
+  fun getPendingElectionsCount(currentDate: String): LiveData<Int> =
 
-  suspend fun getActiveElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getActiveElectionsCount(currentDate)
-    }
-  }
+    db.getElectionDao()
+      .getPendingElectionsCount(currentDate)
+
+  fun getTotalElectionsCount(): LiveData<Int> =
+
+    db.getElectionDao()
+      .getTotalElectionsCount()
+
+  fun getActiveElectionsCount(currentDate: String): LiveData<Int> =
+
+    db.getElectionDao()
+      .getActiveElectionsCount(currentDate)
 
   private fun saveElections(elections: List<ElectionResponse>) {
     Coroutines.io {
@@ -96,12 +82,10 @@ constructor(
     }
   }
 
-  suspend fun getPendingElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getPendingElections(currentDate)
-    }
-  }
+  fun getPendingElections(currentDate: String): LiveData<List<Election>> =
+
+    db.getElectionDao()
+      .getPendingElections(currentDate)
 
   private suspend fun fetchElections() {
     val isNeeded = prefs.getUpdateNeeded().first()
@@ -118,26 +102,20 @@ constructor(
     }
   }
 
-  suspend fun getFinishedElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getFinishedElections(currentDate)
-    }
-  }
+  fun getFinishedElections(currentDate: String): LiveData<List<Election>> =
 
-  suspend fun getActiveElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getActiveElections(currentDate)
-    }
-  }
+    db.getElectionDao()
+      .getFinishedElections(currentDate)
 
-  suspend fun getElectionById(id: String): LiveData<Election> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getElectionById(id)
-    }
-  }
+  fun getActiveElections(currentDate: String): LiveData<List<Election>> =
+
+    db.getElectionDao()
+      .getActiveElections(currentDate)
+
+  fun getElectionById(id: String): LiveData<Election> =
+
+    db.getElectionDao()
+      .getElectionById(id)
 
   suspend fun deleteElection(
     id: String
