@@ -23,7 +23,6 @@ import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
-import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.getSpotlight
