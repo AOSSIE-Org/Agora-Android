@@ -66,6 +66,9 @@ If you face **any** problems, feel free to ask our community at [Gitter](https:/
 ## Firebase API key
 1. Go to Firebase console and add a new project.
 2. download and paste google-services.json file inside  /app
+3. Go to the Crashlytics dashboard in the Firebase console.
+4. Make sure your app is selected from the dropdown next to Crashlytics at the top of the page.
+5. Click Enable Crashlytics.
 
 
 ## Running the application
