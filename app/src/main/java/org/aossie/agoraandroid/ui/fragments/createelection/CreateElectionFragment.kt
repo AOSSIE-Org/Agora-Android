@@ -9,8 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +18,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.doOnLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,7 +39,6 @@ import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
-import org.aossie.agoraandroid.utilities.AppConstants.SPOTLIGHT_INIT_DURATION
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -111,7 +109,9 @@ constructor(
     initView()
     initListeners()
     initObserver()
-    checkIsFirstOpen()
+    binding.root.doOnLayout {
+      checkIsFirstOpen()
+    }
     return binding.root
   }
 
@@ -478,25 +478,6 @@ constructor(
     }
   }
 
-  private fun doAfterTextChange() {
-    val electionNameInput: String = binding.etElectionName.text
-      .toString()
-      .trim()
-    val electionDescriptionInput: String = binding.etElectionDescription.text
-      .toString()
-      .trim()
-    val startDateInput: String = binding.etStartDate.text
-      .toString()
-      .trim()
-    val endDateInput: String = binding.etEndDate.text
-      .toString()
-      .trim()
-    binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
-      electionDescriptionInput.isNotEmpty() &&
-      startDateInput.isNotEmpty() &&
-      endDateInput.isNotEmpty()
-  }
-
   override fun onActivityResult(
     requestCode: Int,
     resultCode: Int,
@@ -540,13 +521,8 @@ constructor(
         .first()
       ) {
         spotlightTargets = getSpotlightTargets()
-        Handler(Looper.getMainLooper()).postDelayed(
-          {
-            showSpotlight()
-          },
-          SPOTLIGHT_INIT_DURATION
-        )
         prefs.setDisplayed(binding.root.id.toString())
+        showSpotlight()
       }
     }
   }

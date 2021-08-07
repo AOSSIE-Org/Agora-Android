@@ -2,11 +2,10 @@ package org.aossie.agoraandroid.ui.fragments.electionDetails
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -84,7 +83,9 @@ constructor(
     initListeners()
 
     getElectionById()
-    checkIsFirstOpen()
+    binding.root.doOnLayout {
+      checkIsFirstOpen()
+    }
     return binding.root
   }
 
@@ -257,13 +258,8 @@ constructor(
         .first()
       ) {
         spotlightTargets = getSpotlightTargets()
-        Handler(Looper.getMainLooper()).postDelayed(
-          {
-            showSpotlight()
-          },
-          AppConstants.SPOTLIGHT_INIT_DURATION
-        )
         prefs.setDisplayed(binding.root.id.toString())
+        showSpotlight()
       }
     }
   }
