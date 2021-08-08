@@ -1,8 +1,10 @@
 package org.aossie.agoraandroid.ui.fragments.auth.signup
 
+import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -31,17 +33,24 @@ class SignUpFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : BaseFragment<FragmentSignUpBinding>(viewModelFactory) {
+) : BaseFragment(viewModelFactory) {
 
   private var securityQuestionOfSignUp: String? = null
 
   private val signUpViewModel: SignUpViewModel by viewModels {
     viewModelFactory
   }
-  override val bindingInflater: (LayoutInflater) -> FragmentSignUpBinding
-    get() = {
-      FragmentSignUpBinding.inflate(it)
-    }
+  private lateinit var binding: FragmentSignUpBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentSignUpBinding.inflate(inflater)
+    return binding.root
+  }
+
   override fun onFragmentInitiated() {
 
     signUpViewModel.sessionExpiredListener = this

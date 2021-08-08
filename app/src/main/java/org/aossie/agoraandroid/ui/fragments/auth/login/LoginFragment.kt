@@ -1,7 +1,10 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,17 +41,22 @@ class LoginFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : BaseFragment<FragmentLoginBinding>(viewModelFactory) {
-  override val bindingInflater: (LayoutInflater) -> FragmentLoginBinding
-    get() = {
-      FragmentLoginBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
+  lateinit var binding: FragmentLoginBinding
 
   private val loginViewModel: LoginViewModel by viewModels {
     viewModelFactory
   }
 
   private var callbackManager: CallbackManager? = null
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    binding = FragmentLoginBinding.inflate(inflater)
+    return binding.root
+  }
 
   override fun onFragmentInitiated() {
 

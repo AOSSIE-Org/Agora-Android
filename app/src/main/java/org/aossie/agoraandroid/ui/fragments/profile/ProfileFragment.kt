@@ -6,10 +6,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.util.Base64
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
@@ -58,12 +61,7 @@ class ProfileFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : BaseFragment<FragmentProfileBinding>(viewModelFactory) {
-
-  override val bindingInflater: (LayoutInflater) -> FragmentProfileBinding
-    get() = {
-      FragmentProfileBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
 
   private var mAvatar = MutableLiveData<File>()
 
@@ -81,6 +79,16 @@ constructor(
   }
 
   private lateinit var mUser: User
+  private lateinit var binding: FragmentProfileBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentProfileBinding.inflate(inflater)
+    return binding.root
+  }
 
   override fun onFragmentInitiated() {
 

@@ -4,7 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -44,12 +47,7 @@ class InviteVotersFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : BaseFragment<FragmentInviteVotersBinding>(viewModelFactory) {
-
-  override val bindingInflater: (LayoutInflater) -> FragmentInviteVotersBinding
-    get() = {
-      FragmentInviteVotersBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
 
   var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
@@ -84,6 +82,16 @@ constructor(
       }
     }
 
+  private lateinit var binding: FragmentInviteVotersBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentInviteVotersBinding.inflate(inflater)
+    return binding.root
+  }
   override fun onFragmentInitiated() {
 
     inviteVotersViewModel.sessionExpiredListener = this

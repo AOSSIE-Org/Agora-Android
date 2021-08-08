@@ -2,8 +2,11 @@ package org.aossie.agoraandroid.ui.fragments.settings
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -43,7 +46,7 @@ class SettingsFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : BaseFragment<FragmentSettingsBinding>(viewModelFactory) {
+) : BaseFragment(viewModelFactory) {
 
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
@@ -51,10 +54,7 @@ constructor(
 
   private var mAvatar = MutableLiveData<File>()
 
-  override val bindingInflater: (LayoutInflater) -> FragmentSettingsBinding
-    get() = {
-      FragmentSettingsBinding.inflate(it)
-    }
+  private lateinit var binding: FragmentSettingsBinding
 
   private lateinit var mUser: User
 
@@ -62,6 +62,14 @@ constructor(
     viewModelFactory
   }
 
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentSettingsBinding.inflate(inflater)
+    return binding.root
+  }
   override fun onFragmentInitiated() {
 
     val user = viewModel.user

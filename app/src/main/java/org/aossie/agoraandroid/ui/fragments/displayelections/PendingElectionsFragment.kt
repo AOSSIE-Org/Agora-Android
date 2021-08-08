@@ -2,6 +2,8 @@ package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,17 +29,21 @@ class PendingElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : BaseFragment<FragmentPendingElectionsBinding>(viewModelFactory) {
-
-  override val bindingInflater: (LayoutInflater) -> FragmentPendingElectionsBinding
-    get() = {
-      FragmentPendingElectionsBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
 
   private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
     viewModelFactory
   }
+  private lateinit var binding: FragmentPendingElectionsBinding
 
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentPendingElectionsBinding.inflate(inflater)
+    return binding.root
+  }
   lateinit var mElections: ArrayList<Election>
   private lateinit var electionsAdapter: ElectionsAdapter
 

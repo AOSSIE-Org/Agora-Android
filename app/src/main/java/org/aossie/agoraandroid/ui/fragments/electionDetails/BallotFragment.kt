@@ -2,6 +2,8 @@ package org.aossie.agoraandroid.ui.fragments.electionDetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -27,18 +29,23 @@ class BallotFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : BaseFragment<FragmentBallotBinding>(viewModelFactory) {
-
-  override val bindingInflater: (LayoutInflater) -> FragmentBallotBinding
-    get() = {
-      FragmentBallotBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
   }
 
   private var id: String? = null
+  private lateinit var binding: FragmentBallotBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentBallotBinding.inflate(inflater)
+    return binding.root
+  }
 
   override fun onFragmentInitiated() {
 

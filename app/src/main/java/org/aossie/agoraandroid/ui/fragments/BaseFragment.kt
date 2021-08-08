@@ -1,13 +1,10 @@
 package org.aossie.agoraandroid.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
@@ -20,7 +17,7 @@ import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.NetworkStatus
 import org.aossie.agoraandroid.utilities.snackbar
 
-abstract class BaseFragment <T : ViewBinding>(
+abstract class BaseFragment(
   private val viewModelFactory: ViewModelProvider.Factory,
 ) : Fragment(), SessionExpiredListener {
 
@@ -29,32 +26,14 @@ abstract class BaseFragment <T : ViewBinding>(
   }
 
   private lateinit var internetManager: InternetManager
-
-  private lateinit var _binding: ViewBinding
-  abstract val bindingInflater: (LayoutInflater) -> T
   protected val isConnected
     get() = internetManager.isConnected()
 
-  @Suppress("UNCHECKED_CAST")
-  protected val binding: T
-    get() = _binding as T
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    _binding = bindingInflater.invoke(layoutInflater)
-    onFragmentInitiated()
-    internetManager = (activity?.application as AgoraApp).appComponent.getInternetManager()
-
-    return _binding.root
-  }
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    internetManager = (activity?.application as AgoraApp).appComponent.getInternetManager()
     Coroutines.main {
-      hostViewModel.onNetworkChanged(internetManager.isConnected())
+      hostViewModel.onNetworkChanged(isConnected)
       internetManager.networkStatus.collect {
         when (it) {
           NetworkStatus.Available -> {
@@ -71,10 +50,11 @@ abstract class BaseFragment <T : ViewBinding>(
         }
       }
     }
+    onFragmentInitiated()
   }
 
-  abstract fun onFragmentInitiated()
   open fun onNetworkConnected() {}
+  abstract fun onFragmentInitiated()
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)
   }
@@ -82,6 +62,6 @@ abstract class BaseFragment <T : ViewBinding>(
     if (msg == context?.getText(R.string.no_network))
       hostViewModel.onNetworkChanged(false)
     else
-      binding.root.snackbar(msg)
+      requireView().snackbar(msg)
   }
 }

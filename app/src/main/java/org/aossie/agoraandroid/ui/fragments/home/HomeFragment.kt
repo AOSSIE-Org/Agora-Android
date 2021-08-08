@@ -1,7 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,12 +29,7 @@ class HomeFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val preferenceProvider: PreferenceProvider
-) : BaseFragment<FragmentHomeBinding>(viewModelFactory) {
-
-  override val bindingInflater: (LayoutInflater) -> FragmentHomeBinding
-    get() = {
-      FragmentHomeBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
 
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
@@ -40,6 +37,17 @@ constructor(
 
   private val loginViewModel: LoginViewModel by viewModels {
     viewModelFactory
+  }
+
+  private lateinit var binding: FragmentHomeBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentHomeBinding.inflate(inflater)
+    return binding.root
   }
 
   override fun onFragmentInitiated() {

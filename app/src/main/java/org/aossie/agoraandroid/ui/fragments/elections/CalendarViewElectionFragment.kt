@@ -1,8 +1,10 @@
 package org.aossie.agoraandroid.ui.fragments.elections
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.viewModels
@@ -39,16 +41,11 @@ class CalendarViewElectionFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : BaseFragment<FragmentCalendarViewElectionBinding>(viewModelFactory) {
+) : BaseFragment(viewModelFactory) {
 
   private val electionViewModel: ElectionViewModel by viewModels {
     viewModelFactory
   }
-
-  override val bindingInflater: (LayoutInflater) -> FragmentCalendarViewElectionBinding
-    get() = {
-      FragmentCalendarViewElectionBinding.inflate(it)
-    }
 
   private var horizontalCalendar: HorizontalCalendar? = null
 
@@ -57,6 +54,17 @@ constructor(
     null
   private var dateFormat: DateFormat? = null
   private var timeFormat: DateFormat? = null
+
+  private lateinit var binding: FragmentCalendarViewElectionBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentCalendarViewElectionBinding.inflate(inflater)
+    return binding.root
+  }
 
   override fun onFragmentInitiated() {
 

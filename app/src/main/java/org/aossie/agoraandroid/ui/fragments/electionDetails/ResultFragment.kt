@@ -3,8 +3,10 @@ package org.aossie.agoraandroid.ui.fragments.electionDetails
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
@@ -36,12 +38,7 @@ class ResultFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : BaseFragment<FragmentResultBinding>(viewModelFactory) {
-
-  override val bindingInflater: (LayoutInflater) -> FragmentResultBinding
-    get() = {
-      FragmentResultBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
@@ -49,6 +46,17 @@ constructor(
 
   private var id: String? = null
   private lateinit var winnerDto: WinnerDto
+
+  private lateinit var binding: FragmentResultBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentResultBinding.inflate(inflater)
+    return binding.root
+  }
 
   override fun onFragmentInitiated() {
 

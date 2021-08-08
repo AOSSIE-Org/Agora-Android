@@ -1,6 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.auth.forgotpassword
 
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,16 +25,21 @@ class ForgotPasswordFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : BaseFragment<FragmentForgotPasswordBinding>(viewModelFactory) {
+) : BaseFragment(viewModelFactory) {
 
   private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels {
     viewModelFactory
   }
+  private lateinit var binding: FragmentForgotPasswordBinding
 
-  override val bindingInflater: (LayoutInflater) -> FragmentForgotPasswordBinding
-    get() = {
-      FragmentForgotPasswordBinding.inflate(it)
-    }
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    binding = FragmentForgotPasswordBinding.inflate(inflater)
+    return binding.root
+  }
 
   override fun onFragmentInitiated() {
 

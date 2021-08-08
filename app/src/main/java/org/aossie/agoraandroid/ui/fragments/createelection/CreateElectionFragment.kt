@@ -7,9 +7,11 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -56,12 +58,8 @@ class CreateElectionFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : BaseFragment<FragmentCreateElectionBinding>(viewModelFactory) {
+) : BaseFragment(viewModelFactory) {
 
-  override val bindingInflater: (LayoutInflater) -> FragmentCreateElectionBinding
-    get() = {
-      FragmentCreateElectionBinding.inflate(it)
-    }
   private var sDay = 0
   private var sMonth: Int = 0
   private var sYear: Int = 0
@@ -86,6 +84,17 @@ constructor(
 
   private val createElectionViewModel: CreateElectionViewModel by viewModels {
     viewModelFactory
+  }
+
+  private lateinit var binding: FragmentCreateElectionBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    binding = FragmentCreateElectionBinding.inflate(inflater)
+    return binding.root
   }
 
   override fun onFragmentInitiated() {

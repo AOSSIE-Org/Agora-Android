@@ -1,6 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -20,7 +23,7 @@ class TwoFactorAuthFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : BaseFragment<FragmentTwoFactorAuthBinding>(viewModelFactory) {
+) : BaseFragment(viewModelFactory) {
 
   private var crypto: String? = null
   private var user: User? = null
@@ -28,10 +31,16 @@ constructor(
   private val viewModel: TwoFactorAuthViewModel by viewModels {
     viewModelFactory
   }
-  override val bindingInflater: (LayoutInflater) -> FragmentTwoFactorAuthBinding
-    get() = {
-      FragmentTwoFactorAuthBinding.inflate(it)
-    }
+  private lateinit var binding: FragmentTwoFactorAuthBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentTwoFactorAuthBinding.inflate(inflater)
+    return binding.root
+  }
 
   override fun onFragmentInitiated() {
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto

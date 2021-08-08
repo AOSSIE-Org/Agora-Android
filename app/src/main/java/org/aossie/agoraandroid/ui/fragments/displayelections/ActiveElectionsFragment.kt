@@ -2,6 +2,8 @@ package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,12 +29,7 @@ class ActiveElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : BaseFragment<FragmentActiveElectionsBinding>(viewModelFactory) {
-
-  override val bindingInflater: (LayoutInflater) -> FragmentActiveElectionsBinding
-    get() = {
-      FragmentActiveElectionsBinding.inflate(it)
-    }
+) : BaseFragment(viewModelFactory) {
 
   private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
     viewModelFactory
@@ -46,6 +43,16 @@ constructor(
       ActiveElectionsFragmentDirections.actionActiveElectionsFragmentToElectionDetailsFragment(_id)
     Navigation.findNavController(binding.root)
       .navigate(action)
+  }
+  private lateinit var binding: FragmentActiveElectionsBinding
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    binding = FragmentActiveElectionsBinding.inflate(inflater)
+    return binding.root
   }
 
   override fun onFragmentInitiated() {
