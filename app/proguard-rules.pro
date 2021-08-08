@@ -21,10 +21,9 @@
 #-renamesourcefileattribute SourceFile
 
 #DataStore
--keep class androidx.datastore.*.** {*;}
-
-#Piccaso
--dontwarn com.squareup.okhttp.**
+-keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
+     <fields>;
+ }
 
 #Facebook Login
 -keepnames class com.facebook.FacebookActivity
@@ -35,59 +34,6 @@
 -keep class * extends android.webkit.WebViewClient
 -keepclassmembers class * extends android.webkit.WebViewClient {
     <methods>;
-}
-
-#LeakCanary
--dontwarn com.squareup.haha.guava.**
--dontwarn com.squareup.haha.perflib.**
--dontwarn com.squareup.haha.trove.**
--dontwarn com.squareup.leakcanary.**
--keep class com.squareup.haha.** { *; }
--keep class com.squareup.leakcanary.** { *; }
-
-# Marshmallow removed Notification.setLatestEventInfo()
--dontwarn android.app.Notification
-# Mockito
--dontwarn org.mockito.**
-
-## Kotlin Coroutine
--keepnames class kotlinx.** { *; }
-
-# Navigation Architecture
--keep class * extends androidx.fragment.app.Fragment{}
--keepnames class * extends android.os.Parcelable
- -keepnames class * extends java.io.Serializable
-
-
-#Room DataBase
--keep class * extends androidx.room.RoomDatabase
--keep @androidx.room.Entity class *
--dontwarn androidx.room.paging.**
-
-
-# Ignore JSR 305 annotations for embedding nullability information.
--dontwarn javax.annotation.**
-# Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
--dontwarn kotlin.Unit
-# Top-level functions that can only be used by Kotlin.
--dontwarn retrofit2.-KotlinExtensions
-
-### OkHttp3
--dontwarn okhttp3.**
--dontwarn okio.**
--dontwarn javax.annotation.**
-# A resource is loaded with a relative path so the package of this class must be preserved.
-#-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
-
-
-# LifeCycle Component
--keep class * implements androidx.lifecycle.LifecycleObserver {
-    <init>(...);
-}
-
-# ViewModel's empty constructor is considered to be unused by proguard
--keep class * extends androidx.lifecycle.ViewModel {
-    <init>();
 }
 
 -keepattributes Signature
