@@ -6,6 +6,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 
@@ -26,4 +28,24 @@ fun Bitmap.toByteArray(type: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG):
   val bos = ByteArrayOutputStream()
   this.compress(type, 10, bos)
   return bos.toByteArray()
+}
+
+fun subscribeToFCM(mail: String?) {
+  mail?.let {
+    if (it.contains("@")) {
+      it.substring(0, it.indexOf("@")).let { topic ->
+        Firebase.messaging.subscribeToTopic(topic)
+      }
+    }
+  }
+}
+
+fun unsubscribeFromFCM(mail: String?) {
+  mail?.let {
+    if (it.contains("@")) {
+      it.substring(0, it.indexOf("@")).let { topic ->
+        Firebase.messaging.unsubscribeFromTopic(topic)
+      }
+    }
+  }
 }

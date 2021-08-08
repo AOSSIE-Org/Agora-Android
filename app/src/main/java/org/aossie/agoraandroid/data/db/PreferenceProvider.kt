@@ -18,6 +18,7 @@ constructor(
 ) {
 
   companion object {
+    private val MAIL_ID = stringPreferencesKey("mailId")
     private val IS_LOGGED_IN = booleanPreferencesKey("isLoggedIn")
     private val IS_FACEBOOK_USER = booleanPreferencesKey("isFacebookUser")
     private val IS_UPDATE_NEEDED = booleanPreferencesKey("isUpdateNeeded")
@@ -27,6 +28,18 @@ constructor(
   }
 
   private val dataStore = context.dataStore
+
+  suspend fun setMailId(mailId: String) {
+    dataStore.edit {
+      it[MAIL_ID] = mailId
+    }
+  }
+
+  fun getMailId(): Flow<String?> {
+    return dataStore.data.map {
+      it[MAIL_ID]
+    }
+  }
 
   suspend fun setIsLoggedIn(boolean: Boolean) {
     dataStore.edit {

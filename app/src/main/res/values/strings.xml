@@ -290,5 +290,7 @@
   <string name="end_date_after_starting_date">\"End date should be after starting date and time"</string>
   <string name="start_date_after_current_date">Start date should be after current date and time</string>
   <string name="error_loading_image">Error while loading the image</string>
+  <string name="fcm_title">Vote Invitation!</string>
+  <string name="fcm_body">"You have been invited to vote for an election"</string>
 </resources>
 

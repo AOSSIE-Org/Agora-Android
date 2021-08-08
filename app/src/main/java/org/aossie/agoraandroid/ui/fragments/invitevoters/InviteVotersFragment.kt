@@ -56,6 +56,8 @@ constructor(
 
   var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
+  private var id: String? = null
+
   private val mVoters = ArrayList<VotersDto>()
   private val inviteVotersViewModel: InviteVotersViewModel by viewModels {
     viewModelFactory
@@ -97,7 +99,7 @@ constructor(
     // Inflate the layout for this fragment
     binding = FragmentInviteVotersBinding.inflate(layoutInflater)
     inviteVotersViewModel.sessionExpiredListener = this
-
+    id = InviteVotersFragmentArgs.fromBundle(requireArguments()).id
     initView()
     initListeners()
     initObserver()
@@ -153,9 +155,7 @@ constructor(
 
     binding.buttonInviteVoter.setOnClickListener {
       try {
-        val inviteVotersFragmentArgs = InviteVotersFragmentArgs.fromBundle(requireArguments())
-        val id: String = inviteVotersFragmentArgs.id
-        inviteVotersViewModel.inviteVoters(mVoters, id)
+        id?.let { it1 -> inviteVotersViewModel.inviteVoters(mVoters, it1) }
       } catch (e: JSONException) {
         e.printStackTrace()
       }
@@ -218,12 +218,12 @@ constructor(
     voterRecyclerAdapter!!.notifyDataSetChanged()
   }
 
-  fun onStarted() {
+  private fun onStarted() {
     binding.progressBar.show()
     binding.buttonInviteVoter.toggleIsEnable()
   }
 
-  fun onFailure(message: String?) {
+  private fun onFailure(message: String?) {
     binding.progressBar.hide()
     binding.buttonInviteVoter.toggleIsEnable()
     val mMessage = StringBuilder()
@@ -231,7 +231,17 @@ constructor(
     binding.root.snackbar(mMessage.toString())
   }
 
-  fun onSuccess(message: String) {
+  private fun onSuccess(message: String) {
+    id?.let {
+      for (voter in mVoters) {
+        inviteVotersViewModel.sendFCM(
+          voter.voterEmail,
+          getString(string.fcm_title),
+          getString(string.fcm_body),
+          it
+        )
+      }
+    }
     binding.progressBar.hide()
     binding.buttonInviteVoter.toggleIsEnable()
     lifecycleScope.launch {
@@ -316,7 +326,7 @@ constructor(
     }
   }
 
-  fun onReadFailure(message: String?) {
+  private fun onReadFailure(message: String?) {
     binding.root.snackbar(message)
   }
 }

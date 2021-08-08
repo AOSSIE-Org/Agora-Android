@@ -8,14 +8,17 @@ import okhttp3.Response
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.utilities.AppConstants
 
-class HeaderInterceptor(private val preferenceProvider: PreferenceProvider) : Interceptor {
+class HeaderInterceptor(private val preferenceProvider: PreferenceProvider, private val serverKey: String) : Interceptor {
   override fun intercept(chain: Chain): Response {
-
     val request = runBlocking {
       chain.request()
         .newBuilder()
         .apply {
           when {
+            chain.request().url.toString().contains(AppConstants.FCM_URL) -> addHeader(
+              AppConstants.AUTHORIZATION,
+              AppConstants.KEY + serverKey
+            )
             chain.request().url.toString()
               .contains(AppConstants.FACEBOOK) -> addHeader(
               AppConstants.ACCESS_TOKEN,

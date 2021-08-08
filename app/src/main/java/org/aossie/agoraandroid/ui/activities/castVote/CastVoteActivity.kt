@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.ui.activities.castVote
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
@@ -81,7 +82,16 @@ class CastVoteActivity :
     binding = ActivityCastVoteBinding.inflate(layoutInflater)
     setContentView(binding.root)
     initObservers()
-    processURL()
+    intent?.let {
+      if (it.data != null) {
+        processURL(it.data)
+      } else {
+        it.getStringExtra(AppConstants.ELECTION_ID)?.let { electionId ->
+          id = electionId
+          viewModel.verifyVoter(electionId)
+        }
+      }
+    }
   }
 
   private fun init(
@@ -143,7 +153,7 @@ class CastVoteActivity :
                   selectedCandidates[i] + ">"
                 }
               }
-              viewModel.castVote(id!!, ballotInput, passCode!!)
+              viewModel.castVote(id!!, ballotInput, passCode ?: "")
             }
           }
           .setNegativeButton(getString(string.cancel_button)) { dialog, _ ->
@@ -299,9 +309,8 @@ class CastVoteActivity :
     }
   }
 
-  private fun processURL() {
+  private fun processURL(encodedURL: Uri?) {
     if (isConnected()) {
-      val encodedURL = intent?.data
       if (encodedURL != null) {
         viewModel.getResolvedPath(encodedURL.toString())
       } else {

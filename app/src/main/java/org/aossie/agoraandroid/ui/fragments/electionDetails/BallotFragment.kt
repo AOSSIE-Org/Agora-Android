@@ -81,7 +81,6 @@ constructor(
           when (responseUI.status) {
             ResponseUI.Status.LOADING -> binding.progressBar.hide()
             ResponseUI.Status.SUCCESS -> {
-              binding.root.snackbar(responseUI.message)
               binding.progressBar.hide()
 
               responseUI.dataList?.let {

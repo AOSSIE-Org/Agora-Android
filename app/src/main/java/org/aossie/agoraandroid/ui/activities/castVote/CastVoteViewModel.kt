@@ -104,10 +104,4 @@ constructor(
       }
     }
   }
-
-  fun deleteUserData() {
-    Coroutines.main {
-      userRepository.deleteUser()
-    }
-  }
 }
