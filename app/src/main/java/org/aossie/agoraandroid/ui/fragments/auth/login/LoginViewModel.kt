@@ -107,8 +107,8 @@ constructor(
         val authResponse = userRepository.fbLogin()
         getUserData(authResponse)
         authResponse.email?.let {
-            prefs.setMailId(it)
-            subscribeToFCM(it)
+          prefs.setMailId(it)
+          subscribeToFCM(it)
         }
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {

@@ -8,6 +8,5 @@ import retrofit2.http.POST
 interface FCMApi {
 
   @POST("fcm/send")
-  suspend fun sendFCM(@Body fcmDto: FCMDto) : Response<Unit>
-
+  suspend fun sendFCM(@Body fcmDto: FCMDto): Response<Unit>
 }
