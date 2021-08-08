@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -153,6 +155,17 @@ dependencies {
 
   //DataStore
   implementation("androidx.datastore:datastore-preferences:$dataStore")
+
+  //FirebaseBoM
+  implementation platform('com.google.firebase:firebase-bom:28.3.0')
+
+  //Firebase Analytics
+  implementation 'com.google.firebase:firebase-analytics-ktx'
+
+  //Firebase Crashlytics
+  implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+
 }
 repositories {
   mavenCentral()
