@@ -8,6 +8,7 @@
   >
 
   <ScrollView
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_color"
@@ -160,6 +161,7 @@
             <com.google.android.material.textfield.TextInputLayout
               android:id="@+id/candidate_til"
               style="@style/TextInputLayoutStyle"
+              android:layout_marginEnd="@dimen/size_10dp"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_weight="3"
