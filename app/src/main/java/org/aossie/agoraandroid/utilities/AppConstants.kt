@@ -41,4 +41,6 @@ object AppConstants {
   enum class Status {
     PENDING, ACTIVE, FINISHED
   }
+  const val SPOTLIGHT_ANIMATION_DURATION = 500L
+  const val SPOTLIGHT_SCROLL_DURATION = 0L
 }

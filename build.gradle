@@ -41,6 +41,7 @@ buildscript {
     recyclerViewVersion = '1.2.1'
     poi = '3.17'
     dataStore = '1.0.0-rc01'
+    spotlight = '2.0.5'
   }
 
   repositories {

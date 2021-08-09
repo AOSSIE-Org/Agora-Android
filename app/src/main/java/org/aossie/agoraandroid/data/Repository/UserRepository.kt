@@ -73,7 +73,7 @@ class UserRepository(
     unsubscribeFromFCM(preferenceProvider.getMailId().first())
     appDatabase.getUserDao()
       .removeUser()
-    preferenceProvider.clearData()
+    preferenceProvider.clearAllData()
     appDatabase.getElectionDao()
       .deleteAllElections()
   }
