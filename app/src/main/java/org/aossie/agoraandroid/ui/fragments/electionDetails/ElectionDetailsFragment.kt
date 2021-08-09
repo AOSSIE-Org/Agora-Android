@@ -274,6 +274,10 @@ constructor(
             destroySpotlight()
           },
           {
+            it.clear()
+            destroySpotlight()
+          },
+          {
             if (isAdded) {
               showSpotlight()
             }

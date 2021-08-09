@@ -12,6 +12,23 @@
     android:orientation="vertical"
     >
 
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/skip_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/button_background"
+      android:minWidth="0dp"
+      android:minHeight="0dp"
+      android:paddingHorizontal="@dimen/size_16dp"
+      android:paddingVertical="@dimen/size_8dp"
+      android:text="@string/skip"
+      android:textAppearance="@style/TextAppearance.AppCompat.Button"
+      android:textColor="@android:color/white"
+      android:textSize="14sp"
+      android:textStyle="bold"
+      android:visibility="gone"
+      />
+
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -37,7 +54,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/size_10dp"
-        android:text="Title"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -88,7 +104,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/size_10dp"
-        android:text="Desc"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -115,6 +130,22 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/skip_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/button_background"
+      android:minWidth="0dp"
+      android:minHeight="0dp"
+      android:paddingHorizontal="@dimen/size_16dp"
+      android:paddingVertical="@dimen/size_8dp"
+      android:text="@string/skip"
+      android:textAppearance="@style/TextAppearance.AppCompat.Button"
+      android:textColor="@android:color/white"
+      android:textSize="14sp"
+      android:textStyle="bold"
+      android:visibility="gone"
+      />
   </LinearLayout>
 
 </FrameLayout>

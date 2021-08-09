@@ -40,10 +40,11 @@ fun Bitmap.toByteArray(type: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG):
 fun Activity.getSpotlight(
   targetData: TargetData,
   dismissSpotlight: () -> Unit,
+  skipSpotlight: () -> Unit,
   showNextSpotlight: () -> Unit
 ): Spotlight {
   return Spotlight.Builder(this)
-    .setTargets(getTarget(this, targetData, dismissSpotlight))
+    .setTargets(getTarget(this, targetData, dismissSpotlight, skipSpotlight))
     .setBackgroundColorRes(color.spotlight_background)
     .setDuration(SPOTLIGHT_ANIMATION_DURATION)
     .setAnimation(DecelerateInterpolator(2f))

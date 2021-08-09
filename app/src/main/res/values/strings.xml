@@ -312,5 +312,6 @@
   <string name="voters_spotlight">View voters for the election</string>
   <string name="ballot_spotlight">View ballot for the election</string>
   <string name="result_spotlight">View the result of the election</string>
+  <string name="skip">Skip</string>
 </resources>
 
