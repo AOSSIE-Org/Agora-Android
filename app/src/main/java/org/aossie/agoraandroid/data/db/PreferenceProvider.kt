@@ -7,7 +7,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.aossie.agoraandroid.utilities.SecurityUtil
-import org.aossie.agoraandroid.utilities.dataStore
+import org.aossie.agoraandroid.utilities.spotlightDataStore
+import org.aossie.agoraandroid.utilities.userDataStore
 import javax.inject.Inject
 
 class PreferenceProvider
@@ -26,46 +27,59 @@ constructor(
     private val FACEBOOK_ACCESS_TOKEN = stringPreferencesKey("facebookAccessToken")
   }
 
-  private val dataStore = context.dataStore
+  private val userDataStore = context.userDataStore
+  private val spotlightDataStore = context.spotlightDataStore
+
+  fun isDisplayed(id: String): Flow<Boolean> {
+    return spotlightDataStore.data.map {
+      it[booleanPreferencesKey(id)] ?: false
+    }
+  }
+
+  suspend fun setDisplayed(id: String) {
+    spotlightDataStore.edit {
+      it[booleanPreferencesKey(id)] = true
+    }
+  }
 
   suspend fun setIsLoggedIn(boolean: Boolean) {
-    dataStore.edit {
+    userDataStore.edit {
       it[IS_LOGGED_IN] = boolean
     }
   }
 
   fun getIsLoggedIn(): Flow<Boolean> {
-    return dataStore.data.map {
+    return userDataStore.data.map {
       it[IS_LOGGED_IN] ?: false
     }
   }
 
   suspend fun setIsFacebookUser(boolean: Boolean) {
-    dataStore.edit {
+    userDataStore.edit {
       it[IS_FACEBOOK_USER] = boolean
     }
   }
 
   fun getIsFacebookUser(): Flow<Boolean> {
-    return dataStore.data.map {
+    return userDataStore.data.map {
       it[IS_FACEBOOK_USER] ?: false
     }
   }
 
   suspend fun setUpdateNeeded(isNeeded: Boolean) {
-    dataStore.edit {
+    userDataStore.edit {
       it[IS_UPDATE_NEEDED] = isNeeded
     }
   }
 
   fun getUpdateNeeded(): Flow<Boolean> {
-    return dataStore.data.map {
+    return userDataStore.data.map {
       it[IS_UPDATE_NEEDED] ?: true
     }
   }
 
   suspend fun setAccessToken(token: String?) {
-    dataStore.edit {
+    userDataStore.edit {
       it[ACCESS_TOKEN] = token?.let { _token ->
         securityUtil.encryptToken(_token)
       } ?: ""
@@ -73,7 +87,7 @@ constructor(
   }
 
   fun getAccessToken(): Flow<String?> {
-    return dataStore.data.map {
+    return userDataStore.data.map {
       it[ACCESS_TOKEN]?.let { _token ->
         securityUtil.decryptToken(_token)
       }
@@ -81,7 +95,7 @@ constructor(
   }
 
   suspend fun setRefreshToken(token: String?) {
-    dataStore.edit {
+    userDataStore.edit {
       it[REFRESH_TOKEN] = token?.let { _token ->
         securityUtil.encryptToken(_token)
       } ?: ""
@@ -89,7 +103,7 @@ constructor(
   }
 
   fun getRefreshToken(): Flow<String?> {
-    return dataStore.data.map {
+    return userDataStore.data.map {
       it[REFRESH_TOKEN]?.let { _token ->
         securityUtil.decryptToken(_token)
       }
@@ -97,7 +111,7 @@ constructor(
   }
 
   suspend fun setFacebookAccessToken(accessToken: String?) {
-    dataStore.edit {
+    userDataStore.edit {
       it[FACEBOOK_ACCESS_TOKEN] = accessToken?.let { _token ->
         securityUtil.encryptToken(_token)
       } ?: ""
@@ -105,15 +119,26 @@ constructor(
   }
 
   fun getFacebookAccessToken(): Flow<String?> {
-    return dataStore.data.map {
+    return userDataStore.data.map {
       it[FACEBOOK_ACCESS_TOKEN]?.let { _token ->
         securityUtil.decryptToken(_token)
       }
     }
   }
 
-  suspend fun clearData() {
-    dataStore.edit {
+  suspend fun clearAllData() {
+    clearUserData()
+    clearSpotlightData()
+  }
+
+  private suspend fun clearUserData() {
+    userDataStore.edit {
+      it.clear()
+    }
+  }
+
+  private suspend fun clearSpotlightData() {
+    spotlightDataStore.edit {
       it.clear()
     }
   }

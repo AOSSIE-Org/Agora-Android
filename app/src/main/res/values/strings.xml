@@ -50,6 +50,7 @@
   <string name="enter_candidate_s_name">Enter Candidate\'s Name</string>
   <string name="election_description">Election Description</string>
   <string name="election_name">Election Name</string>
+  <string name="election_method">Election Method</string>
   <string name="start_date_format">Start Date</string>
   <string name="end_date_format">End Date</string>
   <string name="datePicker">datePicker</string>
@@ -79,7 +80,6 @@
   <string name="finished_elections">Finished Elections</string>
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
-  <string name="election_name_">Election Name</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
   <string name="delete_election">delete election</string>
   <string name="invite_voter">Invite Voters</string>
@@ -290,5 +290,28 @@
   <string name="end_date_after_starting_date">\"End date should be after starting date and time"</string>
   <string name="start_date_after_current_date">Start date should be after current date and time</string>
   <string name="error_loading_image">Error while loading the image</string>
+  <string name="election_visibility">Election Visibility</string>
+  <string name="election_voter_visibility">Voter List Visibility</string>
+  <string name="create_election_spotlight">Create elections and invite user to vote</string>
+  <string name="election_name_spotlight">Enter a name for your election</string>
+  <string name="election_method_spotlight">Choose a method for your election</string>
+  <string name="election_description_spotlight">Enter a description for your election</string>
+  <string name="election_candidates_spotlight">Enter all candidates for your election</string>
+  <string name="election_import_candidates">Import Candidates</string>
+  <string name="election_import_spotlight">Import candidates\nfrom excel sheet</string>
+  <string name="election_visibility_spotlight">Choose who can view your election</string>
+  <string name="election_voter_visibility_spotlight">Select to make voter list public</string>
+  <string name="election_start_date_spotlight">Pick the start date for your election</string>
+  <string name="election_end_date_spotlight">Pick the end date for your election</string>
+  <string name="election_real_time_spotlight">Real Time</string>
+  <string name="election_invite_spotlight">Invite</string>
+  <string name="status_spotlight">This shows the live\nstatus of the election</string>
+  <string name="delete">Delete</string>
+  <string name="delete_spotlight">Election can\'t be deleted when active</string>
+  <string name="invite_spotlight">Voters can\'t be invited when election is finished</string>
+  <string name="voters_spotlight">View voters for the election</string>
+  <string name="ballot_spotlight">View ballot for the election</string>
+  <string name="result_spotlight">View the result of the election</string>
+  <string name="skip">Skip</string>
 </resources>
 
