@@ -247,9 +247,6 @@ constructor(
     }
   }
 
-
-
-
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!prefs.isDisplayed(binding.root.id.toString())

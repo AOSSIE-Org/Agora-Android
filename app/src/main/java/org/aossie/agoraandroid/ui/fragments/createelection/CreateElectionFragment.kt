@@ -116,7 +116,6 @@ constructor(
     binding.root.doOnLayout {
       checkIsFirstOpen()
     }
-    
   }
 
   private fun initObserver() {

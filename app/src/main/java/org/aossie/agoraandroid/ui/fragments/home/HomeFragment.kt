@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +24,6 @@ import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.scrollToView
-import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -186,7 +183,6 @@ constructor(
     binding.shimmerViewContainer.visibility = View.VISIBLE
     binding.constraintLayout.visibility = View.GONE
   }
-
 
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
