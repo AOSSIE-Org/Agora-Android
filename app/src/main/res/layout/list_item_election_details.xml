@@ -225,7 +225,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="@string/election_name_"
+              android:text="@string/election_name"
               android:textColor="@color/whiteColor"
               android:textSize="27sp"
               android:textStyle="bold"

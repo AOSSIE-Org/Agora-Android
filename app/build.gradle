@@ -159,6 +159,9 @@ dependencies {
   //DataStore
   implementation("androidx.datastore:datastore-preferences:$dataStore")
 
+  //Spotlight
+  implementation "com.github.takusemba:spotlight:$spotlight"
+
   //FirebaseBoM
   implementation platform('com.google.firebase:firebase-bom:28.3.0')
 
@@ -167,8 +170,6 @@ dependencies {
 
   //Firebase Crashlytics
   implementation 'com.google.firebase:firebase-crashlytics-ktx'
-
-
 }
 repositories {
   mavenCentral()
