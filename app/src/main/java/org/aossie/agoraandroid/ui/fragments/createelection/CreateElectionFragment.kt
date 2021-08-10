@@ -7,6 +7,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.doOnLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -28,6 +30,8 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
@@ -39,8 +43,11 @@ import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.errorDialog
+import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.scrollToView
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.util.ArrayList
@@ -82,6 +89,10 @@ constructor(
   lateinit var ballotVisibilityAdapter: ArrayAdapter<CharSequence>
   private var ballotVisibility: String? = null
 
+  private var spotlight: Spotlight? = null
+  private var spotlightTargets: ArrayList<TargetData>? = null
+  private var currentSpotlightIndex = 0
+
   private val createElectionViewModel: CreateElectionViewModel by viewModels {
     viewModelFactory
   }
@@ -101,6 +112,11 @@ constructor(
     initView()
     initListeners()
     initObserver()
+
+    binding.root.doOnLayout {
+      checkIsFirstOpen()
+    }
+    
   }
 
   private fun initObserver() {
@@ -469,25 +485,6 @@ constructor(
     }
   }
 
-  private fun doAfterTextChange() {
-    val electionNameInput: String = binding.etElectionName.text
-      .toString()
-      .trim()
-    val electionDescriptionInput: String = binding.etElectionDescription.text
-      .toString()
-      .trim()
-    val startDateInput: String = binding.etStartDate.text
-      .toString()
-      .trim()
-    val endDateInput: String = binding.etEndDate.text
-      .toString()
-      .trim()
-    binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
-      electionDescriptionInput.isNotEmpty() &&
-      startDateInput.isNotEmpty() &&
-      endDateInput.isNotEmpty()
-  }
-
   override fun onActivityResult(
     requestCode: Int,
     resultCode: Int,
@@ -523,5 +520,128 @@ constructor(
 
   private fun onReadFailure(message: String?) {
     notify(message)
+  }
+
+  private fun checkIsFirstOpen() {
+    lifecycleScope.launch {
+      if (!prefs.isDisplayed(binding.root.id.toString())
+        .first()
+      ) {
+        spotlightTargets = getSpotlightTargets()
+        prefs.setDisplayed(binding.root.id.toString())
+        showSpotlight()
+      }
+    }
+  }
+
+  private fun showSpotlight() {
+    spotlightTargets?.let {
+      if (currentSpotlightIndex in it.indices) {
+        scrollToView(binding.scrollView, it[currentSpotlightIndex].targetView)
+        spotlight = requireActivity().getSpotlight(
+          it[currentSpotlightIndex++],
+          {
+            destroySpotlight()
+          },
+          {
+            it.clear()
+            destroySpotlight()
+          },
+          {
+            if (isAdded) {
+              showSpotlight()
+            }
+          }
+        )
+        spotlight?.start()
+      }
+    }
+  }
+
+  private fun getSpotlightTargets(): ArrayList<TargetData> {
+    val targetData = ArrayList<TargetData>()
+    targetData.add(
+      TargetData(
+        binding.etElectionName, getString(string.Create_Election),
+        getString(string.create_election_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.linearLayout, getString(string.election_method),
+        getString(string.election_method_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.etElectionDescription, getString(string.election_description),
+        getString(string.election_description_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.etCandidateName, getString(string.candidates),
+        getString(string.election_candidates_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.importCandidates, getString(string.election_import_candidates),
+        getString(string.election_import_spotlight),
+        false
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.linearLayout2, getString(string.election_visibility),
+        getString(string.election_visibility_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxVoterVisibility, getString(string.election_voter_visibility),
+        getString(string.election_voter_visibility_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.startDateTil, getString(string.start_date_format),
+        getString(string.election_start_date_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.endDateTil, getString(string.end_date_format),
+        getString(string.election_end_date_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxRealTime, getString(string.real_time),
+        getString(string.election_real_time_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxInvite, getString(string.invite),
+        getString(string.election_invite_spotlight)
+      )
+    )
+    return targetData
+  }
+
+  private fun destroySpotlight() {
+    spotlight?.finish()
+    spotlight = null
+  }
+
+  override fun onPause() {
+    super.onPause()
+    destroySpotlight()
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    destroySpotlight()
   }
 }

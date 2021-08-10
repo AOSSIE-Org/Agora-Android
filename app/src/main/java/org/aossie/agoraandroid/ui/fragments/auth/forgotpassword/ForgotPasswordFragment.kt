@@ -46,7 +46,7 @@ constructor(
     binding.buttonSendLink.setOnClickListener {
       val userName = binding.editTextUserName.editText?.text.toString().trim()
       if (userName.isEmpty()) {
-        notify(getString(string.enter_user_name))
+        notify("Please Enter User Name")
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
         binding.progressBar.show()

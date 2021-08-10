@@ -1,25 +1,36 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.takusemba.spotlight.Spotlight
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.color
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.TargetData
+import org.aossie.agoraandroid.utilities.getSpotlight
+import org.aossie.agoraandroid.utilities.scrollToView
+import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.ArrayList
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -40,6 +51,10 @@ constructor(
   }
 
   private lateinit var binding: FragmentHomeBinding
+
+  private var spotlight: Spotlight? = null
+  private var spotlightTargets: ArrayList<TargetData>? = null
+  private var currentSpotlightIndex = 0
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -146,6 +161,9 @@ constructor(
       }
     )
     updateUi()
+    binding.root.doOnLayout {
+      checkIsFirstOpen()
+    }
   }
 
   override fun onNetworkConnected() {
@@ -167,5 +185,68 @@ constructor(
     binding.shimmerViewContainer.startShimmer()
     binding.shimmerViewContainer.visibility = View.VISIBLE
     binding.constraintLayout.visibility = View.GONE
+  }
+
+
+  private fun checkIsFirstOpen() {
+    lifecycleScope.launch {
+      if (!preferenceProvider.isDisplayed(binding.root.id.toString())
+        .first()
+      ) {
+        spotlightTargets = getSpotlightTargets()
+        preferenceProvider.setDisplayed(binding.root.id.toString())
+        showSpotlight()
+      }
+    }
+  }
+
+  private fun showSpotlight() {
+    spotlightTargets?.let {
+      if (currentSpotlightIndex in it.indices) {
+        scrollToView(binding.scrollView, it[currentSpotlightIndex].targetView)
+        spotlight = requireActivity().getSpotlight(
+          it[currentSpotlightIndex++],
+          {
+            destroySpotlight()
+          },
+          {
+            it.clear()
+            destroySpotlight()
+          },
+          {
+            if (isAdded) {
+              showSpotlight()
+            }
+          }
+        )
+        spotlight?.start()
+      }
+    }
+  }
+
+  private fun getSpotlightTargets(): ArrayList<TargetData> {
+    val targetData = ArrayList<TargetData>()
+    targetData.add(
+      TargetData(
+        binding.buttonCreateElection, getString(string.Create_Election),
+        getString(string.create_election_spotlight)
+      )
+    )
+    return targetData
+  }
+
+  private fun destroySpotlight() {
+    spotlight?.finish()
+    spotlight = null
+  }
+
+  override fun onPause() {
+    super.onPause()
+    destroySpotlight()
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    destroySpotlight()
   }
 }
