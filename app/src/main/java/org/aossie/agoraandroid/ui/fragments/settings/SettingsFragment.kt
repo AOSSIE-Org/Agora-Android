@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -23,8 +22,7 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -32,9 +30,7 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.loadImage
 import org.aossie.agoraandroid.utilities.loadImageFromMemoryNoCache
-import org.aossie.agoraandroid.utilities.shortSnackbar
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toByteArray
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.io.File
@@ -50,7 +46,7 @@ class SettingsFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), SessionExpiredListener {
+) : BaseFragment(viewModelFactory) {
 
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
@@ -66,17 +62,15 @@ constructor(
     viewModelFactory
   }
 
-  private val hostViewModel: MainActivityViewModel by activityViewModels {
-    viewModelFactory
-  }
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentSettingsBinding.inflate(layoutInflater)
+  ): View? {
+    binding = FragmentSettingsBinding.inflate(inflater)
+    return binding.root
+  }
+  override fun onFragmentInitiated() {
 
     val user = viewModel.user
     user.observe(
@@ -111,7 +105,7 @@ constructor(
         when (it.status) {
           ResponseUI.Status.ERROR -> {
             binding.progressBar.hide()
-            binding.root.snackbar(it.message)
+            notify(it.message)
             binding.tvLogout.toggleIsEnable()
           }
           ResponseUI.Status.SUCCESS -> {
@@ -123,7 +117,7 @@ constructor(
               }
             }
             homeViewModel.deleteUserData()
-            binding.root.shortSnackbar("Logged Out")
+            notify("Logged Out")
             Navigation.findNavController(binding.root)
               .navigate(
                 SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
@@ -167,18 +161,12 @@ constructor(
     binding.tvLogout.setOnClickListener {
       homeViewModel.doLogout()
     }
-
-    return binding.root
   }
 
   private fun cacheAndSaveImage(url: String) {
     binding.imageView.loadImage(url, OFFLINE) {
       binding.imageView.loadImage(url)
     }
-  }
-
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
   }
 
   private fun decodeBitmap(encodedBitmap: String): Bitmap {
@@ -200,7 +188,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      binding.root.snackbar(getString(string.error_loading_image))
+      notify(getString(string.error_loading_image))
     }
   }
 }
