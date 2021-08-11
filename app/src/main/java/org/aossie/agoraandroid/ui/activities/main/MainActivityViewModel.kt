@@ -3,8 +3,9 @@ package org.aossie.agoraandroid.ui.activities.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.utilities.Coroutines
 import javax.inject.Inject
 
 class MainActivityViewModel
@@ -21,7 +22,7 @@ constructor(
   }
 
   fun deleteUserData() {
-    Coroutines.main {
+    viewModelScope.launch {
       userRepository.deleteUser()
     }
   }

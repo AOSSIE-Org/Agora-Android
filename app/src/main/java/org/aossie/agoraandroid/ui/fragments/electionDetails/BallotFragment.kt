@@ -16,7 +16,6 @@ import org.aossie.agoraandroid.data.dto.BallotDto
 import org.aossie.agoraandroid.databinding.FragmentBallotBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -73,38 +72,36 @@ constructor(
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-    Coroutines.main {
 
-      electionDetailsViewModel.getBallotResponseLiveData.observe(
-        viewLifecycleOwner,
-        { responseUI ->
-          when (responseUI.status) {
-            ResponseUI.Status.LOADING -> binding.progressBar.hide()
-            ResponseUI.Status.SUCCESS -> {
-              binding.root.snackbar(responseUI.message)
-              binding.progressBar.hide()
+    electionDetailsViewModel.getBallotResponseLiveData.observe(
+      viewLifecycleOwner,
+      { responseUI ->
+        when (responseUI.status) {
+          ResponseUI.Status.LOADING -> binding.progressBar.hide()
+          ResponseUI.Status.SUCCESS -> {
+            binding.root.snackbar(responseUI.message)
+            binding.progressBar.hide()
 
-              responseUI.dataList?.let {
-                initRecyclerView(it)
-              } ?: binding.tvEmptyBallots.show()
-            }
-            ResponseUI.Status.ERROR -> {
-              binding.root.snackbar(responseUI.message)
-              binding.progressBar.hide()
-            }
+            responseUI.dataList?.let {
+              initRecyclerView(it)
+            } ?: binding.tvEmptyBallots.show()
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.root.snackbar(responseUI.message)
+            binding.progressBar.hide()
           }
         }
-      )
+      }
+    )
 
-      electionDetailsViewModel.notConnected.observe(
-        viewLifecycleOwner,
-        Observer {
-          if (it) {
-            getBallotsFromDb()
-          }
+    electionDetailsViewModel.notConnected.observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it) {
+          getBallotsFromDb()
         }
-      )
-    }
+      }
+    )
   }
 
   private fun initRecyclerView(ballots: List<BallotDto>) {
@@ -119,16 +116,14 @@ constructor(
   }
 
   private fun getBallotsFromDb() {
-    Coroutines.main {
-      electionDetailsViewModel.getElectionById(id!!)
-        .observe(
-          viewLifecycleOwner,
-          Observer {
-            initRecyclerView(it.ballot as List<BallotDto>)
-            binding.progressBar.hide()
-          }
-        )
-    }
+    electionDetailsViewModel.getElectionById(id!!)
+      .observe(
+        viewLifecycleOwner,
+        Observer {
+          initRecyclerView(it.ballot as List<BallotDto>)
+          binding.progressBar.hide()
+        }
+      )
   }
 
   override fun onSessionExpired() {

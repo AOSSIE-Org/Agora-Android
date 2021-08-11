@@ -29,7 +29,7 @@ constructor(
     userData: NewUserDto
   ) {
     _getSignUpLiveData.value = ResponseUI.loading()
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val call = userRepository.userSignup(userData)
         Timber.d(call)

@@ -2,7 +2,9 @@ package org.aossie.agoraandroid.data.Repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -16,7 +18,6 @@ import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import timber.log.Timber
@@ -32,12 +33,6 @@ constructor(
 ) : ApiRequest() {
 
   private val elections = MutableLiveData<List<ElectionResponse>>()
-
-  init {
-    elections.observeForever {
-      saveElections(it)
-    }
-  }
 
   suspend fun fetchAndSaveElections() = fetchElections()
 
@@ -66,20 +61,43 @@ constructor(
     db.getElectionDao()
       .getActiveElectionsCount(currentDate)
 
-  private fun saveElections(elections: List<ElectionResponse>) {
-    Coroutines.io {
-      val electionEntity = mutableListOf<Election>()
+  private suspend fun saveElections(elections: List<ElectionResponse>) {
+    val electionEntity = mutableListOf<Election>()
+    withContext(Dispatchers.Default) {
       elections.forEach {
         electionEntity.add(
-          Election(it.id, it.name, it.description, it.electionType, it.creatorName, it.creatorEmail, it.start, it.end, it.realtimeResult.toString(), it.votingAlgo, it.candidates, it.ballotVisibility, it.voterListVisibility.toString(), it.isInvite, it.isCompleted, it.isStarted, it.createdTime, it.adminLink, it.inviteCode, it.ballot, it.voterList, it.winners)
+          Election(
+            it.id,
+            it.name,
+            it.description,
+            it.electionType,
+            it.creatorName,
+            it.creatorEmail,
+            it.start,
+            it.end,
+            it.realtimeResult.toString(),
+            it.votingAlgo,
+            it.candidates,
+            it.ballotVisibility,
+            it.voterListVisibility.toString(),
+            it.isInvite,
+            it.isCompleted,
+            it.isStarted,
+            it.createdTime,
+            it.adminLink,
+            it.inviteCode,
+            it.ballot,
+            it.voterList,
+            it.winners
+          )
         )
       }
-      prefs.setUpdateNeeded(false)
-      db.getElectionDao()
-        .deleteAllElections()
-      db.getElectionDao()
-        .saveElections(electionEntity)
     }
+    prefs.setUpdateNeeded(false)
+    db.getElectionDao()
+      .deleteAllElections()
+    db.getElectionDao()
+      .saveElections(electionEntity)
   }
 
   fun getPendingElections(currentDate: String): LiveData<List<Election>> =
@@ -92,7 +110,10 @@ constructor(
     if (isNeeded) {
       try {
         val response = apiRequest { api.getAllElections() }
-        elections.postValue(response.elections)
+        response.elections.let {
+          saveElections(it)
+          elections.postValue(it)
+        }
         Timber.d(response.toString())
       } catch (e: NoInternetException) {
       } catch (e: ApiException) {

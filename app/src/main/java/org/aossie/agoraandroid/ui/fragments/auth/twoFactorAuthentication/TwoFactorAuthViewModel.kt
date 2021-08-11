@@ -46,7 +46,7 @@ constructor(
       mVerifyOtpResponse.value = ResponseUI.error(AppConstants.INVALID_OTP_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse = userRepository.verifyOTP(VerifyOtpDto(crypto, otp, trustedDevice))
         authResponse.let {
@@ -79,7 +79,7 @@ constructor(
       mResendOtpResponse.value = ResponseUI.error(AppConstants.LOGIN_AGAIN_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse = userRepository.resendOTP(username)
         authResponse.let {

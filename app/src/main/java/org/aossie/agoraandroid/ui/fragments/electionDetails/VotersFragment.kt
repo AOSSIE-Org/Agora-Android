@@ -16,7 +16,6 @@ import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentVotersBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -114,18 +113,16 @@ constructor(
   }
 
   private fun getVotersFromDb() {
-    Coroutines.main {
-      electionDetailsViewModel.getElectionById(id!!)
-        .observe(
-          viewLifecycleOwner,
-          Observer {
-            if (it != null) {
-              initRecyclerView(it.voterList as List<VotersDto>)
-              binding.progressBar.hide()
-            }
+    electionDetailsViewModel.getElectionById(id!!)
+      .observe(
+        viewLifecycleOwner,
+        Observer {
+          if (it != null) {
+            initRecyclerView(it.voterList as List<VotersDto>)
+            binding.progressBar.hide()
           }
-        )
-    }
+        }
+      )
   }
 
   override fun onSessionExpired() {

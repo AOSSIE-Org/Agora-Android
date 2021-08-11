@@ -18,7 +18,6 @@ import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -53,7 +52,7 @@ constructor(
 
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  suspend fun getElectionById(id: String): LiveData<Election> {
+  fun getElectionById(id: String): LiveData<Election> {
     return electionsRepository.getElectionById(id)
   }
 
@@ -61,7 +60,7 @@ constructor(
     id: String?
   ) {
     _getBallotResponseLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response: List<BallotDto> = electionsRepository.getBallots(id!!).ballots
         Timber.d(response.toString())
@@ -82,7 +81,7 @@ constructor(
     id: String?
   ) {
     _getVoterResponseLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response = electionsRepository.getVoters(id!!)
         Timber.d(response.toString())
@@ -103,7 +102,7 @@ constructor(
     id: String?
   ) {
     _getDeleteElectionLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response = electionsRepository.deleteElection(id!!)
         Timber.d(response.toString())
@@ -124,7 +123,7 @@ constructor(
     id: String?
   ) {
     _getResultResponseLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response = electionsRepository.getResult(id!!)
         if (!response.isNullOrEmpty())

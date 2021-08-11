@@ -25,7 +25,6 @@ import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -78,10 +77,8 @@ constructor(
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-    Coroutines.main {
-      observeResult()
-      observeConnectivity()
-    }
+    observeResult()
+    observeConnectivity()
   }
 
   private fun observeConnectivity() {
