@@ -108,8 +108,9 @@ constructor(
             binding.root.snackbar(responseUI.message ?: "")
             binding.progressBar.hide()
             responseUI.data?.let {
+              winnerDto = it
               initResultView(it)
-            } ?: kotlin.run {
+            } ?: run {
               binding.resultView.visibility = View.GONE
               binding.tvNoResult.text = resources.getString(string.no_result)
               binding.tvNoResult.show()

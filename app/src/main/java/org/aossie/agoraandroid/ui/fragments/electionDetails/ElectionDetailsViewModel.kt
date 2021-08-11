@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -147,12 +148,15 @@ constructor(
     context: Context,
     bitmap: Bitmap
   ) {
-    viewModelScope.launch(Dispatchers.IO) {
-      FileUtils.saveBitmap(context, bitmap)
-        ?.let {
-          _getShareResponseLiveData.value = ResponseUI.success(it)
-        } ?: run {
-        _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
+    viewModelScope.launch {
+      val btm = withContext(Dispatchers.IO) {
+        FileUtils.saveBitmap(context, bitmap)
+      }
+      btm?.let {
+        _getShareResponseLiveData.value = ResponseUI.success(it)
+      } ?: run {
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
       }
     }
   }
@@ -162,9 +166,25 @@ constructor(
     winnerDto: WinnerDto,
     id: String
   ) {
-    viewModelScope.launch(Dispatchers.IO) {
-      val workbook = createWorkbook(context, winnerDto)
-      writeToExcelFile(context, workbook, id)
+    viewModelScope.launch {
+      val workbook = withContext(Dispatchers.Default) {
+        createWorkbook(context, winnerDto)
+      }
+      try {
+        val uri = withContext(Dispatchers.IO) {
+          writeToExcelFile(context, workbook, id)
+        }
+        _getShareResponseLiveData.value = ResponseUI.success(uri)
+      } catch (e: FileNotFoundException) {
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.file_not_available))
+      } catch (e: IOException) {
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.cannot_write_file))
+      } catch (e: Exception ){
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
+      }
     }
   }
 
@@ -196,7 +216,7 @@ constructor(
     context: Context,
     workbook: XSSFWorkbook,
     id: String
-  ) {
+  ): Uri {
     val folderName = context.getExternalFilesDir(null)?.absolutePath
     val folder = File("$folderName", context.getString(string.result))
     if (!folder.exists()) {
@@ -210,16 +230,13 @@ constructor(
       workbook.write(fileOut)
       fileOut.flush()
       fileOut.close()
-      val uri: Uri = FileProvider.getUriForFile(
+      return FileProvider.getUriForFile(
         context,
         "${context.packageName}.provider",
         file
       )
-      _getShareResponseLiveData.value = ResponseUI.success(uri)
-    } catch (e: FileNotFoundException) {
-      _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.file_not_available))
-    } catch (e: IOException) {
-      _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.cannot_write_file))
+    } catch (e: Exception) {
+      throw e
     }
   }
 }
