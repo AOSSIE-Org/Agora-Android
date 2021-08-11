@@ -181,7 +181,7 @@ constructor(
       } catch (e: IOException) {
         _getShareResponseLiveData.value =
           ResponseUI.error(context.getString(string.cannot_write_file))
-      } catch (e: Exception ){
+      } catch (e: Exception) {
         _getShareResponseLiveData.value =
           ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
       }
