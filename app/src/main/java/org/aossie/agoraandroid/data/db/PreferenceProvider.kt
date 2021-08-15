@@ -25,6 +25,7 @@ constructor(
     private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FACEBOOK_ACCESS_TOKEN = stringPreferencesKey("facebookAccessToken")
+    private val ENABLE_BIOMETRIC = booleanPreferencesKey("isBiometricEnabled")
   }
 
   private val userDataStore = context.userDataStore
@@ -47,7 +48,17 @@ constructor(
       it[IS_LOGGED_IN] = boolean
     }
   }
+  suspend fun enableBiometric(boolean: Boolean) {
+    userDataStore.edit {
+      it[ENABLE_BIOMETRIC] = boolean
+    }
+  }
 
+  fun isBiometricEnabled(): Flow<Boolean> {
+    return userDataStore.data.map {
+      it[ENABLE_BIOMETRIC] ?: false
+    }
+  }
   fun getIsLoggedIn(): Flow<Boolean> {
     return userDataStore.data.map {
       it[IS_LOGGED_IN] ?: false

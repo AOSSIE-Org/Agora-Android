@@ -42,6 +42,8 @@ buildscript {
     poi = '3.17'
     dataStore = '1.0.0-rc01'
     spotlight = '2.0.5'
+    biometricLibraryVersion = "1.1.0"
+
   }
 
   repositories {

@@ -148,6 +148,12 @@ constructor(
       }
     }
 
+    binding.swBiometric.setOnCheckedChangeListener { buttonView, isChecked ->
+      lifecycleScope.launch {
+        prefs.enableBiometric(isChecked)
+      }
+    }
+
     binding.switchWidget.setOnClickListener {
       if (binding.switchWidget.isChecked) {
         AlertDialog.Builder(requireContext())
@@ -317,6 +323,9 @@ constructor(
     binding.firstNameTiet.setText(it.firstName)
     binding.lastNameTiet.setText(it.lastName)
     binding.switchWidget.isChecked = it.twoFactorAuthentication ?: false
+    lifecycleScope.launch {
+      binding.swBiometric.isChecked = prefs.isBiometricEnabled().first()
+    }
     mUser = it
     if (it.avatarURL != null) {
       if (it.avatarURL.isUrl())

@@ -6,6 +6,11 @@ import android.view.View
 import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -15,11 +20,14 @@ import androidx.navigation.NavOptions.Builder
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.facebook.login.LoginManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityMainBinding
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
@@ -84,11 +92,50 @@ class MainActivity : AppCompatActivity() {
       if (prefs.getIsLoggedIn()
         .first()
       ) {
-        navController.navigate(R.id.homeFragment)
+        if (prefs.isBiometricEnabled().first()) {
+          if (isBioMetricReady())
+            withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
+        } else navController.navigate(R.id.homeFragment)
       }
     }
 
     initObservers()
+  }
+
+  private fun getPromtInfo() =
+    BiometricPrompt.PromptInfo.Builder()
+      .setTitle(getString(string.auth))
+      .setDescription(getString(string.auth_msg))
+      .setNegativeButtonText(getString(string.cancel_button))
+      .setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
+      .build()
+
+  private fun isBioMetricReady(): Boolean {
+    val biometricManager = BiometricManager.from(this)
+    return biometricManager.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
+  }
+
+  private fun provideOfBiometricPrompt(): BiometricPrompt {
+    val executor = ContextCompat.getMainExecutor(this)
+
+    val callback = object : BiometricPrompt.AuthenticationCallback() {
+      override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+        super.onAuthenticationError(errorCode, errString)
+        binding.root.snackbar(getString(string.went_wrong))
+      }
+
+      override fun onAuthenticationFailed() {
+        super.onAuthenticationFailed()
+        binding.root.snackbar(getString(string.auth_failed))
+      }
+
+      override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+        super.onAuthenticationSucceeded(result)
+        navController.navigate(R.id.homeFragment)
+      }
+    }
+
+    return BiometricPrompt(this, executor, callback)
   }
 
   private fun setToolbar(destination: NavDestination) {

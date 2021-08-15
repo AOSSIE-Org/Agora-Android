@@ -167,6 +167,9 @@ dependencies {
 
   //Firebase Crashlytics
   implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+  //Biometric
+  implementation "androidx.biometric:biometric:$biometricLibraryVersion"
 }
 repositories {
   mavenCentral()
