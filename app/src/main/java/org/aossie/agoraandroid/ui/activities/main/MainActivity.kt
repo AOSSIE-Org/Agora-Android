@@ -104,8 +104,8 @@ class MainActivity : AppCompatActivity() {
 
   private fun getPromtInfo() =
     BiometricPrompt.PromptInfo.Builder()
-      .setTitle(getString(string.auth))
-      .setDescription(getString(string.auth_msg))
+      .setTitle(getString(string.bio_auth))
+      .setDescription(getString(string.bio_auth_msg))
       .setNegativeButtonText(getString(string.cancel_button))
       .setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
       .build()
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
     val callback = object : BiometricPrompt.AuthenticationCallback() {
       override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
         super.onAuthenticationError(errorCode, errString)
-        binding.root.snackbar(getString(string.went_wrong))
+        binding.root.snackbar(getString(string.something_went_wrong))
       }
 
       override fun onAuthenticationFailed() {

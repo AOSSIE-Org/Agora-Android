@@ -314,9 +314,9 @@
   <string name="ballot_spotlight">View ballot for the election</string>
   <string name="result_spotlight">View the result of the election</string>
   <string name="skip">Skip</string>
-  <string name="went_wrong">Something went wrong. Please try again.</string>
+  <string name="something_went_wrong">Something went wrong. Please try again.</string>
   <string name="auth_failed">Authentication Failed.</string>
-  <string name="auth">Biometric Authentication</string>
-  <string name="auth_msg">User needs to be authenticated before using the app</string>
+  <string name="bio_auth">Biometric Authentication</string>
+  <string name="bio_auth_msg">User needs to be authenticated before using the app</string>
 </resources>
 
