@@ -100,7 +100,7 @@ I would love to thank my mentors especially **Prudhvi Reddy, Ritesh Agrawal, and
 * Added FcmService.kt
 * Updated AndroidManifest.xml
 
-13. [Merge Request !13](https://gitlab.com/aossie/agora-android/-/merge_requests/390)- Added a BaseFragment   (**Not Merged**)
+13. [Merge Request !13](https://gitlab.com/aossie/agora-android/-/merge_requests/390)- Added a BaseFragment   (**Merged**)
 * Added a Basefragment.kt for observing internet connectivity and having some commonly used function
 * Added InternetManger.kt  for checking the current status of network and updating it to BaseFragment using kotlin flow
 * Updated all the fragments to inherit BaseFragment
