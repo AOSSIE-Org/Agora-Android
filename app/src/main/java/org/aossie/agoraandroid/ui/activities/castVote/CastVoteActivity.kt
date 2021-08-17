@@ -21,9 +21,9 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.isConnected
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
@@ -54,6 +54,9 @@ class CastVoteActivity :
   @Inject
   lateinit var prefs: PreferenceProvider
 
+  @Inject
+  lateinit var internetManager: InternetManager
+
   private val viewModel: CastVoteViewModel by viewModels {
     viewModelFactory
   }
@@ -81,7 +84,7 @@ class CastVoteActivity :
     binding = ActivityCastVoteBinding.inflate(layoutInflater)
     setContentView(binding.root)
     initObservers()
-    processURL()
+    checkAndNavigate { processURL() }
   }
 
   private fun init(
@@ -133,7 +136,9 @@ class CastVoteActivity :
           .setPositiveButton(getString(string.confirm_button)) { _, _ ->
             binding.progressBar.show()
             if (selectedCandidates.size == 1) {
-              viewModel.castVote(id!!, selectedCandidates[0], passCode!!)
+              checkAndNavigate {
+                viewModel.castVote(id!!, selectedCandidates[0], passCode!!)
+              }
             } else {
               var ballotInput = ""
               for (i in 0 until selectedCandidates.size) {
@@ -143,7 +148,7 @@ class CastVoteActivity :
                   selectedCandidates[i] + ">"
                 }
               }
-              viewModel.castVote(id!!, ballotInput, passCode!!)
+              checkAndNavigate { viewModel.castVote(id!!, ballotInput, passCode!!) }
             }
           }
           .setNegativeButton(getString(string.cancel_button)) { dialog, _ ->
@@ -174,7 +179,9 @@ class CastVoteActivity :
               val strings = message.split("/")
               passCode = strings[3]
               id = strings[2]
-              viewModel.verifyVoter(strings[2])
+              checkAndNavigate {
+                viewModel.verifyVoter(strings[2])
+              }
             }
           }
           ResponseUI.Status.ERROR -> navigateToMainActivity(it.message ?: getString(string.invalid_url))
@@ -300,16 +307,16 @@ class CastVoteActivity :
   }
 
   private fun processURL() {
-    if (isConnected()) {
-      val encodedURL = intent?.data
-      if (encodedURL != null) {
-        viewModel.getResolvedPath(encodedURL.toString())
-      } else {
-        navigateToMainActivity(getString(string.invalid_url))
-      }
+    val encodedURL = intent?.data
+    if (encodedURL != null) {
+      viewModel.getResolvedPath(encodedURL.toString())
     } else {
-      navigateToMainActivity(getString(string.no_network))
+      navigateToMainActivity(getString(string.invalid_url))
     }
+  }
+  private fun checkAndNavigate(funtion: () -> Unit) {
+    if (internetManager.isConnected()) funtion.invoke()
+    else navigateToMainActivity(getString(string.no_network))
   }
 
   private fun navigateToMainActivity(message: String) {

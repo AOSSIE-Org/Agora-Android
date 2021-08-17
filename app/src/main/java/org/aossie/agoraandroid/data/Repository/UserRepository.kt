@@ -70,7 +70,7 @@ class UserRepository(
   suspend fun deleteUser() {
     appDatabase.getUserDao()
       .removeUser()
-    preferenceProvider.clearData()
+    preferenceProvider.clearAllData()
     appDatabase.getElectionDao()
       .deleteAllElections()
   }
