@@ -40,8 +40,6 @@ constructor(
 
   private val _getVoterResponseLiveData = MutableLiveData<ResponseUI<VotersDto>>()
   var getVoterResponseLiveData: LiveData<ResponseUI<VotersDto>> = _getVoterResponseLiveData
-  private val mNotConnected = MutableLiveData<Boolean>()
-  var notConnected: LiveData<Boolean> = mNotConnected
   private val _getBallotResponseLiveData = MutableLiveData<ResponseUI<BallotDto>>()
   var getBallotResponseLiveData: LiveData<ResponseUI<BallotDto>> = _getBallotResponseLiveData
   private val _getShareResponseLiveData = MutableLiveData<ResponseUI<Uri>>()
@@ -71,7 +69,7 @@ constructor(
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mNotConnected.postValue(true)
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
         _getBallotResponseLiveData.value = ResponseUI.error(e.message)
       }
@@ -92,7 +90,7 @@ constructor(
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mNotConnected.postValue(true)
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
         _getVoterResponseLiveData.value = ResponseUI.error(e.message)
       }
@@ -136,7 +134,6 @@ constructor(
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mNotConnected.postValue(true)
         _getResultResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
         _getResultResponseLiveData.value = ResponseUI.error(e.message)

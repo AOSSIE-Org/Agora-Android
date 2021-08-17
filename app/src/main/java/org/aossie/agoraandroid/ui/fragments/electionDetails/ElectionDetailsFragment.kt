@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,17 +19,14 @@ import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentElectionDetailsBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.isConnected
 import org.aossie.agoraandroid.utilities.scrollToView
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import timber.log.Timber
 import java.text.ParseException
@@ -50,17 +46,15 @@ class ElectionDetailsFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(),
-  SessionExpiredListener {
-  lateinit var binding: FragmentElectionDetailsBinding
+) : BaseFragment(viewModelFactory) {
+
   private var id: String? = null
   private var status: AppConstants.Status? = null
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
   }
-  private val hostViewModel: MainActivityViewModel by activityViewModels {
-    viewModelFactory
-  }
+
+  private lateinit var binding: FragmentElectionDetailsBinding
 
   private var spotlight: Spotlight? = null
   private var spotlightTargets: ArrayList<TargetData>? = null
@@ -70,8 +64,11 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View {
-    binding = FragmentElectionDetailsBinding.inflate(layoutInflater)
+  ): View? {
+    binding = FragmentElectionDetailsBinding.inflate(inflater)
+    return binding.root
+  }
+  override fun onFragmentInitiated() {
     val args =
       ElectionDetailsFragmentArgs.fromBundle(
         requireArguments()
@@ -85,9 +82,11 @@ constructor(
     binding.root.doOnLayout {
       checkIsFirstOpen()
     }
-    return binding.root
   }
 
+  override fun onNetworkConnected() {
+    view?.let { getElectionById() }
+  }
   private fun setObserver() {
 
     electionDetailsViewModel.getDeleteElectionLiveData.observe(
@@ -108,7 +107,7 @@ constructor(
               )
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(it.message)
+            notify(it.message)
             binding.progressBar.hide()
             binding.buttonDelete.toggleIsEnable()
           }
@@ -136,7 +135,7 @@ constructor(
     }
     binding.buttonInviteVoters.setOnClickListener {
       if (status == AppConstants.Status.FINISHED) {
-        binding.root.snackbar(resources.getString(string.election_finished))
+        notify(resources.getString(string.election_finished))
       } else {
         val action =
           ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToInviteVotersFragment(
@@ -148,9 +147,9 @@ constructor(
     }
     binding.buttonResult.setOnClickListener {
       if (status == AppConstants.Status.PENDING) {
-        binding.root.snackbar(resources.getString(string.election_not_started))
+        notify(resources.getString(string.election_not_started))
       } else {
-        if (requireContext().isConnected()) {
+        if (isConnected) {
           val action =
             ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToResultFragment(
               id!!
@@ -158,13 +157,13 @@ constructor(
           Navigation.findNavController(binding.root)
             .navigate(action)
         } else {
-          binding.root.snackbar(resources.getString(string.no_network))
+          notify(resources.getString(string.no_network))
         }
       }
     }
     binding.buttonDelete.setOnClickListener {
       when (status) {
-        AppConstants.Status.ACTIVE -> binding.root.snackbar(
+        AppConstants.Status.ACTIVE -> notify(
           resources.getString(string.active_elections_not_started)
         )
         AppConstants.Status.FINISHED -> electionDetailsViewModel.deleteElection(id)
@@ -243,10 +242,6 @@ constructor(
       currentDate.after(formattedEndingDate) -> drawable.finished_election_label
       else -> drawable.finished_election_label
     }
-  }
-
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
   }
 
   private fun checkIsFirstOpen() {

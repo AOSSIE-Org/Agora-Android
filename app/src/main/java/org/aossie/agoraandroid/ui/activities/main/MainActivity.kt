@@ -29,6 +29,7 @@ import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.animGone
 import org.aossie.agoraandroid.utilities.animVisible
+import org.aossie.agoraandroid.utilities.notifyNetworkChanged
 import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
   private lateinit var binding: ActivityMainBinding
 
   private lateinit var navController: NavController
+  private var isInitiallyNetworkConnected: Boolean = true
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -154,6 +156,19 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun initObservers() {
+    viewModel.getNetworkStatusLiveData.observe(
+      this,
+      { isConnected ->
+        if (isConnected) {
+          if (!isInitiallyNetworkConnected)
+            binding.root.notifyNetworkChanged(true, binding.bottomNavigation)
+          isInitiallyNetworkConnected = true
+        } else {
+          isInitiallyNetworkConnected = false
+          binding.root.notifyNetworkChanged(false, binding.bottomNavigation)
+        }
+      }
+    )
     viewModel.isLogout.observe(
       this,
       {
@@ -175,7 +190,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun logout() {
     lifecycleScope.launch {
-      if (prefs.getIsLoggedIn().first()) binding.root.snackbar(resources.getString(R.string.token_expired))
+      if (prefs.getIsLoggedIn().first())binding.root.snackbar(resources.getString(R.string.token_expired))
       if (prefs.getIsFacebookUser().first()) {
         LoginManager.getInstance()
           .logOut()

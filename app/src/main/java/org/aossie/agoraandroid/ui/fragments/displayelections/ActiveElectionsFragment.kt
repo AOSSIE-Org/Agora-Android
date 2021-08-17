@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentActiveElectionsBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import java.util.ArrayList
@@ -29,9 +30,7 @@ class ActiveElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment() {
-
-  private lateinit var binding: FragmentActiveElectionsBinding
+) : BaseFragment(viewModelFactory) {
 
   private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
     viewModelFactory
@@ -46,14 +45,19 @@ constructor(
     Navigation.findNavController(binding.root)
       .navigate(action)
   }
+  private lateinit var binding: FragmentActiveElectionsBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentActiveElectionsBinding.inflate(layoutInflater)
+    binding = FragmentActiveElectionsBinding.inflate(inflater)
+    return binding.root
+  }
+
+  override fun onFragmentInitiated() {
+
     mElections = ArrayList()
     electionsAdapter = ElectionsAdapter(onItemClicked)
     binding.rvActiveElections.apply {
@@ -63,7 +67,10 @@ constructor(
     binding.searchView.doAfterTextChanged {
       filter(it.toString())
     }
-    return binding.root
+  }
+
+  override fun onNetworkConnected() {
+    bindUI()
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {

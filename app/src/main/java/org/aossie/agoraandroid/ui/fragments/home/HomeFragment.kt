@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,14 +18,12 @@ import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
-import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
-import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.scrollToView
-import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -41,9 +37,7 @@ class HomeFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val preferenceProvider: PreferenceProvider
-) : Fragment(), SessionExpiredListener {
-
-  private lateinit var binding: FragmentHomeBinding
+) : BaseFragment(viewModelFactory) {
 
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
@@ -53,9 +47,7 @@ constructor(
     viewModelFactory
   }
 
-  private val hostViewModel: MainActivityViewModel by activityViewModels {
-    viewModelFactory
-  }
+  private lateinit var binding: FragmentHomeBinding
 
   private var spotlight: Spotlight? = null
   private var spotlightTargets: ArrayList<TargetData>? = null
@@ -65,10 +57,12 @@ constructor(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View {
+  ): View? {
+    binding = FragmentHomeBinding.inflate(inflater)
+    return binding.root
+  }
 
-    binding = FragmentHomeBinding.inflate(layoutInflater)
-
+  override fun onFragmentInitiated() {
     loginViewModel.sessionExpiredListener = this
     binding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
 
@@ -105,7 +99,7 @@ constructor(
             updateUi()
           }
           ResponseUI.Status.ERROR -> {
-            binding.root.snackbar(it.message)
+            notify(it.message)
           }
         }
       }
@@ -163,14 +157,13 @@ constructor(
         binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
       }
     )
+    updateUi()
     binding.root.doOnLayout {
       checkIsFirstOpen()
     }
-    return binding.root
   }
 
-  override fun onResume() {
-    super.onResume()
+  override fun onNetworkConnected() {
     updateUi()
   }
 
@@ -189,10 +182,6 @@ constructor(
     binding.shimmerViewContainer.startShimmer()
     binding.shimmerViewContainer.visibility = View.VISIBLE
     binding.constraintLayout.visibility = View.GONE
-  }
-
-  override fun onSessionExpired() {
-    hostViewModel.setLogout(true)
   }
 
   private fun checkIsFirstOpen() {
