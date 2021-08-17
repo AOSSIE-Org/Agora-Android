@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.ui.fragments.auth.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -43,7 +42,7 @@ constructor(
       _getLoginLiveData.value = ResponseUI.error(AppConstants.INVALID_CREDENTIALS_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse =
           userRepository.userLogin(LoginDto(identifier, trustedDevice ?: "", password))
@@ -77,7 +76,7 @@ constructor(
   fun refreshAccessToken(
     trustedDevice: String? = null
   ) {
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse = userRepository.refreshAccessToken()
         authResponse.let {
@@ -97,7 +96,7 @@ constructor(
 
   fun facebookLogInRequest() {
     _getLoginLiveData.value = ResponseUI.loading()
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse = userRepository.fbLogin()
         getUserData(authResponse)
@@ -115,7 +114,7 @@ constructor(
   }
 
   private fun getUserData(authResponse: AuthResponse) {
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val user = User(
           authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName,
