@@ -19,6 +19,7 @@ import org.aossie.agoraandroid.data.network.interceptors.AuthorizationIntercepto
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -35,12 +36,18 @@ class AppModule {
   fun providesPreferenceProvider(context: Context, securityUtil: SecurityUtil): PreferenceProvider {
     return PreferenceProvider(context, securityUtil)
   }
+  @Provides
+  @Singleton
+  fun provideInternetManager(context: Context): InternetManager {
+    return InternetManager(context)
+  }
 
   @Provides
   @Singleton
-  fun providesNetworkInterceptor(context: Context): NetworkInterceptor {
+  fun providesNetworkInterceptor(context: Context, internetManager: InternetManager): NetworkInterceptor {
     return NetworkInterceptor(
-      context
+      context,
+      internetManager
     )
   }
 

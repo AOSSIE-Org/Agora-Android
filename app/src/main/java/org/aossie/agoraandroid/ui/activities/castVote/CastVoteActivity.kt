@@ -22,9 +22,9 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.isConnected
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.snackbar
 import timber.log.Timber
@@ -55,6 +55,9 @@ class CastVoteActivity :
   @Inject
   lateinit var prefs: PreferenceProvider
 
+  @Inject
+  lateinit var internetManager: InternetManager
+
   private val viewModel: CastVoteViewModel by viewModels {
     viewModelFactory
   }
@@ -82,13 +85,15 @@ class CastVoteActivity :
     binding = ActivityCastVoteBinding.inflate(layoutInflater)
     setContentView(binding.root)
     initObservers()
-    intent?.let {
-      if (it.data != null) {
-        processURL(it.data)
-      } else {
-        it.getStringExtra(AppConstants.ELECTION_ID)?.let { electionId ->
-          id = electionId
-          viewModel.verifyVoter(electionId)
+    checkAndNavigate {
+      intent?.let {
+        if (it.data != null) {
+          processURL(it.data)
+        } else {
+          it.getStringExtra(AppConstants.ELECTION_ID)?.let { electionId ->
+            id = electionId
+            viewModel.verifyVoter(electionId)
+          }
         }
       }
     }
@@ -143,7 +148,9 @@ class CastVoteActivity :
           .setPositiveButton(getString(string.confirm_button)) { _, _ ->
             binding.progressBar.show()
             if (selectedCandidates.size == 1) {
-              viewModel.castVote(id!!, selectedCandidates[0], passCode!!)
+              checkAndNavigate {
+                viewModel.castVote(id!!, selectedCandidates[0], passCode ?: "")
+              }
             } else {
               var ballotInput = ""
               for (i in 0 until selectedCandidates.size) {
@@ -153,7 +160,7 @@ class CastVoteActivity :
                   selectedCandidates[i] + ">"
                 }
               }
-              viewModel.castVote(id!!, ballotInput, passCode ?: "")
+              checkAndNavigate { viewModel.castVote(id!!, ballotInput, passCode ?: "") }
             }
           }
           .setNegativeButton(getString(string.cancel_button)) { dialog, _ ->
@@ -184,10 +191,14 @@ class CastVoteActivity :
               val strings = message.split("/")
               passCode = strings[3]
               id = strings[2]
-              viewModel.verifyVoter(strings[2])
+              checkAndNavigate {
+                viewModel.verifyVoter(strings[2])
+              }
             }
           }
-          ResponseUI.Status.ERROR -> navigateToMainActivity(it.message ?: getString(string.invalid_url))
+          ResponseUI.Status.ERROR -> navigateToMainActivity(
+            it.message ?: getString(string.invalid_url)
+          )
         }
       }
     )
@@ -229,15 +240,25 @@ class CastVoteActivity :
               val currentDate = Calendar.getInstance().time
               val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
 
-              init(it.candidates!!, (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)))
+              init(
+                it.candidates!!,
+                (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate))
+              )
               notifyStatusToUser(currentDate, formattedStartingDate, formattedEndingDate)
 
               // set end and start date
               binding.tvEndDate.text = outFormat.format(formattedEndingDate)
               binding.tvStartDate.text = outFormat.format(formattedStartingDate)
               // set label color and election status
-              binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
-              binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
+              binding.label.text =
+                getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
+              binding.label.setBackgroundResource(
+                getEventColor(
+                  currentDate,
+                  formattedStartingDate,
+                  formattedEndingDate
+                )
+              )
             } catch (e: ParseException) {
               e.printStackTrace()
             }
@@ -248,7 +269,9 @@ class CastVoteActivity :
       )
     }
     ResponseUI.Status.ERROR -> {
-      navigateToMainActivity(response.message ?: getString(string.something_went_wrong_please_try_again_later))
+      navigateToMainActivity(
+        response.message ?: getString(string.something_went_wrong_please_try_again_later)
+      )
     }
     else -> {
       // Do Nothing
@@ -310,15 +333,16 @@ class CastVoteActivity :
   }
 
   private fun processURL(encodedURL: Uri?) {
-    if (isConnected()) {
-      if (encodedURL != null) {
-        viewModel.getResolvedPath(encodedURL.toString())
-      } else {
-        navigateToMainActivity(getString(string.invalid_url))
-      }
+    if (encodedURL != null) {
+      viewModel.getResolvedPath(encodedURL.toString())
     } else {
-      navigateToMainActivity(getString(string.no_network))
+      navigateToMainActivity(getString(string.invalid_url))
     }
+  }
+
+  private fun checkAndNavigate(funtion: () -> Unit) {
+    if (internetManager.isConnected()) funtion.invoke()
+    else navigateToMainActivity(getString(string.no_network))
   }
 
   private fun navigateToMainActivity(message: String) {
