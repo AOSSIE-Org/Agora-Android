@@ -37,7 +37,7 @@ constructor(
 
   fun createElection(election: ElectionDto) {
     _getCreateElectionData.value = ResponseUI.loading()
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val response = electionsRepository.createElection(election)
         _getCreateElectionData.value = ResponseUI.success(response[1])

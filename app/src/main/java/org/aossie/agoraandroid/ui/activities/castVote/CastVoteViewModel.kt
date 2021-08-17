@@ -11,7 +11,6 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import java.net.HttpURLConnection
@@ -47,7 +46,7 @@ constructor(
     get() = mElection
 
   fun verifyVoter(id: String) {
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val electionDto = electionsRepository.verifyVoter(id)
         electionDto._id = id
@@ -68,7 +67,7 @@ constructor(
     ballotInput: String,
     passCode: String
   ) {
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         electionsRepository.castVote(id, ballotInput, passCode)
         mCastVoteResponse.value = ResponseUI.success()
@@ -102,12 +101,6 @@ constructor(
           _getDeepLinkLiveData.value = ResponseUI.error(ex.message)
         }
       }
-    }
-  }
-
-  fun deleteUserData() {
-    Coroutines.main {
-      userRepository.deleteUser()
     }
   }
 }
