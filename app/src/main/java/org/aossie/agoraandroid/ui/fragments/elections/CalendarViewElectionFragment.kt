@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +23,7 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
@@ -41,13 +41,11 @@ class CalendarViewElectionFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment() {
+) : BaseFragment(viewModelFactory) {
 
   private val electionViewModel: ElectionViewModel by viewModels {
     viewModelFactory
   }
-
-  private lateinit var binding: FragmentCalendarViewElectionBinding
 
   private var horizontalCalendar: HorizontalCalendar? = null
 
@@ -57,12 +55,18 @@ constructor(
   private var dateFormat: DateFormat? = null
   private var timeFormat: DateFormat? = null
 
+  private lateinit var binding: FragmentCalendarViewElectionBinding
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View {
-    binding = FragmentCalendarViewElectionBinding.inflate(layoutInflater)
+  ): View? {
+    binding = FragmentCalendarViewElectionBinding.inflate(inflater)
+    return binding.root
+  }
+
+  override fun onFragmentInitiated() {
 
     initView()
 
@@ -71,8 +75,6 @@ constructor(
     initObservers()
 
     initListeners()
-
-    return binding.root
   }
 
   private fun initView() {

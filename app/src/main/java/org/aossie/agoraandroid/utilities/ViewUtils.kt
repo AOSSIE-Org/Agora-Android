@@ -36,7 +36,7 @@ fun TextView.show() {
 fun View.snackbar(message: String?) {
   val msg: String = message ?: context.getString(R.string.something_went_wrong_please_try_again_later)
   if (msg.isNotEmpty()) {
-    Snackbar.make(this, msg, Snackbar.LENGTH_INDEFINITE)
+    Snackbar.make(this, msg, Snackbar.LENGTH_SHORT)
       .also { snackbar ->
         snackbar.setAction(AppConstants.ok) {
           snackbar.dismiss()
@@ -44,6 +44,20 @@ fun View.snackbar(message: String?) {
           .show()
       }
   }
+}
+
+fun View.notifyNetworkChanged(isConnected: Boolean, view: BottomNavigationView) {
+  val msg: String = if (isConnected)context.getString(R.string.internet_connected) else context.getString(R.string.no_network)
+  Snackbar.make(this, msg, Snackbar.LENGTH_INDEFINITE).apply {
+    setActionTextColor(ContextCompat.getColor(context, R.color.white))
+    if (isConnected) {
+      setBackgroundTint(ContextCompat.getColor(context, R.color.green_pending_elections))
+      duration = Snackbar.LENGTH_SHORT
+    } else
+      setBackgroundTint(ContextCompat.getColor(context, R.color.red_active_elections))
+
+    anchorView = view
+  }.show()
 }
 
 fun View.errorDialog(message: String) {
@@ -56,15 +70,6 @@ fun View.errorDialog(message: String) {
     }
     .create()
     .show()
-}
-
-fun View.shortSnackbar(message: String?) {
-  val msg: String = message ?: context.getString(R.string.something_went_wrong_please_try_again_later)
-  if (msg.isNotEmpty()) {
-    Snackbar
-      .make(this, msg, Snackbar.LENGTH_SHORT)
-      .show()
-  }
 }
 
 fun BottomNavigationView.animVisible() {
