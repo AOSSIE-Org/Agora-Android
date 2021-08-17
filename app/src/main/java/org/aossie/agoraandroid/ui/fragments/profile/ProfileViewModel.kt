@@ -3,13 +3,14 @@ package org.aossie.agoraandroid.ui.fragments.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -46,7 +47,7 @@ constructor(
 
   fun changePassword(password: String) {
 
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         userRepository.changePassword(password)
         _passwordRequestCode.value = ResponseUI.success()
@@ -67,7 +68,7 @@ constructor(
     user: User
   ) {
 
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         userRepository.changeAvatar(url)
         val authResponse = userRepository.getUserData()
@@ -95,7 +96,7 @@ constructor(
   }
 
   fun toggleTwoFactorAuth() {
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         userRepository.toggleTwoFactorAuth()
         _toggleTwoFactorAuthResponse.value = ResponseUI.success()
@@ -114,7 +115,7 @@ constructor(
   fun updateUser(
     user: User
   ) {
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val updateUserDto = UpdateUserDto(
           identifier = user.username ?: "",
