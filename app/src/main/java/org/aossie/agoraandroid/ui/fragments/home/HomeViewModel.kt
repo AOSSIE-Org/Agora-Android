@@ -10,7 +10,6 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -86,14 +85,14 @@ constructor(
   }
 
   fun deleteUserData() {
-    Coroutines.main {
+    viewModelScope.launch {
       userRepository.deleteUser()
     }
   }
 
   fun doLogout() {
     _getLogoutLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         userRepository.logout()
         _getLogoutLiveData.value = ResponseUI.success()

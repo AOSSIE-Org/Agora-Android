@@ -3,7 +3,6 @@ package org.aossie.agoraandroid.ui.fragments.auth.signup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.dto.NewUserDto
@@ -29,7 +28,7 @@ constructor(
     userData: NewUserDto
   ) {
     _getSignUpLiveData.value = ResponseUI.loading()
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val call = userRepository.userSignup(userData)
         Timber.d(call)
