@@ -2,10 +2,11 @@ package org.aossie.agoraandroid.ui.fragments.auth.forgotpassword
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import javax.inject.Inject
@@ -18,7 +19,7 @@ constructor(
 
   private val _getSendResetLinkLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
   val getSendResetLinkLiveData = _getSendResetLinkLiveData
-  fun sendResetLink(userName: String?) = Coroutines.main {
+  fun sendResetLink(userName: String?) = viewModelScope.launch {
     _getSendResetLinkLiveData.value = ResponseUI.loading()
     try {
       userRepository.sendForgotPasswordLink(userName)

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
@@ -46,7 +45,7 @@ constructor(
       mVerifyOtpResponse.value = ResponseUI.error(AppConstants.INVALID_OTP_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse = userRepository.verifyOTP(VerifyOtpDto(crypto, otp, trustedDevice))
         authResponse.let {
@@ -79,7 +78,7 @@ constructor(
       mResendOtpResponse.value = ResponseUI.error(AppConstants.LOGIN_AGAIN_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse = userRepository.resendOTP(username)
         authResponse.let {
