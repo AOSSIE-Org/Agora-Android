@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
@@ -18,7 +19,6 @@ import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -40,8 +40,6 @@ constructor(
 
   private val _getVoterResponseLiveData = MutableLiveData<ResponseUI<VotersDto>>()
   var getVoterResponseLiveData: LiveData<ResponseUI<VotersDto>> = _getVoterResponseLiveData
-  private val mNotConnected = MutableLiveData<Boolean>()
-  var notConnected: LiveData<Boolean> = mNotConnected
   private val _getBallotResponseLiveData = MutableLiveData<ResponseUI<BallotDto>>()
   var getBallotResponseLiveData: LiveData<ResponseUI<BallotDto>> = _getBallotResponseLiveData
   private val _getShareResponseLiveData = MutableLiveData<ResponseUI<Uri>>()
@@ -53,7 +51,7 @@ constructor(
 
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  suspend fun getElectionById(id: String): LiveData<Election> {
+  fun getElectionById(id: String): LiveData<Election> {
     return electionsRepository.getElectionById(id)
   }
 
@@ -61,7 +59,7 @@ constructor(
     id: String?
   ) {
     _getBallotResponseLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response: List<BallotDto> = electionsRepository.getBallots(id!!).ballots
         Timber.d(response.toString())
@@ -71,7 +69,7 @@ constructor(
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mNotConnected.postValue(true)
+        _getBallotResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
         _getBallotResponseLiveData.value = ResponseUI.error(e.message)
       }
@@ -82,7 +80,7 @@ constructor(
     id: String?
   ) {
     _getVoterResponseLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response = electionsRepository.getVoters(id!!)
         Timber.d(response.toString())
@@ -92,7 +90,7 @@ constructor(
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mNotConnected.postValue(true)
+        _getVoterResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
         _getVoterResponseLiveData.value = ResponseUI.error(e.message)
       }
@@ -103,7 +101,7 @@ constructor(
     id: String?
   ) {
     _getDeleteElectionLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response = electionsRepository.deleteElection(id!!)
         Timber.d(response.toString())
@@ -124,7 +122,7 @@ constructor(
     id: String?
   ) {
     _getResultResponseLiveData.value = ResponseUI.loading()
-    Coroutines.main {
+    viewModelScope.launch {
       try {
         val response = electionsRepository.getResult(id!!)
         if (!response.isNullOrEmpty())
@@ -136,7 +134,6 @@ constructor(
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mNotConnected.postValue(true)
         _getResultResponseLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
         _getResultResponseLiveData.value = ResponseUI.error(e.message)
@@ -148,12 +145,15 @@ constructor(
     context: Context,
     bitmap: Bitmap
   ) {
-    viewModelScope.launch(Dispatchers.IO) {
-      FileUtils.saveBitmap(context, bitmap)
-        ?.let {
-          _getShareResponseLiveData.value = ResponseUI.success(it)
-        } ?: run {
-        _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
+    viewModelScope.launch {
+      val btm = withContext(Dispatchers.IO) {
+        FileUtils.saveBitmap(context, bitmap)
+      }
+      btm?.let {
+        _getShareResponseLiveData.value = ResponseUI.success(it)
+      } ?: run {
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
       }
     }
   }
@@ -163,9 +163,25 @@ constructor(
     winnerDto: WinnerDto,
     id: String
   ) {
-    viewModelScope.launch(Dispatchers.IO) {
-      val workbook = createWorkbook(context, winnerDto)
-      writeToExcelFile(context, workbook, id)
+    viewModelScope.launch {
+      val workbook = withContext(Dispatchers.Default) {
+        createWorkbook(context, winnerDto)
+      }
+      try {
+        val uri = withContext(Dispatchers.IO) {
+          writeToExcelFile(context, workbook, id)
+        }
+        _getShareResponseLiveData.value = ResponseUI.success(uri)
+      } catch (e: FileNotFoundException) {
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.file_not_available))
+      } catch (e: IOException) {
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.cannot_write_file))
+      } catch (e: Exception) {
+        _getShareResponseLiveData.value =
+          ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
+      }
     }
   }
 
@@ -197,7 +213,7 @@ constructor(
     context: Context,
     workbook: XSSFWorkbook,
     id: String
-  ) {
+  ): Uri {
     val folderName = context.getExternalFilesDir(null)?.absolutePath
     val folder = File("$folderName", context.getString(string.result))
     if (!folder.exists()) {
@@ -211,16 +227,13 @@ constructor(
       workbook.write(fileOut)
       fileOut.flush()
       fileOut.close()
-      val uri: Uri = FileProvider.getUriForFile(
+      return FileProvider.getUriForFile(
         context,
         "${context.packageName}.provider",
         file
       )
-      _getShareResponseLiveData.value = ResponseUI.success(uri)
-    } catch (e: FileNotFoundException) {
-      _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.file_not_available))
-    } catch (e: IOException) {
-      _getShareResponseLiveData.value = ResponseUI.error(context.getString(string.cannot_write_file))
+    } catch (e: Exception) {
+      throw e
     }
   }
 }
