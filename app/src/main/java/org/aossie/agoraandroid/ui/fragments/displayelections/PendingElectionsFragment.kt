@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentPendingElectionsBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -28,14 +29,21 @@ class PendingElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment() {
-
-  private lateinit var binding: FragmentPendingElectionsBinding
+) : BaseFragment(viewModelFactory) {
 
   private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
     viewModelFactory
   }
+  private lateinit var binding: FragmentPendingElectionsBinding
 
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    binding = FragmentPendingElectionsBinding.inflate(inflater)
+    return binding.root
+  }
   lateinit var mElections: ArrayList<Election>
   private lateinit var electionsAdapter: ElectionsAdapter
 
@@ -46,13 +54,8 @@ constructor(
       .navigate(action)
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    // Inflate the layout for this fragment
-    binding = FragmentPendingElectionsBinding.inflate(layoutInflater)
+  override fun onFragmentInitiated() {
+
     mElections = ArrayList()
     electionsAdapter = ElectionsAdapter(onItemClicked)
     binding.rvPendingElections.apply {
@@ -62,9 +65,11 @@ constructor(
     binding.searchView.doAfterTextChanged {
       filter(it.toString())
     }
-    return binding.root
   }
 
+  override fun onNetworkConnected() {
+    bindUI()
+  }
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     bindUI()
