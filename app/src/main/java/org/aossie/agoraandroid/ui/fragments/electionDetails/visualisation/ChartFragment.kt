@@ -141,7 +141,7 @@ class ChartFragment : Fragment() {
       }
     })
     pieChart.data = pieData
-    pieChart.setEntryLabelColor(ContextCompat.getColor(requireContext(), color.black));
+    pieChart.setEntryLabelColor(ContextCompat.getColor(requireContext(), color.black))
 
     val legend = pieChart.legend
     legend.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)

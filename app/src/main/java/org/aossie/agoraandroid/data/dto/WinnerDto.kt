@@ -15,9 +15,7 @@ data class WinnerDto(
 ) : Parcelable {
   constructor(parcel: Parcel) : this()
 
-  override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-  }
+  override fun writeToParcel(parcel: Parcel, flags: Int) {}
 
   override fun describeContents(): Int {
     return 0

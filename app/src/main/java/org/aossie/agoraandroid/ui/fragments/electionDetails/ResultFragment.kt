@@ -16,8 +16,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.ResultViewpagerAdapter
-import org.aossie.agoraandroid.data.dto.CandidateDto
-import org.aossie.agoraandroid.data.dto.ScoreDto
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
