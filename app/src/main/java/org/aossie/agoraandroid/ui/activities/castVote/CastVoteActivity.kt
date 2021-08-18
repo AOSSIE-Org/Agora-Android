@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.ui.activities.castVote
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
@@ -84,7 +85,18 @@ class CastVoteActivity :
     binding = ActivityCastVoteBinding.inflate(layoutInflater)
     setContentView(binding.root)
     initObservers()
-    checkAndNavigate { processURL() }
+    checkAndNavigate {
+      intent?.let {
+        if (it.data != null) {
+          processURL(it.data)
+        } else {
+          it.getStringExtra(AppConstants.ELECTION_ID)?.let { electionId ->
+            id = electionId
+            viewModel.verifyVoter(electionId)
+          }
+        }
+      }
+    }
   }
 
   private fun init(
@@ -137,7 +149,7 @@ class CastVoteActivity :
             binding.progressBar.show()
             if (selectedCandidates.size == 1) {
               checkAndNavigate {
-                viewModel.castVote(id!!, selectedCandidates[0], passCode!!)
+                viewModel.castVote(id!!, selectedCandidates[0], passCode ?: "")
               }
             } else {
               var ballotInput = ""
@@ -148,7 +160,7 @@ class CastVoteActivity :
                   selectedCandidates[i] + ">"
                 }
               }
-              checkAndNavigate { viewModel.castVote(id!!, ballotInput, passCode!!) }
+              checkAndNavigate { viewModel.castVote(id!!, ballotInput, passCode ?: "") }
             }
           }
           .setNegativeButton(getString(string.cancel_button)) { dialog, _ ->
@@ -184,7 +196,9 @@ class CastVoteActivity :
               }
             }
           }
-          ResponseUI.Status.ERROR -> navigateToMainActivity(it.message ?: getString(string.invalid_url))
+          ResponseUI.Status.ERROR -> navigateToMainActivity(
+            it.message ?: getString(string.invalid_url)
+          )
         }
       }
     )
@@ -226,15 +240,25 @@ class CastVoteActivity :
               val currentDate = Calendar.getInstance().time
               val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
 
-              init(it.candidates!!, (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate)))
+              init(
+                it.candidates!!,
+                (currentDate.after(formattedStartingDate) && currentDate.before(formattedEndingDate))
+              )
               notifyStatusToUser(currentDate, formattedStartingDate, formattedEndingDate)
 
               // set end and start date
               binding.tvEndDate.text = outFormat.format(formattedEndingDate)
               binding.tvStartDate.text = outFormat.format(formattedStartingDate)
               // set label color and election status
-              binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
-              binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
+              binding.label.text =
+                getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
+              binding.label.setBackgroundResource(
+                getEventColor(
+                  currentDate,
+                  formattedStartingDate,
+                  formattedEndingDate
+                )
+              )
             } catch (e: ParseException) {
               e.printStackTrace()
             }
@@ -245,7 +269,9 @@ class CastVoteActivity :
       )
     }
     ResponseUI.Status.ERROR -> {
-      navigateToMainActivity(response.message ?: getString(string.something_went_wrong_please_try_again_later))
+      navigateToMainActivity(
+        response.message ?: getString(string.something_went_wrong_please_try_again_later)
+      )
     }
     else -> {
       // Do Nothing
@@ -306,14 +332,14 @@ class CastVoteActivity :
     }
   }
 
-  private fun processURL() {
-    val encodedURL = intent?.data
+  private fun processURL(encodedURL: Uri?) {
     if (encodedURL != null) {
       viewModel.getResolvedPath(encodedURL.toString())
     } else {
       navigateToMainActivity(getString(string.invalid_url))
     }
   }
+
   private fun checkAndNavigate(funtion: () -> Unit) {
     if (internetManager.isConnected()) funtion.invoke()
     else navigateToMainActivity(getString(string.no_network))
