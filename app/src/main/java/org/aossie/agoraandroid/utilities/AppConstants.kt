@@ -39,4 +39,5 @@ object AppConstants {
   }
   const val SPOTLIGHT_ANIMATION_DURATION = 500L
   const val SPOTLIGHT_SCROLL_DURATION = 0L
+  const val GRAPH_ANIMATION_DURATION = 1000
 }

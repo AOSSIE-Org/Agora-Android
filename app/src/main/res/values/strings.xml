@@ -256,7 +256,8 @@
   <string name="election_not_started">Election is not started yet</string>
   <string name="election_finished">Election is Finished</string>
   <string name="active_elections_not_started">Active Elections Cannot Be Deleted</string>
-  <string name="election_result">Election Result in percentage</string>
+  <string name="election_result_pie_chart">Election Result in percentage</string>
+  <string name="election_result_bar_chart">Election Result in votes</string>
   <string name="winner_is">Winner is</string>
   <string name="login_cancelled">Login Cancelled</string>
   <string name="otp_sent">OTP is sent to your registered email address</string>
@@ -314,5 +315,7 @@
   <string name="ballot_spotlight">View ballot for the election</string>
   <string name="result_spotlight">View the result of the election</string>
   <string name="skip">Skip</string>
+  <string name="bar_chart">Bar Chart</string>
+  <string name="pie_chart">Pie Chart</string>
 </resources>
 
