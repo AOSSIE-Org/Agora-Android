@@ -21,7 +21,8 @@ class FcmService : FirebaseMessagingService() {
 
   override fun onMessageReceived(remoteMessage: RemoteMessage) {
     super.onMessageReceived(remoteMessage)
-    notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    notificationManager =
+      applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     Timber.tag("fcm").d(remoteMessage.toString())
     val data = remoteMessage.data
     val intent = Intent(this, CastVoteActivity::class.java)
@@ -37,26 +38,35 @@ class FcmService : FirebaseMessagingService() {
           AppConstants.NOTIFICATION_DESCRIPTION,
           NotificationManager.IMPORTANCE_HIGH
         )
-        notificationChannel.enableLights(true)
-        notificationChannel.enableVibration(true)
-        notificationManager.createNotificationChannel(notificationChannel)
+        remoteMessage.notification?.let { notification ->
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+              CHANNEl_ID,
+              AppConstants.NOTIFICATION_DESCRIPTION,
+              NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationChannel.enableLights(true)
+            notificationChannel.enableVibration(true)
+            notificationManager.createNotificationChannel(notificationChannel)
 
-        builder = Notification.Builder(this, CHANNEl_ID)
-          .setContentTitle(notification.title)
-          .setContentText(notification.body)
-          .setSmallIcon(R.mipmap.ic_launcher_round)
-          .setContentIntent(pendingIntent)
-          .setAutoCancel(true)
-      } else {
-        builder = Notification.Builder(this)
-          .setContentTitle(notification.title)
-          .setContentText(notification.body)
-          .setSmallIcon(R.mipmap.ic_launcher_round)
-          .setContentIntent(pendingIntent)
-          .setAutoCancel(true)
-      }
-      with(NotificationManagerCompat.from(this)) {
-        notify(CHANNEl_ID.toInt(), builder.build())
+            builder = Notification.Builder(this, CHANNEl_ID)
+              .setContentTitle(notification.title)
+              .setContentText(notification.body)
+              .setSmallIcon(R.mipmap.ic_launcher_round)
+              .setContentIntent(pendingIntent)
+              .setAutoCancel(true)
+          } else {
+            builder = Notification.Builder(this)
+              .setContentTitle(notification.title)
+              .setContentText(notification.body)
+              .setSmallIcon(R.mipmap.ic_launcher_round)
+              .setContentIntent(pendingIntent)
+              .setAutoCancel(true)
+          }
+          with(NotificationManagerCompat.from(this)) {
+            notify(CHANNEl_ID.toInt(), builder.build())
+          }
+        }
       }
     }
   }
