@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.apitesting.user
+package org.aossie.agoraandroid.apitesting.authentication
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -11,17 +11,18 @@ import retrofit2.Response
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
-class LogOutTest : BaseTest() {
+class ResendOtpTest : BaseTest() {
+
   @Test
   @Throws(IOException::class)
-  fun logOutTest() {
+  fun resendOtpTest() {
 
-    val logOutResponse: String = MockFileParser("responses/user_responses/default_response.json").content
+    val resendOtpResponse: String = MockFileParser("responses/auth_responses/auth_response.json").content
 
-    mockWebServer.enqueue(MockResponse().setBody(logOutResponse))
+    mockWebServer.enqueue(MockResponse().setBody(resendOtpResponse))
     testDispatcher.runBlockingTest {
-      val response: Response<*> = apiService.logout()
-      Assert.assertEquals(response.body(), logOutResponse)
+      val response: Response<*> = apiService.resendOTP("user_name")
+      Assert.assertEquals(response.body(), resendOtpResponse)
     }
   }
 }

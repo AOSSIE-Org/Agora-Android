@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.apitesting.user
+package org.aossie.agoraandroid.apitesting.election
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -11,17 +11,18 @@ import retrofit2.Response
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
-class LogOutTest : BaseTest() {
+class VerifyVoterTest : BaseTest() {
+
   @Test
   @Throws(IOException::class)
-  fun logOutTest() {
+  fun verifyVoterTest() {
 
-    val logOutResponse: String = MockFileParser("responses/user_responses/default_response.json").content
+    val verifyVoterResponse: String = MockFileParser("responses/election_responses/verify_voter_response.json").content
 
-    mockWebServer.enqueue(MockResponse().setBody(logOutResponse))
+    mockWebServer.enqueue(MockResponse().setBody(verifyVoterResponse))
     testDispatcher.runBlockingTest {
-      val response: Response<*> = apiService.logout()
-      Assert.assertEquals(response.body(), logOutResponse)
+      val response: Response<*> = apiService.verifyVoter("id")
+      Assert.assertEquals(response.body(), verifyVoterResponse)
     }
   }
 }

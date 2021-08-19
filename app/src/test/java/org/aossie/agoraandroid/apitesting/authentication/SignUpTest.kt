@@ -1,8 +1,7 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.NewUserDto
@@ -13,6 +12,7 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
+@ExperimentalCoroutinesApi
 class SignUpTest : BaseTest() {
 
   @Test
@@ -24,11 +24,9 @@ class SignUpTest : BaseTest() {
 
     signUpRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(signUpResponse))
-      runBlocking {
-        GlobalScope.launch {
-          val responseFromRequest: Response<*> = apiService.createUser(it)
-          Assert.assertEquals(responseFromRequest.body(), signUpResponse)
-        }
+      testDispatcher.runBlockingTest {
+        val responseFromRequest: Response<*> = apiService.createUser(it)
+        Assert.assertEquals(responseFromRequest.body(), signUpResponse)
       }
     }
   }

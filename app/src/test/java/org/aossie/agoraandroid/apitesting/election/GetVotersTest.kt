@@ -1,8 +1,7 @@
 package org.aossie.agoraandroid.apitesting.election
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.mockwebserver.MockResponse
 import okio.IOException
 import org.aossie.agoraandroid.apitesting.BaseTest
@@ -11,6 +10,7 @@ import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response
 
+@ExperimentalCoroutinesApi
 class GetVotersTest : BaseTest() {
 
   @Test
@@ -21,11 +21,9 @@ class GetVotersTest : BaseTest() {
       MockFileParser("responses/election_responses/get_voters_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(getVotersResponse))
-    runBlocking {
-      GlobalScope.launch {
-        val response: Response<*> = apiService.getVoters("id")
-        Assert.assertEquals(response.body(), getVotersResponse)
-      }
+    testDispatcher.runBlockingTest {
+      val response: Response<*> = apiService.getVoters("id")
+      Assert.assertEquals(response.body(), getVotersResponse)
     }
   }
 }

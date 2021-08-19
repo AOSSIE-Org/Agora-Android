@@ -1,0 +1,20 @@
+{
+  "ballot": [
+    "string"
+  ],
+  "ballotVisibility": "string",
+  "candidates": [
+    "string"
+  ],
+  "description": "string",
+  "electionType": "string",
+  "endingDate": "string",
+  "isInvite": false,
+  "isRealTime": false,
+  "name": "string",
+  "noVacancies": 0,
+  "startingDate": "string",
+  "voterListVisibility": false,
+  "votingAlgo": "string",
+  "_id": "string"
+}
