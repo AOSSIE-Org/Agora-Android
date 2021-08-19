@@ -38,6 +38,7 @@ import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.canAuthenticateBiometric
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.loadImage
@@ -149,6 +150,7 @@ constructor(
         prefs.enableBiometric(isChecked)
       }
     }
+    if (!requireContext().canAuthenticateBiometric()) binding.swBiometric.visibility = View.GONE
 
     binding.switchWidget.setOnClickListener {
       if (binding.switchWidget.isChecked) {

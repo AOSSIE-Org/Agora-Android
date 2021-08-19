@@ -1,15 +1,17 @@
 package org.aossie.agoraandroid.ui.activities.main
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
@@ -37,6 +39,7 @@ import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.animGone
 import org.aossie.agoraandroid.utilities.animVisible
+import org.aossie.agoraandroid.utilities.canAuthenticateBiometric
 import org.aossie.agoraandroid.utilities.notifyNetworkChanged
 import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
@@ -94,10 +97,9 @@ class MainActivity : AppCompatActivity() {
       if (prefs.getIsLoggedIn()
         .first()
       ) {
-        if (prefs.isBiometricEnabled().first()) {
-          if (isBioMetricReady())
-            withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
-        } else navController.navigate(R.id.homeFragment)
+        if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
+          withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
+        else navController.navigate(R.id.homeFragment)
       }
     }
 
@@ -105,17 +107,17 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun getPromtInfo() =
-    BiometricPrompt.PromptInfo.Builder()
+    PromptInfo.Builder()
       .setTitle(getString(string.bio_auth))
       .setDescription(getString(string.bio_auth_msg))
-      .setNegativeButtonText(getString(string.cancel_button))
-      .setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
-      .build()
-
-  private fun isBioMetricReady(): Boolean {
-    val biometricManager = BiometricManager.from(this)
-    return biometricManager.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
-  }
+      .apply {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+          setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK or DEVICE_CREDENTIAL)
+        else {
+          setDeviceCredentialAllowed(true)
+          setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
+        }
+      }.build()
 
   private fun provideOfBiometricPrompt(): BiometricPrompt {
     val executor = ContextCompat.getMainExecutor(this)
