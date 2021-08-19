@@ -18,11 +18,11 @@ class DeleteElectionTest : BaseTest() {
   @Throws(IOException::class)
   fun deleteElectionTest() {
 
-    val deleteElectionDto: String = MockFileParser("responses/election_responses/default_response.json").content
+    val deleteElectionDto: String = MockFileParser("responses/default_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(deleteElectionDto))
     runBlocking {
-      GlobalScope.launch {
+      testScope.launch {
         val response: Response<*> = apiService.deleteElection("id")
         Assert.assertEquals(response.body(), deleteElectionDto)
       }

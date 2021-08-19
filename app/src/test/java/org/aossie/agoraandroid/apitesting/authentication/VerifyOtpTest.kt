@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.VerifyOtpDto
@@ -24,7 +24,7 @@ class VerifyOtpTest : BaseTest() {
 
     verifyOtpRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(verifyOtpResponse))
-      testDispatcher.runBlockingTest {
+      testScope.launch {
         val responseFromRequest: Response<*> = apiService.verifyOTP(it)
         Assert.assertEquals(responseFromRequest.body(), verifyOtpResponse)
       }

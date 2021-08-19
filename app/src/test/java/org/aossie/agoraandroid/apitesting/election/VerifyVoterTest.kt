@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.election
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.utilities.MockFileParser
@@ -20,7 +20,7 @@ class VerifyVoterTest : BaseTest() {
     val verifyVoterResponse: String = MockFileParser("responses/election_responses/verify_voter_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(verifyVoterResponse))
-    testDispatcher.runBlockingTest {
+    testScope.launch {
       val response: Response<*> = apiService.verifyVoter("id")
       Assert.assertEquals(response.body(), verifyVoterResponse)
     }

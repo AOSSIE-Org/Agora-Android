@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.user
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.UrlDto
@@ -20,11 +20,11 @@ class ChangeAvatarTest : BaseTest() {
   fun changeAvatarTest() {
 
     val changeAvatarRequest: UrlDto? = UrlDtoJsonAdapter(moshi).fromJson(MockFileParser("requests/user_requests/change_avatar_request.json").content)
-    val changeAvatarResponse: String = MockFileParser("responses/user_responses/default_response.json").content
+    val changeAvatarResponse: String = MockFileParser("responses/default_response.json").content
 
     changeAvatarRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(changeAvatarResponse))
-      testDispatcher.runBlockingTest {
+      testScope.launch {
         val response: Response<*> = apiService.changeAvatar(it)
         Assert.assertEquals(response.body(), changeAvatarResponse)
       }

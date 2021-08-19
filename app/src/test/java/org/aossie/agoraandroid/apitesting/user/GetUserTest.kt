@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.user
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.utilities.MockFileParser
@@ -21,9 +21,9 @@ class GetUserTest : BaseTest() {
     val getUserResponse: String = MockFileParser("responses/user_responses/get_user_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(getUserResponse))
-    testDispatcher.runBlockingTest {
+    testScope.launch {
       val response: Response<*> = apiService.getUserData()
       Assert.assertEquals(response.body(), getUserResponse)
     }
-    }
+  }
 }

@@ -1,10 +1,7 @@
 package org.aossie.agoraandroid.apitesting.user
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.UpdateUserDto
@@ -23,11 +20,11 @@ class UpdateUserTest : BaseTest() {
   fun updateUserTest() {
 
     val updateUserRequest: UpdateUserDto? = UpdateUserDtoJsonAdapter(moshi).fromJson(MockFileParser("requests/user_requests/update_user_request.json").content)
-    val updateUserResponse: String = MockFileParser("responses/user_responses/default_response.json").content
+    val updateUserResponse: String = MockFileParser("responses/default_response.json").content
 
     updateUserRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(updateUserResponse))
-      testDispatcher.runBlockingTest {
+      testScope.launch {
         val response: Response<*> = apiService.updateUser(it)
         Assert.assertEquals(response.body(), updateUserResponse)
       }

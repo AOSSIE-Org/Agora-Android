@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.LoginDto
@@ -24,7 +24,7 @@ class LogInTest : BaseTest() {
 
     loginRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(loginResponse))
-      testDispatcher.runBlockingTest {
+      testScope.launch {
         val response: Response<*> = apiService.logIn(it)
         Assert.assertEquals(response.body(), loginResponse)
       }

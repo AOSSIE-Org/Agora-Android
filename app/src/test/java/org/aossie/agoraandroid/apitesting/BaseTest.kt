@@ -11,9 +11,6 @@ import okhttp3.mockwebserver.MockWebServer
 import org.aossie.agoraandroid.data.network.Api
 import org.junit.After
 import org.junit.Before
-import org.junit.rules.TestRule
-import org.junit.runner.Description
-import org.junit.runners.model.Statement
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
@@ -25,7 +22,8 @@ open class BaseTest {
   lateinit var mockWebServer: MockWebServer
   lateinit var apiService: Api
 
-  val testDispatcher = TestCoroutineDispatcher()
+  private val testDispatcher = TestCoroutineDispatcher()
+  val testScope = TestCoroutineScope(testDispatcher)
 
   @Before
   @Throws(IOException::class)

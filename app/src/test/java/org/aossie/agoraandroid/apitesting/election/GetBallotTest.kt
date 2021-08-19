@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.election
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import okio.IOException
 import org.aossie.agoraandroid.apitesting.BaseTest
@@ -22,7 +22,7 @@ class GetBallotTest() : BaseTest() {
     val getBallotResponse = MockFileParser("responses/election_responses/ballot_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(getBallotResponse))
-    testDispatcher.runBlockingTest {
+    testScope.launch {
       val responseFromRequest: Response<*> = apiService.getBallot("authToken")
       Assert.assertEquals(responseFromRequest.body(), getBallotResponse)
     }

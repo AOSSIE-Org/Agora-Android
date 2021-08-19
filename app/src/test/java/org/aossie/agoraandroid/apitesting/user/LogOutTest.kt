@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.user
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.utilities.MockFileParser
@@ -16,10 +16,10 @@ class LogOutTest : BaseTest() {
   @Throws(IOException::class)
   fun logOutTest() {
 
-    val logOutResponse: String = MockFileParser("responses/user_responses/default_response.json").content
+    val logOutResponse: String = MockFileParser("responses/default_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(logOutResponse))
-    testDispatcher.runBlockingTest {
+    testScope.launch {
       val response: Response<*> = apiService.logout()
       Assert.assertEquals(response.body(), logOutResponse)
     }

@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.authentication
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.utilities.MockFileParser
@@ -17,10 +17,10 @@ class ToggleTwoFactorAuthTest : BaseTest() {
   @Throws(IOException::class)
   fun toggleTwoFactorAuthTest() {
 
-    val toggleTwoFactorAuthResponse: String = MockFileParser("responses/auth_responses/default_response.json").content
+    val toggleTwoFactorAuthResponse: String = MockFileParser("responses/default_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(toggleTwoFactorAuthResponse))
-    testDispatcher.runBlockingTest {
+    testScope.launch {
       val response: Response<*> = apiService.toggleTwoFactorAuth()
       Assert.assertEquals(response.body(), toggleTwoFactorAuthResponse)
     }

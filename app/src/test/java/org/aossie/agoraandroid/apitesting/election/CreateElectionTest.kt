@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.election
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.ElectionDto
@@ -20,11 +20,11 @@ class CreateElectionTest : BaseTest() {
   fun createElectionTest() {
 
     val createElectionRequest: ElectionDto? = ElectionDtoJsonAdapter(moshi).fromJson(MockFileParser("requests/election_requests/create_election_request.json").content)
-    val createElectionDto: String = MockFileParser("responses/election_responses/default_response.json").content
+    val createElectionDto: String = MockFileParser("responses/default_response.json").content
 
     createElectionRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(createElectionDto))
-      testDispatcher.runBlockingTest {
+      testScope.launch {
         val responseFromRequest: Response<*> = apiService.createElection(it)
         Assert.assertEquals(responseFromRequest.body(), createElectionDto)
       }

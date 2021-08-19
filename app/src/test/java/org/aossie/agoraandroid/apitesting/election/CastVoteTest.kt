@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.apitesting.election
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.CastVoteDto
@@ -19,12 +19,12 @@ class CastVoteTest : BaseTest() {
   @Throws(IOException::class)
   fun castVoteTest() {
 
-    val castVoteRequest: CastVoteDto? = CastVoteDtoJsonAdapter(moshi).fromJson(MockFileParser("requests/user_requests/cast_vote_request.json").content)
-    val castVoteResponse: String = MockFileParser("responses/election_responses/default_response.json").content
+    val castVoteRequest: CastVoteDto? = CastVoteDtoJsonAdapter(moshi).fromJson(MockFileParser("requests/election_requests/cast_vote_request.json").content)
+    val castVoteResponse: String = MockFileParser("responses/default_response.json").content
 
     castVoteRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(castVoteResponse))
-      testDispatcher.runBlockingTest {
+      testScope.launch {
         val response: Response<*> = apiService.castVote("id", it)
         Assert.assertEquals(response.body(), castVoteResponse)
       }
