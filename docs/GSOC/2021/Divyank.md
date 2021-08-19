@@ -10,8 +10,8 @@
 
 ## Mentors: [Prudhvi Reddy](https://github.com/prudhvir3ddy), [Ritesh Agrawal](https://github.com/Ritesh-Ag), [T Thuvarakan](https://github.com/Thuva4)
 
-## APK: [release.apk]()
-
+## APK: [release.apk](https://drive.google.com/file/d/1Q9Cc902o5bR4XAwSKUHbp9Uz46HWKD4O/view?usp=sharing)
+## App will be released on Google Play Store soon!
 
 ### Overview of the Application
 
@@ -34,6 +34,8 @@ I had identified the following tasks in the project at the starting of the proje
 10. Add spotlight to guide first time uers - **Done**
 11. Send notifications to invited voters - **Done**
 12. Refractor coroutine extention functions - **Done (Suggested by the mentors)**
+13. Add new charts to visualise result - **Done**
+14. Add unit testing - **Done**
 
 
 ### Summary of whole GSoC journey
@@ -42,7 +44,7 @@ As I was already familiar with the codebase, I started testing to find new bugs.
 
 Coding period begins. Firstly, I started with fixing majority of issues reported on the issue page and moving the remaining codebase to Kotlin. Added new features like importing and exporting data from excel sheets and support to search elections. Also improved security of the app by encrypting the tokens.
 
-During the second coding period, I added new screens like welcome screen and spotlights. Implemented the feature to send notifications to voters and improved the codebase by making use of coroutines in the right manner. In the end, started with the documentation the project overview.
+During the second coding period, I added new screens like welcome screen and spotlights. Implemented the feature to send notifications to voters and improved the codebase by making use of coroutines in the right manner. Also added bar chart to visualise the result. In the end, started with the documentation the project overview.
 
 I'd want to express my gratitude to my mentors, **Prudhvi Reddy, Ritesh Agrawal, and Thuvarakan Tharmarajasingam**, for their unwavering support. They were constantly available to advise me on best practises and offered some excellent upgrades and features for the project. Special thanks to **Prudhvi** for all the quick merges and for always being so helpful and responsive anytime I faced any problem. Working with you guys was a fantastic experience, and I'd want to stay on as a member of the team even after GSoC.
 
@@ -121,3 +123,15 @@ I'd want to express my gratitude to my mentors, **Prudhvi Reddy, Ritesh Agrawal,
 17. [Merge Request !17](https://gitlab.com/aossie/agora-android/-/merge_requests/399)- Refractor coroutine extention functions   (**Merged**)
 * Used Dispatchers.Default for heavy computations
 * Refractored Coroutines.kt with viewmodelscope.launch
+
+18. [Merge Request !18](https://gitlab.com/aossie/agora-android/-/merge_requests/403)- Add new charts to visualise result   (**Merged**)
+* Added bar chart to show votes for each candidate
+* Improved existing bar chart
+
+19. [Merge Request !19](https://gitlab.com/aossie/agora-android/-/merge_requests/404)- Add unit testing   (**Merged**)
+* Added dependency for coroutine testing
+* Added unit tests for pending apis
+
+### Future Scope
+1. Show all elections which are left to vote to the user
+2. Add an option to remind a user to vote
