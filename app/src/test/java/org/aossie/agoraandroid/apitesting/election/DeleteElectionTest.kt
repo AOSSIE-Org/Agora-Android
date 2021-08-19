@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.apitesting.election
 
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
