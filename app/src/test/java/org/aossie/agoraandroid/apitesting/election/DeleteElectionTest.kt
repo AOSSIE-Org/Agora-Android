@@ -1,5 +1,6 @@
 package org.aossie.agoraandroid.apitesting.election
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -11,6 +12,7 @@ import retrofit2.Response
 import java.io.IOException
 import kotlin.jvm.Throws
 
+@ExperimentalCoroutinesApi
 class DeleteElectionTest : BaseTest() {
 
   @Test
