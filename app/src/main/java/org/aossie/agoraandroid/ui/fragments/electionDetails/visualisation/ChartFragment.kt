@@ -30,7 +30,7 @@ private const val WINNER_DTO = "winnerDto"
 
 class ChartFragment : Fragment() {
 
-  private lateinit var binding: FragmentChartBinding
+  private var binding: FragmentChartBinding? = null
   private var chartType: Int? = null
   private var winnerDto: WinnerDto? = null
   private val colorList = ColorTemplate.MATERIAL_COLORS.toList().subList(0, 2)
@@ -47,7 +47,7 @@ class ChartFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View {
+  ): View? {
     // Inflate the layout for this fragment
     binding = FragmentChartBinding.inflate(layoutInflater)
     winnerDto?.let {
@@ -56,97 +56,101 @@ class ChartFragment : Fragment() {
         string.pie_chart -> initPieChart(it)
       }
     }
-    return binding.root
+    return binding?.root
   }
 
-  private fun initBarChart(it: WinnerDto) {
-    val barChart = binding.horizontalBarChart
-    barChart.visibility = View.VISIBLE
+  private fun initBarChart(winner: WinnerDto) {
+    binding?.let {
+      val barChart = it.horizontalBarChart
+      barChart.visibility = View.VISIBLE
 
-    val description = Description()
-    description.text = getString(string.election_result_bar_chart)
-    description.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
-    barChart.description = description
+      val description = Description()
+      description.text = getString(string.election_result_bar_chart)
+      description.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
+      barChart.description = description
 
-    val value: ArrayList<BarEntry> = ArrayList()
-    value.add(BarEntry(0f, it.score?.denominator?.toFloat()!!))
-    value.add(BarEntry(1f, it.score?.numerator?.toFloat()!!))
+      val value: ArrayList<BarEntry> = ArrayList()
+      value.add(BarEntry(0f, winner.score?.denominator?.toFloat()!!))
+      value.add(BarEntry(1f, winner.score?.numerator?.toFloat()!!))
 
-    val barDataSet = BarDataSet(value, "")
-    barDataSet.colors = colorList.asReversed()
-    val textColorList = listOf(colorList[1], colorList[1], colorList[0], colorList[0])
-    barDataSet.setValueTextColors(textColorList)
-    barDataSet.valueTextSize = 14f
-    val barData = BarData(barDataSet)
-    barData.setValueFormatter(object : ValueFormatter() {
-      override fun getFormattedValue(value: Float): String {
-        return value.roundToInt().toString()
-      }
-    })
+      val barDataSet = BarDataSet(value, "")
+      barDataSet.colors = colorList.asReversed()
+      val textColorList = listOf(colorList[1], colorList[1], colorList[0], colorList[0])
+      barDataSet.setValueTextColors(textColorList)
+      barDataSet.valueTextSize = 14f
+      val barData = BarData(barDataSet)
+      barData.setValueFormatter(object : ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+          return value.roundToInt().toString()
+        }
+      })
 
-    barChart.data = barData
-    barChart.xAxis.isEnabled = false
-    barChart.axisLeft.axisMinimum = 0f
-    barChart.axisRight.axisMinimum = 0f
-    barChart.axisLeft.isEnabled = false
-    barChart.axisRight.isEnabled = false
+      barChart.data = barData
+      barChart.xAxis.isEnabled = false
+      barChart.axisLeft.axisMinimum = 0f
+      barChart.axisRight.axisMinimum = 0f
+      barChart.axisLeft.isEnabled = false
+      barChart.axisRight.isEnabled = false
 
-    val entries: ArrayList<LegendEntry> = arrayListOf(
-      LegendEntry(
-        it.candidate?.name.toString(),
-        Legend.LegendForm.CIRCLE,
-        Float.NaN,
-        Float.NaN,
-        null,
-        colorList[0]
-      ),
-      LegendEntry(
-        getString(string.others),
-        Legend.LegendForm.CIRCLE,
-        Float.NaN,
-        Float.NaN,
-        null,
-        colorList[1]
-      ),
-    )
-    val legend = barChart.legend
-    legend.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
-    legend.setCustom(entries)
+      val entries: ArrayList<LegendEntry> = arrayListOf(
+        LegendEntry(
+          winner.candidate?.name.toString(),
+          Legend.LegendForm.CIRCLE,
+          Float.NaN,
+          Float.NaN,
+          null,
+          colorList[0]
+        ),
+        LegendEntry(
+          getString(string.others),
+          Legend.LegendForm.CIRCLE,
+          Float.NaN,
+          Float.NaN,
+          null,
+          colorList[1]
+        ),
+      )
+      val legend = barChart.legend
+      legend.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
+      legend.setCustom(entries)
 
-    barChart.setTouchEnabled(false)
-    barChart.animateXY(GRAPH_ANIMATION_DURATION, GRAPH_ANIMATION_DURATION)
+      barChart.setTouchEnabled(false)
+      barChart.animateXY(GRAPH_ANIMATION_DURATION, GRAPH_ANIMATION_DURATION)
+    }
   }
 
-  private fun initPieChart(it: WinnerDto) {
-    val pieChart = binding.pieChart
-    pieChart.visibility = View.VISIBLE
-    pieChart.setUsePercentValues(true)
+  private fun initPieChart(winner: WinnerDto) {
+    binding?.let {
+      val pieChart = it.pieChart
+      pieChart.visibility = View.VISIBLE
+      pieChart.setUsePercentValues(true)
 
-    val description = Description()
-    description.text = getString(string.election_result_pie_chart)
-    description.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
-    pieChart.description = description
+      val description = Description()
+      description.text = getString(string.election_result_pie_chart)
+      description.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
+      pieChart.description = description
 
-    val value: ArrayList<PieEntry> = ArrayList()
-    value.add(PieEntry(it.score?.numerator?.toFloat()!!, it.candidate?.name))
-    value.add(PieEntry(it.score.denominator?.toFloat()!!, getString(string.others)))
+      val value: ArrayList<PieEntry> = ArrayList()
+      value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
+      value.add(PieEntry(winner.score.denominator?.toFloat()!!, getString(string.others)))
 
-    val pieDataSet = PieDataSet(value, "")
-    pieDataSet.colors = colorList
-    pieDataSet.valueTextSize = 12f
-    val pieData = PieData(pieDataSet)
-    pieData.setValueFormatter(object : ValueFormatter() {
-      override fun getFormattedValue(value: Float): String {
-        return ("$value%")
-      }
-    })
-    pieChart.data = pieData
-    pieChart.setEntryLabelColor(ContextCompat.getColor(requireContext(), color.black))
+      val pieDataSet = PieDataSet(value, "")
+      pieDataSet.colors = colorList
+      pieDataSet.valueTextSize = 12f
+      val pieData = PieData(pieDataSet)
+      pieData.setValueFormatter(object : ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+          return ("$value%")
+        }
+      })
+      pieChart.data = pieData
+      pieChart.setEntryLabelColor(ContextCompat.getColor(requireContext(), color.black))
 
-    val legend = pieChart.legend
-    legend.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
+      val legend = pieChart.legend
+      legend.textColor = ContextCompat.getColor(requireContext(), color.colorPrimary)
 
-    pieChart.animateXY(GRAPH_ANIMATION_DURATION, GRAPH_ANIMATION_DURATION)
+      pieChart.animateXY(GRAPH_ANIMATION_DURATION, GRAPH_ANIMATION_DURATION)
+    }
   }
 
   companion object {
@@ -159,5 +163,10 @@ class ChartFragment : Fragment() {
         putParcelable(WINNER_DTO, winnerDto)
       }
     }
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    binding = null
   }
 }
