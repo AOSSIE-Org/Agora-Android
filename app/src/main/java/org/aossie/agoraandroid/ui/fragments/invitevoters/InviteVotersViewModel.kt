@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.Repository.FCMRepository
 import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
@@ -30,7 +31,8 @@ import javax.inject.Inject
 internal class InviteVotersViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val electionsRepository: ElectionsRepository,
+  private val fcmRepository: FCMRepository
 ) : ViewModel() {
 
   private val _getSendVoterLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
@@ -130,6 +132,25 @@ constructor(
           _getImportVotersLiveData.value =
             ResponseUI.error(context.getString(string.cannot_read_file))
         }
+      }
+    }
+  }
+
+  fun sendFCM(
+    mail: String?,
+    title: String,
+    body: String,
+    electionId: String,
+  ) {
+    viewModelScope.launch {
+      try {
+        mail?.let {
+          it.substring(0, it.indexOf("@")).let { topic ->
+            fcmRepository.sendFCM(topic, title, body, electionId)
+          }
+        }
+      } catch (e: Exception) {
+        Timber.d(e)
       }
     }
   }

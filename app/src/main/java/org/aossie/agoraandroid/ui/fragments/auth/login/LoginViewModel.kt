@@ -15,6 +15,7 @@ import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import org.aossie.agoraandroid.utilities.subscribeToFCM
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -54,6 +55,10 @@ constructor(
             it.refreshToken?.expiresOn, trustedDevice
           )
           userRepository.saveUser(user)
+          it.email?.let { mail ->
+            prefs.setMailId(mail)
+            subscribeToFCM(mail)
+          }
           Timber.d(user.toString())
           if (!it.twoFactorAuthentication!!) {
             _getLoginLiveData.value = ResponseUI.success()
@@ -100,6 +105,10 @@ constructor(
       try {
         val authResponse = userRepository.fbLogin()
         getUserData(authResponse)
+        authResponse.email?.let {
+          prefs.setMailId(it)
+          subscribeToFCM(it)
+        }
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {
         _getLoginLiveData.value = ResponseUI.error(e.message)

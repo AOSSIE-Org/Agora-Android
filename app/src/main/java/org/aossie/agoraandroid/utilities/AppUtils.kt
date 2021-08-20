@@ -8,6 +8,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.view.animation.DecelerateInterpolator
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.takusemba.spotlight.OnSpotlightListener
 import com.takusemba.spotlight.Spotlight
 import org.aossie.agoraandroid.R.color
@@ -57,4 +59,24 @@ fun Activity.getSpotlight(
       }
     })
     .build()
+}
+
+fun subscribeToFCM(mail: String?) {
+  mail?.let {
+    if (it.contains("@")) {
+      it.substring(0, it.indexOf("@")).let { topic ->
+        Firebase.messaging.subscribeToTopic(topic)
+      }
+    }
+  }
+}
+
+fun unsubscribeFromFCM(mail: String?) {
+  mail?.let {
+    if (it.contains("@")) {
+      it.substring(0, it.indexOf("@")).let { topic ->
+        Firebase.messaging.unsubscribeFromTopic(topic)
+      }
+    }
+  }
 }
