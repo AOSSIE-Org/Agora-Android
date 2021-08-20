@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.data.Repository
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.first
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
@@ -13,6 +14,7 @@ import org.aossie.agoraandroid.data.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.utilities.unsubscribeFromFCM
 import timber.log.Timber
 
 class UserRepository(
@@ -68,6 +70,7 @@ class UserRepository(
   }
 
   suspend fun deleteUser() {
+    unsubscribeFromFCM(preferenceProvider.getMailId().first())
     appDatabase.getUserDao()
       .removeUser()
     preferenceProvider.clearAllData()

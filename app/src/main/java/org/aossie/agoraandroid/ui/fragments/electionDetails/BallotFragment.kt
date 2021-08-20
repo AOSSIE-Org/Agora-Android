@@ -76,9 +76,7 @@ constructor(
         when (responseUI.status) {
           ResponseUI.Status.LOADING -> binding.progressBar.hide()
           ResponseUI.Status.SUCCESS -> {
-            notify(responseUI.message)
             binding.progressBar.hide()
-
             responseUI.dataList?.let {
               initRecyclerView(it)
             } ?: binding.tvEmptyBallots.show()
