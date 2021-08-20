@@ -42,6 +42,7 @@ buildscript {
     poi = '3.17'
     dataStore = '1.0.0-rc01'
     spotlight = '2.0.5'
+    kotlinCoroutineTest = '1.3.4'
   }
 
   repositories {
