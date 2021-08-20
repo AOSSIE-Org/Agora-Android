@@ -111,6 +111,7 @@ dependencies {
   testImplementation "com.squareup.okhttp3:mockwebserver:$mockWebServerVersion"
   // Mockito
   testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
+  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineTest"
   testImplementation 'org.json:json:20180813'
   //kotlin deps
   implementation "androidx.core:core-ktx:$coreVersion"

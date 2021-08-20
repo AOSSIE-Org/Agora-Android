@@ -10,20 +10,19 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
-/** Test that checks sendForgotPassword call which changes password via asking for username */
-
 @ExperimentalCoroutinesApi
-class ForgotPasswordTest : BaseTest() {
+class ResendOtpTest : BaseTest() {
+
   @Test
   @Throws(IOException::class)
-  fun sendForgotPasswordTest() {
+  fun resendOtpTest() {
 
-    val forgotPasswordResponse: String = MockFileParser("responses/default_response.json").content
+    val resendOtpResponse: String = MockFileParser("responses/auth_responses/auth_response.json").content
 
-    mockWebServer.enqueue(MockResponse().setBody(forgotPasswordResponse))
+    mockWebServer.enqueue(MockResponse().setBody(resendOtpResponse))
     testScope.launch {
-      val response: Response<*> = apiService.sendForgotPassword("test_name")
-      Assert.assertEquals(response.body(), forgotPasswordResponse)
+      val response: Response<*> = apiService.resendOTP("user_name")
+      Assert.assertEquals(response.body(), resendOtpResponse)
     }
   }
 }
