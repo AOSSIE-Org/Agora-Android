@@ -13,6 +13,7 @@ def fbApiKey = properties.getProperty('fbApiKey')
 def secretKey = properties.getProperty('secretKey')
 def serverKey = properties.getProperty('serverKey')
 
+
 android {
   def keystoreProperties = new Properties()
   def keystorePropertiesFile = rootProject.file('signing.properties')
@@ -59,7 +60,9 @@ android {
           signingConfig signingConfigs.release
         }
       }
-      minifyEnabled false
+
+      shrinkResources true
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
     debug {
