@@ -237,6 +237,7 @@
   <string name="one_time_password">One-Time Password</string>
   <string name="do_you_trust_this_device">Do you trust this Device ?</string>
   <string name="toggle_two_factor_authentication">Toggle Two Factor Authentication</string>
+  <string name="toggle_biometric_authentication">Enable Biometric Authentication</string>
   <string name="asset_statements" translatable="false">[{ \"include\": \"https://agora-frontend.herokuapp.com/.well-known/assetlinks.json\" }]</string>
   <string name="candidate">Candidate</string>
   <string name="please_select_candidate">Please Select Candidate</string>
@@ -317,6 +318,10 @@
   <string name="ballot_spotlight">View ballot for the election</string>
   <string name="result_spotlight">View the result of the election</string>
   <string name="skip">Skip</string>
+  <string name="something_went_wrong">Something went wrong. Please try again.</string>
+  <string name="auth_failed">Authentication Failed.</string>
+  <string name="bio_auth">Biometric Authentication</string>
+  <string name="bio_auth_msg">User needs to be authenticated before using the app</string>
   <string name="bar_chart">Bar Chart</string>
   <string name="pie_chart">Pie Chart</string>
 </resources>

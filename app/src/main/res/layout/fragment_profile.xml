@@ -48,10 +48,23 @@
         android:text="@string/toggle_two_factor_authentication"
         android:textSize="@dimen/size_18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/change_password_btn"
+        />
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/sw_biometric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:text="@string/toggle_biometric_authentication"
+        android:textSize="@dimen/size_18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchWidget"
         />
 
       <androidx.coordinatorlayout.widget.CoordinatorLayout

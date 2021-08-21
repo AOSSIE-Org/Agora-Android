@@ -1,11 +1,18 @@
 package org.aossie.agoraandroid.ui.activities.main
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.PromptInfo
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -15,11 +22,14 @@ import androidx.navigation.NavOptions.Builder
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.facebook.login.LoginManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityMainBinding
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
@@ -29,6 +39,7 @@ import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.animGone
 import org.aossie.agoraandroid.utilities.animVisible
+import org.aossie.agoraandroid.utilities.canAuthenticateBiometric
 import org.aossie.agoraandroid.utilities.notifyNetworkChanged
 import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
@@ -86,11 +97,49 @@ class MainActivity : AppCompatActivity() {
       if (prefs.getIsLoggedIn()
         .first()
       ) {
-        navController.navigate(R.id.homeFragment)
+        if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
+          withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
+        else navController.navigate(R.id.homeFragment)
       }
     }
 
     initObservers()
+  }
+
+  private fun getPromtInfo() =
+    PromptInfo.Builder()
+      .setTitle(getString(string.bio_auth))
+      .setDescription(getString(string.bio_auth_msg))
+      .apply {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+          setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK or DEVICE_CREDENTIAL)
+        else {
+          setDeviceCredentialAllowed(true)
+          setAllowedAuthenticators(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
+        }
+      }.build()
+
+  private fun provideOfBiometricPrompt(): BiometricPrompt {
+    val executor = ContextCompat.getMainExecutor(this)
+
+    val callback = object : BiometricPrompt.AuthenticationCallback() {
+      override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+        super.onAuthenticationError(errorCode, errString)
+        binding.root.snackbar(getString(string.something_went_wrong))
+      }
+
+      override fun onAuthenticationFailed() {
+        super.onAuthenticationFailed()
+        binding.root.snackbar(getString(string.auth_failed))
+      }
+
+      override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+        super.onAuthenticationSucceeded(result)
+        navController.navigate(R.id.homeFragment)
+      }
+    }
+
+    return BiometricPrompt(this, executor, callback)
   }
 
   private fun setToolbar(destination: NavDestination) {

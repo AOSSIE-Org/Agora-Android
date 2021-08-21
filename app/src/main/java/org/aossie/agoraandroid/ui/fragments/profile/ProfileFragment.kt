@@ -38,6 +38,7 @@ import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
 import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.canAuthenticateBiometric
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.loadImage
@@ -143,6 +144,13 @@ constructor(
         toggleIsEnable()
       }
     }
+
+    binding.swBiometric.setOnCheckedChangeListener { buttonView, isChecked ->
+      lifecycleScope.launch {
+        prefs.enableBiometric(isChecked)
+      }
+    }
+    if (!requireContext().canAuthenticateBiometric()) binding.swBiometric.visibility = View.GONE
 
     binding.switchWidget.setOnClickListener {
       if (binding.switchWidget.isChecked) {
@@ -311,6 +319,9 @@ constructor(
     binding.firstNameTiet.setText(it.firstName)
     binding.lastNameTiet.setText(it.lastName)
     binding.switchWidget.isChecked = it.twoFactorAuthentication ?: false
+    lifecycleScope.launch {
+      binding.swBiometric.isChecked = prefs.isBiometricEnabled().first()
+    }
     mUser = it
     if (it.avatarURL != null) {
       if (it.avatarURL.isUrl())
