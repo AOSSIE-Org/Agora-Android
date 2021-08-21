@@ -1,12 +1,18 @@
 package org.aossie.agoraandroid.utilities
 
 import android.app.Activity
+import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
+import android.os.Build.VERSION_CODES
 import android.view.animation.DecelerateInterpolator
+import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
@@ -61,6 +67,22 @@ fun Activity.getSpotlight(
     .build()
 }
 
+fun Context.canAuthenticateBiometric(): Boolean {
+  val biometricManager = BiometricManager.from(this)
+
+  val canAuthenticate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+    biometricManager.canAuthenticate(BiometricManager.Authenticators.DEVICE_CREDENTIAL or BiometricManager.Authenticators.BIOMETRIC_STRONG or BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
+  else
+    biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
+  return canAuthenticate && isSecured()
+}
+
+private fun Context.isSecured(): Boolean {
+  val keyguardManager = getSystemService(AppCompatActivity.KEYGUARD_SERVICE) as KeyguardManager
+  return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+    keyguardManager.isDeviceSecure
+  else keyguardManager.isKeyguardSecure
+}
 fun subscribeToFCM(mail: String?) {
   mail?.let {
     if (it.contains("@")) {
