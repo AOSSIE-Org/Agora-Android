@@ -10,7 +10,8 @@
 
 ## Mentors: [Prudhvi Reddy](https://github.com/prudhvir3ddy), [Ritesh Agrawal](https://github.com/Ritesh-Ag), [T Thuvarakan](https://github.com/Thuva4)
 
-## APK: [release.apk]()
+## APK: [release.apk](https://drive.google.com/file/d/1vwv70VSreRs7iJtegc9knK1mrLOSjP5R/view?usp=sharing)
+## App will be released on Google Play Store soon!
 
 
 ### Overview of the Application
