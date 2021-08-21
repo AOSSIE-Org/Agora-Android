@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.takusemba.spotlight.OnSpotlightListener
 import com.takusemba.spotlight.Spotlight
 import org.aossie.agoraandroid.R.color
@@ -80,4 +82,23 @@ private fun Context.isSecured(): Boolean {
   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
     keyguardManager.isDeviceSecure
   else keyguardManager.isKeyguardSecure
+}
+fun subscribeToFCM(mail: String?) {
+  mail?.let {
+    if (it.contains("@")) {
+      it.substring(0, it.indexOf("@")).let { topic ->
+        Firebase.messaging.subscribeToTopic(topic)
+      }
+    }
+  }
+}
+
+fun unsubscribeFromFCM(mail: String?) {
+  mail?.let {
+    if (it.contains("@")) {
+      it.substring(0, it.indexOf("@")).let { topic ->
+        Firebase.messaging.unsubscribeFromTopic(topic)
+      }
+    }
+  }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:context=".ui.fragments.electionDetails.visualisation.ChartFragment"
+  >
+
+  <com.github.mikephil.charting.charts.HorizontalBarChart
+    android:id="@+id/horizontal_bar_chart"
+    android:layout_width="@dimen/size_300dp"
+    android:layout_height="@dimen/size_300dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginHorizontal="@dimen/size_8dp"
+    android:layout_marginVertical="@dimen/size_20dp"
+    android:visibility="gone"
+    />
+
+  <com.github.mikephil.charting.charts.PieChart
+    android:id="@+id/pie_chart"
+    android:layout_width="@dimen/size_300dp"
+    android:layout_height="@dimen/size_300dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginHorizontal="@dimen/size_8dp"
+    android:layout_marginVertical="@dimen/size_20dp"
+    android:visibility="gone"
+    />
+
+</FrameLayout>

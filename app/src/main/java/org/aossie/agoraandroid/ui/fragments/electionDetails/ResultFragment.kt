@@ -8,25 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.tabs.TabLayoutMediator
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
+import org.aossie.agoraandroid.adapters.ResultViewpagerAdapter
 import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import java.util.ArrayList
 import javax.inject.Inject
 
 const val STORAGE_PERMISSION_REQUEST_CODE = 2
@@ -46,7 +41,10 @@ constructor(
 
   private var id: String? = null
   private lateinit var winnerDto: WinnerDto
-
+  private val chartType: Array<Int> = arrayOf(
+    string.bar_chart,
+    string.pie_chart
+  )
   private lateinit var binding: FragmentResultBinding
 
   override fun onCreateView(
@@ -172,28 +170,11 @@ constructor(
   private fun initResultView(winner: WinnerDto) {
     binding.tvNoResult.hide()
     binding.resultView.visibility = View.VISIBLE
-    val pieChart = binding.pieChart
-    pieChart.setUsePercentValues(true)
-
-    val description = Description()
-    description.text = getString(string.election_result)
-    description.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-    pieChart.description = description
-
-    val value: ArrayList<PieEntry> = ArrayList()
-    value.add(PieEntry(winner.score?.numerator?.toFloat()!!, winner.candidate?.name))
-    value.add(
-      PieEntry(winner.score.denominator?.toFloat()!!, getString(string.others))
-    )
-
-    val pieDataSet = PieDataSet(value, "")
-    val pieData = PieData(pieDataSet)
-    pieChart.data = pieData
-    val legend = pieChart.legend
-    legend.textColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-    pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
-    pieChart.animateXY(1400, 1400)
     binding.textViewWinnerName.text = winner.candidate?.name
+    binding.viewPager.adapter = ResultViewpagerAdapter(this, chartType, winnerDto)
+    TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+      tab.text = getString(chartType[position])
+    }.attach()
   }
 
   override fun onRequestPermissionsResult(

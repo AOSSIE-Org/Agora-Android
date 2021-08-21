@@ -43,7 +43,7 @@ buildscript {
     dataStore = '1.0.0-rc01'
     spotlight = '2.0.5'
     biometricLibraryVersion = "1.1.0"
-
+    kotlinCoroutineTest = '1.3.4'
   }
 
   repositories {

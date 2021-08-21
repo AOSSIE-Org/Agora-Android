@@ -19,8 +19,6 @@
     <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="8dp"
-      android:layout_marginBottom="8dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       >
@@ -35,6 +33,7 @@
         <RelativeLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:padding="@dimen/size_10dp"
           >
 
           <ImageView
@@ -55,6 +54,7 @@
             android:layout_margin="@dimen/size_8dp"
             android:src="@drawable/ic_share_black_24dp"
             android:tooltipText="@string/share"
+            app:tint="@color/yellow"
             />
 
           <ImageView
@@ -73,7 +73,7 @@
           android:id="@+id/tv_title"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_margin="@dimen/size_8dp"
+          android:layout_marginHorizontal="8dp"
           android:text="@string/winner_is"
           android:textSize="36sp"
           android:textStyle="bold"
@@ -84,19 +84,26 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="8dp"
-          android:layout_marginVertical="@dimen/size_4dp"
+          android:layout_marginVertical="@dimen/size_12dp"
           android:text="@string/winner_name"
           android:textColor="@color/colorPrimary"
           android:textSize="30sp"
           android:textStyle="bold"
           />
 
-        <com.github.mikephil.charting.charts.PieChart
-          android:id="@+id/pie_chart"
-          android:layout_width="@dimen/size_300dp"
-          android:layout_height="@dimen/size_300dp"
-          android:layout_marginHorizontal="@dimen/size_8dp"
-          android:layout_marginVertical="@dimen/size_20dp"
+        <com.google.android.material.tabs.TabLayout
+          android:id="@+id/tab_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom|center"
+          app:tabGravity="center"
+          />
+
+        <androidx.viewpager2.widget.ViewPager2
+          android:id="@+id/view_pager"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:overScrollMode="never"
           />
 
       </LinearLayout>

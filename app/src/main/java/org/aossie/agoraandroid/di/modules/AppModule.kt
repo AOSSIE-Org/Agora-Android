@@ -14,6 +14,7 @@ import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
+import org.aossie.agoraandroid.data.network.FCMApi
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
@@ -52,8 +53,8 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider): HeaderInterceptor {
-    return HeaderInterceptor(preferenceProvider)
+  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider, context: Context): HeaderInterceptor {
+    return HeaderInterceptor(preferenceProvider, context.resources.getString(R.string.serverKey))
   }
 
   @Provides
@@ -188,4 +189,47 @@ class AppModule {
   ): SecurityUtil {
     return SecurityUtil(context.resources.getString(R.string.secretKey))
   }
+
+  @Provides
+  @Singleton
+  @Named("okHttpForFCM")
+  fun provideOkHttpClientForFCM(
+    context: Context,
+    networkInterceptor: NetworkInterceptor,
+    headerInterceptor: HeaderInterceptor
+  ): OkHttpClient {
+    return OkHttpClient.Builder()
+      .apply {
+        addInterceptor(networkInterceptor)
+        addInterceptor(headerInterceptor)
+        if (BuildConfig.DEBUG) {
+          addInterceptor(
+            HttpLoggingInterceptor().apply {
+              level = Level.BASIC
+            }
+          )
+          addInterceptor(
+            ChuckerInterceptor.Builder(context)
+              .build()
+          )
+        }
+      }
+      .build()
+  }
+
+  @Provides
+  @Singleton
+  @Named("retrofitForFCM")
+  fun provideRetrofitForFCM(@Named("okHttpForFCM") okHttpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+      .client(okHttpClient)
+      .baseUrl(AppConstants.FCM_URL)
+      .addConverterFactory(MoshiConverterFactory.create())
+      .build()
+  }
+
+  @Provides
+  @Singleton
+  fun providesFCM(@Named("retrofitForFCM") retrofit: Retrofit): FCMApi =
+    retrofit.create(FCMApi::class.java)
 }

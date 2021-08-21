@@ -19,6 +19,7 @@ constructor(
 ) {
 
   companion object {
+    private val MAIL_ID = stringPreferencesKey("mailId")
     private val IS_LOGGED_IN = booleanPreferencesKey("isLoggedIn")
     private val IS_FACEBOOK_USER = booleanPreferencesKey("isFacebookUser")
     private val IS_UPDATE_NEEDED = booleanPreferencesKey("isUpdateNeeded")
@@ -40,6 +41,18 @@ constructor(
   suspend fun setDisplayed(id: String) {
     spotlightDataStore.edit {
       it[booleanPreferencesKey(id)] = true
+    }
+  }
+
+  suspend fun setMailId(mailId: String) {
+    userDataStore.edit {
+      it[MAIL_ID] = mailId
+    }
+  }
+
+  fun getMailId(): Flow<String?> {
+    return userDataStore.data.map {
+      it[MAIL_ID]
     }
   }
 
