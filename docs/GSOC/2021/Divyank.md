@@ -134,4 +134,5 @@ I'd want to express my gratitude to my mentors, **Prudhvi Reddy, Ritesh Agrawal,
 
 ### Future Scope
 1. Show all elections which are left to vote to the user
-2. Add an option to remind a user to vote
+2. Add an option to the owner to remind a user to vote
+3. Migrating to Jetpack Compose
