@@ -1,8 +1,7 @@
 package org.aossie.agoraandroid.apitesting.election
 
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
 import org.aossie.agoraandroid.data.dto.VotersDto
@@ -13,23 +12,22 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.IOException
 
+@ExperimentalCoroutinesApi
 class InviteVotersTest : BaseTest() {
 
   @Test
   @Throws(IOException::class)
   fun inviteVotersTest() {
     val invitationResponse: String =
-      MockFileParser("responses/election_responses/invite_voter_response.json").content
+      MockFileParser("responses/default_response.json").content
 
     val invitationRequest: VotersDto? = VotersDtoJsonAdapter(moshi).fromJson(MockFileParser("requests/election_requests/invite_voter_request.json").content)
 
     invitationRequest?.let {
       mockWebServer.enqueue(MockResponse().setBody(invitationResponse))
-      runBlocking {
-        GlobalScope.launch {
-          val response: Response<*> = apiService.sendVoters("id", listOf(invitationRequest))
-          Assert.assertEquals(response.body(), invitationResponse)
-        }
+      testScope.launch {
+        val response: Response<*> = apiService.sendVoters("id", listOf(invitationRequest))
+        Assert.assertEquals(response.body(), invitationResponse)
       }
     }
   }

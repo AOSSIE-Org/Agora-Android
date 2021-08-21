@@ -73,6 +73,13 @@
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/fbApiKey" />
+    <service
+      android:name=".FcmService"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
 
     <provider
       android:name="androidx.core.content.FileProvider"

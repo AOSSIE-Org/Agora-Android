@@ -74,10 +74,12 @@ If you face **any** problems, feel free to ask our community at [Gitter](https:/
 ## Running the application
 1) Update your local.properties with this variables
       1.1) "secretKey" and enter your personal secret key
+      1.2) "serverKey" and enter the server key provided by firebase
       
 2) CI/CD variables
       2.1) "SECRET_KEY" and enter your personal secret key
       2.2) "FIREBASE_JSON" and enter your google-services.json file content
+      2.3) "SERVER_KEY" and enter the server key provided by firebase
       
 To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https://developers.facebook.com/apps/).And then add these following variables.
    1) Update your local.properties with these two variables

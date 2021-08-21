@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.apitesting.election
 
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -12,17 +12,18 @@ import retrofit2.Response
 import java.io.IOException
 import kotlin.jvm.Throws
 
+@ExperimentalCoroutinesApi
 class DeleteElectionTest : BaseTest() {
 
   @Test
   @Throws(IOException::class)
   fun deleteElectionTest() {
 
-    val deleteElectionDto: String = MockFileParser("responses/election_responses/delete_election_response.json").content
+    val deleteElectionDto: String = MockFileParser("responses/default_response.json").content
 
     mockWebServer.enqueue(MockResponse().setBody(deleteElectionDto))
     runBlocking {
-      GlobalScope.launch {
+      testScope.launch {
         val response: Response<*> = apiService.deleteElection("id")
         Assert.assertEquals(response.body(), deleteElectionDto)
       }
