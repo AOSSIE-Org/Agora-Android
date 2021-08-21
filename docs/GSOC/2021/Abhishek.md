@@ -45,7 +45,7 @@ As I was already familiar with the codebase, I started with setting up the initi
 
 Coding period begins. Firstly, I started replacing the json objects that were created manually with the data classes. After completely shifting to data classes, I added header interceptor in order to add header to the api calls and also implemented fastlane and modified the existing pipeline to build signed apk in the  pipeline itself in order to make the deployment process smooth. I also worked on some important fixes like changing the livedata observer to viewlifecycleowner instead of activity in order to prevent livedata leaks,removing nested observer with mediator live data and replacing multiple interfaces with a single response class in order to establish communication between a viewmodel and an activity or a fragment.
 
-During the second coding period, I firstly removed all the explicitly declared dispatchers while doing db operations and migrated to kotlin new code style. After that I added a base fragment in order to observe network connectivity in realtime and notify user about it. To make the final apk smaller in size, I enabled R8 in the project. I also implemented firebase crashlytics,firebase messaging and added badges as well as some screenshots in README.md file.  In the end, started with the documentation the project overview.
+During the second coding period, I firstly removed all the explicitly declared dispatchers while doing db operations and migrated to kotlin new code style. After that I added biometric authentication while opening the app and added on/off functionality in settings, a base fragment in order to observe network connectivity in realtime and notify user about it. To make the final apk smaller in size, I enabled R8 in the project.I also implemented firebase crashlytics,firebase messaging and added badges as well as some screenshots in README.md file.  In the end, started with the documentation the project overview.
 
 I would love to thank my mentors especially **Prudhvi Reddy, Ritesh Agrawal, and Thuvarakan Tharmarajasingam** for always providing me constant support, they were always there for guiding me to follow better practices and suggested some very good enhancements and features for the project. Special thanks to **Prudhvi** for broadening my knowledge in android domain and sharing some cool stuffs and also for all the immediate merges and being so helpful and **Ritesh** for being so responsive whenever I faced a challenge.
 
@@ -95,7 +95,7 @@ I would love to thank my mentors especially **Prudhvi Reddy, Ritesh Agrawal, and
 * Updated gitlabci.yml to make the firebase json file in ci/cd
 * Updated CONTRIBUTING.md
 
-12. [Merge Request !12](https://gitlab.com/aossie/agora-android/-/merge_requests/396)- Added FirebaseMessanging Service   (**Not Merged**)
+12. [Merge Request !12](https://gitlab.com/aossie/agora-android/-/merge_requests/396)- Added FirebaseMessanging Service   (**Merged**)
 * Added Firebase Messaging dependency
 * Added FcmService.kt
 * Updated AndroidManifest.xml
@@ -108,12 +108,19 @@ I would love to thank my mentors especially **Prudhvi Reddy, Ritesh Agrawal, and
 * Update CastVoteActivity.kt to first check for internet connectivity and then allow to cast vote
 * Deleted InternetConnectivity.kt file
 
-14.  [Merge Request !14](https://gitlab.com/aossie/agora-android/-/merge_requests/394)- Enabled R8 in order to obfuscate code   (**Not Merged**)
+14. [Merge Request !14](https://gitlab.com/aossie/agora-android/-/merge_requests/394)- Enabled R8 in order to obfuscate code   (**Merged**)
 * Enabled R8 in build.gradle file for release builds
 * Added Proguard rules
 
-15. [Merge Request !15](https://gitlab.com/aossie/agora-android/-/merge_requests/400)- Added biometric authentication   (**Not Merged**)
+15. [Merge Request !15](https://gitlab.com/aossie/agora-android/-/merge_requests/400)- Added biometric authentication   (**Merged**)
 * Added androidx biometric dependency
 * Updated PreferenceProvider.kt
-* Updated MainActivity.kt to ask for biometric authentication both fingerprint and face unlock
+* Updated MainActivity.kt to ask for biometric authentication both fingerprint and face unlock along with the option to unlock with pin/pattern/password
 * Updated ProfileFragment.kt and fragment_profile.xml to provide the option to enable or disable biometric authentication
+
+### Future Scope
+* Using Jetpack Compose to build the ui
+* Adding support for Android 12 Material-You theme engine "Monet"
+* Adding Functionality to remind user before the election timing
+* Migrate to kotlin flow
+* Using Android 12 Api for splash screen
