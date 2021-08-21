@@ -32,11 +32,12 @@ I had identified the following tasks in the project at the starting of the proje
 7.  Replacing nested livedata observers. **Done**
 8.  Replacing explicitly declared Dispatchers while doing db operations . **Done**
 9.  Migrating to new kotlin code style. **Done**
-10. Implementation of firebase crashlytics, fcm. **Done**
-11. Adding Badges and screenshots in README.md file **Done**
-12. Enabling R8. **Done**
-13. Adding biometric security while opening the app and adding on/off functionality in settings. **Done**
-14. Migrate to kotlin new code style. **Done**
+10. Implementation of firebase crashlytics. **Done**
+11. Adding Firebase Cloud Messaging. **Done**
+12. Adding Badges and screenshots in README.md file **Done**
+13. Enabling R8. **Done**
+14. Adding biometric security while opening the app and adding on/off functionality in settings. **Done**
+15. Adding a BaseFragment to observe internet connectivity. **Done**
 
 
 
