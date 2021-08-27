@@ -28,7 +28,7 @@ before_script:
   - chmod +x ./gradlew
   - apt-get --quiet install libc6-dev --yes
   - apt-get --quiet install g++ --yes
-  - apt-get  --quiet install ruby2.5 ruby2.5-dev build-essential dh-autoreconf --yes
+  - apt-get  --quiet install ruby2.7 ruby2.7-dev build-essential dh-autoreconf --yes
   - gem install bundler:1.17.2
   - bundle install
   # temporarily disable checking for EPIPE error and use yes to accept all licenses
