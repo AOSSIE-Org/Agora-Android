@@ -10,16 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_ballot.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_ballot.view.recycler_view_ballots
-import kotlinx.android.synthetic.main.fragment_ballot.view.tv_empty_ballots
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.BallotsAdapter
-import org.aossie.agoraandroid.data.db.model.Ballot
-import org.aossie.agoraandroid.utilities.Coroutines
+import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.databinding.FragmentBallotBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -30,31 +28,32 @@ class BallotFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),
-  DisplayElectionListener {
-
-  private lateinit var rootView: View
+) : BaseFragment(viewModelFactory) {
 
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
     viewModelFactory
   }
 
   private var id: String? = null
+  private lateinit var binding: FragmentBallotBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_ballot, container, false)
+    binding = FragmentBallotBinding.inflate(inflater)
+    return binding.root
+  }
 
-    rootView.tv_empty_ballots.hide()
-    electionDetailsViewModel.displayElectionListener = this
+  override fun onFragmentInitiated() {
 
-    rootView.recycler_view_ballots.apply {
+    binding.tvEmptyBallots.hide()
+    electionDetailsViewModel.sessionExpiredListener = this
+
+    binding.recyclerViewBallots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-      val arr = ArrayList<Ballot>()
+      val arr = ArrayList<BallotDto>()
       adapter = BallotsAdapter(arr)
     }
 
@@ -62,72 +61,57 @@ constructor(
       requireArguments()
     ).id
     electionDetailsViewModel.getBallot(id)
+  }
 
-    return rootView
+  override fun onNetworkConnected() {
+    electionDetailsViewModel.getBallot(id)
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-    Coroutines.main {
-      electionDetailsViewModel.ballotResponse.observe(
-        requireActivity(),
-        Observer {
-          if (it != null) {
-            initRecyclerView(it)
-          } else {
-            rootView.tv_empty_ballots.show()
+
+    electionDetailsViewModel.getBallotResponseLiveData.observe(
+      viewLifecycleOwner,
+      { responseUI ->
+        when (responseUI.status) {
+          ResponseUI.Status.LOADING -> binding.progressBar.hide()
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            responseUI.dataList?.let {
+              initRecyclerView(it)
+            } ?: binding.tvEmptyBallots.show()
+          }
+          ResponseUI.Status.ERROR -> {
+            if (responseUI.message == getString(R.string.no_network)) getBallotsFromDb()
+            else {
+              notify(responseUI.message)
+              binding.progressBar.hide()
+            }
           }
         }
-      )
-      electionDetailsViewModel.notConnected.observe(
-        requireActivity(),
-        Observer {
-          if (it) {
-            getBallotsFromDb()
-          }
-        }
-      )
-    }
+      }
+    )
   }
 
-  private fun initRecyclerView(ballots: List<Ballot>) {
+  private fun initRecyclerView(ballots: List<BallotDto>) {
     if (ballots.isEmpty()) {
-      rootView.tv_empty_ballots.show()
+      binding.tvEmptyBallots.show()
     }
     val ballotsAdapter = BallotsAdapter(ballots)
-    rootView.recycler_view_ballots.apply {
+    binding.recyclerViewBallots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = ballotsAdapter
     }
   }
 
   private fun getBallotsFromDb() {
-    Coroutines.main {
-      electionDetailsViewModel.getElectionById(id!!).observe(
-        requireActivity(),
+    electionDetailsViewModel.getElectionById(id!!)
+      .observe(
+        viewLifecycleOwner,
         Observer {
-          initRecyclerView(it.ballot as List<Ballot>)
-          rootView.progress_bar.hide()
+          initRecyclerView(it.ballot as List<BallotDto>)
+          binding.progressBar.hide()
         }
       )
-    }
-  }
-
-  override fun onDeleteElectionSuccess() {
-    // do nothing
-  }
-
-  override fun onSuccess(message: String?) {
-    if (message != null) rootView.snackbar(message)
-    rootView.progress_bar.hide()
-  }
-
-  override fun onStarted() {
-    rootView.progress_bar.show()
-  }
-
-  override fun onFailure(message: String) {
-    rootView.snackbar(message)
-    rootView.progress_bar.hide()
   }
 }

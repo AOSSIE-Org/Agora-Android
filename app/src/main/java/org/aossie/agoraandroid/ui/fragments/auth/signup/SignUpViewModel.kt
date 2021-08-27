@@ -1,13 +1,16 @@
 package org.aossie.agoraandroid.ui.fragments.auth.signup
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.data.dto.NewUserDto
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,42 +21,30 @@ constructor(
   private val userRepository: UserRepository
 ) : ViewModel() {
 
-  lateinit var authListener: AuthListener
+  lateinit var sessionExpiredListener: SessionExpiredListener
+  private val _getSignUpLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  val getSignUpLiveData = _getSignUpLiveData
   fun signUpRequest(
-    userName: String,
-    userPassword: String,
-    userEmail: String,
-    firstName: String,
-    lastName: String,
-    securityQuestion: String,
-    securityAnswer: String
+    userData: NewUserDto
   ) {
-    authListener.onStarted()
-    viewModelScope.launch(Dispatchers.Main) {
+    _getSignUpLiveData.value = ResponseUI.loading()
+    viewModelScope.launch {
       try {
-        val call = userRepository.userSignup(
-          userName,
-          userPassword,
-          userEmail,
-          firstName,
-          lastName,
-          securityQuestion,
-          securityAnswer
-        )
+        val call = userRepository.userSignup(userData)
         Timber.d(call)
-        authListener.onSuccess()
+        _getSignUpLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
         if (e.message == "409") {
-          authListener.onFailure("User with this username already exists")
+          _getSignUpLiveData.value = ResponseUI.error(AppConstants.USER_ALREADY_FOUND_MESSAGE)
         } else {
-          authListener.onFailure(e.message!!)
+          _getSignUpLiveData.value = ResponseUI.error(e.message)
         }
       } catch (e: SessionExpirationException) {
-        authListener.onFailure(e.message!!)
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener.onFailure(e.message!!)
+        _getSignUpLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        authListener.onFailure(e.message!!)
+        _getSignUpLiveData.value = ResponseUI.error(e.message)
       }
     }
   }

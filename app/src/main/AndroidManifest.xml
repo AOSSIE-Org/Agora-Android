@@ -22,29 +22,31 @@
     <activity
         android:name=".ui.activities.castVote.CastVoteActivity"
         android:configChanges="orientation|screenSize"
-        android:windowSoftInputMode="adjustPan">
+        android:windowSoftInputMode="adjustPan"
+        android:launchMode="singleTask">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
         <data
             android:scheme="https"
-            android:host="u6898803.ct.sendgrid.net"
+            android:host="u15645437.ct.sendgrid.net"
             android:pathPattern="/.*/.*"
             />
         <data
             android:scheme="http"
-            android:host="u6898803.ct.sendgrid.net"
+            android:host="u15645437+.ct.sendgrid.net"
             android:pathPattern="/.*/.*"
             />
       </intent-filter>
     </activity>
     <activity
-        android:name=".ui.activities.MainActivity"
+        android:name=".ui.activities.main.MainActivity"
         android:configChanges="orientation|screenSize"
         android:theme="@style/SplashTheme"
-        android:windowSoftInputMode="adjustPan">
-      <intent-filter>
+        android:windowSoftInputMode="adjustResize|stateVisible"
+      android:launchMode="singleTask">
+    <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
@@ -71,6 +73,23 @@
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/fbApiKey" />
+    <service
+      android:name=".FcmService"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+
+    <provider
+      android:name="androidx.core.content.FileProvider"
+      android:authorities="${applicationId}.provider"
+      android:exported="false"
+      android:grantUriPermissions="true">
+      <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/provider_paths" />
+    </provider>
   </application>
 
 </manifest>

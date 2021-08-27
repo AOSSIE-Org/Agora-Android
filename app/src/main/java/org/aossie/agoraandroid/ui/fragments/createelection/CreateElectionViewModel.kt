@@ -1,60 +1,92 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
+import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.db.model.Ballot
+import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
+import org.aossie.agoraandroid.utilities.ResponseUI
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.InputStream
+import java.util.ArrayList
 import javax.inject.Inject
 
 internal class CreateElectionViewModel
 @Inject
 constructor(
-  private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val electionsRepository: ElectionsRepository
 ) : ViewModel() {
 
-  lateinit var createElectionListener: CreateElectionListener
+  private val _getCreateElectionData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
+  val getCreateElectionData = _getCreateElectionData
+  private val _getImportVotersLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
+  val getImportVotersLiveData = _getImportVotersLiveData
 
-  fun createElection() {
-    createElectionListener.onStarted()
-    val candidates = electionDetailsSharedPrefs.getCandidates()
-    val jsArray = JSONArray(candidates)
-    val jsonObject = JSONObject()
-    try {
-      val ballot = JSONArray(ArrayList<Ballot>())
-      jsonObject.put("ballot", ballot)
-      jsonObject.put("name", electionDetailsSharedPrefs.electionName)
-      jsonObject.put("description", electionDetailsSharedPrefs.electionDesc)
-      jsonObject.put("voterListVisibility", electionDetailsSharedPrefs.voterListVisibility)
-      jsonObject.put("startingDate", electionDetailsSharedPrefs.startTime)
-      jsonObject.put("endingDate", electionDetailsSharedPrefs.endTime)
-      jsonObject.put("isInvite", electionDetailsSharedPrefs.isInvite)
-      jsonObject.put("ballotVisibility", electionDetailsSharedPrefs.ballotVisibility)
-      jsonObject.put("isRealTime", electionDetailsSharedPrefs.isRealTime)
-      jsonObject.put("votingAlgo", electionDetailsSharedPrefs.votingAlgo)
-      jsonObject.put("candidates", jsArray)
-      jsonObject.put("noVacancies", 1)
-      jsonObject.put("electionType", "Election")
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-    viewModelScope.launch(Dispatchers.Main) {
+  fun createElection(election: ElectionDto) {
+    _getCreateElectionData.value = ResponseUI.loading()
+    viewModelScope.launch {
       try {
-        val response = electionsRepository.createElection(jsonObject.toString())
-        createElectionListener.onSuccess(response[1])
+        val response = electionsRepository.createElection(election)
+        _getCreateElectionData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
-        createElectionListener.onFailure(e.message!!)
+        _getCreateElectionData.value = ResponseUI.error(e.message)
       } catch (e: NoInternetException) {
-        createElectionListener.onFailure(e.message!!)
+        _getCreateElectionData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        createElectionListener.onFailure(e.message!!)
+        _getCreateElectionData.value = ResponseUI.error(e.message)
+      }
+    }
+  }
+
+  fun readExcelData(
+    context: Context,
+    excelFilePath: String
+  ) {
+    viewModelScope.launch(Dispatchers.IO) {
+      try {
+        val inputStream: InputStream = FileInputStream(File(excelFilePath))
+        val workbook = XSSFWorkbook(inputStream)
+        val sheet: XSSFSheet = workbook.getSheetAt(0) ?: run {
+          withContext(Dispatchers.Main) {
+            _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.no_sheet))
+          }
+          return@launch
+        }
+        val list: ArrayList<String> = ArrayList()
+        for (row in sheet.rowIterator()) {
+          row.getCell(0)
+            ?.let {
+              if (it.stringCellValue.isNotEmpty()) list.add(it.stringCellValue)
+            }
+        }
+        withContext(Dispatchers.Main) {
+          _getImportVotersLiveData.value = ResponseUI.success(list)
+        }
+      } catch (e: NotOfficeXmlFileException) {
+        withContext(Dispatchers.Main) {
+          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.not_excel))
+        }
+      } catch (e: FileNotFoundException) {
+        withContext(Dispatchers.Main) {
+          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.file_not_available))
+        }
+      } catch (e: IOException) {
+        withContext(Dispatchers.Main) {
+          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.cannot_read_file))
+        }
       }
     }
   }

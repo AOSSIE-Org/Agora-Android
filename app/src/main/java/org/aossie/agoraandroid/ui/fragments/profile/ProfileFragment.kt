@@ -9,50 +9,43 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
-import android.text.TextWatcher
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.dialog_change_avatar.view.camera_view
-import kotlinx.android.synthetic.main.dialog_change_avatar.view.gallery_view
-import kotlinx.android.synthetic.main.fragment_profile.view.fab_edit_profile_pic
-import kotlinx.android.synthetic.main.fragment_profile.view.iv_profile_pic
-import kotlinx.android.synthetic.main.fragment_profile.view.progress_bar
-import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.drawable
+import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.ResponseResult
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.utilities.GetBitmapFromUri
 import org.aossie.agoraandroid.utilities.HideKeyboard.hideKeyboardInFrag
+import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.canAuthenticateBiometric
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.isUrl
+import org.aossie.agoraandroid.utilities.loadImage
+import org.aossie.agoraandroid.utilities.loadImageFromMemoryNoCache
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toByteArray
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -69,9 +62,7 @@ class ProfileFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), AuthListener {
-
-  private lateinit var binding: FragmentProfileBinding
+) : BaseFragment(viewModelFactory) {
 
   private var mAvatar = MutableLiveData<File>()
 
@@ -89,36 +80,54 @@ constructor(
   }
 
   private lateinit var mUser: User
+  private lateinit var binding: FragmentProfileBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    homeViewModel.authListener = this
+    binding = FragmentProfileBinding.inflate(inflater)
+    return binding.root
+  }
 
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-    viewModel.user.observe(
-      viewLifecycleOwner,
-      Observer {
-        if (it != null) {
-          Timber.d(it.toString())
-          binding.user = it
-          mUser = it
-          if (it.avatarURL != null) {
-            val bitmap = decodeBitmap(it.avatarURL)
-            encodedImage = encodePngImage(bitmap)
-          }
-        }
+  override fun onFragmentInitiated() {
+
+    homeViewModel.sessionExpiredListener = this
+    loginViewModel.sessionExpiredListener = this
+
+    binding.firstNameTiet.doAfterTextChanged {
+      if (it.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
+      else binding.firstNameTil.error = null
+    }
+    binding.lastNameTiet.doAfterTextChanged {
+      if (it.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
+      else binding.lastNameTil.error = null
+    }
+    binding.newPasswordTiet.doAfterTextChanged {
+      when {
+        it.isNullOrEmpty() ->
+          binding.newPasswordTil.error =
+            getString(string.password_empty_warn)
+        else -> binding.newPasswordTil.error = null
       }
-    )
-    binding.firstNameTiet.addTextChangedListener(getTextWatcher(1))
-    binding.lastNameTiet.addTextChangedListener(getTextWatcher(2))
-    binding.newPasswordTiet.addTextChangedListener(getTextWatcher(3))
-    binding.confirmPasswordTiet.addTextChangedListener(getTextWatcher(4))
+      checkNewPasswordAndConfirmPassword(it)
+    }
+    binding.confirmPasswordTiet.doAfterTextChanged {
+      when {
+        it.isNullOrEmpty() ->
+          binding.confirmPasswordTil.error =
+            getString(string.password_empty_warn)
+        it.toString() != binding.newPasswordTiet.text.toString() ->
+          binding.confirmPasswordTil.error =
+            getString(string.password_not_match_warn)
+        else -> binding.confirmPasswordTil.error = null
+      }
+    }
+    setObserver()
 
     binding.updateProfileBtn.setOnClickListener {
-      binding.root.progress_bar.show()
+      binding.progressBar.show()
       toggleIsEnable()
       if (binding.firstNameTil.error == null && binding.lastNameTil.error == null) {
         hideKeyboardInFrag(this@ProfileFragment)
@@ -131,10 +140,17 @@ constructor(
           updatedUser
         )
       } else {
-        binding.root.progress_bar.hide()
+        binding.progressBar.hide()
         toggleIsEnable()
       }
     }
+
+    binding.swBiometric.setOnCheckedChangeListener { buttonView, isChecked ->
+      lifecycleScope.launch {
+        prefs.enableBiometric(isChecked)
+      }
+    }
+    if (!requireContext().canAuthenticateBiometric()) binding.swBiometric.visibility = View.GONE
 
     binding.switchWidget.setOnClickListener {
       if (binding.switchWidget.isChecked) {
@@ -143,7 +159,7 @@ constructor(
           .setMessage("Are you sure you want to enable two factor authentication")
           .setCancelable(false)
           .setPositiveButton(android.R.string.ok) { dialog, _ ->
-            binding.root.progress_bar.show()
+            binding.progressBar.show()
             toggleIsEnable()
             viewModel.toggleTwoFactorAuth()
             dialog.cancel()
@@ -160,7 +176,7 @@ constructor(
           .setMessage("Are you sure you want to disable two factor authentication")
           .setCancelable(false)
           .setPositiveButton(android.R.string.ok) { dialog, _ ->
-            binding.root.progress_bar.show()
+            binding.progressBar.show()
             toggleIsEnable()
             viewModel.toggleTwoFactorAuth()
             dialog.cancel()
@@ -174,50 +190,77 @@ constructor(
       }
     }
 
-    binding.root.fab_edit_profile_pic.setOnClickListener {
+    binding.fabEditProfilePic.setOnClickListener {
       showChangeProfileDialog()
     }
-
-    mAvatar.observe(
-      viewLifecycleOwner,
-      Observer {
-        Picasso.get()
-          .load(it)
-          .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-          .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-          .into(binding.root.iv_profile_pic)
-      }
-    )
 
     binding.changePasswordBtn.setOnClickListener {
       val newPass = binding.newPasswordTiet.text.toString()
       val conPass = binding.confirmPasswordTiet.text.toString()
-      if (binding.newPasswordTil.error == null && binding.confirmPasswordTil.error == null) {
-        when {
-          newPass.isEmpty() -> binding.newPasswordTil.error = getString(string.password_empty_warn)
-          conPass.isEmpty() ->
-            binding.confirmPasswordTil.error =
-              getString(string.password_empty_warn)
-          newPass != conPass ->
-            binding.confirmPasswordTil.error =
-              getString(string.password_not_match_warn)
-          else -> {
-            binding.root.progress_bar.show()
-            toggleIsEnable()
-            hideKeyboardInFrag(this@ProfileFragment)
-            viewModel.changePassword(binding.newPasswordTiet.text.toString())
-          }
-        }
-      } else {
-        binding.root.progress_bar.hide()
-        toggleIsEnable()
+      when {
+        newPass.isEmpty() ->
+          binding.newPasswordTil.error = getString(string.password_empty_warn)
+        conPass.isEmpty() ->
+          binding.confirmPasswordTil.error = getString(string.password_empty_warn)
+        newPass != conPass ->
+          binding.confirmPasswordTil.error = getString(string.password_not_match_warn)
+        else -> updateUIAndChangePassword()
       }
     }
+  }
+
+  private fun updateUIAndChangePassword() {
+    binding.progressBar.show()
+    toggleIsEnable()
+    hideKeyboardInFrag(this@ProfileFragment)
+    viewModel.changePassword(binding.newPasswordTiet.text.toString())
+  }
+
+  private fun decodeBitmap(encodedBitmap: String): Bitmap {
+    val decodedString = Base64.decode(encodedBitmap, Base64.NO_WRAP)
+    return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+  }
+
+  private fun cacheAndSaveImage(url: String) {
+    binding.ivProfilePic.loadImage(url, OFFLINE) {
+      binding.ivProfilePic.loadImage(url)
+    }
+  }
+
+  private fun setObserver() {
+    mAvatar.observe(
+      viewLifecycleOwner,
+      Observer {
+        binding.ivProfilePic.loadImageFromMemoryNoCache(it)
+      }
+    )
+
+    viewModel.user.observe(
+      viewLifecycleOwner,
+      Observer {
+        if (it != null) {
+          updateUI(it)
+        }
+      }
+    )
 
     viewModel.passwordRequestCode.observe(
       viewLifecycleOwner,
       Observer {
         handlePassword(it)
+      }
+    )
+
+    loginViewModel.getLoginLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> onLoadingStarted()
+          ResponseUI.Status.SUCCESS -> binding.progressBar.hide()
+          ResponseUI.Status.ERROR -> {
+            onError(it.message)
+          }
+        }
       }
     )
     viewModel.userUpdateResponse.observe(
@@ -241,22 +284,74 @@ constructor(
         handleChangeAvatar(it)
       }
     )
-    return binding.root
+    homeViewModel.getLogoutLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.ERROR -> onError(it.message)
+
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            toggleIsEnable()
+            lifecycleScope.launch {
+              if (prefs.getIsFacebookUser().first()) {
+                LoginManager.getInstance()
+                  .logOut()
+              }
+            }
+            homeViewModel.deleteUserData()
+            Navigation.findNavController(binding.root)
+              .navigate(
+                ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
+              )
+          }
+          ResponseUI.Status.LOADING -> onLoadingStarted()
+        }
+      }
+    )
   }
 
-  private fun decodeBitmap(encodedBitmap: String): Bitmap {
-    val decodedString = Base64.decode(encodedBitmap, Base64.NO_WRAP)
-    return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+  private fun updateUI(
+    it: User,
+  ) {
+    binding.userNameTv.text = it.username
+    binding.emailIdTv.text = it.email
+    binding.firstNameTiet.setText(it.firstName)
+    binding.lastNameTiet.setText(it.lastName)
+    binding.switchWidget.isChecked = it.twoFactorAuthentication ?: false
+    lifecycleScope.launch {
+      binding.swBiometric.isChecked = prefs.isBiometricEnabled().first()
+    }
+    mUser = it
+    if (it.avatarURL != null) {
+      if (it.avatarURL.isUrl())
+        cacheAndSaveImage(it.avatarURL)
+      else {
+        val bitmap = decodeBitmap(it.avatarURL)
+        setAvatarFile(bitmap.toByteArray())
+      }
+    }
+  }
+
+  private fun onLoadingStarted() {
+    binding.progressBar.show()
+    toggleIsEnable()
+  }
+
+  private fun onError(message: String?) {
+    binding.progressBar.hide()
+    notify(message)
+    toggleIsEnable()
   }
 
   private fun showChangeProfileDialog() {
-    val dialogView = layoutInflater.inflate(R.layout.dialog_change_avatar, null)
+    val dialogView = DialogChangeAvatarBinding.inflate(LayoutInflater.from(context))
 
     val dialog = AlertDialog.Builder(requireContext())
-      .setView(dialogView)
+      .setView(dialogView.root)
       .create()
 
-    dialogView.camera_view.setOnClickListener {
+    dialogView.cameraView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
           requireContext(), Manifest.permission.CAMERA
@@ -268,7 +363,7 @@ constructor(
       }
     }
 
-    dialogView.gallery_view.setOnClickListener {
+    dialogView.galleryView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
           requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
@@ -293,139 +388,72 @@ constructor(
     requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
   }
 
-  private fun handleChangeAvatar(response: ResponseResult) = when (response) {
-    is Success -> {
-      binding.root.progress_bar.hide()
+  private fun handleChangeAvatar(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
+      binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.profile_updated))
+      notify(getString(string.profile_updated))
     }
-    is Error -> {
-      binding.root.progress_bar.hide()
-      toggleIsEnable()
-      binding.root.snackbar(response.error.toString())
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message)
+
+    else -> onStarted()
   }
 
-  private fun handleUser(response: ResponseResult) = when (response) {
-    is Success -> {
-      binding.root.progress_bar.hide()
+  private fun handleUser(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
+      binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.user_updated))
-      loginViewModel.logInRequest(mUser.username!!, mUser.password!!, mUser.trustedDevice)
+      notify(getString(string.user_updated))
     }
-    is Error -> {
-      binding.root.progress_bar.hide()
-      toggleIsEnable()
-      binding.root.snackbar(response.error.toString())
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message)
+    else -> onStarted()
   }
 
-  private fun handleTwoFactorAuthentication(response: ResponseResult) = when (response) {
-    is Success -> {
-      binding.root.progress_bar.hide()
+  private fun handleTwoFactorAuthentication(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
+      binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.authentication_updated))
+      notify(getString(string.authentication_updated))
     }
-    is Error -> {
-      toggleIsEnable()
-      binding.root.progress_bar.hide()
-      binding.root.snackbar(response.error.toString())
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message)
+    else -> onStarted()
   }
 
-  private fun handlePassword(response: ResponseResult) = when (response) {
-    is Success -> {
-      binding.root.progress_bar.hide()
+  private fun handlePassword(response: ResponseUI<Any>) = when (response.status) {
+    ResponseUI.Status.SUCCESS -> {
+      binding.progressBar.hide()
       toggleIsEnable()
-      binding.root.snackbar(getString(string.password_updated))
+      notify(getString(string.password_updated))
       loginViewModel.logInRequest(
         mUser.username!!, binding.newPasswordTiet.text.toString(), mUser.trustedDevice
       )
     }
-    is Error -> {
-      binding.root.progress_bar.hide()
-      toggleIsEnable()
-      binding.root.snackbar(response.error.toString())
-    }
+    ResponseUI.Status.ERROR -> onFailure(response.message)
+
+    else -> onStarted()
   }
 
-  private fun getTextWatcher(code: Int): TextWatcher {
-    return object : TextWatcher {
-      override fun afterTextChanged(s: Editable?) {
-        when (code) {
-          1 -> {
-            if (s.isNullOrEmpty()) binding.firstNameTil.error = getString(string.first_name_empty)
-            else binding.firstNameTil.error = null
-          }
-          2 -> {
-            if (s.isNullOrEmpty()) binding.lastNameTil.error = getString(string.last_name_empty)
-            else binding.lastNameTil.error = null
-          }
-          3 -> {
-            when {
-              s.isNullOrEmpty() ->
-                binding.newPasswordTil.error =
-                  getString(string.password_empty_warn)
-              s.toString() == mUser.password ->
-                binding.newPasswordTil.error =
-                  getString(string.password_same_oldpassword_warn)
-              else -> binding.newPasswordTil.error = null
-            }
-          }
-          4 -> {
-            when {
-              s.isNullOrEmpty() ->
-                binding.confirmPasswordTil.error =
-                  getString(string.password_empty_warn)
-              s.toString() != binding.newPasswordTiet.text.toString() ->
-                binding.confirmPasswordTil.error =
-                  getString(string.password_not_match_warn)
-              else -> binding.confirmPasswordTil.error = null
-            }
-          }
-        }
-      }
-
-      override fun beforeTextChanged(
-        s: CharSequence?,
-        start: Int,
-        count: Int,
-        after: Int
-      ) {
-      }
-
-      override fun onTextChanged(
-        s: CharSequence?,
-        start: Int,
-        before: Int,
-        count: Int
-      ) {
+  private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
+    if (s.toString() == binding.confirmPasswordTiet.text.toString()
+      .trim()
+    ) {
+      binding.confirmPasswordTil.error = null
+    } else {
+      if (!binding.confirmPasswordTiet.text.isNullOrEmpty()) {
+        binding.confirmPasswordTil.error =
+          getString(string.password_not_match_warn)
       }
     }
   }
 
-  override fun onSuccess(message: String?) {
-    binding.root.progress_bar.hide()
-    toggleIsEnable()
-    if (prefs.getIsFacebookUser()) {
-      LoginManager.getInstance()
-        .logOut()
-    }
-    homeViewModel.deleteUserData()
-    Navigation.findNavController(binding.root)
-      .navigate(
-        ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
-      )
-  }
-
-  override fun onStarted() {
-    binding.root.progress_bar.show()
+  private fun onStarted() {
+    binding.progressBar.show()
     toggleIsEnable()
   }
 
-  override fun onFailure(message: String) {
-    binding.root.progress_bar.hide()
-    binding.root.snackbar(message)
+  private fun onFailure(message: String?) {
+    binding.progressBar.hide()
+    notify(message)
     toggleIsEnable()
   }
 
@@ -443,21 +471,21 @@ constructor(
         val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
         encodedImage = encodeJpegImage(bitmap!!)
         val url = encodedImage!!.toUri()
-        binding.root.progress_bar.show()
+        binding.progressBar.show()
         toggleIsEnable()
         viewModel.changeAvatar(
           url.toString(),
           mUser
         )
       } catch (e: FileNotFoundException) {
-        binding.root.snackbar("File not found !")
+        notify(getString(string.file_not_found))
       }
     } else if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
       val bitmap = intentData?.extras?.get("data")
       if (bitmap is Bitmap) {
         encodedImage = encodePngImage(bitmap)
         val url = encodedImage!!.toUri()
-        binding.root.progress_bar.show()
+        binding.progressBar.show()
         toggleIsEnable()
         viewModel.changeAvatar(
           url.toString(),
@@ -490,29 +518,25 @@ constructor(
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         openGallery()
       } else {
-        binding.root.snackbar("Permission denied")
+        notify(getString(string.permission_denied))
       }
     } else if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
       if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         openCamera()
       } else {
-        binding.root.snackbar("Permission denied")
+        notify(getString(string.permission_denied))
       }
     }
   }
 
   private fun encodeJpegImage(bitmap: Bitmap): String {
-    val bos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 10, bos)
-    val bytes = bos.toByteArray()
+    val bytes = bitmap.toByteArray(Bitmap.CompressFormat.JPEG)
     setAvatarFile(bytes)
     return Base64.encodeToString(bytes, Base64.NO_WRAP)
   }
 
   private fun encodePngImage(bitmap: Bitmap): String {
-    val bos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos)
-    val bytes = bos.toByteArray()
+    val bytes = bitmap.toByteArray(Bitmap.CompressFormat.PNG)
     setAvatarFile(bytes)
     return Base64.encodeToString(bytes, Base64.NO_WRAP)
   }
@@ -530,7 +554,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      binding.root.snackbar("Error while loading the image")
+      notify(getString(string.error_loading_image))
     }
   }
 

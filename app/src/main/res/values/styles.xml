@@ -92,6 +92,14 @@
     <item name="android:textAlignment">textStart</item>
   </style>
 
+  <style name="SearchFieldStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+    <item name="android:inputType">text</item>
+    <item name="hintEnabled">false</item>
+    <item name="errorEnabled">false</item>
+    <item name="endIconMode">clear_text</item>
+    <item name="endIconTint">@color/green_gradient_color</item>
+  </style>
+
   <dimen name="size_40dp">40dp</dimen>
   <dimen name="size_58dp">58dp</dimen>
 </resources>

@@ -8,19 +8,21 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
 import org.aossie.agoraandroid.BuildConfig
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.Api
+import org.aossie.agoraandroid.data.network.FCMApi
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
+import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
-import org.aossie.agoraandroid.remote.APIService
-import org.aossie.agoraandroid.ui.fragments.createelection.ElectionDetailsSharedPrefs
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.InternetManager
+import org.aossie.agoraandroid.utilities.SecurityUtil
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -31,22 +33,28 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesPreferenceProvider(context: Context): PreferenceProvider {
-    return PreferenceProvider(context)
+  fun providesPreferenceProvider(context: Context, securityUtil: SecurityUtil): PreferenceProvider {
+    return PreferenceProvider(context, securityUtil)
+  }
+  @Provides
+  @Singleton
+  fun provideInternetManager(context: Context): InternetManager {
+    return InternetManager(context)
   }
 
   @Provides
   @Singleton
-  fun providesElectionDetailsSharedPrefs(context: Context): ElectionDetailsSharedPrefs {
-    return ElectionDetailsSharedPrefs(context)
-  }
-
-  @Provides
-  @Singleton
-  fun providesNetworkInterceptor(context: Context): NetworkInterceptor {
+  fun providesNetworkInterceptor(context: Context, internetManager: InternetManager): NetworkInterceptor {
     return NetworkInterceptor(
-      context
+      context,
+      internetManager
     )
+  }
+
+  @Provides
+  @Singleton
+  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider, context: Context): HeaderInterceptor {
+    return HeaderInterceptor(preferenceProvider, context.resources.getString(R.string.serverKey))
   }
 
   @Provides
@@ -57,16 +65,15 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesAuthorizationInterceptor(context: Context, preferenceProvider: PreferenceProvider, appDatabase: AppDatabase, @Named("apiWithoutAuth") api: Api): AuthorizationInterceptor {
+  fun providesAuthorizationInterceptor(
+    preferenceProvider: PreferenceProvider,
+    appDatabase: AppDatabase,
+    @Named("apiWithoutAuth") api: Api
+  ): AuthorizationInterceptor {
     return AuthorizationInterceptor(
-      context, preferenceProvider, appDatabase, api
+      preferenceProvider, appDatabase, api
     )
   }
-
-  @Provides
-  @Singleton
-  fun providesAPIService(retrofit: Retrofit): APIService =
-    retrofit.create(APIService::class.java)
 
   @Provides
   @Singleton
@@ -81,10 +88,16 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideOkHttpClient(context: Context, networkInterceptor: NetworkInterceptor, authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
+  fun provideOkHttpClient(
+    context: Context,
+    networkInterceptor: NetworkInterceptor,
+    authorizationInterceptor: AuthorizationInterceptor,
+    headerInterceptor: HeaderInterceptor
+  ): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
         addInterceptor(networkInterceptor)
+        addInterceptor(headerInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
@@ -104,10 +117,15 @@ class AppModule {
   @Provides
   @Singleton
   @Named("okHttpWithoutAuth")
-  fun provideOkHttpClientWithoutAuth(context: Context, networkInterceptor: NetworkInterceptor): OkHttpClient {
+  fun provideOkHttpClientWithoutAuth(
+    context: Context,
+    networkInterceptor: NetworkInterceptor,
+    headerInterceptor: HeaderInterceptor
+  ): OkHttpClient {
     return OkHttpClient.Builder()
       .apply {
         addInterceptor(networkInterceptor)
+        addInterceptor(headerInterceptor)
         if (BuildConfig.DEBUG) {
           addInterceptor(
             HttpLoggingInterceptor().apply {
@@ -129,8 +147,7 @@ class AppModule {
     return Retrofit.Builder()
       .client(okHttpClient)
       .baseUrl(AppConstants.BASE_URL)
-      .addConverterFactory(ScalarsConverterFactory.create())
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
   }
 
@@ -141,8 +158,7 @@ class AppModule {
     return Retrofit.Builder()
       .client(okHttpClient)
       .baseUrl(AppConstants.BASE_URL)
-      .addConverterFactory(ScalarsConverterFactory.create())
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create())
       .build()
   }
 
@@ -165,4 +181,55 @@ class AppModule {
   ): ElectionsRepository {
     return ElectionsRepository(api, appDatabase, preferenceProvider)
   }
+
+  @Provides
+  @Singleton
+  fun providesSecurityUtil(
+    context: Context
+  ): SecurityUtil {
+    return SecurityUtil(context.resources.getString(R.string.secretKey))
+  }
+
+  @Provides
+  @Singleton
+  @Named("okHttpForFCM")
+  fun provideOkHttpClientForFCM(
+    context: Context,
+    networkInterceptor: NetworkInterceptor,
+    headerInterceptor: HeaderInterceptor
+  ): OkHttpClient {
+    return OkHttpClient.Builder()
+      .apply {
+        addInterceptor(networkInterceptor)
+        addInterceptor(headerInterceptor)
+        if (BuildConfig.DEBUG) {
+          addInterceptor(
+            HttpLoggingInterceptor().apply {
+              level = Level.BASIC
+            }
+          )
+          addInterceptor(
+            ChuckerInterceptor.Builder(context)
+              .build()
+          )
+        }
+      }
+      .build()
+  }
+
+  @Provides
+  @Singleton
+  @Named("retrofitForFCM")
+  fun provideRetrofitForFCM(@Named("okHttpForFCM") okHttpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+      .client(okHttpClient)
+      .baseUrl(AppConstants.FCM_URL)
+      .addConverterFactory(MoshiConverterFactory.create())
+      .build()
+  }
+
+  @Provides
+  @Singleton
+  fun providesFCM(@Named("retrofitForFCM") retrofit: Retrofit): FCMApi =
+    retrofit.create(FCMApi::class.java)
 }

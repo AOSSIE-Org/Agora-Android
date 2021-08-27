@@ -1,7 +1,11 @@
 package org.aossie.agoraandroid.data.network.responses
 
-import org.aossie.agoraandroid.data.db.model.Ballot
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import org.aossie.agoraandroid.data.dto.BallotDto
 
+@JsonClass(generateAdapter = true)
 data class Ballots(
-  val ballots: List<Ballot>
+  @Json(name = "ballots")
+  val ballots: List<BallotDto>
 )

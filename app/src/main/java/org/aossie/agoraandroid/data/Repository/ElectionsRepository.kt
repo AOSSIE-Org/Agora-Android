@@ -3,23 +3,23 @@ package org.aossie.agoraandroid.data.Repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.db.model.Winner
+import org.aossie.agoraandroid.data.dto.CastVoteDto
+import org.aossie.agoraandroid.data.dto.ElectionDto
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.dto.WinnerDto
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
-import org.aossie.agoraandroid.data.network.responses.Voters
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.Coroutines
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.SessionExpirationException
-import org.json.JSONException
-import org.json.JSONObject
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -32,77 +32,88 @@ constructor(
   private val prefs: PreferenceProvider
 ) : ApiRequest() {
 
-  private val elections = MutableLiveData<List<Election>>()
+  private val elections = MutableLiveData<List<ElectionResponse>>()
 
-  init {
-    elections.observeForever {
-      saveElections(it)
-    }
-  }
-
-  suspend fun fetchAndSaveElections() {
-    withContext(Dispatchers.IO) {
-      fetchElections()
-    }
-  }
+  suspend fun fetchAndSaveElections() = fetchElections()
 
   fun getElections(): LiveData<List<Election>> {
     return db.getElectionDao()
       .getElections()
   }
 
-  suspend fun getFinishedElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getFinishedElectionsCount(currentDate)
+  fun getFinishedElectionsCount(currentDate: String): LiveData<Int> =
+
+    db.getElectionDao()
+      .getFinishedElectionsCount(currentDate)
+
+  fun getPendingElectionsCount(currentDate: String): LiveData<Int> =
+
+    db.getElectionDao()
+      .getPendingElectionsCount(currentDate)
+
+  fun getTotalElectionsCount(): LiveData<Int> =
+
+    db.getElectionDao()
+      .getTotalElectionsCount()
+
+  fun getActiveElectionsCount(currentDate: String): LiveData<Int> =
+
+    db.getElectionDao()
+      .getActiveElectionsCount(currentDate)
+
+  private suspend fun saveElections(elections: List<ElectionResponse>) {
+    val electionEntity = mutableListOf<Election>()
+    withContext(Dispatchers.Default) {
+      elections.forEach {
+        electionEntity.add(
+          Election(
+            it.id,
+            it.name,
+            it.description,
+            it.electionType,
+            it.creatorName,
+            it.creatorEmail,
+            it.start,
+            it.end,
+            it.realtimeResult.toString(),
+            it.votingAlgo,
+            it.candidates,
+            it.ballotVisibility,
+            it.voterListVisibility.toString(),
+            it.isInvite,
+            it.isCompleted,
+            it.isStarted,
+            it.createdTime,
+            it.adminLink,
+            it.inviteCode,
+            it.ballot,
+            it.voterList,
+            it.winners
+          )
+        )
+      }
     }
+    prefs.setUpdateNeeded(false)
+    db.getElectionDao()
+      .deleteAllElections()
+    db.getElectionDao()
+      .saveElections(electionEntity)
   }
 
-  suspend fun getPendingElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getPendingElectionsCount(currentDate)
-    }
-  }
+  fun getPendingElections(currentDate: String): LiveData<List<Election>> =
 
-  suspend fun getTotalElectionsCount(): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getTotalElectionsCount()
-    }
-  }
-
-  suspend fun getActiveElectionsCount(currentDate: String): LiveData<Int> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getActiveElectionsCount(currentDate)
-    }
-  }
-
-  private fun saveElections(elections: List<Election>) {
-    Coroutines.io {
-      prefs.setUpdateNeeded(false)
-      db.getElectionDao()
-        .deleteAllElections()
-      db.getElectionDao()
-        .saveElections(elections)
-    }
-  }
-
-  suspend fun getPendingElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getPendingElections(currentDate)
-    }
-  }
+    db.getElectionDao()
+      .getPendingElections(currentDate)
 
   private suspend fun fetchElections() {
-    val isNeeded = prefs.getUpdateNeeded()
+    val isNeeded = prefs.getUpdateNeeded().first()
     if (isNeeded) {
       try {
-        val response = apiRequest { api.getAllElections(prefs.getCurrentToken()) }
-        elections.postValue(response.elections)
-        Timber.d(isNeeded.toString())
+        val response = apiRequest { api.getAllElections() }
+        response.elections.let {
+          saveElections(it)
+          elections.postValue(it)
+        }
         Timber.d(response.toString())
       } catch (e: NoInternetException) {
       } catch (e: ApiException) {
@@ -112,61 +123,55 @@ constructor(
     }
   }
 
-  suspend fun getFinishedElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getFinishedElections(currentDate)
-    }
-  }
+  fun getFinishedElections(currentDate: String): LiveData<List<Election>> =
 
-  suspend fun getActiveElections(currentDate: String): LiveData<List<Election>> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getActiveElections(currentDate)
-    }
-  }
+    db.getElectionDao()
+      .getFinishedElections(currentDate)
 
-  suspend fun getElectionById(id: String): LiveData<Election> {
-    return withContext(Dispatchers.IO) {
-      db.getElectionDao()
-        .getElectionById(id)
-    }
-  }
+  fun getActiveElections(currentDate: String): LiveData<List<Election>> =
+
+    db.getElectionDao()
+      .getActiveElections(currentDate)
+
+  fun getElectionById(id: String): LiveData<Election> =
+
+    db.getElectionDao()
+      .getElectionById(id)
 
   suspend fun deleteElection(
     id: String
-  ): ArrayList<String> {
-    return apiRequest { api.deleteElection(prefs.getCurrentToken(), id) }
+  ): List<String> {
+    return apiRequest { api.deleteElection(id) }
   }
 
   suspend fun getVoters(
     id: String
-  ): Voters {
-    return apiRequest { api.getVoters(prefs.getCurrentToken(), id) }
+  ): List<VotersDto> {
+    return apiRequest { api.getVoters(id) }.voterList
   }
 
   suspend fun getBallots(
     id: String
   ): Ballots {
-    return apiRequest { api.getBallot(prefs.getCurrentToken(), id) }
+    return apiRequest { api.getBallot(id) }
   }
 
   suspend fun sendVoters(
     id: String,
-    body: String
-  ): ArrayList<String> {
-    return apiRequest { api.sendVoters(prefs.getCurrentToken(), id, body) }
+    votersData: List<VotersDto>
+  ): List<String> {
+    return apiRequest { api.sendVoters(id, votersData) }
   }
 
   suspend fun createElection(
-    body: String
-  ): ArrayList<String> {
-    return apiRequest { api.createElection(body, prefs.getCurrentToken()) }
+    electionData: ElectionDto
+  ): List<String> {
+    return apiRequest { api.createElection(electionData) }
   }
 
   suspend fun verifyVoter(
     id: String
-  ): ElectionResponse {
+  ): ElectionDto {
     return apiRequest { api.verifyVoter(id) }
   }
 
@@ -174,21 +179,15 @@ constructor(
     id: String,
     ballotInput: String,
     passCode: String
-  ): ArrayList<String> {
-    val jsonObject = JSONObject()
-    try {
-      jsonObject.put("ballotInput", ballotInput)
-      jsonObject.put("passCode", passCode)
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-    return apiRequest { api.castVote(id, jsonObject.toString()) }
+  ): List<String> {
+
+    return apiRequest { api.castVote(id, CastVoteDto(ballotInput, passCode)) }
   }
 
   suspend fun getResult(
     id: String
-  ): List<Winner>? {
-    val response = api.getResult(prefs.getCurrentToken(), id)
+  ): List<WinnerDto>? {
+    val response = api.getResult(id)
     return if (response.message() == AppConstants.ok) {
       apiRequest { response }
     } else {

@@ -8,15 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_forgot_password.view.button_send_link
-import kotlinx.android.synthetic.main.fragment_forgot_password.view.edit_text_user_name
-import kotlinx.android.synthetic.main.fragment_forgot_password.view.progress_bar
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.R.string
+import org.aossie.agoraandroid.databinding.FragmentForgotPasswordBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
 /**
@@ -26,52 +25,50 @@ class ForgotPasswordFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(), AuthListener {
+) : BaseFragment(viewModelFactory) {
 
   private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels {
     viewModelFactory
   }
-
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentForgotPasswordBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_forgot_password, container, false)
+  ): View {
+    binding = FragmentForgotPasswordBinding.inflate(inflater)
+    return binding.root
+  }
 
-    forgotPasswordViewModel.authListener = this
+  override fun onFragmentInitiated() {
 
-    rootView.button_send_link.setOnClickListener {
-      val userName = rootView.edit_text_user_name.editText
-        ?.text
-        .toString()
-        .trim { it <= ' ' }
+    binding.buttonSendLink.setOnClickListener {
+      val userName = binding.editTextUserName.editText?.text.toString().trim()
       if (userName.isEmpty()) {
-        rootView.snackbar("Please Enter User Name")
+        notify("Please Enter User Name")
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        rootView.progress_bar.show()
+        binding.progressBar.show()
         forgotPasswordViewModel.sendResetLink(userName)
       }
     }
 
-    return rootView
-  }
-
-  override fun onSuccess(message: String?) {
-    rootView.progress_bar.hide()
-    rootView.snackbar(requireContext().getString(R.string.link_sent_please_check_your_email))
-  }
-
-  override fun onStarted() {
-    rootView.progress_bar.show()
-  }
-
-  override fun onFailure(message: String) {
-    rootView.progress_bar.hide()
-    rootView.snackbar(message)
+    forgotPasswordViewModel.getSendResetLinkLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> binding.progressBar.show()
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            notify(getString(R.string.link_sent_please_check_your_email))
+          }
+          ResponseUI.Status.ERROR -> {
+            binding.progressBar.hide()
+            notify(it.message)
+          }
+        }
+      }
+    )
   }
 }

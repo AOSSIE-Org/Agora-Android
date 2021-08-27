@@ -1,10 +1,14 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
+import android.Manifest
+import android.R.layout
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -13,49 +17,45 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.view.doOnLayout
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.android.synthetic.main.fragment_create_election.view.add_candidate_btn
-import kotlinx.android.synthetic.main.fragment_create_election.view.btn_end_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.btn_start_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.candidate_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.checkbox_invite
-import kotlinx.android.synthetic.main.fragment_create_election.view.checkbox_real_time
-import kotlinx.android.synthetic.main.fragment_create_election.view.checkbox_voter_visibility
-import kotlinx.android.synthetic.main.fragment_create_election.view.election_description_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.election_name_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.end_date_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_candidate_name
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_election_description
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_election_name
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_end_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.et_start_date
-import kotlinx.android.synthetic.main.fragment_create_election.view.names_rv
-import kotlinx.android.synthetic.main.fragment_create_election.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_create_election.view.spinner_algorithm
-import kotlinx.android.synthetic.main.fragment_create_election.view.spinner_ballot_visibility
-import kotlinx.android.synthetic.main.fragment_create_election.view.start_date_til
-import kotlinx.android.synthetic.main.fragment_create_election.view.submit_details_btn
-import org.aossie.agoraandroid.R
+import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.dto.ElectionDto
+import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
+import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
+import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.errorDialog
+import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.utilities.scrollToView
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
 import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
+
+const val STORAGE_PERMISSION_REQUEST_CODE = 2
+const val STORAGE_INTENT_REQUEST_CODE = 4
 
 /**
  * A simple [Fragment] subclass.
@@ -64,9 +64,8 @@ class CreateElectionFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
-  private val electionDetailsSharedPrefs: ElectionDetailsSharedPrefs,
   private val prefs: PreferenceProvider
-) : Fragment(), CreateElectionListener {
+) : BaseFragment(viewModelFactory) {
 
   private var sDay = 0
   private var sMonth: Int = 0
@@ -74,12 +73,10 @@ constructor(
   private var eDay = 0
   private var eMonth: Int = 0
   private var eYear: Int = 0
-  private var mElectionName: String? = null
-  private var mElectionDescription: String? = null
   private var mStartDate: String? = null
   private var mEndDate: String? = null
-  private var calendar2: Calendar? = null
-  private var calendar3: Calendar? = null
+  private var startDateCalendar: Calendar? = null
+  private var endDateCalendar: Calendar? = null
   private var datePickerDialog: DatePickerDialog? = null
   private var timePickerDialog: TimePickerDialog? = null
 
@@ -92,86 +89,177 @@ constructor(
   lateinit var ballotVisibilityAdapter: ArrayAdapter<CharSequence>
   private var ballotVisibility: String? = null
 
+  private var spotlight: Spotlight? = null
+  private var spotlightTargets: ArrayList<TargetData>? = null
+  private var currentSpotlightIndex = 0
+
   private val createElectionViewModel: CreateElectionViewModel by viewModels {
     viewModelFactory
   }
-  private var mFinalIsInvite: Boolean? = null
-  private var mFinalIsRealTime: Boolean? = null
-  private var voterListVisibility: Boolean? = null
 
-  private lateinit var rootView: View
+  private lateinit var binding: FragmentCreateElectionBinding
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_create_election, container, false)
+  ): View {
+    binding = FragmentCreateElectionBinding.inflate(inflater)
+    return binding.root
+  }
 
-    createElectionViewModel.createElectionListener = this
+  override fun onFragmentInitiated() {
+    initView()
+    initListeners()
+    initObserver()
 
-    rootView.btn_start_date.setOnClickListener { handleStartDateTime() }
+    binding.root.doOnLayout {
+      checkIsFirstOpen()
+    }
+  }
 
-    rootView.btn_end_date.setOnClickListener { handleEndDateTime() }
+  private fun initObserver() {
+    createElectionViewModel.getCreateElectionData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> {
 
-    rootView.et_election_name.addTextChangedListener(textWatcher)
+            binding.progressBar.show()
+            binding.submitDetailsBtn.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
 
-    rootView.et_election_description.addTextChangedListener(textWatcher)
+            binding.progressBar.hide()
+            binding.submitDetailsBtn.toggleIsEnable()
+            notify(it.message)
+            lifecycleScope.launch {
+              prefs.setUpdateNeeded(true)
+            }
+            Navigation.findNavController(binding.root)
+              .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+          }
+          ResponseUI.Status.ERROR -> {
 
-    rootView.et_start_date.addTextChangedListener(textWatcher)
+            binding.progressBar.hide()
+            notify(it.message)
+            binding.submitDetailsBtn.toggleIsEnable()
+          }
+        }
+      }
+    )
 
-    rootView.et_end_date.addTextChangedListener(textWatcher)
+    createElectionViewModel.getImportVotersLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.LOADING -> { // Do Nothing
+          }
 
-    rootView.submit_details_btn.setOnClickListener {
-      mElectionName = rootView.election_name_til.editText?.text.toString()
-      mElectionDescription = rootView.election_description_til.editText?.text.toString()
-      mStartDate = rootView.start_date_til.editText?.text.toString()
-      mEndDate = rootView.end_date_til.editText?.text.toString()
+          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+
+          ResponseUI.Status.ERROR -> onReadFailure(it.message)
+        }
+      }
+    )
+  }
+
+  override fun onNetworkConnected() {
+    initView()
+  }
+  private fun initView() {
+    candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
+    binding.namesRv.layoutManager = LinearLayoutManager(context)
+    ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.namesRv)
+    binding.namesRv.adapter = candidateRecyclerAdapter
+
+    algorithmsAdapter = ArrayAdapter.createFromResource(
+      requireContext(), array.algorithms,
+      layout.simple_spinner_item
+    )
+    algorithmsAdapter.setDropDownViewResource(layout.simple_spinner_dropdown_item)
+
+    binding.spinnerAlgorithm.adapter = algorithmsAdapter
+
+    ballotVisibilityAdapter = ArrayAdapter.createFromResource(
+      requireContext(), array.ballot_visibility,
+      layout.simple_spinner_item
+    )
+    ballotVisibilityAdapter.setDropDownViewResource(layout.simple_spinner_dropdown_item)
+
+    binding.spinnerBallotVisibility.adapter = ballotVisibilityAdapter
+  }
+
+  private fun initListeners() {
+    binding.startDateTil.setOnClickListener { handleStartDateTime() }
+
+    binding.etStartDate.setOnClickListener { handleStartDateTime() }
+
+    binding.endDateTil.setOnClickListener { handleEndDateTime() }
+
+    binding.etEndDate.setOnClickListener { handleEndDateTime() }
+
+    binding.etElectionName.doAfterTextChanged {
+      afterTextChanged()
+    }
+
+    binding.etElectionDescription.doAfterTextChanged {
+      afterTextChanged()
+    }
+
+    binding.etStartDate.doAfterTextChanged {
+      afterTextChanged()
+    }
+
+    binding.etEndDate.doAfterTextChanged {
+      afterTextChanged()
+    }
+
+    binding.submitDetailsBtn.setOnClickListener {
+      HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
       if (validateInputs()) {
-        HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        rootView.end_date_til.error = null
-        electionDetailsSharedPrefs.saveElectionName(mElectionName)
-        electionDetailsSharedPrefs.saveElectionDesc(mElectionDescription)
         if (mCandidates.isNotEmpty()) {
-          HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-          electionDetailsSharedPrefs.saveCandidates(mCandidates)
-          mFinalIsInvite = rootView.checkbox_invite.isChecked
-          mFinalIsRealTime = rootView.checkbox_real_time.isChecked
-          voterListVisibility = rootView.checkbox_voter_visibility.isChecked
-          electionDetailsSharedPrefs.saveIsInvite(mFinalIsInvite)
-          electionDetailsSharedPrefs.saveIsRealTime(mFinalIsRealTime)
-          electionDetailsSharedPrefs.saveVoterListVisibility(voterListVisibility)
-          electionDetailsSharedPrefs.saveVotingAlgo(votingAlgorithm)
-          electionDetailsSharedPrefs.saveBallotVisibility(ballotVisibility)
-          createElectionViewModel.createElection()
+          val mElectionName = binding.electionNameTil.editText?.text.toString()
+          val mElectionDescription = binding.electionDescriptionTil.editText?.text.toString()
+          val mFinalIsInvite = binding.checkboxInvite.isChecked
+          val mFinalIsRealTime = binding.checkboxRealTime.isChecked
+          val voterListVisibility = binding.checkboxVoterVisibility.isChecked
+          val startTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", startDateCalendar)
+          val endTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", endDateCalendar)
+          createElectionViewModel.createElection(
+            ElectionDto(
+              listOf(),
+              ballotVisibility,
+              mCandidates,
+              mElectionDescription,
+              "Election",
+              endTime.toString(),
+              mFinalIsInvite,
+              mFinalIsRealTime,
+              mElectionName,
+              1,
+              startTime.toString(),
+              voterListVisibility,
+              votingAlgorithm
+            )
+          )
         } else {
-          rootView.snackbar("Please Add At least One Candidate")
+          notify(getString(string.add_one_candidate))
         }
       }
     }
 
-    candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
-    rootView.names_rv.layoutManager = LinearLayoutManager(context)
-    ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rootView.names_rv)
-    rootView.names_rv.adapter = candidateRecyclerAdapter
+    binding.etCandidateName.doAfterTextChanged {
+      val candidateNameInput = it.toString().trim()
+      binding.addCandidateBtn.isEnabled = candidateNameInput.isNotEmpty()
+    }
 
-    rootView.et_candidate_name.addTextChangedListener(candidateTextWatcher)
-
-    rootView.add_candidate_btn.setOnClickListener {
-      val name = rootView.candidate_til.editText?.text.toString().trim { it <= ' ' }
+    binding.addCandidateBtn.setOnClickListener {
+      val name = binding.candidateTil.editText?.text.toString().trim()
       addCandidate(name)
     }
 
-    algorithmsAdapter = ArrayAdapter.createFromResource(
-      requireContext(), array.algorithms,
-      android.R.layout.simple_spinner_item
-    )
-    algorithmsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-    rootView.spinner_algorithm.adapter = algorithmsAdapter
-
-    rootView.spinner_algorithm.onItemSelectedListener = object : OnItemSelectedListener {
+    binding.spinnerAlgorithm.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
         view: View,
@@ -187,15 +275,7 @@ constructor(
       }
     }
 
-    ballotVisibilityAdapter = ArrayAdapter.createFromResource(
-      requireContext(), array.ballot_visibility,
-      android.R.layout.simple_spinner_item
-    )
-    ballotVisibilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-    rootView.spinner_ballot_visibility.adapter = ballotVisibilityAdapter
-
-    rootView.spinner_ballot_visibility.onItemSelectedListener = object : OnItemSelectedListener {
+    binding.spinnerBallotVisibility.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
         view: View,
@@ -211,7 +291,50 @@ constructor(
       }
     }
 
-    return rootView
+    binding.importCandidates.setOnClickListener {
+      if (ActivityCompat.checkSelfPermission(
+          requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+      ) {
+        searchExcelFile()
+      } else {
+        askReadStoragePermission()
+      }
+    }
+  }
+
+  private fun searchExcelFile() {
+    val excelIntent = Intent()
+    excelIntent.let {
+      it.action = Intent.ACTION_GET_CONTENT
+      it.type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+    startActivityForResult(excelIntent, STORAGE_INTENT_REQUEST_CODE)
+  }
+
+  private fun askReadStoragePermission() {
+    requestPermissions(
+      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE
+    )
+  }
+
+  private fun afterTextChanged() {
+    val electionNameInput: String = binding.etElectionName.text
+      .toString()
+      .trim()
+    val electionDescriptionInput: String = binding.etElectionDescription.text
+      .toString()
+      .trim()
+    val startDateInput: String = binding.etStartDate.text
+      .toString()
+      .trim()
+    val endDateInput: String = binding.etEndDate.text
+      .toString()
+      .trim()
+    binding.submitDetailsBtn.isEnabled = electionNameInput.isNotEmpty() &&
+      electionDescriptionInput.isNotEmpty() &&
+      startDateInput.isNotEmpty() &&
+      endDateInput.isNotEmpty()
   }
 
   private val itemTouchHelperCallback: SimpleCallback =
@@ -228,41 +351,37 @@ constructor(
         viewHolder: ViewHolder,
         direction: Int
       ) {
-        mCandidates.removeAt(viewHolder.adapterPosition)
+        mCandidates.removeAt(viewHolder.absoluteAdapterPosition)
         candidateRecyclerAdapter!!.notifyDataSetChanged()
+        if (mCandidates.isEmpty()) binding.textViewSwipe.hide()
       }
     }
 
   private fun addCandidate(cName: String) {
     mCandidates.add(cName)
     candidateRecyclerAdapter!!.notifyDataSetChanged()
-    rootView.candidate_til.editText?.setText("")
+    binding.candidateTil.editText?.setText("")
+    binding.textViewSwipe.show()
   }
 
-  private val candidateTextWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-    override fun afterTextChanged(s: Editable) {}
-
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-      val candidateNameInput: String = rootView.et_candidate_name.text
-        .toString()
-        .trim()
-      rootView.add_candidate_btn.isEnabled = candidateNameInput.isNotEmpty()
-    }
+  private fun importCandidates(cNames: List<String>) {
+    mCandidates.addAll(cNames)
+    candidateRecyclerAdapter!!.notifyDataSetChanged()
+    binding.textViewSwipe.show()
   }
+
   private fun validateInputs(): Boolean {
-    val isValid: Boolean = if (calendar2 == null || calendar3 == null) {
-      rootView.errorDialog("Please enter all the details")
+    return if (startDateCalendar == null || endDateCalendar == null) {
+      binding.root.errorDialog(getString(string.enter_details))
       false
     } else {
-      if (calendar3!!.before(calendar2)) {
-        rootView.errorDialog("End date should be after starting date and time i.e. $mStartDate")
+      if (endDateCalendar!!.before(startDateCalendar)) {
+        binding.root.errorDialog(getString(string.end_date_after_starting_date) + "i.e. $mStartDate")
         false
       } else {
         true
       }
     }
-    return isValid
   }
 
   private fun isDialogsVisible(): Boolean {
@@ -296,26 +415,24 @@ constructor(
         else if (minute < 10) "$mStartDate at $hourOfDay:0$minute"
         else "$mStartDate at $hourOfDay:$minute"
         // Formatting the starting date in Date-Time format
-        calendar2 = Calendar.getInstance()
-        calendar2?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        calendar2?.set(Calendar.MINUTE, minute)
-        calendar2?.set(Calendar.YEAR, sYear)
-        calendar2?.set(Calendar.MONTH, sMonth)
-        calendar2?.set(Calendar.DAY_OF_MONTH, sDay)
-        if (calendar2 != null && calendar2!!.before(Calendar.getInstance())) {
-          rootView.errorDialog("Start date should be after current date and time")
+        startDateCalendar = Calendar.getInstance()
+        startDateCalendar?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        startDateCalendar?.set(Calendar.MINUTE, minute)
+        startDateCalendar?.set(Calendar.YEAR, sYear)
+        startDateCalendar?.set(Calendar.MONTH, sMonth)
+        startDateCalendar?.set(Calendar.DAY_OF_MONTH, sDay)
+        if (startDateCalendar != null && startDateCalendar!!.before(Calendar.getInstance())) {
+          binding.root.errorDialog(getString(string.start_date_after_current_date))
         } else {
-          rootView.start_date_til.editText?.setText(mStartDate)
-          val charSequence = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar2)
-          electionDetailsSharedPrefs.saveStartTime(charSequence.toString())
+          binding.startDateTil.editText?.setText(mStartDate)
         }
       },
       HOUR, MINUTE, true
     )
-    timePickerDialog?.show()
+    timePickerDialog.show()
     datePickerDialog?.show()
     datePickerDialog?.setOnCancelListener {
-      timePickerDialog?.dismiss()
+      timePickerDialog.dismiss()
     }
   }
 
@@ -346,71 +463,184 @@ constructor(
         else if (hourOfDay < 10) "$mEndDate at 0$hourOfDay:$minute"
         else if (minute < 10) "$mEndDate at $hourOfDay:0$minute"
         else "$mEndDate at $hourOfDay:$minute"
-        calendar3 = Calendar.getInstance()
-        calendar3?.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        calendar3?.set(Calendar.MINUTE, minute)
-        calendar3?.set(Calendar.YEAR, eYear)
-        calendar3?.set(Calendar.MONTH, eMonth)
-        calendar3?.set(Calendar.DAY_OF_MONTH, eDay)
-        if (calendar3 != null && calendar3!!.before(Calendar.getInstance())) {
-          rootView.errorDialog("End date should be after current date and time")
+        endDateCalendar = Calendar.getInstance()
+        endDateCalendar?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        endDateCalendar?.set(Calendar.MINUTE, minute)
+        endDateCalendar?.set(Calendar.YEAR, eYear)
+        endDateCalendar?.set(Calendar.MONTH, eMonth)
+        endDateCalendar?.set(Calendar.DAY_OF_MONTH, eDay)
+        if (endDateCalendar != null && endDateCalendar!!.before(Calendar.getInstance())) {
+          binding.root.errorDialog(getString(string.end_date_after_starting_date))
         } else {
-          rootView.end_date_til.editText?.setText(mEndDate)
-          val charSequence2 = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", calendar3)
-          electionDetailsSharedPrefs.saveEndTime(charSequence2.toString())
+          binding.endDateTil.editText?.setText(mEndDate)
         }
       },
       HOUR, MINUTE, true
     )
-    timePickerDialog?.show()
+    timePickerDialog.show()
     datePickerDialog?.show()
     datePickerDialog?.setOnCancelListener {
-      timePickerDialog?.dismiss()
+      timePickerDialog.dismiss()
     }
   }
 
-  private val textWatcher: TextWatcher = object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-    override fun afterTextChanged(s: Editable) {}
+  override fun onActivityResult(
+    requestCode: Int,
+    resultCode: Int,
+    intentData: Intent?
+  ) {
+    super.onActivityResult(requestCode, resultCode, intentData)
+    if (resultCode != Activity.RESULT_OK) return
 
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-      val electionNameInput: String = rootView.et_election_name.text
-        .toString()
-        .trim()
-      val electionDescriptionInput: String = rootView.et_election_description.text
-        .toString()
-        .trim()
-      val startDateInput: String = rootView.et_start_date.text
-        .toString()
-        .trim()
-      val endDateInput: String = rootView.et_end_date.text
-        .toString()
-        .trim()
-      rootView.submit_details_btn.isEnabled = electionNameInput.isNotEmpty() &&
-        electionDescriptionInput.isNotEmpty() &&
-        startDateInput.isNotEmpty() &&
-        endDateInput.isNotEmpty()
+    if (requestCode == STORAGE_INTENT_REQUEST_CODE) {
+      val fileUri = intentData?.data ?: return
+      FileUtils.getPathFromUri(requireContext(), fileUri)
+        ?.let { createElectionViewModel.readExcelData(requireContext(), it) }
     }
   }
 
-  override fun onStarted() {
-    rootView.progress_bar.show()
-    rootView.submit_details_btn.toggleIsEnable()
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<String>,
+    grantResults: IntArray
+  ) {
+    if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        searchExcelFile()
+      } else {
+        notify(getString(string.permission_denied))
+      }
+    }
   }
 
-  override fun onSuccess(message: String?) {
-    rootView.progress_bar.hide()
-    rootView.submit_details_btn.toggleIsEnable()
-    if (message != null) rootView.snackbar(message)
-    prefs.setUpdateNeeded(true)
-    electionDetailsSharedPrefs.clearElectionData()
-    Navigation.findNavController(rootView)
-      .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+  private fun onReadSuccess(list: List<String>?) {
+    list?.let { if (list.isNotEmpty()) importCandidates(list) }
   }
 
-  override fun onFailure(message: String) {
-    rootView.progress_bar.hide()
-    rootView.snackbar(message)
-    rootView.submit_details_btn.toggleIsEnable()
+  private fun onReadFailure(message: String?) {
+    notify(message)
+  }
+
+  private fun checkIsFirstOpen() {
+    lifecycleScope.launch {
+      if (!prefs.isDisplayed(binding.root.id.toString())
+        .first()
+      ) {
+        spotlightTargets = getSpotlightTargets()
+        prefs.setDisplayed(binding.root.id.toString())
+        showSpotlight()
+      }
+    }
+  }
+
+  private fun showSpotlight() {
+    spotlightTargets?.let {
+      if (currentSpotlightIndex in it.indices) {
+        scrollToView(binding.scrollView, it[currentSpotlightIndex].targetView)
+        spotlight = requireActivity().getSpotlight(
+          it[currentSpotlightIndex++],
+          {
+            destroySpotlight()
+          },
+          {
+            it.clear()
+            destroySpotlight()
+          },
+          {
+            if (isAdded) {
+              showSpotlight()
+            }
+          }
+        )
+        spotlight?.start()
+      }
+    }
+  }
+
+  private fun getSpotlightTargets(): ArrayList<TargetData> {
+    val targetData = ArrayList<TargetData>()
+    targetData.add(
+      TargetData(
+        binding.etElectionName, getString(string.Create_Election),
+        getString(string.create_election_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.linearLayout, getString(string.election_method),
+        getString(string.election_method_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.etElectionDescription, getString(string.election_description),
+        getString(string.election_description_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.etCandidateName, getString(string.candidates),
+        getString(string.election_candidates_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.importCandidates, getString(string.election_import_candidates),
+        getString(string.election_import_spotlight),
+        false
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.linearLayout2, getString(string.election_visibility),
+        getString(string.election_visibility_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxVoterVisibility, getString(string.election_voter_visibility),
+        getString(string.election_voter_visibility_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.startDateTil, getString(string.start_date_format),
+        getString(string.election_start_date_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.endDateTil, getString(string.end_date_format),
+        getString(string.election_end_date_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxRealTime, getString(string.real_time),
+        getString(string.election_real_time_spotlight)
+      )
+    )
+    targetData.add(
+      TargetData(
+        binding.checkboxInvite, getString(string.invite),
+        getString(string.election_invite_spotlight)
+      )
+    )
+    return targetData
+  }
+
+  private fun destroySpotlight() {
+    spotlight?.finish()
+    spotlight = null
+  }
+
+  override fun onPause() {
+    super.onPause()
+    destroySpotlight()
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    destroySpotlight()
   }
 }

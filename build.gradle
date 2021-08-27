@@ -3,10 +3,10 @@
 buildscript {
 
   ext {
-    compileSdk = 29
+    compileSdk = 30
     minSdk = 22
-    targetSdk = 29
-    kotlinVersion = '1.4.0'
+    targetSdk = 30
+    kotlinVersion = '1.4.32'
     appCompatVersion = '1.2.0'
     constraintLayoutVersion = '1.1.3'
     legacySupportVersion = '1.0.0'
@@ -17,8 +17,6 @@ buildscript {
     materialDesignVersion = '1.2.0'
     cardViewVersion = '1.0.0'
     retrofitVersion = '2.6.0'
-    retrofitConverterScalarsVersion = '2.1.0'
-    retrofitConverterGsonVersion = '2.6.0'
     gsonVersion = '2.8.6'
     navFragmentVersion = '2.3.0'
     navUiVersion = '2.3.0'
@@ -28,7 +26,7 @@ buildscript {
     mockWebServerVersion = '4.3.1'
     mockitoCoreVersion = '3.3.1'
     daggerVersion = '2.28'
-    coreVersion = "1.3.1"
+    coreVersion = "1.6.0"
     prefsVersion = "1.1.1"
     roomVersion = '2.2.5'
     coroutineVersion = '1.3.4'
@@ -39,6 +37,13 @@ buildscript {
     httpLoggingInterceptor = '4.9.0'
     chuckerVersion = '3.4.0'
     leakcanaryVersion = '2.6'
+    moshiVersion = '1.10.0'
+    recyclerViewVersion = '1.2.1'
+    poi = '3.17'
+    dataStore = '1.0.0-rc01'
+    spotlight = '2.0.5'
+    biometricLibraryVersion = "1.1.0"
+    kotlinCoroutineTest = '1.3.4'
   }
 
   repositories {
@@ -47,8 +52,10 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:4.1.3'
+    classpath 'com.google.gms:google-services:4.3.8'
     classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
 
 
     // NOTE: Do not place your application dependencies here; they belong
