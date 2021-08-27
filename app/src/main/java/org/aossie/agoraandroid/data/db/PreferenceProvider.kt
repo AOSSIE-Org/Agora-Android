@@ -1,82 +1,169 @@
 package org.aossie.agoraandroid.data.db
 
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import org.aossie.agoraandroid.utilities.SecurityUtil
+import org.aossie.agoraandroid.utilities.spotlightDataStore
+import org.aossie.agoraandroid.utilities.userDataStore
 import javax.inject.Inject
-
-private const val IS_LOGGED_IN = "isLoggedIn"
-private const val IS_FACEBOOK_USER = "isFacebookUser"
-private const val IS_UPDATE_NEEDED = "isUpdateNeeded"
-private const val ACCESS_TOKEN = "token"
-private const val FACEBOOK_ACCESS_TOKEN = "facebookAccessToken"
 
 class PreferenceProvider
 @Inject
 constructor(
-  context: Context
+  context: Context,
+  private val securityUtil: SecurityUtil
 ) {
-  private val appContext = context.applicationContext
-  private val preferences: SharedPreferences
-    get() = PreferenceManager.getDefaultSharedPreferences(appContext)
 
-  fun setIsLoggedIn(boolean: Boolean) {
-    preferences.edit().putBoolean(
-      IS_LOGGED_IN,
-      boolean
-    ).apply()
+  companion object {
+    private val MAIL_ID = stringPreferencesKey("mailId")
+    private val IS_LOGGED_IN = booleanPreferencesKey("isLoggedIn")
+    private val IS_FACEBOOK_USER = booleanPreferencesKey("isFacebookUser")
+    private val IS_UPDATE_NEEDED = booleanPreferencesKey("isUpdateNeeded")
+    private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
+    private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
+    private val FACEBOOK_ACCESS_TOKEN = stringPreferencesKey("facebookAccessToken")
+    private val ENABLE_BIOMETRIC = booleanPreferencesKey("isBiometricEnabled")
   }
 
-  fun getIsLoggedIn(): Boolean {
-    return preferences.getBoolean(IS_LOGGED_IN, false)
+  private val userDataStore = context.userDataStore
+  private val spotlightDataStore = context.spotlightDataStore
+
+  fun isDisplayed(id: String): Flow<Boolean> {
+    return spotlightDataStore.data.map {
+      it[booleanPreferencesKey(id)] ?: false
+    }
   }
 
-  fun setIsFacebookUser(boolean: Boolean) {
-    preferences.edit().putBoolean(
-      IS_FACEBOOK_USER,
-      boolean
-    ).apply()
+  suspend fun setDisplayed(id: String) {
+    spotlightDataStore.edit {
+      it[booleanPreferencesKey(id)] = true
+    }
   }
 
-  fun getIsFacebookUser(): Boolean {
-    return preferences.getBoolean(IS_FACEBOOK_USER, false)
+  suspend fun setMailId(mailId: String) {
+    userDataStore.edit {
+      it[MAIL_ID] = mailId
+    }
   }
 
-  fun setUpdateNeeded(isNeeded: Boolean) {
-    preferences.edit().putBoolean(
-      IS_UPDATE_NEEDED,
-      isNeeded
-    )
-      .apply()
+  fun getMailId(): Flow<String?> {
+    return userDataStore.data.map {
+      it[MAIL_ID]
+    }
   }
 
-  fun getUpdateNeeded(): Boolean {
-    return preferences.getBoolean(IS_UPDATE_NEEDED, true)
+  suspend fun setIsLoggedIn(boolean: Boolean) {
+    userDataStore.edit {
+      it[IS_LOGGED_IN] = boolean
+    }
+  }
+  suspend fun enableBiometric(boolean: Boolean) {
+    userDataStore.edit {
+      it[ENABLE_BIOMETRIC] = boolean
+    }
   }
 
-  fun setCurrentToken(token: String?) {
-    preferences.edit().putString(
-      ACCESS_TOKEN,
-      token
-    ).apply()
+  fun isBiometricEnabled(): Flow<Boolean> {
+    return userDataStore.data.map {
+      it[ENABLE_BIOMETRIC] ?: false
+    }
+  }
+  fun getIsLoggedIn(): Flow<Boolean> {
+    return userDataStore.data.map {
+      it[IS_LOGGED_IN] ?: false
+    }
   }
 
-  fun getCurrentToken(): String? {
-    return preferences.getString(ACCESS_TOKEN, null)
+  suspend fun setIsFacebookUser(boolean: Boolean) {
+    userDataStore.edit {
+      it[IS_FACEBOOK_USER] = boolean
+    }
   }
 
-  fun setFacebookAccessToken(accessToken: String?) {
-    preferences.edit().putString(
-      FACEBOOK_ACCESS_TOKEN,
-      accessToken
-    ).apply()
+  fun getIsFacebookUser(): Flow<Boolean> {
+    return userDataStore.data.map {
+      it[IS_FACEBOOK_USER] ?: false
+    }
   }
 
-  fun getFacebookAccessToken(): String? {
-    return preferences.getString(FACEBOOK_ACCESS_TOKEN, null)
+  suspend fun setUpdateNeeded(isNeeded: Boolean) {
+    userDataStore.edit {
+      it[IS_UPDATE_NEEDED] = isNeeded
+    }
   }
 
-  fun clearData() {
-    preferences.edit().clear().apply()
+  fun getUpdateNeeded(): Flow<Boolean> {
+    return userDataStore.data.map {
+      it[IS_UPDATE_NEEDED] ?: true
+    }
+  }
+
+  suspend fun setAccessToken(token: String?) {
+    userDataStore.edit {
+      it[ACCESS_TOKEN] = token?.let { _token ->
+        securityUtil.encryptToken(_token)
+      } ?: ""
+    }
+  }
+
+  fun getAccessToken(): Flow<String?> {
+    return userDataStore.data.map {
+      it[ACCESS_TOKEN]?.let { _token ->
+        securityUtil.decryptToken(_token)
+      }
+    }
+  }
+
+  suspend fun setRefreshToken(token: String?) {
+    userDataStore.edit {
+      it[REFRESH_TOKEN] = token?.let { _token ->
+        securityUtil.encryptToken(_token)
+      } ?: ""
+    }
+  }
+
+  fun getRefreshToken(): Flow<String?> {
+    return userDataStore.data.map {
+      it[REFRESH_TOKEN]?.let { _token ->
+        securityUtil.decryptToken(_token)
+      }
+    }
+  }
+
+  suspend fun setFacebookAccessToken(accessToken: String?) {
+    userDataStore.edit {
+      it[FACEBOOK_ACCESS_TOKEN] = accessToken?.let { _token ->
+        securityUtil.encryptToken(_token)
+      } ?: ""
+    }
+  }
+
+  fun getFacebookAccessToken(): Flow<String?> {
+    return userDataStore.data.map {
+      it[FACEBOOK_ACCESS_TOKEN]?.let { _token ->
+        securityUtil.decryptToken(_token)
+      }
+    }
+  }
+
+  suspend fun clearAllData() {
+    clearUserData()
+    clearSpotlightData()
+  }
+
+  private suspend fun clearUserData() {
+    userDataStore.edit {
+      it.clear()
+    }
+  }
+
+  private suspend fun clearSpotlightData() {
+    spotlightDataStore.edit {
+      it.clear()
+    }
   }
 }

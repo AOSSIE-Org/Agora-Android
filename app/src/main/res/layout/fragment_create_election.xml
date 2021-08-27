@@ -1,462 +1,409 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.createelection.UploadElectionDetailsFragment"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.fragments.createelection.CreateElectionFragment"
+  >
+
+  <ScrollView
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_color"
     >
 
-  <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="wrap_content"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:padding="16dp"
+      >
 
-    <ScrollView
+      <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey_color"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_cornered_background"
+        android:orientation="vertical"
+        android:padding="@dimen/size_10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
-
-      <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/election_name_til"
+          style="@style/TextInputLayoutStyle"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="16dp"
-          android:clipToPadding="false"
-          android:clipChildren="false"
+          android:layout_height="0dp"
+          android:layout_gravity="center"
+          android:layout_weight="1"
+          android:hint="@string/election_name"
+          app:boxStrokeColor="@color/colorPrimary"
           >
 
-        <!--      <Button-->
-        <!--          android:id="@+id/submit_details_btn"-->
-        <!--          style="@style/MainButtonStyle"-->
-        <!--          android:layout_marginTop="64dp"-->
-        <!--          android:text="@string/next"-->
-        <!--          app:layout_constraintEnd_toEndOf="parent"-->
-        <!--          app:layout_constraintStart_toStartOf="parent"-->
-        <!--          app:layout_constraintTop_toBottomOf="@+id/end_date_til"-->
-        <!--          android:enabled="false"-->
-        <!--          />-->
-
-
-        <!--      <ImageButton-->
-        <!--          android:id="@+id/end_date_ibtn"-->
-        <!--          android:layout_width="wrap_content"-->
-        <!--          android:layout_height="wrap_content"-->
-        <!--          android:layout_marginStart="8dp"-->
-        <!--          android:layout_marginLeft="8dp"-->
-        <!--          android:layout_marginTop="32dp"-->
-        <!--          android:background="@color/whiteColor"-->
-        <!--          android:contentDescription="@string/datePicker"-->
-        <!--          app:layout_constraintEnd_toEndOf="parent"-->
-        <!--          app:layout_constraintHorizontal_bias="0.5"-->
-        <!--          app:layout_constraintStart_toEndOf="@+id/end_date_til"-->
-        <!--          app:layout_constraintTop_toBottomOf="@+id/start_date_til"-->
-        <!--          app:srcCompat="@drawable/ic_date_range_50dp"-->
-        <!--          />-->
-
-        <!--      <ImageButton-->
-        <!--          android:id="@+id/start_date_ibtn"-->
-        <!--          android:layout_width="wrap_content"-->
-        <!--          android:layout_height="wrap_content"-->
-        <!--          android:layout_marginStart="8dp"-->
-        <!--          android:layout_marginLeft="8dp"-->
-        <!--          android:layout_marginTop="32dp"-->
-        <!--          android:background="@color/whiteColor"-->
-        <!--          android:contentDescription="@string/datePicker"-->
-        <!--          app:layout_constraintEnd_toEndOf="parent"-->
-        <!--          app:layout_constraintHorizontal_bias="0.5"-->
-        <!--          app:layout_constraintStart_toEndOf="@+id/start_date_til"-->
-        <!--          app:layout_constraintTop_toBottomOf="@+id/election_description_til"-->
-        <!--          app:srcCompat="@drawable/ic_date_range_50dp"-->
-        <!--          />-->
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_election_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_cornered_background"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-          <com.google.android.material.textfield.TextInputLayout
-              android:id="@+id/election_name_til"
-              style="@style/TextInputLayoutStyle"
-              android:layout_width="match_parent"
-              android:layout_height="0dp"
-              android:layout_gravity="center"
-              android:layout_weight="1"
-              android:hint="@string/election_name"
-              app:boxStrokeColor="@color/colorPrimary"
-              >
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_menu"
+            android:drawablePadding="@dimen/size_16dp"
+            android:paddingTop="@dimen/size_5dp"
+            android:textSize="@dimen/size_16sp"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_election_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_menu"
-                android:drawablePadding="@dimen/size_16dp"
-                android:paddingTop="@dimen/size_5dp"
-                android:textSize="@dimen/size_16sp"
-                />
-          </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_margin="@dimen/size_8dp"
+          android:background="@drawable/grey_cornered_background"
+          />
 
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_margin="@dimen/size_8dp"
-              android:background="@drawable/grey_cornered_background"
-              />
+        <LinearLayout
+          android:id="@+id/linearLayout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/election_name_til"
+          >
 
-          <LinearLayout
-              android:id="@+id/linearLayout"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/election_name_til"
-              >
+          <ImageView
+            android:layout_width="@dimen/size_15dp"
+            android:layout_height="@dimen/size_15dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/select_voting_algorithm"
+            android:src="@drawable/ic_pushpin"
+            />
 
-            <ImageView
-                android:layout_width="@dimen/size_15dp"
-                android:layout_height="@dimen/size_15dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/select_voting_algorithm"
-                android:src="@drawable/ic_pushpin"
-                />
-
-            <Spinner
-                android:id="@+id/spinner_algorithm"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_35dp"
-                android:paddingHorizontal="@dimen/size_15dp"
-                />
-          </LinearLayout>
+          <Spinner
+            android:id="@+id/spinner_algorithm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_35dp"
+            android:paddingHorizontal="@dimen/size_15dp"
+            />
         </LinearLayout>
+      </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout5"
+      <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_15dp"
+        android:background="@drawable/white_cornered_background"
+        android:orientation="vertical"
+        android:padding="@dimen/size_10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/election_description_til"
+          style="@style/TextInputLayoutStyle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:clickable="false"
+          android:hint="@string/election_description"
+          app:boxStrokeColor="@color/colorPrimary"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+          >
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_election_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_15dp"
-            android:background="@drawable/white_cornered_background"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-            >
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_menu"
+            android:drawablePadding="@dimen/size_16dp"
+            android:inputType="textMultiLine"
+            android:paddingTop="@dimen/size_5dp"
+            android:textSize="@dimen/size_16sp"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
 
-          <com.google.android.material.textfield.TextInputLayout
-              android:id="@+id/election_description_til"
-              style="@style/TextInputLayoutStyle"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:clickable="false"
-              android:hint="@string/election_description"
-              app:boxStrokeColor="@color/colorPrimary"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-              >
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_margin="@dimen/size_8dp"
+          android:background="@drawable/grey_cornered_background"
+          />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_election_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_menu"
-                android:drawablePadding="@dimen/size_16dp"
-                android:inputType="textMultiLine"
-                android:paddingTop="@dimen/size_5dp"
-                android:textSize="@dimen/size_16sp"
-                />
-          </com.google.android.material.textfield.TextInputLayout>
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          >
 
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_margin="@dimen/size_8dp"
-              android:background="@drawable/grey_cornered_background"
-              />
+          <ImageView
+            android:id="@+id/import_candidates"
+            android:layout_width="@dimen/size_24dp"
+            android:layout_height="@dimen/size_24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/import_xlsx"
+            android:tooltipText="@string/import_xlsx"
+            />
 
           <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/size_10dp"
+            android:layout_toStartOf="@id/import_candidates"
+            >
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/candidate_til"
-                style="@style/TextInputLayoutStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:hint="@string/name_of_candidate"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/enter_candidate_name_label_tv"
-                >
+              android:id="@+id/candidate_til"
+              style="@style/TextInputLayoutStyle"
+              android:layout_marginEnd="@dimen/size_10dp"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="3"
+              android:hint="@string/name_of_candidate"
+              app:boxStrokeColor="@color/colorPrimary"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="0.0"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/enter_candidate_name_label_tv"
+              >
 
               <com.google.android.material.textfield.TextInputEditText
-                  android:id="@+id/et_candidate_name"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:background="@android:color/transparent"
-                  android:drawableStart="@drawable/ic_candidates"
-                  android:drawablePadding="@dimen/size_16dp"
-                  android:paddingTop="@dimen/size_5dp"
-                  android:textSize="@dimen/size_16sp"
-                  />
+                android:id="@+id/et_candidate_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_candidates"
+                android:drawablePadding="@dimen/size_16dp"
+                android:paddingTop="@dimen/size_5dp"
+                android:textSize="@dimen/size_16sp"
+                />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/add_candidate_btn"
-                style="@style/MainButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="34dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:text="@string/add"
-                android:textColor="@color/white"
-                android:textSize="@dimen/size_14sp"
-                />
+              android:id="@+id/add_candidate_btn"
+              style="@style/MainButtonStyle"
+              android:layout_width="0dp"
+              android:layout_height="34dp"
+              android:layout_gravity="center"
+              android:layout_weight="1"
+              android:enabled="false"
+              android:text="@string/add"
+              android:textColor="@color/white"
+              android:textSize="@dimen/size_14sp"
+              />
 
           </LinearLayout>
 
-          <androidx.recyclerview.widget.RecyclerView
-              android:id="@+id/names_rv"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="16dp"
-              android:background="@color/grey_color"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@+id/add_candidate_btn"
-              tools:item_layout="@layout/list_item_candidate_name"
-              />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/submit_details_btn"
-            style="@style/MainButtonStyle"
-            android:enabled="false"
-            android:layout_marginTop="@dimen/size_20dp"
-            android:text="@string/Create_Election"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/names_rv"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:background="@color/grey_color"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/add_candidate_btn"
+          tools:item_layout="@layout/list_item_candidate_name"
+          />
+
+        <TextView
+          android:id="@+id/text_view_swipe"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/size_8dp"
+          android:gravity="center"
+          android:text="@string/swipe_to_delete_candidate"
+          android:visibility="gone"
+          />
+      </LinearLayout>
+
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/submit_details_btn"
+        style="@style/MainButtonStyle"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:enabled="false"
+        android:text="@string/Create_Election"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        />
+
+
+      <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_15dp"
+        android:background="@drawable/white_cornered_background"
+        android:orientation="vertical"
+        android:padding="@dimen/size_10dp"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout5"
+        >
+        <LinearLayout
+          android:id="@+id/linearLayout2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/election_name_til"
+          >
+
+          <ImageView
+            android:layout_width="@dimen/size_16dp"
+            android:layout_height="@dimen/size_16dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/select_voting_algorithm"
+            android:src="@drawable/ic_checkbox"
             />
 
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+          <Spinner
+            android:id="@+id/spinner_ballot_visibility"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_15dp"
-            android:background="@drawable/white_cornered_background"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10dp"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout5"
-            >
-          <LinearLayout
-              android:id="@+id/linearLayout2"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/election_name_til"
-              >
-
-            <ImageView
-                android:layout_width="@dimen/size_15dp"
-                android:layout_height="@dimen/size_15dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/select_voting_algorithm"
-                android:src="@drawable/ic_checkbox"
-                />
-
-            <Spinner
-                android:id="@+id/spinner_ballot_visibility"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_35dp"
-                android:paddingHorizontal="@dimen/size_15dp"
-                />
-          </LinearLayout>
-
-          <com.google.android.material.checkbox.MaterialCheckBox
-              android:id="@+id/checkbox_voter_visibility"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:button="@null"
-              android:drawableStart="@drawable/ic_register"
-              android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-              android:drawablePadding="@dimen/size_15dp"
-              android:text="@string/voter_list_visibility"
-              android:textSize="@dimen/size_16sp"
-              />
-
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_margin="@dimen/size_8dp"
-              android:background="@drawable/grey_cornered_background"
-              />
-
-          <LinearLayout
-              android:id="@+id/linearLayout34"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              >
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btn_start_date"
-                android:layout_width="@dimen/size_40dp"
-                android:layout_height="@dimen/size_40dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/size_8dp"
-                android:paddingTop="@dimen/size_12dp"
-                android:paddingEnd="@dimen/size_24dp"
-                app:srcCompat="@drawable/ic_clock"
-                tools:ignore="RtlSymmetry"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/start_date_til"
-                style="@style/TextInputLayoutStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/start_date_format"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:hintAnimationEnabled="true"
-                app:layout_constraintEnd_toStartOf="@+id/start_date_ibtn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/election_description_til"
-                >
-
-              <com.google.android.material.textfield.TextInputEditText
-                  android:id="@+id/et_start_date"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:background="@android:color/transparent"
-                  android:enabled="false"
-                  android:paddingTop="@dimen/size_5dp"
-                  android:textColor="@color/black_text_color"
-                  android:textSize="@dimen/size_16sp"
-                  />
-            </com.google.android.material.textfield.TextInputLayout>
-
-          </LinearLayout>
-
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_margin="@dimen/size_8dp"
-              android:background="@drawable/grey_cornered_background"
-              />
-
-          <LinearLayout
-              android:id="@+id/linearLayout22"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              >
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btn_end_date"
-                android:layout_width="@dimen/size_40dp"
-                android:layout_height="@dimen/size_40dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/size_8dp"
-                android:paddingTop="@dimen/size_12dp"
-                android:paddingEnd="@dimen/size_24dp"
-                app:srcCompat="@drawable/ic_clock"
-                tools:ignore="RtlSymmetry"
-                />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/end_date_til"
-                style="@style/TextInputLayoutStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/end_date_format"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/end_date_ibtn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/start_date_til"
-                >
-
-              <com.google.android.material.textfield.TextInputEditText
-                  android:id="@+id/et_end_date"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:background="@android:color/transparent"
-                  android:enabled="false"
-                  android:paddingTop="@dimen/size_5dp"
-                  android:textColor="@color/black_text_color"
-                  android:textSize="@dimen/size_16sp"
-                  />
-            </com.google.android.material.textfield.TextInputLayout>
-
-          </LinearLayout>
-
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_margin="@dimen/size_8dp"
-              android:background="@drawable/grey_cornered_background"
-              />
-
-          <com.google.android.material.checkbox.MaterialCheckBox
-              android:id="@+id/checkbox_real_time"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:button="@null"
-              android:drawableStart="@drawable/ic_globe"
-              android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-              android:drawablePadding="@dimen/size_15dp"
-              android:text="@string/real_time"
-              android:textSize="@dimen/size_16sp"
-              />
-
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_margin="@dimen/size_8dp"
-              android:background="@drawable/grey_cornered_background"
-              />
-
-          <com.google.android.material.checkbox.MaterialCheckBox
-              android:id="@+id/checkbox_invite"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:button="@null"
-              android:drawableStart="@drawable/ic_invite"
-              android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-              android:drawablePadding="@dimen/size_15dp"
-              android:text="@string/invite"
-              android:textSize="@dimen/size_16sp"
-              />
-
-
+            android:layout_height="@dimen/size_35dp"
+            android:paddingStart="@dimen/size_10dp"
+            android:paddingEnd="@dimen/size_20dp"
+            />
         </LinearLayout>
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:background="@drawable/progressbar_background"
-        android:padding="@dimen/size_10dp"
-        android:layout_gravity="center"
-        />
-  </FrameLayout>
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/checkbox_voter_visibility"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:button="@null"
+          android:drawableStart="@drawable/ic_register"
+          android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+          android:drawablePadding="@dimen/size_15dp"
+          android:text="@string/voter_list_visibility"
+          android:textSize="@dimen/size_16sp"
+          />
 
-</layout>
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_margin="@dimen/size_8dp"
+          android:background="@drawable/grey_cornered_background"
+          />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/start_date_til"
+          style="@style/TextInputLayoutStyle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/start_date_format"
+          app:boxStrokeColor="@color/colorPrimary"
+          app:hintAnimationEnabled="true"
+          >
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_start_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:drawableStart="@drawable/ic_clock"
+            android:drawablePadding="@dimen/size_16dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:paddingTop="@dimen/size_5dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="@dimen/size_16sp"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_margin="@dimen/size_8dp"
+          android:background="@drawable/grey_cornered_background"
+          />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/end_date_til"
+          style="@style/TextInputLayoutStyle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/end_date_format"
+          app:boxStrokeColor="@color/colorPrimary"
+          app:hintAnimationEnabled="true"
+          >
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_end_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:drawableStart="@drawable/ic_clock"
+            android:drawablePadding="@dimen/size_16dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:paddingTop="@dimen/size_5dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="@dimen/size_16sp"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_margin="@dimen/size_8dp"
+          android:background="@drawable/grey_cornered_background"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/checkbox_real_time"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:button="@null"
+          android:drawableStart="@drawable/ic_globe"
+          android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+          android:drawablePadding="@dimen/size_15dp"
+          android:text="@string/real_time"
+          android:textSize="@dimen/size_16sp"
+          />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_margin="@dimen/size_8dp"
+          android:background="@drawable/grey_cornered_background"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/checkbox_invite"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:button="@null"
+          android:drawableStart="@drawable/ic_invite"
+          android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+          android:drawablePadding="@dimen/size_15dp"
+          android:text="@string/invite"
+          android:textSize="@dimen/size_16sp"
+          />
+
+
+      </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </ScrollView>
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/progressbar_background"
+    android:padding="@dimen/size_10dp"
+    android:visibility="invisible"
+    />
+</FrameLayout>

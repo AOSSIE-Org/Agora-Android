@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_elections.view.rv_total_elections
-import kotlinx.android.synthetic.main.fragment_elections.view.tv_empty_election
-import kotlinx.android.synthetic.main.fragment_elections.view.tv_something_went_wrong
-import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.utilities.ElectionRecyclerAdapterCallback
+import org.aossie.agoraandroid.databinding.FragmentElectionsBinding
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
+import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
 
@@ -25,10 +23,7 @@ class ElectionsFragment
 @Inject
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(),
-  ElectionRecyclerAdapterCallback {
-
-  private lateinit var rootView: View
+) : BaseFragment(viewModelFactory) {
 
   private val electionViewModel: ElectionViewModel by viewModels {
     viewModelFactory
@@ -37,22 +32,37 @@ constructor(
   lateinit var mElections: ArrayList<Election>
   private lateinit var electionsAdapter: ElectionsAdapter
 
+  private val onItemClicked = { _id: String ->
+    val action = ElectionsFragmentDirections
+      .actionElectionsFragmentToElectionDetailsFragment(_id)
+    Navigation.findNavController(binding.root)
+      .navigate(action)
+  }
+  private lateinit var binding: FragmentElectionsBinding
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    // Inflate the layout for this fragment
-    rootView = inflater.inflate(R.layout.fragment_elections, container, false)
+    binding = FragmentElectionsBinding.inflate(inflater)
+    return binding.root
+  }
+  override fun onFragmentInitiated() {
     mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(mElections as List<Election>, this)
-    rootView.rv_total_elections.apply {
+    electionsAdapter = ElectionsAdapter(onItemClicked)
+    binding.rvTotalElections.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = electionsAdapter
     }
-    return rootView
+    binding.searchView.doAfterTextChanged {
+      filter(it.toString())
+    }
   }
 
+  override fun onNetworkConnected() {
+    bindUI()
+  }
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     bindUI()
@@ -70,24 +80,26 @@ constructor(
           }
         )
     } catch (e: IllegalStateException) {
-      rootView.tv_something_went_wrong.show()
+      binding.tvSomethingWentWrong.show()
     }
   }
 
   private fun addElections(elections: List<Election>) {
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
-      electionsAdapter.notifyDataSetChanged()
+      electionsAdapter.submitList(elections)
     } else {
-      rootView.tv_empty_election.show()
+      binding.tvEmptyElection.show()
     }
   }
 
-  override fun onItemClicked(_id: String) {
-    val action =
-      ElectionsFragmentDirections
-        .actionElectionsFragmentToElectionDetailsFragment(_id)
-    Navigation.findNavController(rootView)
-      .navigate(action)
+  private fun filter(query: String) {
+    val updatedList = electionViewModel.filter(mElections, query)
+    electionsAdapter.submitList(updatedList)
+    if (updatedList.isEmpty()) {
+      binding.tvEmptyElection.show()
+    } else {
+      binding.tvEmptyElection.hide()
+    }
   }
 }

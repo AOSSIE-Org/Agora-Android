@@ -1,14 +1,20 @@
 package org.aossie.agoraandroid.data.Repository
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.first
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.dto.LoginDto
+import org.aossie.agoraandroid.data.dto.NewUserDto
+import org.aossie.agoraandroid.data.dto.PasswordDto
+import org.aossie.agoraandroid.data.dto.UpdateUserDto
+import org.aossie.agoraandroid.data.dto.UrlDto
+import org.aossie.agoraandroid.data.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.network.Api
 import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
-import org.json.JSONException
-import org.json.JSONObject
+import org.aossie.agoraandroid.utilities.unsubscribeFromFCM
 import timber.log.Timber
 
 class UserRepository(
@@ -17,116 +23,79 @@ class UserRepository(
   private val preferenceProvider: PreferenceProvider
 ) : ApiRequest() {
 
-  suspend fun userSignup(
-    identifier: String,
-    password: String,
-    email: String?,
-    firstName: String?,
-    lastName: String?,
-    securityQuestion: String?,
-    securityAnswer: String?
-  ): String {
-    val jsonObject = JSONObject()
-    val securityJsonObject = JSONObject()
-    try {
-      jsonObject.put("identifier", identifier)
-      jsonObject.put("password", password)
-      jsonObject.put("email", email)
-      jsonObject.put("firstName", firstName)
-      jsonObject.put("lastName", lastName)
-      securityJsonObject.put("question", securityQuestion)
-      securityJsonObject.put("answer", securityAnswer)
-      jsonObject.put("securityQuestion", securityJsonObject)
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-    return apiRequest { api.createUser(jsonObject.toString()) }
+  suspend fun userSignup(userData: NewUserDto): String {
+    return apiRequest { api.createUser(userData) }
   }
 
-  suspend fun userLogin(
-    identifier: String,
-    password: String,
-    trustedDevice: String ? = null
-  ): AuthResponse {
-    val jsonObject = JSONObject()
-    try {
-      jsonObject.put("identifier", identifier)
-      jsonObject.put("password", password)
-      jsonObject.put("trustedDevice", trustedDevice)
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-    return apiRequest { api.logIn(jsonObject.toString()) }
+  suspend fun userLogin(loginData: LoginDto): AuthResponse {
+    return apiRequest { api.logIn(loginData) }
   }
 
-  suspend fun verifyOTP(
-    otp: String,
-    trustedDevice: Boolean,
-    crypto: String
-  ): AuthResponse {
-    val jsonObject = JSONObject()
-    try {
-      jsonObject.put("crypto", crypto)
-      jsonObject.put("otp", otp)
-      jsonObject.put("trustedDevice", trustedDevice)
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-    return apiRequest { api.verifyOTP(jsonObject.toString()) }
+  suspend fun refreshAccessToken(): AuthResponse {
+    return apiRequest { api.refreshAccessToken() }
   }
 
-  suspend fun fbLogin(
-    accessToken: String
-  ): AuthResponse {
-    return apiRequest { api.facebookLogin(accessToken) }
+  suspend fun verifyOTP(otpData: VerifyOtpDto): AuthResponse {
+    return apiRequest { api.verifyOTP(otpData) }
+  }
+
+  suspend fun fbLogin(): AuthResponse {
+    return apiRequest { api.facebookLogin() }
   }
 
   suspend fun getUserData(): AuthResponse {
-    return apiRequest { api.getUserData(preferenceProvider.getCurrentToken()) }
+    return apiRequest { api.getUserData() }
   }
 
   suspend fun saveUser(user: User) {
-    appDatabase.getUserDao().removeUser()
-    appDatabase.getUserDao().insert(user)
-    if (user.token != null) {
+    appDatabase.getUserDao()
+      .removeUser()
+    appDatabase.getUserDao()
+      .insert(user)
+    if (user.authToken != null) {
       Timber.d("saved")
       preferenceProvider.setIsLoggedIn(true)
-      preferenceProvider.setCurrentToken(user.token)
+      preferenceProvider.setAccessToken(user.authToken)
+      preferenceProvider.setRefreshToken(user.refreshToken)
     }
   }
 
-  suspend fun logout(): String {
-    return apiRequest { api.logout(preferenceProvider.getCurrentToken()) }
+  suspend fun logout() {
+    return apiRequest { api.logout() }
   }
 
   fun getUser(): LiveData<User> {
-    return appDatabase.getUserDao().getUser()
+    return appDatabase.getUserDao()
+      .getUser()
   }
 
   suspend fun deleteUser() {
-    appDatabase.getUserDao().removeUser()
-    preferenceProvider.clearData()
-    appDatabase.getElectionDao().deleteAllElections()
+    unsubscribeFromFCM(preferenceProvider.getMailId().first())
+    appDatabase.getUserDao()
+      .removeUser()
+    preferenceProvider.clearAllData()
+    appDatabase.getElectionDao()
+      .deleteAllElections()
   }
 
   suspend fun sendForgotPasswordLink(username: String?): String {
     return apiRequest { api.sendForgotPassword(username) }
   }
 
-  suspend fun updateUser(body: String): ArrayList<String> {
-    return apiRequest { api.updateUser(preferenceProvider.getCurrentToken(), body) }
+  suspend fun updateUser(updateUserData: UpdateUserDto): List<String> {
+    return apiRequest { api.updateUser(updateUserData) }
   }
 
-  suspend fun changeAvatar(body: String): ArrayList<String> {
-    return apiRequest { api.changeAvatar(preferenceProvider.getCurrentToken(), body) }
+  suspend fun changeAvatar(url: String): List<String> {
+    return apiRequest { api.changeAvatar(UrlDto(url)) }
   }
 
-  suspend fun changePassword(body: String): ArrayList<String> {
-    return apiRequest { api.changePassword(body, preferenceProvider.getCurrentToken()) }
+  suspend fun changePassword(password: String): List<String> {
+    return apiRequest { api.changePassword(PasswordDto(password)) }
   }
 
-  suspend fun toggleTwoFactorAuth(): ArrayList<String> {
-    return apiRequest { api.toggleTwoFactorAuth(preferenceProvider.getCurrentToken()) }
+  suspend fun toggleTwoFactorAuth(): List<String> {
+    return apiRequest { api.toggleTwoFactorAuth() }
   }
 
   suspend fun resendOTP(username: String?): AuthResponse {

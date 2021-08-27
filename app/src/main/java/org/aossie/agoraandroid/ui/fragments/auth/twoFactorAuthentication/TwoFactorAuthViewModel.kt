@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.responses.ResponseResult
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Error
-import org.aossie.agoraandroid.data.network.responses.ResponseResult.Success
+import org.aossie.agoraandroid.data.dto.VerifyOtpDto
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,82 +22,83 @@ class TwoFactorAuthViewModel
 constructor(
   private val userRepository: UserRepository
 ) : ViewModel() {
+  lateinit var sessionExpiredListener: SessionExpiredListener
 
   val user = userRepository.getUser()
 
-  private val mVerifyOtpResponse = MutableLiveData<ResponseResult>()
+  private val mVerifyOtpResponse = MutableLiveData<ResponseUI<Any>>()
 
-  val verifyOtpResponse: LiveData<ResponseResult>
+  val verifyOtpResponse: LiveData<ResponseUI<Any>>
     get() = mVerifyOtpResponse
 
-  private val mResendOtpResponse = MutableLiveData<ResponseResult>()
+  private val mResendOtpResponse = MutableLiveData<ResponseUI<Any>>()
 
-  val resendOtpResponse: LiveData<ResponseResult>
+  val resendOtpResponse: LiveData<ResponseUI<Any>>
     get() = mResendOtpResponse
 
   fun verifyOTP(
     otp: String,
     trustedDevice: Boolean,
-    password: String,
     crypto: String
   ) {
     if (otp.isEmpty()) {
-      mVerifyOtpResponse.value = Error("Invalid OTP")
+      mVerifyOtpResponse.value = ResponseUI.error(AppConstants.INVALID_OTP_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
-        val authResponse = userRepository.verifyOTP(otp, trustedDevice, crypto)
+        val authResponse = userRepository.verifyOTP(VerifyOtpDto(crypto, otp, trustedDevice))
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, it.trustedDevice
           )
           userRepository.saveUser(user)
           Timber.d(user.toString())
-          mVerifyOtpResponse.value = Success
+          mVerifyOtpResponse.value = ResponseUI.success()
         }
       } catch (e: ApiException) {
-        mVerifyOtpResponse.value = Error(e.message.toString())
+        mVerifyOtpResponse.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
-        mVerifyOtpResponse.value = Error(e.message.toString())
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mVerifyOtpResponse.value = Error(e.message.toString())
+        mVerifyOtpResponse.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        mVerifyOtpResponse.value = Error(e.message.toString())
+        mVerifyOtpResponse.value = ResponseUI.error(e.message)
       }
     }
   }
 
   fun resendOTP(
     username: String,
-    password: String
   ) {
     if (username.isEmpty()) {
-      mResendOtpResponse.value = Error("Login Again")
+      mResendOtpResponse.value = ResponseUI.error(AppConstants.LOGIN_AGAIN_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val authResponse = userRepository.resendOTP(username)
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, it.trustedDevice
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, it.trustedDevice
           )
           userRepository.saveUser(user)
-          mResendOtpResponse.value = Success
+          mResendOtpResponse.value = ResponseUI.success()
         }
       } catch (e: ApiException) {
-        mResendOtpResponse.value = Error(e.message.toString())
+        mResendOtpResponse.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
-        mResendOtpResponse.value = Error(e.message.toString())
+        sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mResendOtpResponse.value = Error(e.message.toString())
+        mResendOtpResponse.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        mResendOtpResponse.value = Error(e.message.toString())
+        mResendOtpResponse.value = ResponseUI.error(e.message)
       }
     }
   }

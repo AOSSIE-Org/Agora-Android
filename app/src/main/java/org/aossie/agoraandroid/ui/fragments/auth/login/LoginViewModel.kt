@@ -1,17 +1,21 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import org.aossie.agoraandroid.utilities.subscribeToFCM
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,8 +26,10 @@ constructor(
   private val prefs: PreferenceProvider
 ) : ViewModel() {
 
-  var authListener: AuthListener? = null
-  var loginListener: LoginListener? = null
+  var sessionExpiredListener: SessionExpiredListener? = null
+
+  private val _getLoginLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
+  val getLoginLiveData = _getLoginLiveData
 
   fun getLoggedInUser() = userRepository.getUser()
 
@@ -32,78 +38,112 @@ constructor(
     password: String,
     trustedDevice: String? = null
   ) {
-    authListener?.onStarted()
+    _getLoginLiveData.value = ResponseUI.loading()
     if (identifier.isEmpty() || password.isEmpty()) {
-      authListener?.onFailure("Invalid Email or Password")
+      _getLoginLiveData.value = ResponseUI.error(AppConstants.INVALID_CREDENTIALS_MESSAGE)
       return
     }
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
-        val authResponse = userRepository.userLogin(identifier, password, trustedDevice)
+        val authResponse =
+          userRepository.userLogin(LoginDto(identifier, trustedDevice ?: "", password))
         authResponse.let {
           val user = User(
-            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto, it.twoFactorAuthentication,
-            it.authToken?.token, it.authToken?.expiresOn, password, trustedDevice
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
+            it.twoFactorAuthentication,
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, trustedDevice
           )
           userRepository.saveUser(user)
+          it.email?.let { mail ->
+            prefs.setMailId(mail)
+            subscribeToFCM(mail)
+          }
           Timber.d(user.toString())
           if (!it.twoFactorAuthentication!!) {
-            authListener?.onSuccess()
+            _getLoginLiveData.value = ResponseUI.success()
           } else {
-            loginListener?.onTwoFactorAuthentication(password, user.crypto!!)
+            _getLoginLiveData.value = ResponseUI.success(user.crypto!!)
           }
         }
       } catch (e: ApiException) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
+        sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
 
-  fun facebookLogInRequest(accessToken: String?) {
-    authListener!!.onStarted()
-    viewModelScope.launch(Dispatchers.Main) {
+  fun refreshAccessToken(
+    trustedDevice: String? = null
+  ) {
+    viewModelScope.launch {
       try {
-        val authResponse = userRepository.fbLogin(accessToken!!)
+        val authResponse = userRepository.refreshAccessToken()
+        authResponse.let {
+          val user = User(
+            it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
+            it.twoFactorAuthentication,
+            it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
+            it.refreshToken?.expiresOn, trustedDevice
+          )
+          userRepository.saveUser(user)
+        }
+      } catch (e: Exception) {
+        sessionExpiredListener?.onSessionExpired()
+      }
+    }
+  }
+
+  fun facebookLogInRequest() {
+    _getLoginLiveData.value = ResponseUI.loading()
+    viewModelScope.launch {
+      try {
+        val authResponse = userRepository.fbLogin()
         getUserData(authResponse)
+        authResponse.email?.let {
+          prefs.setMailId(it)
+          subscribeToFCM(it)
+        }
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
+        sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       }
     }
   }
 
   private fun getUserData(authResponse: AuthResponse) {
-    viewModelScope.launch(Dispatchers.Main) {
+    viewModelScope.launch {
       try {
         val user = User(
           authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName,
           authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
-          authResponse.authToken?.token, authResponse.authToken?.expiresOn
+          authResponse.authToken?.token, authResponse.authToken?.expiresOn,
+          authResponse.refreshToken?.token, authResponse.refreshToken?.expiresOn,
+          authResponse.trustedDevice
         )
         userRepository.saveUser(user)
         Timber.d(authResponse.toString())
         prefs.setIsFacebookUser(true)
-        authListener?.onSuccess()
+        _getLoginLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
-        authListener?.onFailure(e.message!!)
+        sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        authListener?.onFailure(e.message!!)
+        _getLoginLiveData.value = ResponseUI.error(e.message)
       }
     }
   }

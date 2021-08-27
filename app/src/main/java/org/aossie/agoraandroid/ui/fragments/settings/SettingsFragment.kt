@@ -7,41 +7,32 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
-import com.squareup.picasso.Callback
-import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy.OFFLINE
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_settings.view.image_view
-import kotlinx.android.synthetic.main.fragment_settings.view.progress_bar
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_about
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_account_settings
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_contact_us
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_logout
-import kotlinx.android.synthetic.main.fragment_settings.view.tv_share
-import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.drawable
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
-import org.aossie.agoraandroid.ui.fragments.auth.AuthListener
+import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
+import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isUrl
-import org.aossie.agoraandroid.utilities.shortSnackbar
+import org.aossie.agoraandroid.utilities.loadImage
+import org.aossie.agoraandroid.utilities.loadImageFromMemoryNoCache
 import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.utilities.toByteArray
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -55,9 +46,8 @@ class SettingsFragment
 constructor(
   private val viewModelFactory: ViewModelProvider.Factory,
   private val prefs: PreferenceProvider
-) : Fragment(), AuthListener {
+) : BaseFragment(viewModelFactory) {
 
-  private lateinit var rootView: View
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
   }
@@ -77,16 +67,18 @@ constructor(
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    // Inflate the layout for this fragment
-    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
-    rootView = binding.root
+    binding = FragmentSettingsBinding.inflate(inflater)
+    return binding.root
+  }
+  override fun onFragmentInitiated() {
 
     val user = viewModel.user
     user.observe(
       viewLifecycleOwner,
       Observer {
         if (it != null) {
-          binding.user = it
+          binding.tvEmailId.text = it.email
+          binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
           mUser = it
           if (it.avatarURL != null) {
             if (it.avatarURL.isUrl())
@@ -103,91 +95,78 @@ constructor(
     mAvatar.observe(
       viewLifecycleOwner,
       Observer {
-        Picasso.get()
-          .load(it)
-          .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-          .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-          .into(rootView.image_view)
+        binding.imageView.loadImageFromMemoryNoCache(it)
       }
     )
 
-    homeViewModel.authListener = this
+    homeViewModel.getLogoutLiveData.observe(
+      viewLifecycleOwner,
+      {
+        when (it.status) {
+          ResponseUI.Status.ERROR -> {
+            binding.progressBar.hide()
+            notify(it.message)
+            binding.tvLogout.toggleIsEnable()
+          }
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            lifecycleScope.launch {
+              if (prefs.getIsFacebookUser().first()) {
+                LoginManager.getInstance()
+                  .logOut()
+              }
+            }
+            homeViewModel.deleteUserData()
+            notify("Logged Out")
+            Navigation.findNavController(binding.root)
+              .navigate(
+                SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
+              )
+          }
+          ResponseUI.Status.LOADING -> {
+            binding.progressBar.show()
+            binding.tvLogout.toggleIsEnable()
+          }
+        }
+      }
+    )
+    homeViewModel.sessionExpiredListener = this
 
-    rootView.tv_account_settings.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvAccountSettings.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(SettingsFragmentDirections.actionSettingsFragmentToProfileFragment())
     }
 
-    rootView.tv_share.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvShare.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(
           SettingsFragmentDirections.actionSettingsFragmentToShareWithOthersFragment()
         )
     }
 
-    rootView.tv_about.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvAbout.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(
           SettingsFragmentDirections.actionSettingsFragmentToAboutFragment()
         )
     }
 
-    rootView.tv_contact_us.setOnClickListener {
-      Navigation.findNavController(rootView)
+    binding.tvContactUs.setOnClickListener {
+      Navigation.findNavController(binding.root)
         .navigate(
           SettingsFragmentDirections.actionSettingsFragmentToContactUsFragment()
         )
     }
 
-    rootView.tv_logout.setOnClickListener {
+    binding.tvLogout.setOnClickListener {
       homeViewModel.doLogout()
     }
-
-    return rootView
   }
 
   private fun cacheAndSaveImage(url: String) {
-    Picasso.get().load(url)
-      .networkPolicy(OFFLINE)
-      .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-      .into(
-        rootView.image_view,
-        object : Callback {
-          override fun onSuccess() {
-            println()
-          }
-          override fun onError(e: Exception?) {
-            Picasso.get().load(url)
-              .placeholder(ContextCompat.getDrawable(requireContext(), drawable.ic_user)!!)
-              .into(rootView.image_view)
-          }
-        }
-      )
-  }
-
-  override fun onSuccess(message: String?) {
-    rootView.progress_bar.hide()
-    if (prefs.getIsFacebookUser()) {
-      LoginManager.getInstance()
-        .logOut()
+    binding.imageView.loadImage(url, OFFLINE) {
+      binding.imageView.loadImage(url)
     }
-    homeViewModel.deleteUserData()
-    rootView.shortSnackbar("Logged Out")
-    Navigation.findNavController(rootView)
-      .navigate(
-        SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
-      )
-  }
-
-  override fun onStarted() {
-    rootView.progress_bar.show()
-    rootView.tv_logout.toggleIsEnable()
-  }
-
-  override fun onFailure(message: String) {
-    rootView.progress_bar.hide()
-    rootView.snackbar(message)
-    rootView.tv_logout.toggleIsEnable()
   }
 
   private fun decodeBitmap(encodedBitmap: String): Bitmap {
@@ -196,9 +175,7 @@ constructor(
   }
 
   private fun setAvatar(bitmap: Bitmap) {
-    val bos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos)
-    val bytes = bos.toByteArray()
+    val bytes = bitmap.toByteArray(Bitmap.CompressFormat.PNG)
     try {
       val avatar = File(context?.cacheDir, "avatar")
       if (avatar.exists()) {
@@ -211,7 +188,7 @@ constructor(
       mAvatar.value = avatar
     } catch (e: IOException) {
       e.printStackTrace()
-      rootView.snackbar("Error while loading the image")
+      notify(getString(string.error_loading_image))
     }
   }
 }

@@ -5,6 +5,6 @@
   "lastName": "string",
   "avatarURL": "string",
   "twoFactorAuthentication": true,
-  "token": {},
+  "authToken": {},
   "trustedDevice": "string"
 }

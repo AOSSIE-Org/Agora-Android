@@ -6,8 +6,9 @@ import dagger.Component
 import org.aossie.agoraandroid.di.modules.AppModule
 import org.aossie.agoraandroid.di.modules.FragmentModule
 import org.aossie.agoraandroid.di.modules.ViewModelModule
-import org.aossie.agoraandroid.ui.activities.MainActivity
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteActivity
+import org.aossie.agoraandroid.ui.activities.main.MainActivity
+import org.aossie.agoraandroid.utilities.InternetManager
 import javax.inject.Singleton
 
 @Singleton
@@ -23,6 +24,6 @@ interface AppComponent {
   // TODO inject activities, fragments, starting points of graph in here
 
   fun inject(activity: MainActivity)
-
   fun inject(activity: CastVoteActivity)
+  fun getInternetManager(): InternetManager
 }

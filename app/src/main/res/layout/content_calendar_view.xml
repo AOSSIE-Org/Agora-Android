@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipe_refresh"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/swipe_refresh"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:layout_behavior="@string/appbar_scrolling_view_behavior"
+  tools:context=".ui.fragments.profile.ProfileFragment"
+  >
 
   <androidx.core.widget.NestedScrollView
-      android:id="@+id/sample_scroll"
+    android:id="@+id/sample_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+      android:id="@+id/sample_content"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:orientation="vertical"
       >
-    <LinearLayout
-        android:id="@+id/sample_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
       <com.linkedin.android.tachyon.DayView
-          android:id="@+id/sample_day"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="@dimen/large_padding"
-          app:dividerHeight="@dimen/divider_height"
-          app:endHour="@integer/end_hour"
-          app:eventMargin="@dimen/small_padding"
-          app:halfHourDividerColor="@color/half_hour_divider"
-          app:halfHourHeight="@dimen/half_hour_height"
-          app:hourDividerColor="@color/hour_divider"
-          app:hourLabelMarginEnd="@dimen/large_padding"
-          app:hourLabelWidth="@dimen/hour_label_width"
-          app:startHour="@integer/start_hour"
-          />
+        android:id="@+id/sample_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/large_padding"
+        app:dividerHeight="@dimen/divider_height"
+        app:endHour="@integer/end_hour"
+        app:eventMargin="@dimen/small_padding"
+        app:halfHourDividerColor="@color/half_hour_divider"
+        app:halfHourHeight="@dimen/half_hour_height"
+        app:hourDividerColor="@color/hour_divider"
+        app:hourLabelMarginEnd="@dimen/large_padding"
+        app:hourLabelWidth="@dimen/hour_label_width"
+        app:startHour="@integer/start_hour"
+        />
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 

@@ -1,6 +1,8 @@
 *.iml
 .gradle
 /local.properties
+/app/google-services.json
+/signing.properties
 .DS_Store
 /build
 /captures
