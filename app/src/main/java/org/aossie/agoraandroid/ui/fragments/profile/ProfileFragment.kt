@@ -51,6 +51,12 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
+import android.R
+import android.R.drawable
+import android.content.ContentResolver
+import android.content.pm.PackageManager.NameNotFoundException
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsClient.getPackageName
 
 const val CAMERA_PERMISSION_REQUEST_CODE = 1
 const val STORAGE_PERMISSION_REQUEST_CODE = 2
@@ -125,7 +131,6 @@ constructor(
       }
     }
     setObserver()
-
     binding.updateProfileBtn.setOnClickListener {
       binding.progressBar.show()
       toggleIsEnable()
@@ -351,6 +356,11 @@ constructor(
       .setView(dialogView.root)
       .create()
 
+    dialogView.deleteProfile.setOnClickListener{
+      dialog.cancel()
+      //this call will remove the current profile pic
+      deletePic()
+    }
     dialogView.cameraView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
@@ -374,7 +384,6 @@ constructor(
         askReadStoragePermission()
       }
     }
-
     dialog.show()
   }
 
@@ -495,6 +504,30 @@ constructor(
     }
   }
 
+  private fun deletePic(
+  ) {
+    val imageUri = Uri.parse(
+      ContentResolver.SCHEME_ANDROID_RESOURCE +
+        "://" + resources.getResourcePackageName(drawable.ic_menu_camera)
+        + '/' + resources.getResourceTypeName(drawable.ic_menu_camera) + '/' + resources.getResourceEntryName(
+        drawable.ic_menu_camera
+      )
+    )
+      try {
+        val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
+        encodedImage = encodeJpegImage(bitmap!!)
+        val url = encodedImage!!.toUri()
+        binding.progressBar.show()
+        toggleIsEnable()
+        viewModel.changeAvatar(
+          url.toString(),
+          mUser
+        )
+      } catch (e: FileNotFoundException) {
+        notify(getString(string.file_not_found))
+      }
+    }
+
   private fun openGallery() {
     val galleryIntent = Intent()
     galleryIntent.let {
@@ -562,4 +595,5 @@ constructor(
     binding.updateProfileBtn.toggleIsEnable()
     binding.changePasswordBtn.toggleIsEnable()
   }
+
 }
