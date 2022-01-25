@@ -10,51 +10,6 @@ variables:
   ANDROID_SDK_TOOLS: "4333796"
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
-  SECRET_KEY: "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyg78xheLEUA2x"
-  SERVER_KEY: "AAAAXernFiI:APA91bEsDWs4O0go37_qRNVJEBd3NcXICKFDoSoM9e3dPVmv9GYuJIxW7j2QoLQcfOypoYTdw0Db11CN0gXgHxYVdH-_vW7FCEv4zbxZmwejKuZg1gTaGSaoJvNL4yb4h5DowIzDHnqt"
-  FB_API_KEY: "f9a9cad363122d527785ffde0cd2bbfd"
-  FB_API_SCHEME: "fb1008771500022954"
-  APPETIZE_API: "tok_wqvbbk8ea3ejg3cnhgjknn3de0"
-  APPETIZE_KEY: "4uq67n1fhk209emh1pdeedbfkg"
-  FIREBASE_JSON: {
-    "project_info": {
-      "project_number": "403372971554",
-      "project_id": "agora-android-2a601",
-      "storage_bucket": "agora-android-2a601.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:403372971554:android:53620fbf32fade562adc7b",
-          "android_client_info": {
-            "package_name": "org.aossie.agoraandroid"
-          }
-        },
-        "oauth_client": [
-          {
-            "client_id": "403372971554-96utfo6b8rs616f8gf65v49kig2tl55e.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyAjMxtt1g1SQlHqG7wwZvm6w5XWgqcQq7I"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "403372971554-96utfo6b8rs616f8gf65v49kig2tl55e.apps.googleusercontent.com",
-                "client_type": 3
-              }
-            ]
-          }
-        }
-      }
-    ],
-    "configuration_version": "1"
-  }
 
 
 before_script:
