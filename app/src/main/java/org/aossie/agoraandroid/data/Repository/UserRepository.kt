@@ -101,5 +101,4 @@ class UserRepository(
   suspend fun resendOTP(username: String?): AuthResponse {
     return apiRequest { api.resendOTP(username) }
   }
-
 }

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.Factory
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -27,7 +26,6 @@ import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
-import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.ResponseUI.Status.ERROR
 import org.aossie.agoraandroid.utilities.ResponseUI.Status.LOADING
 import org.aossie.agoraandroid.utilities.ResponseUI.Status.SUCCESS
