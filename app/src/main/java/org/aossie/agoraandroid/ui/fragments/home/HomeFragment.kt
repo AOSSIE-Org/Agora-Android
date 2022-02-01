@@ -20,6 +20,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.getSpotlight
@@ -52,7 +53,7 @@ constructor(
   private var spotlight: Spotlight? = null
   private var spotlightTargets: ArrayList<TargetData>? = null
   private var currentSpotlightIndex = 0
-
+  private var isUpdateCalled = false
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -112,20 +113,15 @@ constructor(
           if (user != null) {
             val formatter =
               SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            // Timber.d(user.token!!)
             val currentDate = Calendar.getInstance()
               .time
             val expireOn = user.authTokenExpiresOn
-            Timber.d(user.toString())
-            Timber.tag("expiresOn")
-              .d(expireOn.toString())
             try {
               if (expireOn != null) {
                 val expiresOn = formatter.parse(expireOn)
                 // If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
-                  Timber.tag("expired")
-                    .d(expireOn.toString())
+
                   lifecycleScope.launch {
                     if (preferenceProvider.getIsFacebookUser()
                       .first()
@@ -145,8 +141,8 @@ constructor(
       )
 
     homeViewModel.countMediatorLiveData.observe(
-      viewLifecycleOwner,
-      {
+      viewLifecycleOwner
+    ) {
         binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
         binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
         binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
@@ -155,8 +151,7 @@ constructor(
         binding.shimmerViewContainer.visibility = View.GONE
         binding.constraintLayout.visibility = View.VISIBLE
         binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
-      }
-    )
+    }
     updateUi()
     binding.root.doOnLayout {
       checkIsFirstOpen()
@@ -164,7 +159,16 @@ constructor(
   }
 
   override fun onNetworkConnected() {
-    updateUi()
+    if(!isUpdateCalled) {
+      isUpdateCalled=true
+      updateUi()
+      homeViewModel.addSource()
+    }
+
+  }
+
+  override fun onNetworkDisconnected() {
+    isUpdateCalled=false
   }
 
   override fun onDestroyView() {
