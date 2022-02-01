@@ -1,11 +1,15 @@
 package org.aossie.agoraandroid.ui.fragments.profile
 
 import android.Manifest
+import android.R
+import android.R.drawable
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -125,7 +129,6 @@ constructor(
       }
     }
     setObserver()
-
     binding.updateProfileBtn.setOnClickListener {
       binding.progressBar.show()
       toggleIsEnable()
@@ -351,6 +354,11 @@ constructor(
       .setView(dialogView.root)
       .create()
 
+    dialogView.deleteProfile.setOnClickListener {
+      dialog.cancel()
+      deletePic()
+    }
+
     dialogView.cameraView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
@@ -374,7 +382,6 @@ constructor(
         askReadStoragePermission()
       }
     }
-
     dialog.show()
   }
 
@@ -492,6 +499,29 @@ constructor(
           mUser
         )
       }
+    }
+  }
+
+  private fun deletePic() {
+    val imageUri = Uri.parse(
+      ContentResolver.SCHEME_ANDROID_RESOURCE +
+        "://" + resources.getResourcePackageName(drawable.ic_menu_camera) +
+        '/' + resources.getResourceTypeName(drawable.ic_menu_camera) + '/' + resources.getResourceEntryName(
+        drawable.ic_menu_camera
+      )
+    )
+    try {
+      val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
+      encodedImage = encodeJpegImage(bitmap!!)
+      val url = encodedImage!!.toUri()
+      binding.progressBar.show()
+      toggleIsEnable()
+      viewModel.changeAvatar(
+        url.toString(),
+        mUser
+      )
+    } catch (e: FileNotFoundException) {
+      notify(getString(string.file_not_found))
     }
   }
 

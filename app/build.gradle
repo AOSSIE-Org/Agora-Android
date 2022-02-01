@@ -169,7 +169,7 @@ dependencies {
 
   //FirebaseBoM
   implementation platform('com.google.firebase:firebase-bom:28.3.0')
-  
+
   //Firebase Messaging
   implementation 'com.google.firebase:firebase-messaging-ktx'
 

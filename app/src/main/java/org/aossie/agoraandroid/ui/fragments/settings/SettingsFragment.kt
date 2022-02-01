@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.ui.fragments.settings
 
 import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat.PNG
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
@@ -11,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.Factory
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
@@ -25,7 +26,9 @@ import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
-import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.utilities.ResponseUI.Status.ERROR
+import org.aossie.agoraandroid.utilities.ResponseUI.Status.LOADING
+import org.aossie.agoraandroid.utilities.ResponseUI.Status.SUCCESS
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.isUrl
 import org.aossie.agoraandroid.utilities.loadImage
@@ -44,7 +47,7 @@ import javax.inject.Inject
 class SettingsFragment
 @Inject
 constructor(
-  private val viewModelFactory: ViewModelProvider.Factory,
+  private val viewModelFactory: Factory,
   private val prefs: PreferenceProvider
 ) : BaseFragment(viewModelFactory) {
 
@@ -68,10 +71,10 @@ constructor(
     savedInstanceState: Bundle?
   ): View? {
     binding = FragmentSettingsBinding.inflate(inflater)
+
     return binding.root
   }
   override fun onFragmentInitiated() {
-
     val user = viewModel.user
     user.observe(
       viewLifecycleOwner,
@@ -103,12 +106,12 @@ constructor(
       viewLifecycleOwner,
       {
         when (it.status) {
-          ResponseUI.Status.ERROR -> {
+          ERROR -> {
             binding.progressBar.hide()
             notify(it.message)
             binding.tvLogout.toggleIsEnable()
           }
-          ResponseUI.Status.SUCCESS -> {
+          SUCCESS -> {
             binding.progressBar.hide()
             lifecycleScope.launch {
               if (prefs.getIsFacebookUser().first()) {
@@ -123,7 +126,7 @@ constructor(
                 SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
               )
           }
-          ResponseUI.Status.LOADING -> {
+          LOADING -> {
             binding.progressBar.show()
             binding.tvLogout.toggleIsEnable()
           }
@@ -175,7 +178,7 @@ constructor(
   }
 
   private fun setAvatar(bitmap: Bitmap) {
-    val bytes = bitmap.toByteArray(Bitmap.CompressFormat.PNG)
+    val bytes = bitmap.toByteArray(PNG)
     try {
       val avatar = File(context?.cacheDir, "avatar")
       if (avatar.exists()) {

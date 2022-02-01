@@ -324,5 +324,10 @@
   <string name="bio_auth_msg">User needs to be authenticated before using the app</string>
   <string name="bar_chart">Bar Chart</string>
   <string name="pie_chart">Pie Chart</string>
+  //facebook login
+  <string name="facebook_app_id">1008771500022954</string>
+  <string name="fb_login_protocol_scheme">fb1008771500022954</string>
 </resources>
+
+
 
