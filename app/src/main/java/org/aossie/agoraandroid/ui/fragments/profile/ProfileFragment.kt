@@ -2,10 +2,12 @@ package org.aossie.agoraandroid.ui.fragments.profile
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -27,6 +29,7 @@ import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
@@ -51,6 +54,9 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
+import android.R.drawable
+import android.content.pm.PackageManager.NameNotFoundException
+import androidx.browser.customtabs.CustomTabsClient.getPackageName
 
 const val CAMERA_PERMISSION_REQUEST_CODE = 1
 const val STORAGE_PERMISSION_REQUEST_CODE = 2
@@ -351,6 +357,11 @@ constructor(
       .setView(dialogView.root)
       .create()
 
+    dialogView.deleteProfile.setOnClickListener {
+      dialog.cancel()
+      deletePic()
+    }
+
     dialogView.cameraView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
@@ -376,6 +387,29 @@ constructor(
     }
 
     dialog.show()
+  }
+
+  private fun deletePic() {
+    val imageUri = Uri.parse(
+      ContentResolver.SCHEME_ANDROID_RESOURCE +
+        "://" + resources.getResourcePackageName(R.drawable.ic_user1) +
+        '/' + resources.getResourceTypeName(R.drawable.ic_user1) + '/' + resources.getResourceEntryName(
+        R.drawable.ic_user1
+      )
+    )
+    try {
+      val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
+      encodedImage = encodeJpegImage(bitmap!!)
+      val url = encodedImage!!.toUri()
+      binding.progressBar.show()
+      toggleIsEnable()
+      viewModel.changeAvatar(
+        url.toString(),
+        mUser
+      )
+    } catch (e: FileNotFoundException) {
+      notify(getString(string.file_not_found))
+    }
   }
 
   private fun askReadStoragePermission() {
@@ -435,7 +469,7 @@ constructor(
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
     if (s.toString() == binding.confirmPasswordTiet.text.toString()
-      .trim()
+        .trim()
     ) {
       binding.confirmPasswordTil.error = null
     } else {
