@@ -20,12 +20,10 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
-import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.scrollToView
-import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -121,7 +119,6 @@ constructor(
                 val expiresOn = formatter.parse(expireOn)
                 // If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
-
                   lifecycleScope.launch {
                     if (preferenceProvider.getIsFacebookUser()
                       .first()
@@ -164,7 +161,6 @@ constructor(
       updateUi()
       homeViewModel.addSource()
     }
-
   }
 
   override fun onNetworkDisconnected() {
