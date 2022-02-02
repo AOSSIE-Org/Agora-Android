@@ -140,14 +140,14 @@ constructor(
     homeViewModel.countMediatorLiveData.observe(
       viewLifecycleOwner
     ) {
-        binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
-        binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
-        binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
-        binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
-        binding.shimmerViewContainer.stopShimmer()
-        binding.shimmerViewContainer.visibility = View.GONE
-        binding.constraintLayout.visibility = View.VISIBLE
-        binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
+      binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
+      binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
+      binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
+      binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
+      binding.shimmerViewContainer.stopShimmer()
+      binding.shimmerViewContainer.visibility = View.GONE
+      binding.constraintLayout.visibility = View.VISIBLE
+      binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
     }
     updateUi()
     binding.root.doOnLayout {
@@ -156,15 +156,15 @@ constructor(
   }
 
   override fun onNetworkConnected() {
-    if(!isUpdateCalled) {
-      isUpdateCalled=true
+    if (!isUpdateCalled) {
+      isUpdateCalled = true
       updateUi()
       homeViewModel.addSource()
     }
   }
 
   override fun onNetworkDisconnected() {
-    isUpdateCalled=false
+    isUpdateCalled = false
   }
 
   override fun onDestroyView() {
