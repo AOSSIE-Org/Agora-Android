@@ -239,9 +239,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun logout() {
     lifecycleScope.launch {
-      if (prefs.getIsLoggedIn()
-          .first()
-      ) binding.root.snackbar(resources.getString(R.string.token_expired))
+      if (prefs.getIsLoggedIn().first())binding.root.snackbar(resources.getString(R.string.token_expired))
       if (prefs.getIsFacebookUser().first()) {
         LoginManager.getInstance()
           .logOut()
