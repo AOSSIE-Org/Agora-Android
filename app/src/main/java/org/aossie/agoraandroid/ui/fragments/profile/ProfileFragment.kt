@@ -54,9 +54,6 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
-import android.R.drawable
-import android.content.pm.PackageManager.NameNotFoundException
-import androidx.browser.customtabs.CustomTabsClient.getPackageName
 
 const val CAMERA_PERMISSION_REQUEST_CODE = 1
 const val STORAGE_PERMISSION_REQUEST_CODE = 2
