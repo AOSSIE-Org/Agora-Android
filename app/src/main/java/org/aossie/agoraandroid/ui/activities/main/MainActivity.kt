@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     GlobalScope.launch {
       prefs.setUpdateNeeded(true)
       if (prefs.getIsLoggedIn()
-          .first()
+        .first()
       ) {
         if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
           withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
