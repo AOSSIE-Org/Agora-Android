@@ -99,16 +99,37 @@ constructor(
           ResponseUI.Status.LOADING -> {
             binding.progressBar.show()
             binding.signupBtn.toggleIsEnable()
+            binding.etUsername.toggleIsEnable()
+            binding.etFirstName.toggleIsEnable()
+            binding.etLastName.toggleIsEnable()
+            binding.etEmail.toggleIsEnable()
+            binding.etPassword.toggleIsEnable()
+            binding.signUpSecurityQuestion.toggleIsEnable()
+            binding.securityAnswer.toggleIsEnable()
           }
           ResponseUI.Status.SUCCESS -> {
             binding.progressBar.hide()
             notify(getString(string.verify_account))
             binding.signupBtn.toggleIsEnable()
+            binding.etUsername.toggleIsEnable()
+            binding.etFirstName.toggleIsEnable()
+            binding.etLastName.toggleIsEnable()
+            binding.etEmail.toggleIsEnable()
+            binding.etPassword.toggleIsEnable()
+            binding.signUpSecurityQuestion.toggleIsEnable()
+            binding.securityAnswer.toggleIsEnable()
           }
           ResponseUI.Status.ERROR -> {
             notify(it.message)
             binding.progressBar.hide()
             binding.signupBtn.toggleIsEnable()
+            binding.etUsername.toggleIsEnable()
+            binding.etFirstName.toggleIsEnable()
+            binding.etLastName.toggleIsEnable()
+            binding.etEmail.toggleIsEnable()
+            binding.etPassword.toggleIsEnable()
+            binding.signUpSecurityQuestion.toggleIsEnable()
+            binding.securityAnswer.toggleIsEnable()
           }
         }
       }

@@ -74,9 +74,14 @@ constructor(
           ResponseUI.Status.LOADING -> {
             binding.progressBar.show()
             binding.loginBtn.toggleIsEnable()
+            binding.username.toggleIsEnable()
+            binding.password.toggleIsEnable()
+
           }
           ResponseUI.Status.SUCCESS -> {
             binding.loginBtn.toggleIsEnable()
+            binding.username.toggleIsEnable()
+            binding.password.toggleIsEnable()
             binding.progressBar.hide()
             it.message?.let { crypto ->
               onTwoFactorAuthentication(crypto)
@@ -89,6 +94,8 @@ constructor(
             binding.progressBar.hide()
             notify(it.message)
             binding.loginBtn.toggleIsEnable()
+            binding.username.toggleIsEnable()
+            binding.password.toggleIsEnable()
             enableBtnFacebook()
           }
         }
@@ -129,6 +136,7 @@ constructor(
     }
 
     binding.loginBtn.setOnClickListener {
+//      binding.username.setEnabled(false)
       val userName = binding.loginUserNameTil.editText
         ?.text
         .toString()
