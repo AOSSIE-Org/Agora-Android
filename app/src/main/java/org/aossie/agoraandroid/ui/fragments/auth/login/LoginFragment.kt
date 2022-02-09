@@ -76,7 +76,6 @@ constructor(
             binding.loginBtn.toggleIsEnable()
             binding.username.toggleIsEnable()
             binding.password.toggleIsEnable()
-
           }
           ResponseUI.Status.SUCCESS -> {
             binding.loginBtn.toggleIsEnable()
