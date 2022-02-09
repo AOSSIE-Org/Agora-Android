@@ -256,7 +256,10 @@ constructor(
       {
         when (it.status) {
           ResponseUI.Status.LOADING -> onLoadingStarted()
-          ResponseUI.Status.SUCCESS -> binding.progressBar.hide()
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            toggleIsEnable()
+          }
           ResponseUI.Status.ERROR -> {
             onError(it.message)
           }
@@ -435,7 +438,7 @@ constructor(
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
     if (s.toString() == binding.confirmPasswordTiet.text.toString()
-      .trim()
+        .trim()
     ) {
       binding.confirmPasswordTil.error = null
     } else {
