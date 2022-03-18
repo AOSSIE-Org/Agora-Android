@@ -24,6 +24,7 @@ import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.TargetData
 import org.aossie.agoraandroid.utilities.getSpotlight
 import org.aossie.agoraandroid.utilities.scrollToView
+import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -111,12 +112,15 @@ constructor(
           if (user != null) {
             val formatter =
               SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            // Timber.d(user.token!!)
             val currentDate = Calendar.getInstance()
               .time
             val expireOn = user.authTokenExpiresOn
             try {
               if (expireOn != null) {
                 val expiresOn = formatter.parse(expireOn)
+                Timber.d(user.toString())
+                Timber.tag("expiresOn")
                 // If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
                   lifecycleScope.launch {
