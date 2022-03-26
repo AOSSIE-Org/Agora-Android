@@ -73,15 +73,11 @@ constructor(
         when (it.status) {
           ResponseUI.Status.LOADING -> {
             binding.progressBar.show()
-            binding.loginBtn.toggleIsEnable()
-            binding.username.toggleIsEnable()
-            binding.password.toggleIsEnable()
+            makeFieldsToggleEnable()
           }
           ResponseUI.Status.SUCCESS -> {
-            binding.loginBtn.toggleIsEnable()
-            binding.username.toggleIsEnable()
-            binding.password.toggleIsEnable()
             binding.progressBar.hide()
+            makeFieldsToggleEnable()
             it.message?.let { crypto ->
               onTwoFactorAuthentication(crypto)
             } ?: kotlin.run {
@@ -92,9 +88,7 @@ constructor(
           ResponseUI.Status.ERROR -> {
             binding.progressBar.hide()
             notify(it.message)
-            binding.loginBtn.toggleIsEnable()
-            binding.username.toggleIsEnable()
-            binding.password.toggleIsEnable()
+            makeFieldsToggleEnable()
             enableBtnFacebook()
           }
         }
@@ -128,6 +122,12 @@ constructor(
       )
   }
 
+  private fun makeFieldsToggleEnable(){
+    binding.loginBtn.toggleIsEnable()
+    binding.username.toggleIsEnable()
+    binding.password.toggleIsEnable()
+  }
+
   private fun initListeners() {
     binding.forgotPasswordTv.setOnClickListener {
       Navigation.findNavController(binding.root)
@@ -135,7 +135,6 @@ constructor(
     }
 
     binding.loginBtn.setOnClickListener {
-//      binding.username.setEnabled(false)
       val userName = binding.loginUserNameTil.editText
         ?.text
         .toString()
