@@ -122,7 +122,7 @@ constructor(
       )
   }
 
-  private fun makeFieldsToggleEnable(){
+  private fun makeFieldsToggleEnable() {
     binding.loginBtn.toggleIsEnable()
     binding.username.toggleIsEnable()
     binding.password.toggleIsEnable()

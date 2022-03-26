@@ -115,7 +115,7 @@ constructor(
     )
   }
 
-  private fun makeFieldsToggleEnable(){
+  private fun makeFieldsToggleEnable() {
     binding.signupBtn.toggleIsEnable()
     binding.etUsername.toggleIsEnable()
     binding.etFirstName.toggleIsEnable()
@@ -125,7 +125,6 @@ constructor(
     binding.signUpSecurityQuestion.toggleIsEnable()
     binding.securityAnswer.toggleIsEnable()
   }
-
 
   private fun validateAllFields() {
     val userName = binding.signupUserName.editText
