@@ -49,7 +49,7 @@ constructor(
   private val prefs: PreferenceProvider
 ) : BaseFragment(viewModelFactory) {
 
-  var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+  var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z.]+"
 
   private var id: String? = null
 
