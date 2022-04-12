@@ -256,7 +256,10 @@ constructor(
       {
         when (it.status) {
           ResponseUI.Status.LOADING -> onLoadingStarted()
-          ResponseUI.Status.SUCCESS -> binding.progressBar.hide()
+          ResponseUI.Status.SUCCESS -> {
+            binding.progressBar.hide()
+            toggleIsEnable()
+          }
           ResponseUI.Status.ERROR -> {
             onError(it.message)
           }
