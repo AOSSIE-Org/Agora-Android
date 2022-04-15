@@ -99,7 +99,8 @@ class MainActivity : AppCompatActivity() {
       ) {
         if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
           withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
-        else navController.navigate(R.id.homeFragment)
+        else
+          withContext(Dispatchers.Main) { navController.navigate(R.id.homeFragment) }
       }
     }
 
