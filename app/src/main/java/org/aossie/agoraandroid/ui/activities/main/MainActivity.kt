@@ -166,10 +166,10 @@ class MainActivity : AppCompatActivity() {
       R.id.signUpFragment,
       R.id.forgotPasswordFragment,
       -> {
-          window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
-          supportActionBar?.hide()
+        window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        supportActionBar?.hide()
       }
-      R.id.settingsFragment->{
+      R.id.settingsFragment -> {
         supportActionBar?.hide();
       }
       else -> {
