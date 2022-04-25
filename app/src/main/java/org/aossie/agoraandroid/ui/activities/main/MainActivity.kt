@@ -167,12 +167,8 @@ class MainActivity : AppCompatActivity() {
       R.id.forgotPasswordFragment,
       R.id.settingsFragment
       -> {
-        if (id == R.id.settingsFragment) {
-          supportActionBar?.hide()
-        } else {
-          window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
-          supportActionBar?.hide()
-        }
+        window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        supportActionBar?.hide()
       }
       else -> {
         window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
