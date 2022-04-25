@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
       }
       R.id.settingsFragment -> {
-        supportActionBar?.hide();
+        supportActionBar?.hide()
       }
       else -> {
         window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
