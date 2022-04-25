@@ -469,7 +469,7 @@ constructor(
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
     if (s.toString() == binding.confirmPasswordTiet.text.toString()
-      .trim()
+        .trim()
     ) {
       binding.confirmPasswordTil.error = null
     } else {
