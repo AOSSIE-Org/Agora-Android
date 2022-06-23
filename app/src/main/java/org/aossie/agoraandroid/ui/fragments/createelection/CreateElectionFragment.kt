@@ -244,7 +244,7 @@ constructor(
             )
           )
         } else {
-          if(mCandidates.isEmpty())
+          if (mCandidates.isEmpty())
             notify(getString(string.add_one_candidate))
           else
             notify(getString(string.time_tracker))
