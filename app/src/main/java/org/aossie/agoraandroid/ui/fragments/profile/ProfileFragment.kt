@@ -357,6 +357,11 @@ constructor(
       .setView(dialogView.root)
       .create()
 
+    dialogView.deleteProfile.setOnClickListener {
+      dialog.cancel()
+      deletePic()
+    }
+
     dialogView.cameraView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(

@@ -36,7 +36,6 @@
     android:orientation="vertical"
     tools:ignore="UseCompoundDrawables"
     >
-
     <ImageView
       android:layout_width="@dimen/size_100dp"
       android:layout_height="@dimen/size_100dp"
