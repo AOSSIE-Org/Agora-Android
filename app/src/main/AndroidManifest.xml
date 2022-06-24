@@ -17,12 +17,19 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
       android:largeHeap="true"
-      android:theme="@style/AppTheme">
+      android:theme="@style/Theme.App.Starting.">
+
+    <activity-alias
+      android:name="leakcanary.internal.activity.LeakLauncherActivity"
+      android:exported="true"
+      android:targetActivity="leakcanary.internal.activity.LeakActivity"
+      tools:node="merge" />
 
     <activity
         android:name=".ui.activities.castVote.CastVoteActivity"
         android:configChanges="orientation|screenSize"
         android:windowSoftInputMode="adjustPan"
+        android:exported="true"
         android:launchMode="singleTask">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
@@ -43,7 +50,8 @@
     <activity
         android:name=".ui.activities.main.MainActivity"
         android:configChanges="orientation|screenSize"
-        android:theme="@style/SplashTheme"
+        android:theme="@style/Theme.App.Starting."
+        android:exported="true"
         android:windowSoftInputMode="adjustResize|stateVisible"
       android:launchMode="singleTask">
     <intent-filter>
