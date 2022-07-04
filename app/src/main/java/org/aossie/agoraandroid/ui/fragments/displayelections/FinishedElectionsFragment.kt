@@ -99,6 +99,7 @@ constructor(
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
       electionsAdapter.submitList(elections)
+      binding.tvEmptyElection.hide()
     } else {
       binding.tvEmptyElection.show()
     }
