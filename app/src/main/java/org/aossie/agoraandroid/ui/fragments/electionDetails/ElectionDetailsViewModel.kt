@@ -12,17 +12,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.dto.BallotDto
-import org.aossie.agoraandroid.data.dto.VotersDto
-import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
+import org.aossie.agoraandroid.data.remote.dto.BallotDto
+import org.aossie.agoraandroid.data.remote.dto.VotersDto
+import org.aossie.agoraandroid.data.remote.dto.WinnerDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.FileUtils
-import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.SessionExpirationException
+import org.aossie.agoraandroid.common.utilities.ApiException
+import org.aossie.agoraandroid.common.utilities.FileUtils
+import org.aossie.agoraandroid.common.utilities.NoInternetException
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.SessionExpirationException
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import timber.log.Timber
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class ElectionDetailsViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val electionsRepository: ElectionsRepositoryImpl
 ) : ViewModel() {
 
   private val _getVoterResponseLiveData = MutableLiveData<ResponseUI<VotersDto>>()

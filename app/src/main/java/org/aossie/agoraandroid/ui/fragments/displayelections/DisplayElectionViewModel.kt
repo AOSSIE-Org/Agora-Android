@@ -1,9 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import androidx.lifecycle.ViewModel
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.utilities.lazyDeferred
+import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
+import org.aossie.agoraandroid.common.utilities.lazyDeferred
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class DisplayElectionViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val electionsRepository: ElectionsRepositoryImpl
 ) : ViewModel() {
 
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)

@@ -14,9 +14,9 @@ import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.ui.activities.main.MainActivityViewModel
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.InternetManager
-import org.aossie.agoraandroid.utilities.NetworkStatus
-import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.common.utilities.InternetManager
+import org.aossie.agoraandroid.common.utilities.NetworkStatus
+import org.aossie.agoraandroid.common.utilities.snackbar
 
 abstract class BaseFragment(
   private val viewModelFactory: ViewModelProvider.Factory,

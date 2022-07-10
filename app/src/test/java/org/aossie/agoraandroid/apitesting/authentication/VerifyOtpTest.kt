@@ -4,9 +4,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
-import org.aossie.agoraandroid.data.dto.VerifyOtpDto
-import org.aossie.agoraandroid.data.dto.VerifyOtpDtoJsonAdapter
-import org.aossie.agoraandroid.utilities.MockFileParser
+import org.aossie.agoraandroid.data.remote.dto.VerifyOtpDto
+import org.aossie.agoraandroid.data.remote.dto.VerifyOtpDtoJsonAdapter
+import org.aossie.agoraandroid.common.utilities.MockFileParser
 import org.junit.Assert
 import org.junit.Test
 import retrofit2.Response

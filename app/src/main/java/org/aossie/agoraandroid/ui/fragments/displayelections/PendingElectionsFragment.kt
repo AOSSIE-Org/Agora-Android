@@ -18,8 +18,8 @@ import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentPendingElectionsBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.common.utilities.hide
+import org.aossie.agoraandroid.common.utilities.show
 import java.util.ArrayList
 import javax.inject.Inject
 

@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import javax.inject.Inject
 
 class MainActivityViewModel
 @Inject
 constructor(
-  val userRepository: UserRepository
+  val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
   private val mutableIsLogout = MutableLiveData<Boolean>()

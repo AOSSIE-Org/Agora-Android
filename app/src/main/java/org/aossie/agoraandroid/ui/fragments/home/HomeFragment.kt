@@ -20,10 +20,10 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.TargetData
-import org.aossie.agoraandroid.utilities.getSpotlight
-import org.aossie.agoraandroid.utilities.scrollToView
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.TargetData
+import org.aossie.agoraandroid.common.utilities.getSpotlight
+import org.aossie.agoraandroid.common.utilities.scrollToView
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat

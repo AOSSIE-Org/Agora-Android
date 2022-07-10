@@ -13,10 +13,10 @@ import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.HideKeyboard
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.common.utilities.HideKeyboard
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.hide
+import org.aossie.agoraandroid.common.utilities.show
 import javax.inject.Inject
 
 class TwoFactorAuthFragment

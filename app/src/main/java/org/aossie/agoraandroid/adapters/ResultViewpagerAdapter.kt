@@ -2,7 +2,7 @@ package org.aossie.agoraandroid.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.data.remote.dto.WinnerDto
 import org.aossie.agoraandroid.ui.fragments.electionDetails.visualisation.ChartFragment
 
 class ResultViewpagerAdapter(

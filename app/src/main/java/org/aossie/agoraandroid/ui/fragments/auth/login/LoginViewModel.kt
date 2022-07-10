@@ -4,25 +4,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.dto.LoginDto
-import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.data.remote.dto.LoginDto
+import org.aossie.agoraandroid.data.models.AuthResponse
+import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.SessionExpirationException
-import org.aossie.agoraandroid.utilities.subscribeToFCM
+import org.aossie.agoraandroid.common.utilities.ApiException
+import org.aossie.agoraandroid.common.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.NoInternetException
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.SessionExpirationException
+import org.aossie.agoraandroid.common.utilities.subscribeToFCM
 import timber.log.Timber
 import javax.inject.Inject
 
 class LoginViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository,
+  private val userRepository: UserRepositoryImpl,
   private val prefs: PreferenceProvider
 ) : ViewModel() {
 

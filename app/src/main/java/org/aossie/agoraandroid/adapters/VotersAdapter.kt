@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.adapters.VotersAdapter.VotersViewHolder
-import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.remote.dto.VotersDto
 
 class VotersAdapter(private val voters: List<VotersDto>) : Adapter<VotersViewHolder>() {
 

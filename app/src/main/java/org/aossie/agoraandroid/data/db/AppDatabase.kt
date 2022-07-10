@@ -9,7 +9,7 @@ import org.aossie.agoraandroid.data.db.dao.ElectionsDao
 import org.aossie.agoraandroid.data.db.dao.UserDao
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.utilities.Converters
+import org.aossie.agoraandroid.common.utilities.Converters
 
 @Database(
   entities = [User::class, Election::class],

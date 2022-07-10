@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.data.network
 
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.ApiException
+import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response

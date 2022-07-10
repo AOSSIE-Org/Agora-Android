@@ -11,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteActivity
-import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.AppConstants
 import timber.log.Timber
 
 class FcmService : FirebaseMessagingService() {
