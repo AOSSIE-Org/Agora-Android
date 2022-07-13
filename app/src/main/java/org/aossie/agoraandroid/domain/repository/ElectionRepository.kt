@@ -2,8 +2,8 @@ package org.aossie.agoraandroid.domain.repository
 
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.models.Ballots
-import org.aossie.agoraandroid.data.models.ElectionResponse
+import org.aossie.agoraandroid.data.remote.models.Ballots
+import org.aossie.agoraandroid.data.remote.models.ElectionResponse
 import org.aossie.agoraandroid.data.remote.dto.ElectionDto
 import org.aossie.agoraandroid.data.remote.dto.VotersDto
 import org.aossie.agoraandroid.data.remote.dto.WinnerDto

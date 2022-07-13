@@ -10,10 +10,10 @@ import org.aossie.agoraandroid.data.remote.dto.UrlDto
 import org.aossie.agoraandroid.data.remote.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.remote.dto.VotersDto
 import org.aossie.agoraandroid.data.remote.dto.WinnerDto
-import org.aossie.agoraandroid.data.models.AuthResponse
-import org.aossie.agoraandroid.data.models.Ballots
-import org.aossie.agoraandroid.data.models.ElectionListResponse
-import org.aossie.agoraandroid.data.models.VotersResponse
+import org.aossie.agoraandroid.data.remote.models.AuthResponse
+import org.aossie.agoraandroid.data.remote.models.Ballots
+import org.aossie.agoraandroid.data.remote.models.ElectionListResponse
+import org.aossie.agoraandroid.data.remote.models.VotersResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

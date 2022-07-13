@@ -2,7 +2,7 @@ package org.aossie.agoraandroid.data.remote.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.aossie.agoraandroid.data.models.AuthToken
+import org.aossie.agoraandroid.data.remote.models.AuthToken
 
 @JsonClass(generateAdapter = true)
 data class UpdateUserDto(

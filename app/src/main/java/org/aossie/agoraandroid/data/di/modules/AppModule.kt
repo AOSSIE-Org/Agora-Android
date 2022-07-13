@@ -21,6 +21,8 @@ import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.common.utilities.InternetManager
 import org.aossie.agoraandroid.common.utilities.SecurityUtil
+import org.aossie.agoraandroid.domain.repository.UserRepository
+import org.aossie.agoraandroid.domain.useCases.SignUpUseCase
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
@@ -168,6 +170,15 @@ class AppModule {
     api: Api,
     appDatabase: AppDatabase,
     preferenceProvider: PreferenceProvider
+  ): UserRepository {
+    return UserRepositoryImpl(api, appDatabase, preferenceProvider)
+  }
+  @Provides
+  @Singleton
+  fun provideUserRepository(
+    api: Api,
+    appDatabase: AppDatabase,
+    preferenceProvider: PreferenceProvider
   ): UserRepositoryImpl {
     return UserRepositoryImpl(api, appDatabase, preferenceProvider)
   }
@@ -232,4 +243,11 @@ class AppModule {
   @Singleton
   fun providesFCM(@Named("retrofitForFCM") retrofit: Retrofit): FCMApi =
     retrofit.create(FCMApi::class.java)
+
+  @Provides
+  @Singleton
+  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
+    return SignUpUseCase(repository)
+  }
+
 }

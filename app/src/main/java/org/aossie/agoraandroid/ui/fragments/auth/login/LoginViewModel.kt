@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.remote.dto.LoginDto
-import org.aossie.agoraandroid.data.models.AuthResponse
+import org.aossie.agoraandroid.data.remote.models.AuthResponse
 import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.common.utilities.ApiException

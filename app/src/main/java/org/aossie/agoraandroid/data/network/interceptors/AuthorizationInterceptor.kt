@@ -9,8 +9,8 @@ import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.remote.apiservice.Api
-import org.aossie.agoraandroid.data.network.ApiRequest
-import org.aossie.agoraandroid.data.models.AuthResponse
+import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
+import org.aossie.agoraandroid.data.remote.models.AuthResponse
 import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.common.utilities.SessionExpirationException
 import timber.log.Timber

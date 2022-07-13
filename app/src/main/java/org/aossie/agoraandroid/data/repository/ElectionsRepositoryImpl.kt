@@ -13,9 +13,9 @@ import org.aossie.agoraandroid.data.remote.dto.ElectionDto
 import org.aossie.agoraandroid.data.remote.dto.VotersDto
 import org.aossie.agoraandroid.data.remote.dto.WinnerDto
 import org.aossie.agoraandroid.data.remote.apiservice.Api
-import org.aossie.agoraandroid.data.network.ApiRequest
-import org.aossie.agoraandroid.data.models.Ballots
-import org.aossie.agoraandroid.data.models.ElectionResponse
+import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
+import org.aossie.agoraandroid.data.remote.models.Ballots
+import org.aossie.agoraandroid.data.remote.models.ElectionResponse
 import org.aossie.agoraandroid.domain.repository.ElectionRepository
 import org.aossie.agoraandroid.common.utilities.ApiException
 import org.aossie.agoraandroid.common.utilities.AppConstants

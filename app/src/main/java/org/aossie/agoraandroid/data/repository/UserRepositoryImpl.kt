@@ -12,8 +12,8 @@ import org.aossie.agoraandroid.data.remote.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.remote.dto.UrlDto
 import org.aossie.agoraandroid.data.remote.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.remote.apiservice.Api
-import org.aossie.agoraandroid.data.network.ApiRequest
-import org.aossie.agoraandroid.data.models.AuthResponse
+import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
+import org.aossie.agoraandroid.data.remote.models.AuthResponse
 import org.aossie.agoraandroid.domain.repository.UserRepository
 import org.aossie.agoraandroid.common.utilities.unsubscribeFromFCM
 import timber.log.Timber

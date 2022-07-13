@@ -2,7 +2,7 @@ package org.aossie.agoraandroid.domain.repository
 
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.models.AuthResponse
+import org.aossie.agoraandroid.data.remote.models.AuthResponse
 import org.aossie.agoraandroid.data.remote.dto.LoginDto
 import org.aossie.agoraandroid.data.remote.dto.NewUserDto
 import org.aossie.agoraandroid.data.remote.dto.UpdateUserDto

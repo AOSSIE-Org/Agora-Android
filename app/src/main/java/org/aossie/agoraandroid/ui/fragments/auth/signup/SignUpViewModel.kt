@@ -12,15 +12,15 @@ import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.common.utilities.NoInternetException
 import org.aossie.agoraandroid.common.utilities.ResponseUI
 import org.aossie.agoraandroid.common.utilities.SessionExpirationException
+import org.aossie.agoraandroid.domain.useCases.SignUpUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
 class SignUpViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepositoryImpl
+  private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
-
   lateinit var sessionExpiredListener: SessionExpiredListener
   private val _getSignUpLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
   val getSignUpLiveData = _getSignUpLiveData
@@ -30,7 +30,7 @@ constructor(
     _getSignUpLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val call = userRepository.userSignup(userData)
+        val call = signUpUseCase(userData)
         Timber.d(call)
         _getSignUpLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {

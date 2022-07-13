@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.data.models
+package org.aossie.agoraandroid.data.remote.models
 
 import com.squareup.moshi.JsonClass
 
