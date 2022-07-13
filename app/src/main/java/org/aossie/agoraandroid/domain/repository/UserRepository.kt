@@ -7,6 +7,7 @@ import org.aossie.agoraandroid.data.remote.dto.LoginDto
 import org.aossie.agoraandroid.data.remote.dto.NewUserDto
 import org.aossie.agoraandroid.data.remote.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.remote.dto.VerifyOtpDto
+import org.aossie.agoraandroid.domain.model.UserModel
 
 interface UserRepository {
   suspend fun userSignup(userData: NewUserDto): String
