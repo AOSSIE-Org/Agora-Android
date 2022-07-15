@@ -52,7 +52,6 @@ constructor(
         forgotPasswordViewModel.sendResetLink(userName)
       }
     }
-
     forgotPasswordViewModel.getSendResetLinkLiveData.observe(
       viewLifecycleOwner,
       {

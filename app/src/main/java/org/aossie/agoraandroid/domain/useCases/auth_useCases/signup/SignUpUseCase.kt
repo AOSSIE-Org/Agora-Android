@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.domain.useCases
+package org.aossie.agoraandroid.domain.useCases.auth_useCases.signup
 
 import org.aossie.agoraandroid.data.remote.dto.NewUserDto
 import org.aossie.agoraandroid.domain.repository.UserRepository

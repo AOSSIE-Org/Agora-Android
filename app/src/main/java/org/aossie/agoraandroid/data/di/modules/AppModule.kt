@@ -22,7 +22,20 @@ import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.common.utilities.InternetManager
 import org.aossie.agoraandroid.common.utilities.SecurityUtil
 import org.aossie.agoraandroid.domain.repository.UserRepository
-import org.aossie.agoraandroid.domain.useCases.SignUpUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.forgot_passowrd.SendForgotPasswordLinkUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.FaceBookLogInUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.RefreshAccessTokenUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.UserLogInUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.signup.SignUpUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.twoFactorAuthentication.ResendOTPUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.twoFactorAuthentication.VeriFyOTPUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.ChangeAvatarUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.ChangePasswordUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.GetUserDataUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.ToggleTwoFactorAuthenticationUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.UpdateUserUseCase
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
@@ -246,8 +259,86 @@ class AppModule {
 
   @Provides
   @Singleton
+  fun provideFaceBookLogInUseCase(repository: UserRepository): FaceBookLogInUseCase {
+    return FaceBookLogInUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideUserLogInUseCase(repository: UserRepository): UserLogInUseCase {
+    return UserLogInUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideSaveUserUseCase(repository: UserRepository): SaveUserUseCase {
+    return SaveUserUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideRefreshAccessTokenUseCase(repository: UserRepository): RefreshAccessTokenUseCase {
+    return RefreshAccessTokenUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideGetUserUseCase(repository: UserRepository): GetUserUseCase {
+    return GetUserUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
   fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
     return SignUpUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideSendForgotPasswordLinkUseCase(repository: UserRepository) : SendForgotPasswordLinkUseCase {
+    return SendForgotPasswordLinkUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideResendOTPUseCase(repository: UserRepository) : ResendOTPUseCase {
+    return ResendOTPUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideVeriFyOTPUseCase(repository: UserRepository) : VeriFyOTPUseCase {
+    return VeriFyOTPUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideChangePasswordUseCase(repository: UserRepository) : ChangePasswordUseCase {
+    return ChangePasswordUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideChangeAvatarUseCase(repository: UserRepository) : ChangeAvatarUseCase {
+    return ChangeAvatarUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideGetUserDataUseCase(repository: UserRepository) : GetUserDataUseCase {
+    return GetUserDataUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideToggleTwoFactorAuthenticationUseCase(repository: UserRepository) : ToggleTwoFactorAuthenticationUseCase {
+    return ToggleTwoFactorAuthenticationUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideUpdateUserUseCase(repository: UserRepository) : UpdateUserUseCase {
+    return UpdateUserUseCase(repository)
   }
 
 }

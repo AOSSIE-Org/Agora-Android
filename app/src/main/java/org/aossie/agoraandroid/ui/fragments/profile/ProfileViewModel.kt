@@ -14,16 +14,29 @@ import org.aossie.agoraandroid.common.utilities.ApiException
 import org.aossie.agoraandroid.common.utilities.NoInternetException
 import org.aossie.agoraandroid.common.utilities.ResponseUI
 import org.aossie.agoraandroid.common.utilities.SessionExpirationException
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.ChangeAvatarUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.ChangePasswordUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.GetUserDataUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.ToggleTwoFactorAuthenticationUseCase
+import org.aossie.agoraandroid.domain.useCases.updateprofile.UpdateUserUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
 class ProfileViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepositoryImpl
-) : ViewModel() {
+  private val getUserUseCase: GetUserUseCase,
+  private val changePasswordUseCase: ChangePasswordUseCase,
+  private val changeAvatarUseCase: ChangeAvatarUseCase,
+  private val getUserDataUseCase: GetUserDataUseCase,
+  private val saveUserUseCase: SaveUserUseCase,
+  private val toggleTwoFactorAuthenticationUseCase: ToggleTwoFactorAuthenticationUseCase,
+  private val updateUserUseCase: UpdateUserUseCase
+  ) : ViewModel() {
 
-  val user = userRepository.getUser()
+  val user = getUserUseCase()
   private lateinit var sessionExpiredListener: SessionExpiredListener
   private val _passwordRequestCode = MutableLiveData<ResponseUI<Any>>()
 
@@ -49,7 +62,7 @@ constructor(
 
     viewModelScope.launch {
       try {
-        userRepository.changePassword(password)
+        changePasswordUseCase(password)
         _passwordRequestCode.value = ResponseUI.success()
       } catch (e: ApiException) {
         _passwordRequestCode.value = ResponseUI.error(e.message)
@@ -70,8 +83,8 @@ constructor(
 
     viewModelScope.launch {
       try {
-        userRepository.changeAvatar(url)
-        val authResponse = userRepository.getUserData()
+        changeAvatarUseCase(url)
+        val authResponse = getUserDataUseCase()
         Timber.d(authResponse.toString())
         authResponse.let {
           val mUser = User(
@@ -80,7 +93,7 @@ constructor(
             user.authTokenExpiresOn, user.refreshToken, user.refreshTokenExpiresOn,
             user.trustedDevice
           )
-          userRepository.saveUser(mUser)
+          saveUserUseCase(user)
         }
         _changeAvatarResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
@@ -98,7 +111,7 @@ constructor(
   fun toggleTwoFactorAuth() {
     viewModelScope.launch {
       try {
-        userRepository.toggleTwoFactorAuth()
+        toggleTwoFactorAuthenticationUseCase()
         _toggleTwoFactorAuthResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message)
@@ -127,8 +140,8 @@ constructor(
           authToken = AuthToken(user.authToken, user.authTokenExpiresOn),
           refreshToken = AuthToken(user.refreshToken, user.refreshTokenExpiresOn)
         )
-        userRepository.updateUser(updateUserDto)
-        userRepository.saveUser(user)
+        updateUserUseCase(updateUserDto)
+        saveUserUseCase(user)
         _userUpdateResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
         _userUpdateResponse.value = ResponseUI.error(e.message)

@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.remote.dto.NewUserDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.common.utilities.ApiException
@@ -12,7 +11,7 @@ import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.common.utilities.NoInternetException
 import org.aossie.agoraandroid.common.utilities.ResponseUI
 import org.aossie.agoraandroid.common.utilities.SessionExpirationException
-import org.aossie.agoraandroid.domain.useCases.SignUpUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.signup.SignUpUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
