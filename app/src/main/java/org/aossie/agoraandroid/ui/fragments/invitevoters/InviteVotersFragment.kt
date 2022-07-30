@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.FileUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,7 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.common.utilities.AppConstants
-import org.aossie.agoraandroid.common.utilities.FileUtils.getPathFromUri
+import org.aossie.agoraandroid.common.utilities.FileUtils
 import org.aossie.agoraandroid.common.utilities.ResponseUI
 import org.aossie.agoraandroid.common.utilities.hide
 import org.aossie.agoraandroid.common.utilities.show
