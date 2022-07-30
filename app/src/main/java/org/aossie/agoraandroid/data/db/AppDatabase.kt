@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import org.aossie.agoraandroid.common.utilities.Converters
 import org.aossie.agoraandroid.data.db.dao.ElectionsDao
 import org.aossie.agoraandroid.data.db.dao.UserDao
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.utilities.Converters
 
 @Database(
   entities = [User::class, Election::class],

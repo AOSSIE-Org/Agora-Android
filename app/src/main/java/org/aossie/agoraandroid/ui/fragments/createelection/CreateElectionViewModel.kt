@@ -8,11 +8,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.dto.ElectionDto
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.ApiException
+import org.aossie.agoraandroid.common.utilities.NoInternetException
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.data.remote.dto.ElectionDto
+import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
 import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -27,7 +27,7 @@ import javax.inject.Inject
 internal class CreateElectionViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val electionsRepository: ElectionsRepositoryImpl
 ) : ViewModel() {
 
   private val _getCreateElectionData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()

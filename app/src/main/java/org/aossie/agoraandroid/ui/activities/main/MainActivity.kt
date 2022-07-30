@@ -30,18 +30,18 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
+import org.aossie.agoraandroid.common.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.animGone
+import org.aossie.agoraandroid.common.utilities.animVisible
+import org.aossie.agoraandroid.common.utilities.canAuthenticateBiometric
+import org.aossie.agoraandroid.common.utilities.notifyNetworkChanged
+import org.aossie.agoraandroid.common.utilities.snackbar
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityMainBinding
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
-import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.animGone
-import org.aossie.agoraandroid.utilities.animVisible
-import org.aossie.agoraandroid.utilities.canAuthenticateBiometric
-import org.aossie.agoraandroid.utilities.notifyNetworkChanged
-import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {

@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.common.utilities.ApiException
+import org.aossie.agoraandroid.common.utilities.NoInternetException
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.SessionExpirationException
+import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
+import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.SessionExpirationException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -26,8 +26,8 @@ const val ACTIVE_ELECTION_COUNT = "activeElectionsCount"
 
 class HomeViewModel @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository,
-  private val userRepository: UserRepository
+  private val electionsRepository: ElectionsRepositoryImpl,
+  private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
   private val _getLogoutLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
   val getLogoutLiveData = _getLogoutLiveData

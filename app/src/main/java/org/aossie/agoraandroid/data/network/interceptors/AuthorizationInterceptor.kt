@@ -5,14 +5,14 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import org.aossie.agoraandroid.common.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.SessionExpirationException
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.Api
-import org.aossie.agoraandroid.data.network.ApiRequest
-import org.aossie.agoraandroid.data.network.responses.AuthResponse
-import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.SessionExpirationException
+import org.aossie.agoraandroid.data.remote.apiservice.Api
+import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
+import org.aossie.agoraandroid.data.remote.models.AuthResponse
 import timber.log.Timber
 import javax.inject.Named
 

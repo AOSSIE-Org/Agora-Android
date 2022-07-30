@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.FileUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,18 +25,18 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
+import org.aossie.agoraandroid.common.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.FileUtils.getPathFromUri
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.hide
+import org.aossie.agoraandroid.common.utilities.show
+import org.aossie.agoraandroid.common.utilities.toggleIsEnable
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.remote.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentInviteVotersBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_INTENT_REQUEST_CODE
 import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_PERMISSION_REQUEST_CODE
-import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.FileUtils
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.toggleIsEnable
 import org.json.JSONException
 import javax.inject.Inject
 
