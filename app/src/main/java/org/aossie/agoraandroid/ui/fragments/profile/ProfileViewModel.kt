@@ -80,7 +80,6 @@ constructor(
     url: String,
     user: User
   ) {
-
     viewModelScope.launch {
       try {
         changeAvatarUseCase(url)

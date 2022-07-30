@@ -24,6 +24,7 @@ import org.aossie.agoraandroid.common.utilities.SecurityUtil
 import org.aossie.agoraandroid.domain.repository.UserRepository
 import org.aossie.agoraandroid.domain.useCases.auth_useCases.forgot_passowrd.SendForgotPasswordLinkUseCase
 import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.FaceBookLogInUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.GetUserDataUseCase_
 import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.GetUserUseCase
 import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.RefreshAccessTokenUseCase
 import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.SaveUserUseCase
@@ -186,6 +187,7 @@ class AppModule {
   ): UserRepository {
     return UserRepositoryImpl(api, appDatabase, preferenceProvider)
   }
+
   @Provides
   @Singleton
   fun provideUserRepository(
@@ -259,14 +261,14 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideFaceBookLogInUseCase(repository: UserRepository): FaceBookLogInUseCase {
-    return FaceBookLogInUseCase(repository)
+  fun provideFaceBookLogInUseCase(repository: UserRepository,getUserDataUseCase_: GetUserDataUseCase_,prefs: PreferenceProvider): FaceBookLogInUseCase {
+    return FaceBookLogInUseCase(repository,getUserDataUseCase_,prefs)
   }
 
   @Provides
   @Singleton
-  fun provideUserLogInUseCase(repository: UserRepository): UserLogInUseCase {
-    return UserLogInUseCase(repository)
+  fun provideUserLogInUseCase(repository: UserRepository,saveUserUseCase: SaveUserUseCase,prefs: PreferenceProvider): UserLogInUseCase {
+    return UserLogInUseCase(repository,saveUserUseCase,prefs)
   }
 
   @Provides
@@ -277,14 +279,20 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideRefreshAccessTokenUseCase(repository: UserRepository): RefreshAccessTokenUseCase {
-    return RefreshAccessTokenUseCase(repository)
+  fun provideRefreshAccessTokenUseCase(repository: UserRepository,saveUserUseCase: SaveUserUseCase): RefreshAccessTokenUseCase {
+    return RefreshAccessTokenUseCase(repository,saveUserUseCase)
   }
 
   @Provides
   @Singleton
   fun provideGetUserUseCase(repository: UserRepository): GetUserUseCase {
     return GetUserUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideGetUserDataUseCase_(saveUserUseCase: SaveUserUseCase,prefs: PreferenceProvider): GetUserDataUseCase_ {
+    return GetUserDataUseCase_(saveUserUseCase ,prefs)
   }
 
   @Provides

@@ -20,20 +20,6 @@ constructor(
   private val _getSendResetLinkLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
   val getSendResetLinkLiveData = _getSendResetLinkLiveData
   fun sendResetLink(userName: String?) = viewModelScope.launch {
-    _getSendResetLinkLiveData.value = ResponseUI.loading()
-    try {
-      sendForgotPasswordLinkUseCase(userName)
-      _getSendResetLinkLiveData.value = ResponseUI.success()
-    } catch (e: ApiException) {
-      if (e.message == "412") {
-        _getSendResetLinkLiveData.value = ResponseUI.error(AppConstants.INVALID_USERNAME_MESSAGE)
-      } else {
-        getSendResetLinkLiveData.value = ResponseUI.error(e.message)
-      }
-    } catch (e: NoInternetException) {
-      getSendResetLinkLiveData.value = ResponseUI.error(e.message)
-    } catch (e: Exception) {
-      getSendResetLinkLiveData.value = ResponseUI.error(e.message)
-    }
+    sendForgotPasswordLinkUseCase(userName)
   }
 }

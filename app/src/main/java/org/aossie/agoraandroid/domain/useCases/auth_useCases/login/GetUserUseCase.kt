@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class GetUserUseCase @Inject constructor(
   private val repository: UserRepository
-) {
-   operator fun invoke(): LiveData<User> {
+){
+   operator fun invoke() : LiveData<User> {
     return repository.getUser()
   }
 }

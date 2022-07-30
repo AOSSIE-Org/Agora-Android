@@ -9,7 +9,7 @@ class SaveUserUseCase @Inject constructor(
 ) {
   suspend operator fun invoke(
     user : User
-  ) : Unit{
+  ) {
     return repository.saveUser(user)
   }
 }
