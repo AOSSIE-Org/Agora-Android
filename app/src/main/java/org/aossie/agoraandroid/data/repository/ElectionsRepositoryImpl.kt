@@ -31,7 +31,7 @@ constructor(
   private val api: Api,
   private val db: AppDatabase,
   private val prefs: PreferenceProvider
-) : ApiRequest() ,ElectionRepository {
+) : ApiRequest(), ElectionRepository {
 
   private val elections = MutableLiveData<List<ElectionResponse>>()
 
