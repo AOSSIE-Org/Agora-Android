@@ -3,12 +3,12 @@ package org.aossie.agoraandroid.data.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import org.aossie.agoraandroid.common.utilities.InternetManager
 import org.aossie.agoraandroid.data.di.modules.AppModule
 import org.aossie.agoraandroid.data.di.modules.FragmentModule
 import org.aossie.agoraandroid.data.di.modules.ViewModelModule
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteActivity
 import org.aossie.agoraandroid.ui.activities.main.MainActivity
-import org.aossie.agoraandroid.common.utilities.InternetManager
 import javax.inject.Singleton
 
 @Singleton

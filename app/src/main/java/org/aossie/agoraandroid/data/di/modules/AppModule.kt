@@ -9,18 +9,18 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.data.db.AppDatabase
-import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.remote.apiservice.Api
-import org.aossie.agoraandroid.data.remote.apiservice.FCMApi
-import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
-import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
-import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
-import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
-import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.common.utilities.InternetManager
 import org.aossie.agoraandroid.common.utilities.SecurityUtil
+import org.aossie.agoraandroid.data.db.AppDatabase
+import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
+import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
+import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
+import org.aossie.agoraandroid.data.remote.apiservice.Api
+import org.aossie.agoraandroid.data.remote.apiservice.FCMApi
+import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
+import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import org.aossie.agoraandroid.domain.repository.UserRepository
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -243,5 +243,4 @@ class AppModule {
   @Singleton
   fun providesFCM(@Named("retrofitForFCM") retrofit: Retrofit): FCMApi =
     retrofit.create(FCMApi::class.java)
-
 }

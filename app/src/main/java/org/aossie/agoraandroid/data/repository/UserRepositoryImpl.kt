@@ -2,28 +2,27 @@ package org.aossie.agoraandroid.data.repository
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.first
+import org.aossie.agoraandroid.common.utilities.unsubscribeFromFCM
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
+import org.aossie.agoraandroid.data.remote.apiservice.Api
+import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
 import org.aossie.agoraandroid.data.remote.dto.LoginDto
 import org.aossie.agoraandroid.data.remote.dto.NewUserDto
 import org.aossie.agoraandroid.data.remote.dto.PasswordDto
 import org.aossie.agoraandroid.data.remote.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.remote.dto.UrlDto
 import org.aossie.agoraandroid.data.remote.dto.VerifyOtpDto
-import org.aossie.agoraandroid.data.remote.apiservice.Api
-import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
 import org.aossie.agoraandroid.data.remote.models.AuthResponse
 import org.aossie.agoraandroid.domain.repository.UserRepository
-import org.aossie.agoraandroid.common.utilities.unsubscribeFromFCM
 import timber.log.Timber
 
 class UserRepositoryImpl(
   private val api: Api,
   private val appDatabase: AppDatabase,
   private val preferenceProvider: PreferenceProvider
-) : ApiRequest() , UserRepository {
-
+) : ApiRequest(), UserRepository {
 
   override suspend fun userSignup(userData: NewUserDto): String {
     return apiRequest { api.createUser(userData) }

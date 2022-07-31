@@ -15,8 +15,8 @@ import androidx.core.view.updateLayoutParams
 import com.takusemba.spotlight.Target
 import com.takusemba.spotlight.shape.Circle
 import com.takusemba.spotlight.shape.RoundedRectangle
-import org.aossie.agoraandroid.databinding.SpotlightLayoutBinding
 import org.aossie.agoraandroid.common.utilities.AppConstants.SPOTLIGHT_SCROLL_DURATION
+import org.aossie.agoraandroid.databinding.SpotlightLayoutBinding
 
 data class TargetData(
   val targetView: View,

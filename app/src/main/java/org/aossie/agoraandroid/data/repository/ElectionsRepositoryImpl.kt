@@ -5,22 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import org.aossie.agoraandroid.data.db.AppDatabase
-import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.remote.dto.CastVoteDto
-import org.aossie.agoraandroid.data.remote.dto.ElectionDto
-import org.aossie.agoraandroid.data.remote.dto.VotersDto
-import org.aossie.agoraandroid.data.remote.dto.WinnerDto
-import org.aossie.agoraandroid.data.remote.apiservice.Api
-import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
-import org.aossie.agoraandroid.data.remote.models.Ballots
-import org.aossie.agoraandroid.data.remote.models.ElectionResponse
-import org.aossie.agoraandroid.domain.repository.ElectionRepository
 import org.aossie.agoraandroid.common.utilities.ApiException
 import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.common.utilities.NoInternetException
 import org.aossie.agoraandroid.common.utilities.SessionExpirationException
+import org.aossie.agoraandroid.data.db.AppDatabase
+import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.data.remote.apiservice.Api
+import org.aossie.agoraandroid.data.remote.apiservice.ApiRequest
+import org.aossie.agoraandroid.data.remote.dto.CastVoteDto
+import org.aossie.agoraandroid.data.remote.dto.ElectionDto
+import org.aossie.agoraandroid.data.remote.dto.VotersDto
+import org.aossie.agoraandroid.data.remote.dto.WinnerDto
+import org.aossie.agoraandroid.data.remote.models.Ballots
+import org.aossie.agoraandroid.data.remote.models.ElectionResponse
+import org.aossie.agoraandroid.domain.repository.ElectionRepository
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -31,7 +31,7 @@ constructor(
   private val api: Api,
   private val db: AppDatabase,
   private val prefs: PreferenceProvider
-) : ApiRequest() , ElectionRepository {
+) : ApiRequest() ,ElectionRepository {
 
   private val elections = MutableLiveData<List<ElectionResponse>>()
 
@@ -62,7 +62,7 @@ constructor(
     db.getElectionDao()
       .getActiveElectionsCount(currentDate)
 
-   override suspend fun saveElections(elections: List<ElectionResponse>) {
+  override suspend fun saveElections(elections: List<ElectionResponse>) {
     val electionEntity = mutableListOf<Election>()
     withContext(Dispatchers.Default) {
       elections.forEach {
@@ -106,7 +106,7 @@ constructor(
     db.getElectionDao()
       .getPendingElections(currentDate)
 
-   override suspend fun fetchElections() {
+  override suspend fun fetchElections() {
     val isNeeded = prefs.getUpdateNeeded().first()
     if (isNeeded) {
       try {
