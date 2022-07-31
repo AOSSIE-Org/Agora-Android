@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.dto.ElectionDto
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.ApiException
+import org.aossie.agoraandroid.common.utilities.NoInternetException
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.data.remote.dto.ElectionDto
+import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
+import org.aossie.agoraandroid.data.repository.UserRepositoryImpl
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -21,8 +21,8 @@ import javax.inject.Inject
 class CastVoteViewModel
 @Inject
 constructor(
-  val electionsRepository: ElectionsRepository,
-  val userRepository: UserRepository
+  val electionsRepository: ElectionsRepositoryImpl,
+  val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseUI<Any>>()

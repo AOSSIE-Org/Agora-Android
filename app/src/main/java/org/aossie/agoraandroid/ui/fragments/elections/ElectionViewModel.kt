@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.data.repository.ElectionsRepositoryImpl
 import java.util.Locale
 import javax.inject.Inject
 
 class ElectionViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val electionsRepository: ElectionsRepositoryImpl
 ) : ViewModel() {
 
   fun getElections(): LiveData<List<Election>> {

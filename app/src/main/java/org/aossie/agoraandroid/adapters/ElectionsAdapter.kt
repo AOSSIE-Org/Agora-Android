@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R.drawable
+import org.aossie.agoraandroid.common.utilities.AppConstants
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.ListItemElectionsBinding
-import org.aossie.agoraandroid.utilities.AppConstants
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar

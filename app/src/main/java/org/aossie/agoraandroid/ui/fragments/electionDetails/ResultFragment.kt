@@ -16,12 +16,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.adapters.ResultViewpagerAdapter
-import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.hide
+import org.aossie.agoraandroid.common.utilities.show
+import org.aossie.agoraandroid.data.remote.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
 import javax.inject.Inject
 
 const val STORAGE_PERMISSION_REQUEST_CODE = 2
