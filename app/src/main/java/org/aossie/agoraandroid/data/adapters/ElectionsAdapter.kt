@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.adapters
+package org.aossie.agoraandroid.data.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

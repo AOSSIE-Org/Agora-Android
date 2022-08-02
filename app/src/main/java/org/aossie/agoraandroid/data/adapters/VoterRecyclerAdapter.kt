@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.adapters
+package org.aossie.agoraandroid.data.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,35 +9,36 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
-import org.aossie.agoraandroid.adapters.VotersAdapter.VotersViewHolder
-import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.adapters.VoterRecyclerAdapter.VoterViewHolder
+import org.aossie.agoraandroid.data.network.dto.VotersDto
 
-class VotersAdapter(private val voters: List<VotersDto>) : Adapter<VotersViewHolder>() {
+class VoterRecyclerAdapter(
+  private val votersList: List<VotersDto>,
+) : Adapter<VoterViewHolder>() {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int
-  ): VotersViewHolder {
+  ): VoterViewHolder {
     val li = parent.context
       .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    val voterView = li.inflate(layout.list_item_voter_details, parent, false)
-    return VotersViewHolder(voterView)
+    val view = li.inflate(layout.list_item_voter_details, parent, false)
+    return VoterViewHolder(view)
   }
 
   override fun onBindViewHolder(
-    holder: VotersViewHolder,
+    holder: VoterViewHolder,
     position: Int
   ) {
-    holder.voterName.text = voters[position].voterName
-    holder.voterEmail.text = voters[position].voterEmail
+    holder.voterName.text = votersList.get(position).voterName
+    holder.voterEmail.text = votersList.get(position).voterEmail
   }
 
   override fun getItemCount(): Int {
-    return voters.size
+    return votersList.size
   }
 
-  class VotersViewHolder(itemView: View) :
-    ViewHolder(itemView) {
+  class VoterViewHolder(itemView: View) : ViewHolder(itemView) {
     val voterName: TextView = itemView.findViewById(id.text_view_voter_name)
     val voterEmail: TextView = itemView.findViewById(id.text_view_voters_email)
   }

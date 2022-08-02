@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.adapters
+package org.aossie.agoraandroid.data.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

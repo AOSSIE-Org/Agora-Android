@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.adapters
+package org.aossie.agoraandroid.data.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.aossie.agoraandroid.R.id
 import org.aossie.agoraandroid.R.layout
-import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter.CandidateViewHolder
+import org.aossie.agoraandroid.data.adapters.CandidateRecyclerAdapter.CandidateViewHolder
 
 class CandidateRecyclerAdapter(
   private val candidates: List<String>
