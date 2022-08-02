@@ -392,9 +392,9 @@ constructor(
   private fun deletePic() {
     val imageUri = Uri.parse(
       ContentResolver.SCHEME_ANDROID_RESOURCE +
-        "://" + resources.getResourcePackageName(R.drawable.ic_user) +
-        '/' + resources.getResourceTypeName(R.drawable.ic_user) + '/' + resources.getResourceEntryName(
-        R.drawable.ic_user
+        "://" + resources.getResourcePackageName(R.drawable.ic_user1) +
+        '/' + resources.getResourceTypeName(R.drawable.ic_user1) + '/' + resources.getResourceEntryName(
+        R.drawable.ic_user1
       )
     )
     try {
