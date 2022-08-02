@@ -1,15 +1,15 @@
-package org.aossie.agoraandroid.data.network
+package org.aossie.agoraandroid.data.network.api
 
-import org.aossie.agoraandroid.data.dto.CastVoteDto
-import org.aossie.agoraandroid.data.dto.ElectionDto
-import org.aossie.agoraandroid.data.dto.LoginDto
-import org.aossie.agoraandroid.data.dto.NewUserDto
-import org.aossie.agoraandroid.data.dto.PasswordDto
-import org.aossie.agoraandroid.data.dto.UpdateUserDto
-import org.aossie.agoraandroid.data.dto.UrlDto
-import org.aossie.agoraandroid.data.dto.VerifyOtpDto
-import org.aossie.agoraandroid.data.dto.VotersDto
-import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.data.network.dto.CastVoteDto
+import org.aossie.agoraandroid.data.network.dto.ElectionDto
+import org.aossie.agoraandroid.data.network.dto.LoginDto
+import org.aossie.agoraandroid.data.network.dto.NewUserDto
+import org.aossie.agoraandroid.data.network.dto.PasswordDto
+import org.aossie.agoraandroid.data.network.dto.UpdateUserDto
+import org.aossie.agoraandroid.data.network.dto.UrlDto
+import org.aossie.agoraandroid.data.network.dto.VerifyOtpDto
+import org.aossie.agoraandroid.data.network.dto.VotersDto
+import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionListResponse

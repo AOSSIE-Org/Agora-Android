@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.adapters.VoterRecyclerAdapter
+import org.aossie.agoraandroid.data.adapters.VoterRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.network.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentInviteVotersBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.createelection.STORAGE_INTENT_REQUEST_CODE

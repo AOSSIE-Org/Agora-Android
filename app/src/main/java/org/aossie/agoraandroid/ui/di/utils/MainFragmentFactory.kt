@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.di.utils
+package org.aossie.agoraandroid.ui.di.utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory

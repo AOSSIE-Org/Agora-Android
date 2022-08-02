@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.data.dto.FCM
+package org.aossie.agoraandroid.data.network.dto.FCM
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

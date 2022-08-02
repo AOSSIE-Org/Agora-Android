@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.di.modules
+package org.aossie.agoraandroid.ui.di.modules
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor

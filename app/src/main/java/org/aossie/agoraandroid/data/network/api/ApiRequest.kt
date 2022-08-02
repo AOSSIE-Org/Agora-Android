@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.data.network
+package org.aossie.agoraandroid.data.network.api
 
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants

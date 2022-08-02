@@ -1,12 +1,12 @@
-package org.aossie.agoraandroid.di.modules
+package org.aossie.agoraandroid.ui.di.modules
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import org.aossie.agoraandroid.di.utils.FragmentKey
-import org.aossie.agoraandroid.di.utils.MainFragmentFactory
+import org.aossie.agoraandroid.ui.di.utils.FragmentKey
+import org.aossie.agoraandroid.ui.di.utils.MainFragmentFactory
 import org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment
 import org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment

@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.data.dto
+package org.aossie.agoraandroid.data.network.dto
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

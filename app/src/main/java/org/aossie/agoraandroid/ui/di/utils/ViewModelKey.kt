@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.di.utils
+package org.aossie.agoraandroid.ui.di.utils
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

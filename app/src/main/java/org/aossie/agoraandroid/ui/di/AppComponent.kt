@@ -1,11 +1,11 @@
-package org.aossie.agoraandroid.di
+package org.aossie.agoraandroid.ui.di
 
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import org.aossie.agoraandroid.di.modules.AppModule
-import org.aossie.agoraandroid.di.modules.FragmentModule
-import org.aossie.agoraandroid.di.modules.ViewModelModule
+import org.aossie.agoraandroid.ui.di.modules.AppModule
+import org.aossie.agoraandroid.ui.di.modules.FragmentModule
+import org.aossie.agoraandroid.ui.di.modules.ViewModelModule
 import org.aossie.agoraandroid.ui.activities.castVote.CastVoteActivity
 import org.aossie.agoraandroid.ui.activities.main.MainActivity
 import org.aossie.agoraandroid.utilities.InternetManager
