@@ -1,10 +1,10 @@
 package org.aossie.agoraandroid.data.Repository
 
-import org.aossie.agoraandroid.data.dto.FCM.DataDto
-import org.aossie.agoraandroid.data.dto.FCM.FCMDto
-import org.aossie.agoraandroid.data.dto.FCM.NotificationDto
-import org.aossie.agoraandroid.data.network.ApiRequest
-import org.aossie.agoraandroid.data.network.FCMApi
+import org.aossie.agoraandroid.data.network.api.ApiRequest
+import org.aossie.agoraandroid.data.network.api.FCMApi
+import org.aossie.agoraandroid.data.network.dto.FCM.DataDto
+import org.aossie.agoraandroid.data.network.dto.FCM.FCMDto
+import org.aossie.agoraandroid.data.network.dto.FCM.NotificationDto
 import javax.inject.Inject
 
 class FCMRepository

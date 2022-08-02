@@ -14,9 +14,9 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.dto.BallotDto
-import org.aossie.agoraandroid.data.dto.VotersDto
-import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.data.network.dto.BallotDto
+import org.aossie.agoraandroid.data.network.dto.VotersDto
+import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.FileUtils

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.tabs.TabLayoutMediator
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.adapters.IntroViewpagerAdapter
+import org.aossie.agoraandroid.data.adapters.IntroViewpagerAdapter
 import org.aossie.agoraandroid.databinding.FragmentWelcomeBinding
 
 /**
