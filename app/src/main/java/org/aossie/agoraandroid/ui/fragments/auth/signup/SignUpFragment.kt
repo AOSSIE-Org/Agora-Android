@@ -15,8 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.network.dto.NewUserDto
-import org.aossie.agoraandroid.data.network.dto.SecurityQuestionDto
+import org.aossie.agoraandroid.data.dto.NewUserDto
+import org.aossie.agoraandroid.data.dto.SecurityQuestionDto
 import org.aossie.agoraandroid.databinding.FragmentSignUpBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard

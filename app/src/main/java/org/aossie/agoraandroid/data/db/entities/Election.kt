@@ -3,9 +3,9 @@ package org.aossie.agoraandroid.data.db.entities
 import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.aossie.agoraandroid.data.network.dto.BallotDto
-import org.aossie.agoraandroid.data.network.dto.VotersDto
-import org.aossie.agoraandroid.data.network.dto.WinnerDto
+import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.dto.WinnerDto
 
 @Entity
 data class Election(

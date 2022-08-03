@@ -3,9 +3,9 @@ package org.aossie.agoraandroid.utilities
 import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import org.aossie.agoraandroid.data.network.dto.BallotDto
-import org.aossie.agoraandroid.data.network.dto.VotersDto
-import org.aossie.agoraandroid.data.network.dto.WinnerDto
+import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.data.dto.VotersDto
+import org.aossie.agoraandroid.data.dto.WinnerDto
 
 class Converters {
   companion object {

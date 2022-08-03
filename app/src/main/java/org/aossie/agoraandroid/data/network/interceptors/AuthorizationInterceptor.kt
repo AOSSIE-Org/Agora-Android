@@ -8,8 +8,8 @@ import okhttp3.Response
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.api.Api
-import org.aossie.agoraandroid.data.network.api.ApiRequest
+import org.aossie.agoraandroid.data.network.Api
+import org.aossie.agoraandroid.data.network.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.SessionExpirationException

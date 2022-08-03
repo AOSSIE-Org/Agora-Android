@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.data.adapters.VotersAdapter
-import org.aossie.agoraandroid.data.network.dto.VotersDto
+import org.aossie.agoraandroid.adapters.VotersAdapter
+import org.aossie.agoraandroid.data.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentVotersBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
