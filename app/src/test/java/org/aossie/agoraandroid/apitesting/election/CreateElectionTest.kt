@@ -4,8 +4,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
-import org.aossie.agoraandroid.data.network.dto.ElectionDto
-import org.aossie.agoraandroid.data.network.dto.ElectionDtoJsonAdapter
+import org.aossie.agoraandroid.data.dto.ElectionDto
+import org.aossie.agoraandroid.data.dto.ElectionDtoJsonAdapter
 import org.aossie.agoraandroid.utilities.MockFileParser
 import org.junit.Assert
 import org.junit.Test
