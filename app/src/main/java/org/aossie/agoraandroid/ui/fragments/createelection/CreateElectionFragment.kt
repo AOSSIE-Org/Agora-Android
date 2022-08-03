@@ -218,7 +218,7 @@ constructor(
     binding.submitDetailsBtn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
       if (validateInputs()) {
-        if (mCandidates.isNotEmpty()) {
+        if (mCandidates.isNotEmpty() and (Calendar.getInstance() < startDateCalendar)) {
           val mElectionName = binding.electionNameTil.editText?.text.toString()
           val mElectionDescription = binding.electionDescriptionTil.editText?.text.toString()
           val mFinalIsInvite = binding.checkboxInvite.isChecked
@@ -244,7 +244,10 @@ constructor(
             )
           )
         } else {
-          notify(getString(string.add_one_candidate))
+          if (mCandidates.isEmpty())
+            notify(getString(string.add_one_candidate))
+          else
+            notify(getString(string.time_tracker))
         }
       }
     }
