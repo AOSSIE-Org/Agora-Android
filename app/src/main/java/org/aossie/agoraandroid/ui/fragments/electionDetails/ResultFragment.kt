@@ -15,8 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.adapters.ResultViewpagerAdapter
-import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.data.adapters.ResultViewpagerAdapter
+import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI

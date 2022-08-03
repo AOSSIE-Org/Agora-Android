@@ -19,7 +19,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.dto.WinnerDto
+import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentChartBinding
 import org.aossie.agoraandroid.utilities.AppConstants.GRAPH_ANIMATION_DURATION
 import java.util.ArrayList
