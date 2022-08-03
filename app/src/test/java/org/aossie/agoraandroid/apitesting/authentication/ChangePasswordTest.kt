@@ -4,8 +4,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import okhttp3.mockwebserver.MockResponse
 import org.aossie.agoraandroid.apitesting.BaseTest
-import org.aossie.agoraandroid.data.network.dto.PasswordDto
-import org.aossie.agoraandroid.data.network.dto.PasswordDtoJsonAdapter
+import org.aossie.agoraandroid.data.dto.PasswordDto
+import org.aossie.agoraandroid.data.dto.PasswordDtoJsonAdapter
 import org.aossie.agoraandroid.utilities.MockFileParser
 import org.junit.Assert
 import org.junit.Test

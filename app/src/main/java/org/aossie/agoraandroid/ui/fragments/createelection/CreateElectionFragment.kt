@@ -35,9 +35,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.adapters.CandidateRecyclerAdapter
+import org.aossie.agoraandroid.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.network.dto.ElectionDto
+import org.aossie.agoraandroid.data.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.FileUtils

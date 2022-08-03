@@ -14,7 +14,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.adapters.ElectionsAdapter
+import org.aossie.agoraandroid.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentPendingElectionsBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
@@ -98,7 +98,6 @@ constructor(
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
       electionsAdapter.submitList(elections)
-      binding.tvEmptyElection.hide()
     } else {
       binding.tvEmptyElection.show()
     }
