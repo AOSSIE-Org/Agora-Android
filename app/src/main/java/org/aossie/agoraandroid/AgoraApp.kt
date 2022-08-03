@@ -2,8 +2,8 @@ package org.aossie.agoraandroid
 
 import android.app.Application
 import android.util.Log
-import org.aossie.agoraandroid.di.AppComponent
-import org.aossie.agoraandroid.di.DaggerAppComponent
+import org.aossie.agoraandroid.ui.di.AppComponent
+import org.aossie.agoraandroid.ui.di.DaggerAppComponent
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import timber.log.Timber.Tree

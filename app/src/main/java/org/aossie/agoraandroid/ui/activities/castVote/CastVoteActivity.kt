@@ -16,8 +16,8 @@ import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.adapters.CandidatesAdapter
-import org.aossie.agoraandroid.adapters.SelectedCandidateAdapter
+import org.aossie.agoraandroid.data.adapters.CandidatesAdapter
+import org.aossie.agoraandroid.data.adapters.SelectedCandidateAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityCastVoteBinding
 import org.aossie.agoraandroid.ui.activities.main.MainActivity
