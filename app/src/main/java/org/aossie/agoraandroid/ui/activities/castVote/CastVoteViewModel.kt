@@ -8,8 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.dto.ElectionDto
+import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
+import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -22,7 +22,7 @@ class CastVoteViewModel
 @Inject
 constructor(
   val electionsRepository: ElectionsRepository,
-  val userRepository: UserRepository
+  val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseUI<Any>>()

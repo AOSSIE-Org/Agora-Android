@@ -4,11 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.dto.LoginDto
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
@@ -22,8 +25,12 @@ import javax.inject.Inject
 class LoginViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository,
-  private val prefs: PreferenceProvider
+  private val prefs: PreferenceProvider,
+  private val userLoginUseCase: UserLogInUseCase,
+  private val getUserUseCase: GetUserUseCase,
+  private val saveUserUseCase: SaveUserUseCase,
+  private val refreshAccessTokenUseCase: RefreshAccessTokenUseCase,
+  private val faceBookLogInUseCase: FaceBookLogInUseCase
 ) : ViewModel() {
 
   var sessionExpiredListener: SessionExpiredListener? = null
@@ -31,7 +38,7 @@ constructor(
   private val _getLoginLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
   val getLoginLiveData = _getLoginLiveData
 
-  fun getLoggedInUser() = userRepository.getUser()
+  fun getLoggedInUser() = getUserUseCase()
 
   fun logInRequest(
     identifier: String,
@@ -45,8 +52,7 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse =
-          userRepository.userLogin(LoginDto(identifier, trustedDevice ?: "", password))
+        val authResponse = userLoginUseCase(identifier, password, trustedDevice)
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -54,7 +60,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, trustedDevice
           )
-          userRepository.saveUser(user)
+          saveUserUseCase(user)
           it.email?.let { mail ->
             prefs.setMailId(mail)
             subscribeToFCM(mail)
@@ -83,7 +89,7 @@ constructor(
   ) {
     viewModelScope.launch {
       try {
-        val authResponse = userRepository.refreshAccessToken()
+        val authResponse = refreshAccessTokenUseCase()
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -91,7 +97,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, trustedDevice
           )
-          userRepository.saveUser(user)
+          saveUserUseCase(user)
         }
       } catch (e: Exception) {
         sessionExpiredListener?.onSessionExpired()
@@ -103,7 +109,7 @@ constructor(
     _getLoginLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val authResponse = userRepository.fbLogin()
+        val authResponse = faceBookLogInUseCase()
         getUserData(authResponse)
         authResponse.email?.let {
           prefs.setMailId(it)
@@ -132,7 +138,7 @@ constructor(
           authResponse.refreshToken?.token, authResponse.refreshToken?.expiresOn,
           authResponse.trustedDevice
         )
-        userRepository.saveUser(user)
+        saveUserUseCase(user)
         Timber.d(authResponse.toString())
         prefs.setIsFacebookUser(true)
         _getLoginLiveData.value = ResponseUI.success()
