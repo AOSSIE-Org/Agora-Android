@@ -18,7 +18,7 @@ import javax.inject.Inject
 class SignUpViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository
+  private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
   lateinit var sessionExpiredListener: SessionExpiredListener

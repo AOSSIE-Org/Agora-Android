@@ -22,7 +22,7 @@ class CastVoteViewModel
 @Inject
 constructor(
   val electionsRepository: ElectionsRepository,
-  val userRepository: UserRepository
+  val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseUI<Any>>()

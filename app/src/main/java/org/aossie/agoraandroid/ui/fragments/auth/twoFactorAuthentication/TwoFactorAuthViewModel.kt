@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.dto.VerifyOtpDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class TwoFactorAuthViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository
+  private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
   lateinit var sessionExpiredListener: SessionExpiredListener
 

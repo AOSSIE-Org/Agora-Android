@@ -1,16 +1,16 @@
 package org.aossie.agoraandroid.ui.di.modules
 
 import android.content.Context
+import androidx.viewbinding.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
-import org.aossie.agoraandroid.BuildConfig
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.api.Api
@@ -18,6 +18,12 @@ import org.aossie.agoraandroid.data.network.api.FCMApi
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
+import org.aossie.agoraandroid.domain.repository.UserRepository
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -164,12 +170,22 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesUserRepository(
+  fun provideUserRepository(
     api: Api,
     appDatabase: AppDatabase,
     preferenceProvider: PreferenceProvider
   ): UserRepository {
-    return UserRepository(api, appDatabase, preferenceProvider)
+    return UserRepositoryImpl(api, appDatabase, preferenceProvider)
+  }
+
+  @Provides
+  @Singleton
+  fun provideUserRepositoryImpl(
+    api: Api,
+    appDatabase: AppDatabase,
+    preferenceProvider: PreferenceProvider
+  ): UserRepositoryImpl {
+    return UserRepositoryImpl(api, appDatabase, preferenceProvider)
   }
 
   @Provides
@@ -232,4 +248,35 @@ class AppModule {
   @Singleton
   fun providesFCM(@Named("retrofitForFCM") retrofit: Retrofit): FCMApi =
     retrofit.create(FCMApi::class.java)
+
+  @Provides
+  @Singleton
+  fun provideFaceBookLogInUseCase(repository: UserRepository): FaceBookLogInUseCase {
+    return FaceBookLogInUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideUserLogInUseCase(repository: UserRepository): UserLogInUseCase {
+    return UserLogInUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideSaveUserUseCase(repository: UserRepository): SaveUserUseCase {
+    return SaveUserUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideRefreshAccessTokenUseCase(repository: UserRepository): RefreshAccessTokenUseCase {
+    return RefreshAccessTokenUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideGetUserUseCase(repository: UserRepository): GetUserUseCase {
+    return GetUserUseCase(repository)
+  }
+
 }
