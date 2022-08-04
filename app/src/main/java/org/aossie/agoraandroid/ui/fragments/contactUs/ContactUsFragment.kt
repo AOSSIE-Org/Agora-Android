@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.databinding.FragmentContactUsBinding
-import org.aossie.agoraandroid.utilities.browse
-import org.aossie.agoraandroid.utilities.snackbar
+import org.aossie.agoraandroid.common.utilities.browse
+import org.aossie.agoraandroid.common.utilities.snackbar
 
 /**
  * A simple [Fragment] subclass.

@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.setMain
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
-import org.aossie.agoraandroid.data.network.Api
+import org.aossie.agoraandroid.data.remote.apiservice.Api
 import org.junit.After
 import org.junit.Before
 import retrofit2.Retrofit

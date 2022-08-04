@@ -5,26 +5,32 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.dto.VerifyOtpDto
+import org.aossie.agoraandroid.data.remote.dto.VerifyOtpDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
-import org.aossie.agoraandroid.utilities.ApiException
-import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.SessionExpirationException
+import org.aossie.agoraandroid.common.utilities.ApiException
+import org.aossie.agoraandroid.common.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.NoInternetException
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.SessionExpirationException
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.twoFactorAuthentication.ResendOTPUseCase
+import org.aossie.agoraandroid.domain.useCases.auth_useCases.twoFactorAuthentication.VeriFyOTPUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
 class TwoFactorAuthViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository
+  private val getUserUseCase: GetUserUseCase,
+  private val veriFyOTPUseCase: VeriFyOTPUseCase,
+  private val resendOTPUseCase: ResendOTPUseCase,
+  private val saveUserUseCase: SaveUserUseCase
 ) : ViewModel() {
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  val user = userRepository.getUser()
+  val user = getUserUseCase()
 
   private val mVerifyOtpResponse = MutableLiveData<ResponseUI<Any>>()
 
@@ -47,7 +53,8 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = userRepository.verifyOTP(VerifyOtpDto(crypto, otp, trustedDevice))
+        val authResponse = veriFyOTPUseCase(VerifyOtpDto(crypto, otp, trustedDevice))
+
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -55,7 +62,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, it.trustedDevice
           )
-          userRepository.saveUser(user)
+          saveUserUseCase(user)
           Timber.d(user.toString())
           mVerifyOtpResponse.value = ResponseUI.success()
         }
@@ -80,7 +87,7 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = userRepository.resendOTP(username)
+        val authResponse = resendOTPUseCase(username)
         authResponse.let {
           val user = User(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -88,7 +95,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, it.trustedDevice
           )
-          userRepository.saveUser(user)
+          saveUserUseCase(user)
           mResendOtpResponse.value = ResponseUI.success()
         }
       } catch (e: ApiException) {

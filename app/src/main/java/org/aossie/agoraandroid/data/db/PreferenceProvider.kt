@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.aossie.agoraandroid.utilities.SecurityUtil
-import org.aossie.agoraandroid.utilities.spotlightDataStore
-import org.aossie.agoraandroid.utilities.userDataStore
+import org.aossie.agoraandroid.common.utilities.SecurityUtil
+import org.aossie.agoraandroid.common.utilities.spotlightDataStore
+import org.aossie.agoraandroid.common.utilities.userDataStore
 import javax.inject.Inject
 
 class PreferenceProvider

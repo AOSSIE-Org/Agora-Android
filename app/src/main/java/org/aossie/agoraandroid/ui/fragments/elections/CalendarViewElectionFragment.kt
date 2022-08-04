@@ -24,9 +24,9 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.AppConstants
-import org.aossie.agoraandroid.utilities.SwipeDetector
-import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.common.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.SwipeDetector
+import org.aossie.agoraandroid.common.utilities.hide
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.ArrayList

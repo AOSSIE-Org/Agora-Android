@@ -23,13 +23,13 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.FragmentLoginBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.HideKeyboard
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.disableView
-import org.aossie.agoraandroid.utilities.enableView
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.toggleIsEnable
+import org.aossie.agoraandroid.common.utilities.HideKeyboard
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.disableView
+import org.aossie.agoraandroid.common.utilities.enableView
+import org.aossie.agoraandroid.common.utilities.hide
+import org.aossie.agoraandroid.common.utilities.show
+import org.aossie.agoraandroid.common.utilities.toggleIsEnable
 import timber.log.Timber
 import javax.inject.Inject
 

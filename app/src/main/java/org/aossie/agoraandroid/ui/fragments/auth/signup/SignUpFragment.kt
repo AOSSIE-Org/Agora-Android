@@ -15,15 +15,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.dto.NewUserDto
-import org.aossie.agoraandroid.data.dto.SecurityQuestionDto
+import org.aossie.agoraandroid.data.remote.dto.NewUserDto
+import org.aossie.agoraandroid.data.remote.dto.SecurityQuestionDto
 import org.aossie.agoraandroid.databinding.FragmentSignUpBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.HideKeyboard
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
-import org.aossie.agoraandroid.utilities.toggleIsEnable
+import org.aossie.agoraandroid.common.utilities.HideKeyboard
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.hide
+import org.aossie.agoraandroid.common.utilities.show
+import org.aossie.agoraandroid.common.utilities.toggleIsEnable
 import javax.inject.Inject
 
 /**

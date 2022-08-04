@@ -9,13 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.databinding.FragmentForgotPasswordBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.HideKeyboard
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.common.utilities.HideKeyboard
+import org.aossie.agoraandroid.common.utilities.ResponseUI
+import org.aossie.agoraandroid.common.utilities.hide
+import org.aossie.agoraandroid.common.utilities.show
 import javax.inject.Inject
 
 /**
@@ -53,7 +52,6 @@ constructor(
         forgotPasswordViewModel.sendResetLink(userName)
       }
     }
-
     forgotPasswordViewModel.getSendResetLinkLiveData.observe(
       viewLifecycleOwner,
       {

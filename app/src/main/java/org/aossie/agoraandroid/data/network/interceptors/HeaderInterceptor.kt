@@ -6,7 +6,7 @@ import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.common.utilities.AppConstants
 
 class HeaderInterceptor(private val preferenceProvider: PreferenceProvider, private val serverKey: String) : Interceptor {
   override fun intercept(chain: Chain): Response {

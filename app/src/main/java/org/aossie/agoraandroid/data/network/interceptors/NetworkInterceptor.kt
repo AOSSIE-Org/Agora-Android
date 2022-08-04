@@ -4,8 +4,8 @@ import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.utilities.InternetManager
-import org.aossie.agoraandroid.utilities.NoInternetException
+import org.aossie.agoraandroid.common.utilities.InternetManager
+import org.aossie.agoraandroid.common.utilities.NoInternetException
 import javax.inject.Inject
 
 @Suppress("DEPRECATION")
