@@ -55,7 +55,7 @@ constructor(
       try {
         val authResponse = userLoginUseCase(identifier, password, trustedDevice)
         authResponse.let {
-          val user = User(
+          val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
@@ -92,7 +92,7 @@ constructor(
       try {
         val authResponse = refreshAccessTokenUseCase()
         authResponse.let {
-          val user = User(
+          val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
@@ -129,10 +129,10 @@ constructor(
     }
   }
 
-  private fun getUserData(authResponse: AuthResponse) {
+  private fun getUserData(authResponse: AuthResponseModel) {
     viewModelScope.launch {
       try {
-        val user = User(
+        val user = UserModel(
           authResponse.username, authResponse.email, authResponse.firstName, authResponse.lastName,
           authResponse.avatarURL, authResponse.crypto, authResponse.twoFactorAuthentication,
           authResponse.authToken?.token, authResponse.authToken?.expiresOn,
