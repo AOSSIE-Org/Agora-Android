@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
+import org.aossie.agoraandroid.domain.model.LoginDtoModel
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
