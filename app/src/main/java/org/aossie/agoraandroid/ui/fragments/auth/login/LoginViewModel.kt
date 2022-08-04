@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
+import org.aossie.agoraandroid.domain.model.LoginDtoModel
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
@@ -52,7 +53,7 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = userLoginUseCase(identifier, password, trustedDevice)
+        val authResponse = userLoginUseCase(LoginDtoModel(identifier, trustedDevice, password))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,

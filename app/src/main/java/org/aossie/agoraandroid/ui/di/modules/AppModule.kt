@@ -42,6 +42,7 @@ class AppModule {
   fun providesPreferenceProvider(context: Context, securityUtil: SecurityUtil): PreferenceProvider {
     return PreferenceProvider(context, securityUtil)
   }
+
   @Provides
   @Singleton
   fun provideInternetManager(context: Context): InternetManager {
@@ -50,7 +51,10 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesNetworkInterceptor(context: Context, internetManager: InternetManager): NetworkInterceptor {
+  fun providesNetworkInterceptor(
+    context: Context,
+    internetManager: InternetManager
+  ): NetworkInterceptor {
     return NetworkInterceptor(
       context,
       internetManager
@@ -59,7 +63,10 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider, context: Context): HeaderInterceptor {
+  fun providesHeaderInterceptor(
+    preferenceProvider: PreferenceProvider,
+    context: Context
+  ): HeaderInterceptor {
     return HeaderInterceptor(preferenceProvider, context.resources.getString(R.string.serverKey))
   }
 
