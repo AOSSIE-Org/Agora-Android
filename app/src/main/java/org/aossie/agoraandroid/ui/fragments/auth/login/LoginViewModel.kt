@@ -53,7 +53,7 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = userLoginUseCase(identifier, password, trustedDevice)
+        val authResponse = userLoginUseCase(LoginDtoModel(identifier, trustedDevice, password))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,

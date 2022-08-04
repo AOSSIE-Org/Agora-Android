@@ -4,7 +4,7 @@ import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
 import org.aossie.agoraandroid.utilities.EntityMapper
 
-class AuthResponseEntityMapper : EntityMapper<AuthResponse , AuthResponseModel> {
+class AuthResponseEntityMapper : EntityMapper<AuthResponse, AuthResponseModel> {
   override fun mapFromEntity(entity: AuthResponse): AuthResponseModel {
     return AuthResponseModel(
       username = entity.username,

@@ -9,11 +9,11 @@ import javax.inject.Inject
 
 class GetUserUseCase @Inject constructor(
   private val repository: UserRepository
-){
-  private val mapper : UserEntityMapper = UserEntityMapper()
-   operator fun invoke(
-   ) : LiveData<UserModel> {
-    val response : LiveData<User> = repository.getUser()
-     return mapper.mapLiveDataFromEntity(response)
+) {
+  private val mapper: UserEntityMapper = UserEntityMapper()
+  operator fun invoke(
+  ): LiveData<UserModel> {
+    val response: LiveData<User> = repository.getUser()
+    return mapper.mapLiveDataFromEntity(response)
   }
 }

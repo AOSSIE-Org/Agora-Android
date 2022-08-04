@@ -1,7 +1,6 @@
 package org.aossie.agoraandroid.domain.use_cases.authentication.login
 
 import org.aossie.agoraandroid.data.mappers.AuthResponseEntityMapper
-import org.aossie.agoraandroid.data.network.responses.AuthResponse
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
 import org.aossie.agoraandroid.domain.repository.UserRepository
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
@@ -14,7 +13,7 @@ class RefreshAccessTokenUseCase @Inject constructor(
   private val authResponseEntityMapper = AuthResponseEntityMapper()
 
   suspend operator fun invoke(
-  ) : AuthResponseModel {
+  ): AuthResponseModel {
     return authResponseEntityMapper.mapFromEntity(repository.refreshAccessToken())
   }
 }

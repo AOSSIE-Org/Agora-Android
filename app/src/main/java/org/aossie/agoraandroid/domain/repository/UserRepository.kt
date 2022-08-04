@@ -25,5 +25,4 @@ interface UserRepository {
   suspend fun changePassword(password: String): List<String>
   suspend fun toggleTwoFactorAuth(): List<String>
   suspend fun resendOTP(username: String?): AuthResponse
-
 }
