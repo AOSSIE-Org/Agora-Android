@@ -25,32 +25,25 @@ class UserEntityMapper : EntityMapper<User, UserModel> {
   }
 
   override fun mapToEntity(domainModel: UserModel): User {
-return User(
-  username = domainModel.username,
-  email = domainModel.email,
-  firstName = domainModel.firstName,
-  lastName = domainModel.lastName,
-  avatarURL = domainModel.avatarURL,
-  crypto = domainModel.crypto,
-  twoFactorAuthentication = domainModel.twoFactorAuthentication,
-  authToken = domainModel.authToken,
-  authTokenExpiresOn = domainModel.authTokenExpiresOn,
-  refreshToken = domainModel.refreshToken,
-  refreshTokenExpiresOn = domainModel.refreshTokenExpiresOn,
-  trustedDevice = domainModel.trustedDevice
-)
+    return User(
+      username = domainModel.username,
+      email = domainModel.email,
+      firstName = domainModel.firstName,
+      lastName = domainModel.lastName,
+      avatarURL = domainModel.avatarURL,
+      crypto = domainModel.crypto,
+      twoFactorAuthentication = domainModel.twoFactorAuthentication,
+      authToken = domainModel.authToken,
+      authTokenExpiresOn = domainModel.authTokenExpiresOn,
+      refreshToken = domainModel.refreshToken,
+      refreshTokenExpiresOn = domainModel.refreshTokenExpiresOn,
+      trustedDevice = domainModel.trustedDevice
+    )
   }
 
-  fun mapLiveDataToEntity(userModelLivedata : LiveData<UserModel>) : LiveData<User> {
-    return Transformations.map(userModelLivedata ,{
-      mapToEntity(it)
-    })
-  }
-
-  fun mapLiveDataFromEntity(userLivedata : LiveData<User>) : LiveData<UserModel> {
-    return Transformations.map(userLivedata ,{
+  fun mapLiveDataFromEntity(userLivedata: LiveData<User>): LiveData<UserModel> {
+    return Transformations.map(userLivedata, {
       mapFromEntity(it)
     })
   }
-
 }

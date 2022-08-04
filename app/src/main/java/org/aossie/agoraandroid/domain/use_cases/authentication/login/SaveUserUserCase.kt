@@ -8,11 +8,10 @@ import javax.inject.Inject
 class SaveUserUseCase @Inject constructor(
   private val repository: UserRepository,
 ) {
-  private val mapper : UserEntityMapper = UserEntityMapper()
+  private val mapper: UserEntityMapper = UserEntityMapper()
   suspend operator fun invoke(
-    user : UserModel
+    user: UserModel
   ) {
     return repository.saveUser(mapper.mapToEntity(user))
   }
 }
-
