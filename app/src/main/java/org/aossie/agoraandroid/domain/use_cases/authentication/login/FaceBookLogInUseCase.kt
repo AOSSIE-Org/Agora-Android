@@ -9,8 +9,7 @@ class FaceBookLogInUseCase @Inject constructor(
   private val repository: UserRepository,
 ) {
   private val authResponseEntityMapper = AuthResponseEntityMapper()
-  suspend operator fun invoke(
-  ): AuthResponseModel {
+  suspend operator fun invoke(): AuthResponseModel {
     return authResponseEntityMapper.mapFromEntity(repository.fbLogin())
   }
 }

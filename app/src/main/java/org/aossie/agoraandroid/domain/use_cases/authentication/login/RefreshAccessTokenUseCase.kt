@@ -12,8 +12,7 @@ class RefreshAccessTokenUseCase @Inject constructor(
   var sessionExpiredListener: SessionExpiredListener? = null
   private val authResponseEntityMapper = AuthResponseEntityMapper()
 
-  suspend operator fun invoke(
-  ): AuthResponseModel {
+  suspend operator fun invoke(): AuthResponseModel {
     return authResponseEntityMapper.mapFromEntity(repository.refreshAccessToken())
   }
 }
