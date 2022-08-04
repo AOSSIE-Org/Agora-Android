@@ -285,5 +285,4 @@ class AppModule {
   fun provideGetUserUseCase(repository: UserRepository): GetUserUseCase {
     return GetUserUseCase(repository)
   }
-
 }
