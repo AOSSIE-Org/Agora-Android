@@ -281,4 +281,10 @@ class AppModule {
   fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
     return SignUpUseCase(repository)
   }
+
+  @Provides
+  @Singleton
+  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
+    return SignUpUseCase(repository)
+  }
 }
