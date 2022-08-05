@@ -501,4 +501,10 @@ class AppModule {
   ): CastVoteActivityUseCases {
     return CastVoteActivityUseCases(castVoteUseCase, verifyVotersUseCase)
   }
+
+  @Provides
+  @Singleton
+  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
+    return SignUpUseCase(repository)
+  }
 }
