@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
-import org.aossie.agoraandroid.data.network.dto.NewUserDto
+import org.aossie.agoraandroid.domain.model.NewUserDtoModel
+import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseCase
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
@@ -20,10 +20,14 @@ class SignUpViewModel
 @Inject
 constructor(
 <<<<<<< HEAD
+<<<<<<< HEAD
   private val signUpUseCase: SignUpUseCase
 =======
   private val userRepository: UserRepositoryImpl
 >>>>>>> 0160a1b (added use cases for loginFragment)
+=======
+  private val signUpUseCase: SignUpUseCase
+>>>>>>> eee7fa0 (added signup use cases and signUpfragment migration)
 ) : ViewModel() {
 
   lateinit var sessionExpiredListener: SessionExpiredListener
