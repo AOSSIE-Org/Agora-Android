@@ -24,6 +24,7 @@ import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseC
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -284,5 +285,11 @@ class AppModule {
   @Singleton
   fun provideGetUserUseCase(repository: UserRepository): GetUserUseCase {
     return GetUserUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
+    return SignUpUseCase(repository)
   }
 }
