@@ -43,7 +43,7 @@ class UserEntityMapper : EntityMapper<User, UserModel> {
 
   fun mapLiveDataFromEntity(userLivedata: LiveData<User>): LiveData<UserModel> {
     return Transformations.map(
-      userLivedata, { mapFromEntity(it) }
-    )
+      userLivedata
+    ) { mapFromEntity(it) }
   }
 }
