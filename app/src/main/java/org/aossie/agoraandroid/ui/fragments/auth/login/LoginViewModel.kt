@@ -9,11 +9,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
 import org.aossie.agoraandroid.domain.model.LoginDtoModel
 import org.aossie.agoraandroid.domain.model.UserModel
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.LogInUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
