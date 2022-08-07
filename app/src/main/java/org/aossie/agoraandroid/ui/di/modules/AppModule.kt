@@ -27,6 +27,7 @@ import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUse
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.ResendOTPUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.VerifyOTPUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
@@ -292,13 +293,17 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideVerifyOTPUseCase(repository: UserRepository): VerifyOTPUseCase {
-    return VerifyOTPUseCase(repository)
-  }
-
-  @Provides
-  @Singleton
-  fun provideResendOTPUseCase(repository: UserRepository): ResendOTPUseCase {
-    return ResendOTPUseCase(repository)
+  fun provideTwoFactorAuthUseCases(
+    resendOTPUseCase: ResendOTPUseCase,
+    verifyOTPUseCase: VerifyOTPUseCase,
+    saveUserUseCase: SaveUserUseCase,
+    getUserUseCase: GetUserUseCase
+  ): TwoFactorAuthUseCases {
+    return TwoFactorAuthUseCases(
+      resendOTPUseCase,
+      verifyOTPUseCase,
+      saveUserUseCase,
+      getUserUseCase
+    )
   }
 }
