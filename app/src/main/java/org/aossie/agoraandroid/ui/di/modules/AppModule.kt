@@ -517,4 +517,10 @@ class AppModule {
       getUserUseCase
     )
   }
+
+  @Provides
+  @Singleton
+  fun provideSendForgotPasswordLinkUseCase(repository: UserRepository): SendForgotPasswordLinkUseCase {
+    return SendForgotPasswordLinkUseCase(repository)
+  }
 }
