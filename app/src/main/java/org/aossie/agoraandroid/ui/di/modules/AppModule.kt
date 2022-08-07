@@ -510,13 +510,17 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideVerifyOTPUseCase(repository: UserRepository): VerifyOTPUseCase {
-    return VerifyOTPUseCase(repository)
-  }
-
-  @Provides
-  @Singleton
-  fun provideResendOTPUseCase(repository: UserRepository): ResendOTPUseCase {
-    return ResendOTPUseCase(repository)
+  fun provideTwoFactorAuthUseCases(
+    resendOTPUseCase: ResendOTPUseCase,
+    verifyOTPUseCase: VerifyOTPUseCase,
+    saveUserUseCase: SaveUserUseCase,
+    getUserUseCase: GetUserUseCase
+  ): TwoFactorAuthUseCases {
+    return TwoFactorAuthUseCases(
+      resendOTPUseCase,
+      verifyOTPUseCase,
+      saveUserUseCase,
+      getUserUseCase
+    )
   }
 }
