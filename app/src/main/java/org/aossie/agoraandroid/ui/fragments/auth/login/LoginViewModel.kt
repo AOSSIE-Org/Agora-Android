@@ -8,11 +8,7 @@ import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
 import org.aossie.agoraandroid.domain.model.LoginDtoModel
 import org.aossie.agoraandroid.domain.model.UserModel
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.LogInUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
@@ -27,11 +23,7 @@ class LoginViewModel
 @Inject
 constructor(
   private val prefs: PreferenceProvider,
-  private val userLoginUseCase: UserLogInUseCase,
-  private val getUserUseCase: GetUserUseCase,
-  private val saveUserUseCase: SaveUserUseCase,
-  private val refreshAccessTokenUseCase: RefreshAccessTokenUseCase,
-  private val faceBookLogInUseCase: FaceBookLogInUseCase
+  private val logInUseCases: LogInUseCases
 ) : ViewModel() {
 
   var sessionExpiredListener: SessionExpiredListener? = null
@@ -39,7 +31,7 @@ constructor(
   private val _getLoginLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
   val getLoginLiveData = _getLoginLiveData
 
-  fun getLoggedInUser() = getUserUseCase()
+  fun getLoggedInUser() = logInUseCases.getUserUseCase()
 
   fun logInRequest(
     identifier: String,
@@ -53,7 +45,8 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = userLoginUseCase(LoginDtoModel(identifier, trustedDevice, password))
+        val authResponse =
+          logInUseCases.userLogInUseCase(LoginDtoModel(identifier, trustedDevice, password))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -61,7 +54,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, trustedDevice
           )
-          saveUserUseCase(user)
+          logInUseCases.saveUserUseCase(user)
           it.email?.let { mail ->
             prefs.setMailId(mail)
             subscribeToFCM(mail)
@@ -90,7 +83,7 @@ constructor(
   ) {
     viewModelScope.launch {
       try {
-        val authResponse = refreshAccessTokenUseCase()
+        val authResponse = logInUseCases.refreshAccessTokenUseCase()
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -98,7 +91,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, trustedDevice
           )
-          saveUserUseCase(user)
+          logInUseCases.saveUserUseCase(user)
         }
       } catch (e: Exception) {
         sessionExpiredListener?.onSessionExpired()
@@ -110,7 +103,7 @@ constructor(
     _getLoginLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val authResponse = faceBookLogInUseCase()
+        val authResponse = logInUseCases.faceBookLogInUseCase()
         getUserData(authResponse)
         authResponse.email?.let {
           prefs.setMailId(it)
@@ -139,7 +132,7 @@ constructor(
           authResponse.refreshToken?.token, authResponse.refreshToken?.expiresOn,
           authResponse.trustedDevice
         )
-        saveUserUseCase(user)
+        logInUseCases.saveUserUseCase(user)
         Timber.d(authResponse.toString())
         prefs.setIsFacebookUser(true)
         _getLoginLiveData.value = ResponseUI.success()
