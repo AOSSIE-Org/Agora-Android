@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
+import org.aossie.agoraandroid.domain.use_cases.authentication.forgot_password.SendForgotPasswordLinkUseCase
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class ForgotPasswordViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepositoryImpl
+  private val sendForgotPasswordLinkUseCase: SendForgotPasswordLinkUseCase
 ) : ViewModel() {
 
   private val _getSendResetLinkLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
@@ -22,7 +23,7 @@ constructor(
   fun sendResetLink(userName: String?) = viewModelScope.launch {
     _getSendResetLinkLiveData.value = ResponseUI.loading()
     try {
-      userRepository.sendForgotPasswordLink(userName)
+      sendForgotPasswordLinkUseCase(userName)
       _getSendResetLinkLiveData.value = ResponseUI.success()
     } catch (e: ApiException) {
       if (e.message == "412") {
