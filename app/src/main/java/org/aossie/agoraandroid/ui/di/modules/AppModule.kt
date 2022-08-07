@@ -507,4 +507,16 @@ class AppModule {
   fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
     return SignUpUseCase(repository)
   }
+
+  @Provides
+  @Singleton
+  fun provideVerifyOTPUseCase(repository: UserRepository): VerifyOTPUseCase {
+    return VerifyOTPUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideResendOTPUseCase(repository: UserRepository): ResendOTPUseCase {
+    return ResendOTPUseCase(repository)
+  }
 }
