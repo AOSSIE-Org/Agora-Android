@@ -523,4 +523,26 @@ class AppModule {
   fun provideSendForgotPasswordLinkUseCase(repository: UserRepository): SendForgotPasswordLinkUseCase {
     return SendForgotPasswordLinkUseCase(repository)
   }
+
+  @Provides
+  @Singleton
+  fun provideProfileUseCases(
+    saveUserUseCase: SaveUserUseCase,
+    changePasswordUseCase: ChangePasswordUseCase,
+    changeAvatarUseCase: ChangeAvatarUseCase,
+    getUserUseCase: GetUserUseCase,
+    toggleTwoFactorAuthUseCase: ToggleTwoFactorAuthUseCase,
+    updateUserUseCase: UpdateUserUseCase,
+    getUserDataUseCase: GetUserDataUseCase
+  ): ProfileUseCases {
+    return ProfileUseCases(
+      saveUserUseCase,
+      changePasswordUseCase,
+      changeAvatarUseCase,
+      getUserUseCase,
+      toggleTwoFactorAuthUseCase,
+      updateUserUseCase,
+      getUserDataUseCase
+    )
+  }
 }
