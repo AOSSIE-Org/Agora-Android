@@ -19,6 +19,7 @@ import org.aossie.agoraandroid.data.network.interceptors.AuthorizationIntercepto
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.domain.repository.UserRepository
+import org.aossie.agoraandroid.domain.use_cases.authentication.forgot_password.SendForgotPasswordLinkUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.LogInUseCases
@@ -299,5 +300,11 @@ class AppModule {
       saveUserUseCase,
       getUserUseCase
     )
+  }
+
+  @Provides
+  @Singleton
+  fun provideSendForgotPasswordLinkUseCase(repository: UserRepository): SendForgotPasswordLinkUseCase {
+    return SendForgotPasswordLinkUseCase(repository)
   }
 }
