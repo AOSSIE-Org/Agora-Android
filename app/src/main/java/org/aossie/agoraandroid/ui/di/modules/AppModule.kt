@@ -21,6 +21,7 @@ import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.domain.repository.UserRepository
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.LogInUseCases
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
@@ -258,31 +259,19 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideFaceBookLogInUseCase(repository: UserRepository): FaceBookLogInUseCase {
-    return FaceBookLogInUseCase(repository)
-  }
-
-  @Provides
-  @Singleton
-  fun provideUserLogInUseCase(repository: UserRepository): UserLogInUseCase {
-    return UserLogInUseCase(repository)
-  }
-
-  @Provides
-  @Singleton
-  fun provideSaveUserUseCase(repository: UserRepository): SaveUserUseCase {
-    return SaveUserUseCase(repository)
-  }
-
-  @Provides
-  @Singleton
-  fun provideRefreshAccessTokenUseCase(repository: UserRepository): RefreshAccessTokenUseCase {
-    return RefreshAccessTokenUseCase(repository)
-  }
-
-  @Provides
-  @Singleton
-  fun provideGetUserUseCase(repository: UserRepository): GetUserUseCase {
-    return GetUserUseCase(repository)
+  fun provideLogInUseCases(
+    faceBookLogInUseCase: FaceBookLogInUseCase,
+    getUserUseCase: GetUserUseCase,
+    refreshAccessTokenUseCase: RefreshAccessTokenUseCase,
+    saveUserUseCase: SaveUserUseCase,
+    userLogInUseCase: UserLogInUseCase
+  ): LogInUseCases {
+    return LogInUseCases(
+      faceBookLogInUseCase,
+      getUserUseCase,
+      refreshAccessTokenUseCase,
+      saveUserUseCase,
+      userLogInUseCase
+    )
   }
 }
