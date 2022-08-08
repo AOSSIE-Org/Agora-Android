@@ -37,8 +37,8 @@ import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.domain.model.ElectionDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
@@ -227,7 +227,7 @@ constructor(
           val startTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", startDateCalendar)
           val endTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", endDateCalendar)
           createElectionViewModel.createElection(
-            ElectionDto(
+            ElectionDtoModel(
               listOf(),
               ballotVisibility,
               mCandidates,
