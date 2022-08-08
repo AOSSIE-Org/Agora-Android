@@ -545,4 +545,10 @@ class AppModule {
       getUserDataUseCase
     )
   }
+
+  @Provides
+  @Singleton
+  fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
+    return CreateElectionUseCase(electionsRepository)
+  }
 }
