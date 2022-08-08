@@ -21,7 +21,7 @@ import javax.inject.Inject
 class CastVoteViewModel
 @Inject
 constructor(
-  val electionsRepository: ElectionsRepository,
+  val electionsRepository: ElectionsRepositoryImpl,
   val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 

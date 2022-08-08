@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.data.network.dto.BallotDto
 import org.aossie.agoraandroid.data.network.dto.VotersDto
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class ElectionDetailsViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val electionsRepository: ElectionsRepositoryImpl
 ) : ViewModel() {
 
   private val _getVoterResponseLiveData = MutableLiveData<ResponseUI<VotersDto>>()

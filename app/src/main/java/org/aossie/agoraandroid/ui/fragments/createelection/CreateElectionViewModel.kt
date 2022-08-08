@@ -8,8 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.network.dto.ElectionDto
+import org.aossie.agoraandroid.domain.model.ElectionDtoModel
+import org.aossie.agoraandroid.domain.use_cases.create_election.CreateElectionUseCase
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -27,7 +27,7 @@ import javax.inject.Inject
 internal class CreateElectionViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val createElectionUseCase: CreateElectionUseCase
 ) : ViewModel() {
 
   private val _getCreateElectionData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
@@ -35,11 +35,11 @@ constructor(
   private val _getImportVotersLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
   val getImportVotersLiveData = _getImportVotersLiveData
 
-  fun createElection(election: ElectionDto) {
+  fun createElection(election: ElectionDtoModel) {
     _getCreateElectionData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response = electionsRepository.createElection(election)
+        val response = createElectionUseCase(election)
         _getCreateElectionData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
         _getCreateElectionData.value = ResponseUI.error(e.message)
