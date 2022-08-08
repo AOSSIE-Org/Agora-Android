@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -27,7 +27,7 @@ const val ACTIVE_ELECTION_COUNT = "activeElectionsCount"
 class HomeViewModel @Inject
 constructor(
   private val electionsRepository: ElectionsRepository,
-  private val userRepository: UserRepository
+  private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
   private val _getLogoutLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
   val getLogoutLiveData = _getLogoutLiveData

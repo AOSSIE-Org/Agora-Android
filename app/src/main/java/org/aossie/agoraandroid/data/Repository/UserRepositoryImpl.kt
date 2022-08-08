@@ -14,40 +14,41 @@ import org.aossie.agoraandroid.data.network.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.network.dto.UrlDto
 import org.aossie.agoraandroid.data.network.dto.VerifyOtpDto
 import org.aossie.agoraandroid.data.network.responses.AuthResponse
+import org.aossie.agoraandroid.domain.repository.UserRepository
 import org.aossie.agoraandroid.utilities.unsubscribeFromFCM
 import timber.log.Timber
 
-class UserRepository(
+class UserRepositoryImpl(
   private val api: Api,
   private val appDatabase: AppDatabase,
   private val preferenceProvider: PreferenceProvider
-) : ApiRequest() {
+) : ApiRequest(), UserRepository {
 
-  suspend fun userSignup(userData: NewUserDto): String {
+  override suspend fun userSignup(userData: NewUserDto): String {
     return apiRequest { api.createUser(userData) }
   }
 
-  suspend fun userLogin(loginData: LoginDto): AuthResponse {
+  override suspend fun userLogin(loginData: LoginDto): AuthResponse {
     return apiRequest { api.logIn(loginData) }
   }
 
-  suspend fun refreshAccessToken(): AuthResponse {
+  override suspend fun refreshAccessToken(): AuthResponse {
     return apiRequest { api.refreshAccessToken() }
   }
 
-  suspend fun verifyOTP(otpData: VerifyOtpDto): AuthResponse {
+  override suspend fun verifyOTP(otpData: VerifyOtpDto): AuthResponse {
     return apiRequest { api.verifyOTP(otpData) }
   }
 
-  suspend fun fbLogin(): AuthResponse {
+  override suspend fun fbLogin(): AuthResponse {
     return apiRequest { api.facebookLogin() }
   }
 
-  suspend fun getUserData(): AuthResponse {
+  override suspend fun getUserData(): AuthResponse {
     return apiRequest { api.getUserData() }
   }
 
-  suspend fun saveUser(user: User) {
+  override suspend fun saveUser(user: User) {
     appDatabase.getUserDao()
       .removeUser()
     appDatabase.getUserDao()
@@ -60,16 +61,16 @@ class UserRepository(
     }
   }
 
-  suspend fun logout() {
+  override suspend fun logout() {
     return apiRequest { api.logout() }
   }
 
-  fun getUser(): LiveData<User> {
+  override fun getUser(): LiveData<User> {
     return appDatabase.getUserDao()
       .getUser()
   }
 
-  suspend fun deleteUser() {
+  override suspend fun deleteUser() {
     unsubscribeFromFCM(preferenceProvider.getMailId().first())
     appDatabase.getUserDao()
       .removeUser()
@@ -78,27 +79,27 @@ class UserRepository(
       .deleteAllElections()
   }
 
-  suspend fun sendForgotPasswordLink(username: String?): String {
+  override suspend fun sendForgotPasswordLink(username: String?): String {
     return apiRequest { api.sendForgotPassword(username) }
   }
 
-  suspend fun updateUser(updateUserData: UpdateUserDto): List<String> {
+  override suspend fun updateUser(updateUserData: UpdateUserDto): List<String> {
     return apiRequest { api.updateUser(updateUserData) }
   }
 
-  suspend fun changeAvatar(url: String): List<String> {
+  override suspend fun changeAvatar(url: String): List<String> {
     return apiRequest { api.changeAvatar(UrlDto(url)) }
   }
 
-  suspend fun changePassword(password: String): List<String> {
+  override suspend fun changePassword(password: String): List<String> {
     return apiRequest { api.changePassword(PasswordDto(password)) }
   }
 
-  suspend fun toggleTwoFactorAuth(): List<String> {
+  override suspend fun toggleTwoFactorAuth(): List<String> {
     return apiRequest { api.toggleTwoFactorAuth() }
   }
 
-  suspend fun resendOTP(username: String?): AuthResponse {
+  override suspend fun resendOTP(username: String?): AuthResponse {
     return apiRequest { api.resendOTP(username) }
   }
 }
