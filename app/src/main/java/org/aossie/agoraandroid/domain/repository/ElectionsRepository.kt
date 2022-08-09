@@ -9,7 +9,7 @@ import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 
 interface ElectionsRepository {
-  suspend fun fetchAndSaveElections() = fetchElections()
+  suspend fun fetchAndSaveElections()
   fun getElections(): LiveData<List<Election>>
   fun getFinishedElectionsCount(currentDate: String): LiveData<Int>
   fun getPendingElectionsCount(currentDate: String): LiveData<Int>
