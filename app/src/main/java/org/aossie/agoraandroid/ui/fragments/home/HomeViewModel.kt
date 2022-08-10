@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.HomeFragmentUseCases
-import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
-import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
