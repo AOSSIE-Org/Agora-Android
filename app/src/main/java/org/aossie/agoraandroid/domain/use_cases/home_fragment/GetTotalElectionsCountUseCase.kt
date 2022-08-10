@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetTotalElectionsCountUseCase @Inject constructor(
   private val electionsRepository: ElectionsRepository
 ) {
-  operator fun invoke(): LiveData<Int> {
+  suspend operator fun invoke(): LiveData<Int> {
     return electionsRepository.getTotalElectionsCount()
   }
 }
