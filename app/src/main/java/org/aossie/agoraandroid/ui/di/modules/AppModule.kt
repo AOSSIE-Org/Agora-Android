@@ -551,4 +551,26 @@ class AppModule {
   fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
     return CreateElectionUseCase(electionsRepository)
   }
+
+  @Provides
+  @Singleton
+  fun provideHomeFragmentUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getActiveElectionsCountUseCase: GetActiveElectionsCountUseCase,
+    getFinishedElectionsCountUseCase: GetFinishedElectionsCountUseCase,
+    getPendingElectionsCountUseCase: GetPendingElectionsCountUseCase,
+    getTotalElectionsCountUseCase: GetTotalElectionsCountUseCase,
+    deleteUserUseCase: DeleteUserUseCase,
+    logOutUseCase: LogOutUseCase
+  ): HomeFragmentUseCases {
+    return HomeFragmentUseCases(
+      fetchAndSaveElectionUseCase,
+      getActiveElectionsCountUseCase,
+      getFinishedElectionsCountUseCase,
+      getPendingElectionsCountUseCase,
+      getTotalElectionsCountUseCase,
+      deleteUserUseCase,
+      logOutUseCase
+    )
+  }
 }
