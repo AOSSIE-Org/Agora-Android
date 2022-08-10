@@ -27,6 +27,14 @@ import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAcce
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
 import org.aossie.agoraandroid.domain.use_cases.create_election.CreateElectionUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.DeleteUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.FetchAndSaveElectionUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetActiveElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetFinishedElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetPendingElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetTotalElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.HomeFragmentUseCases
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.LogOutUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -291,5 +299,27 @@ class AppModule {
   @Singleton
   fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
     return CreateElectionUseCase(electionsRepository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideHomeFragmentUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getActiveElectionsCountUseCase: GetActiveElectionsCountUseCase,
+    getFinishedElectionsCountUseCase: GetFinishedElectionsCountUseCase,
+    getPendingElectionsCountUseCase: GetPendingElectionsCountUseCase,
+    getTotalElectionsCountUseCase: GetTotalElectionsCountUseCase,
+    deleteUserUseCase: DeleteUserUseCase,
+    logOutUseCase: LogOutUseCase
+  ): HomeFragmentUseCases {
+    return HomeFragmentUseCases(
+      fetchAndSaveElectionUseCase,
+      getActiveElectionsCountUseCase,
+      getFinishedElectionsCountUseCase,
+      getPendingElectionsCountUseCase,
+      getTotalElectionsCountUseCase,
+      deleteUserUseCase,
+      logOutUseCase
+    )
   }
 }
