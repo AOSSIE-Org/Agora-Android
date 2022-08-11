@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetActiveElectionsCountUseCase @Inject constructor(
   private val electionsRepository: ElectionsRepository
 ) {
-  suspend operator fun invoke(
+  operator fun invoke(
     date: String
   ): LiveData<Int> {
     return electionsRepository.getActiveElectionsCount(date)
