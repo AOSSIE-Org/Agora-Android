@@ -573,4 +573,29 @@ class AppModule {
       logOutUseCase
     )
   }
+
+  @Provides
+  @Singleton
+  fun provideDisplayElectionsUseCases(
+    getActiveElectionsUseCase: GetActiveElectionsUseCase,
+    getFinishedElectionsUseCase: GetFinishedElectionsUseCase,
+    getPendingElectionsUseCase: GetPendingElectionsUseCase
+  ): DisplayElectionsUseCases {
+    return DisplayElectionsUseCases(
+      getActiveElectionsUseCase,
+      getFinishedElectionsUseCase,
+      getPendingElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideElectionsUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getElectionsUseCase: GetElectionsUseCase
+  ): ElectionsUseCases {
+    return ElectionsUseCases(
+      fetchAndSaveElectionUseCase, getElectionsUseCase
+    )
+  }
 }
