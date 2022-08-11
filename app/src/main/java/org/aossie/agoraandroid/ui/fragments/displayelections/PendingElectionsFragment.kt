@@ -15,12 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.adapters.ElectionsAdapter
-import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentPendingElectionsBinding
+import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import java.util.ArrayList
 import javax.inject.Inject
 
 /**
@@ -45,7 +44,8 @@ constructor(
     binding = FragmentPendingElectionsBinding.inflate(inflater)
     return binding.root
   }
-  lateinit var mElections: ArrayList<Election>
+
+  lateinit var mElections: ArrayList<ElectionModel>
   private lateinit var electionsAdapter: ElectionsAdapter
 
   private val onItemClicked = { _id: String ->
@@ -71,6 +71,7 @@ constructor(
   override fun onNetworkConnected() {
     bindUI()
   }
+
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     bindUI()
@@ -94,7 +95,7 @@ constructor(
     }
   }
 
-  private fun addElections(elections: List<Election>) {
+  private fun addElections(elections: List<ElectionModel>) {
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
       electionsAdapter.submitList(elections)
