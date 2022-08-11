@@ -27,6 +27,12 @@ import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAcce
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
 import org.aossie.agoraandroid.domain.use_cases.create_election.CreateElectionUseCase
+import org.aossie.agoraandroid.domain.use_cases.display_election.DisplayElectionsUseCases
+import org.aossie.agoraandroid.domain.use_cases.display_election.GetActiveElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.display_election.GetFinishedElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.display_election.GetPendingElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.ElectionsUseCases
+import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.GetElectionsUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.DeleteUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.FetchAndSaveElectionUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetActiveElectionsCountUseCase
@@ -320,6 +326,31 @@ class AppModule {
       getTotalElectionsCountUseCase,
       deleteUserUseCase,
       logOutUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideDisplayElectionsUseCases(
+    getActiveElectionsUseCase: GetActiveElectionsUseCase,
+    getFinishedElectionsUseCase: GetFinishedElectionsUseCase,
+    getPendingElectionsUseCase: GetPendingElectionsUseCase
+  ): DisplayElectionsUseCases {
+    return DisplayElectionsUseCases(
+      getActiveElectionsUseCase,
+      getFinishedElectionsUseCase,
+      getPendingElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideElectionsUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getElectionsUseCase: GetElectionsUseCase
+  ): ElectionsUseCases {
+    return ElectionsUseCases(
+      fetchAndSaveElectionUseCase, getElectionsUseCase
     )
   }
 }

@@ -23,13 +23,13 @@ import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
+import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Collections
 import java.util.Date
@@ -206,16 +206,16 @@ constructor(
     binding.calendarLayout.sampleDay.setOnTouchListener(object : SwipeDetector(
       requireContext()
     ) {
-        override fun onSwipeRight() {
-          super.onSwipeRight()
-          onPreviousDay()
-        }
+      override fun onSwipeRight() {
+        super.onSwipeRight()
+        onPreviousDay()
+      }
 
-        override fun onSwipeLeft() {
-          super.onSwipeLeft()
-          onNextDay()
-        }
-      })
+      override fun onSwipeLeft() {
+        super.onSwipeLeft()
+        onNextDay()
+      }
+    })
   }
 
   private fun onNextDay() {
@@ -277,31 +277,31 @@ constructor(
         eventView.setOnTouchListener(object : SwipeDetector(
           requireContext()
         ) {
-            override fun onSwipeRight() {
-              super.onSwipeRight()
-              onPreviousDay()
-            }
+          override fun onSwipeRight() {
+            super.onSwipeRight()
+            onPreviousDay()
+          }
 
-            override fun onSwipeLeft() {
-              super.onSwipeLeft()
-              onNextDay()
-            }
+          override fun onSwipeLeft() {
+            super.onSwipeLeft()
+            onNextDay()
+          }
 
-            override fun onClick() {
-              super.onClick()
-              openElectionDetail(event)
-            }
+          override fun onClick() {
+            super.onClick()
+            openElectionDetail(event)
+          }
 
-            override fun showRipple() {
-              super.showRipple()
-              setPressed(eventView, true)
-            }
+          override fun showRipple() {
+            super.showRipple()
+            setPressed(eventView, true)
+          }
 
-            override fun hideRipple() {
-              super.hideRipple()
-              setPressed(eventView, false)
-            }
-          })
+          override fun hideRipple() {
+            super.hideRipple()
+            setPressed(eventView, false)
+          }
+        })
 
         eventViews.add(eventView)
         val startMinute = 60 * event.hour + event.minute
@@ -335,7 +335,7 @@ constructor(
     v.isPressed = isPressed
   }
 
-  private fun addEvent(election: Election) {
+  private fun addEvent(election: ElectionModel) {
     val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
     var formattedStartingDate: Date? = formatter.parse(election.start!!)
     val formattedEndingDate: Date? = formatter.parse(election.end!!)

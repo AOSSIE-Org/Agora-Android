@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R.drawable
-import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.ListItemElectionsBinding
+import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.utilities.AppConstants
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -17,7 +17,7 @@ import java.util.Locale
 
 class ElectionsAdapter(
   private val onItemClicked: (name: String) -> Unit
-) : ListAdapter<Election, ElectionsAdapter.ElectionsViewHolder>(ElectionItemDiffCallback) {
+) : ListAdapter<ElectionModel, ElectionsAdapter.ElectionsViewHolder>(ElectionItemDiffCallback) {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
@@ -37,7 +37,7 @@ class ElectionsAdapter(
     private val onItemClicked: (name: String) -> Unit
   ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(election: Election) {
+    fun bind(election: ElectionModel) {
       try {
         binding.tvName.text = election.name
         binding.tvDescription.text = election.description
@@ -51,7 +51,8 @@ class ElectionsAdapter(
         binding.tvEndDate.text = outFormat.format(formattedEndingDate!!)
         binding.tvStartDate.text = outFormat.format(formattedStartingDate!!)
         // set label color and election status
-        binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
+        binding.label.text =
+          getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
         binding.label.setBackgroundResource(
           getEventColor(currentDate, formattedStartingDate, formattedEndingDate)
         )
@@ -106,12 +107,12 @@ class ElectionsAdapter(
     }
   }
 
-  object ElectionItemDiffCallback : DiffUtil.ItemCallback<Election>() {
-    override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
+  object ElectionItemDiffCallback : DiffUtil.ItemCallback<ElectionModel>() {
+    override fun areItemsTheSame(oldItem: ElectionModel, newItem: ElectionModel): Boolean {
       return oldItem._id == newItem._id
     }
 
-    override fun areContentsTheSame(oldItem: Election, newItem: Election): Boolean {
+    override fun areContentsTheSame(oldItem: ElectionModel, newItem: ElectionModel): Boolean {
       return oldItem == newItem
     }
   }
