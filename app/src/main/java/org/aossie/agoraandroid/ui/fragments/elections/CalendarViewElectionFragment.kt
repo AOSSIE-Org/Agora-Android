@@ -21,7 +21,6 @@ import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
