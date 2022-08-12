@@ -215,7 +215,7 @@ constructor(
           onNextDay()
         }
       })
-    }
+  }
 
   private fun onNextDay() {
     day!!.timeInMillis += 86400000 // 24hr = 86400000 ms
