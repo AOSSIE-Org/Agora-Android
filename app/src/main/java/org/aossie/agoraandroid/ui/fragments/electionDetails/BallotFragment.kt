@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.adapters.BallotsAdapter
-import org.aossie.agoraandroid.data.network.dto.BallotDto
 import org.aossie.agoraandroid.databinding.FragmentBallotBinding
+import org.aossie.agoraandroid.domain.model.BallotDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
@@ -53,7 +53,7 @@ constructor(
 
     binding.recyclerViewBallots.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-      val arr = ArrayList<BallotDto>()
+      val arr = ArrayList<BallotDtoModel>()
       adapter = BallotsAdapter(arr)
     }
 
@@ -93,7 +93,7 @@ constructor(
     )
   }
 
-  private fun initRecyclerView(ballots: List<BallotDto>) {
+  private fun initRecyclerView(ballots: List<BallotDtoModel>) {
     if (ballots.isEmpty()) {
       binding.tvEmptyBallots.show()
     }
@@ -109,7 +109,7 @@ constructor(
       .observe(
         viewLifecycleOwner,
         Observer {
-          initRecyclerView(it.ballot as List<BallotDto>)
+          initRecyclerView(it.ballot as List<BallotDtoModel>)
           binding.progressBar.hide()
         }
       )

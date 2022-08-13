@@ -16,8 +16,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.adapters.ResultViewpagerAdapter
-import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
+import org.aossie.agoraandroid.domain.model.WinnerDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
@@ -40,7 +40,7 @@ constructor(
   }
 
   private var id: String? = null
-  private lateinit var winnerDto: WinnerDto
+  private lateinit var winnerDto: WinnerDtoModel
   private val chartType: Array<Int> = arrayOf(
     string.bar_chart,
     string.pie_chart
@@ -167,7 +167,7 @@ constructor(
     }
   }
 
-  private fun initResultView(winner: WinnerDto) {
+  private fun initResultView(winner: WinnerDtoModel) {
     binding.tvNoResult.hide()
     binding.resultView.visibility = View.VISIBLE
     binding.textViewWinnerName.text = winner.candidate?.name
