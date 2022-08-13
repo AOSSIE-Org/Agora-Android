@@ -31,6 +31,12 @@ import org.aossie.agoraandroid.domain.use_cases.display_election.DisplayElection
 import org.aossie.agoraandroid.domain.use_cases.display_election.GetActiveElectionsUseCase
 import org.aossie.agoraandroid.domain.use_cases.display_election.GetFinishedElectionsUseCase
 import org.aossie.agoraandroid.domain.use_cases.display_election.GetPendingElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.DeleteElectionUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.ElectionDetailsUseCases
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetBallotsUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetElectionByIdUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetResultUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetVotersUseCase
 import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.ElectionsUseCases
 import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.GetElectionsUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.DeleteUserUseCase
@@ -351,6 +357,24 @@ class AppModule {
   ): ElectionsUseCases {
     return ElectionsUseCases(
       fetchAndSaveElectionUseCase, getElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun providesElectionDetailsUseCases(
+    deleteElectionUseCase: DeleteElectionUseCase,
+    getBallotsUseCase: GetBallotsUseCase,
+    getElectionByIdUseCase: GetElectionByIdUseCase,
+    getResultUseCase: GetResultUseCase,
+    getVotersUseCase: GetVotersUseCase
+  ): ElectionDetailsUseCases {
+    return ElectionDetailsUseCases(
+      deleteElectionUseCase,
+      getBallotsUseCase,
+      getElectionByIdUseCase,
+      getResultUseCase,
+      getVotersUseCase
     )
   }
 }
