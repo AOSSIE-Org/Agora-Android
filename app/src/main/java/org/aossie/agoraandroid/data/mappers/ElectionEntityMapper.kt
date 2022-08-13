@@ -47,4 +47,10 @@ class ElectionEntityMapper : EntityMapper<Election, ElectionModel> {
       electionLiveDataList
     ) { mapFromEntityList(it) }
   }
+
+  fun mapFromEntityLiveData(electionLivedata: LiveData<Election>): LiveData<ElectionModel> {
+    return Transformations.map(
+      electionLivedata
+    ) { mapFromEntity(it) }
+  }
 }
