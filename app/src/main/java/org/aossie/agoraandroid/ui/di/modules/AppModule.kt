@@ -438,4 +438,10 @@ class AppModule {
       getVotersUseCase
     )
   }
+
+  @Provides
+  @Singleton
+  fun providesDeleteUseUseCase(userRepository: UserRepository): DeleteUserUseCase {
+    return DeleteUserUseCase(userRepository)
+  }
 }
