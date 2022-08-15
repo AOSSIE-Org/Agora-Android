@@ -21,8 +21,7 @@ import javax.inject.Inject
 class CastVoteViewModel
 @Inject
 constructor(
-  val electionsRepository: ElectionsRepositoryImpl,
-  val userRepository: UserRepositoryImpl
+  private val castVoteActivityUseCases: CastVoteActivityUseCases
 ) : ViewModel() {
 
   private val mVerifyVoterResponse = MutableLiveData<ResponseUI<Any>>()
@@ -40,18 +39,18 @@ constructor(
   val castVoteResponse: LiveData<ResponseUI<Any>>
     get() = mCastVoteResponse
 
-  private val mElection = MutableLiveData<ElectionDto>()
+  private val mElection = MutableLiveData<ElectionDtoModel>()
 
-  val election: LiveData<ElectionDto>
+  val election: LiveData<ElectionDtoModel>
     get() = mElection
 
   fun verifyVoter(id: String) {
     viewModelScope.launch {
       try {
-        val electionDto = electionsRepository.verifyVoter(id)
-        electionDto._id = id
+        val electionDtoModel = castVoteActivityUseCases.verifyVotersUseCase(id)
+        electionDtoModel._id = id
         mVerifyVoterResponse.value = ResponseUI.success()
-        mElection.value = electionDto
+        mElection.value = electionDtoModel
       } catch (e: ApiException) {
         mVerifyVoterResponse.value = ResponseUI.error(e.message)
       } catch (e: NoInternetException) {
@@ -69,7 +68,7 @@ constructor(
   ) {
     viewModelScope.launch {
       try {
-        electionsRepository.castVote(id, ballotInput, passCode)
+        castVoteActivityUseCases.castVoteUseCase(id, ballotInput, passCode)
         mCastVoteResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
         mCastVoteResponse.value = ResponseUI.error(e.message)
