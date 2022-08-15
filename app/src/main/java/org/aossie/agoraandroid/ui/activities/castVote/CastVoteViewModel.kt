@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
-import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
-import org.aossie.agoraandroid.data.network.dto.ElectionDto
+import org.aossie.agoraandroid.domain.model.ElectionDtoModel
+import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteActivityUseCases
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
