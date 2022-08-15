@@ -10,7 +10,7 @@ class CastVoteUseCase @Inject constructor(
     id: String,
     ballotInput: String,
     passCode: String
-  ) : List<String> {
+  ): List<String> {
     return electionsRepository.castVote(id, ballotInput, passCode)
   }
 }
