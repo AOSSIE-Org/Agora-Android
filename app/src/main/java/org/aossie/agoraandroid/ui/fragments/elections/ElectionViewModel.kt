@@ -4,28 +4,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.domain.model.ElectionModel
+import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.ElectionsUseCases
 import java.util.Locale
 import javax.inject.Inject
 
 class ElectionViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val electionsUseCases: ElectionsUseCases
 ) : ViewModel() {
 
-  fun getElections(): LiveData<List<Election>> {
+  fun getElections(): LiveData<List<ElectionModel>> {
     viewModelScope.launch {
-      electionsRepository.fetchAndSaveElections()
+      electionsUseCases.fetchAndSaveElectionUseCase()
     }
-    return electionsRepository.getElections()
+    return electionsUseCases.getElectionsUseCase()
   }
 
   fun filter(
-    mElections: List<Election>,
+    mElections: List<ElectionModel>,
     query: String
-  ): List<Election> {
+  ): List<ElectionModel> {
     return mElections.filter {
       it.name?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true ||
         it.description?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true
