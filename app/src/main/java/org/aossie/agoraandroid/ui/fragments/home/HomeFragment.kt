@@ -126,7 +126,7 @@ constructor(
                     .d(expireOn.toString())
                   lifecycleScope.launch {
                     if (preferenceProvider.getIsFacebookUser()
-                        .first()
+                      .first()
                     ) {
                       loginViewModel.facebookLogInRequest()
                     } else {
@@ -185,7 +185,7 @@ constructor(
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!preferenceProvider.isDisplayed(binding.root.id.toString())
-          .first()
+        .first()
       ) {
         spotlightTargets = getSpotlightTargets()
         preferenceProvider.setDisplayed(binding.root.id.toString())
