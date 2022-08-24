@@ -17,8 +17,8 @@ class GetUserUseCase @Inject constructor(
     val response: Flow<User> = repository.getUser()
     return flow {
       response.collect {
-        val userModel = mapper.mapFromEntity(it)
-        if (userModel != null) {
+        if (it != null) {
+          val userModel = mapper.mapFromEntity(it)
           emit(userModel)
         }
       }
