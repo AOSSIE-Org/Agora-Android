@@ -326,116 +326,116 @@ class AppModule {
 
   @Provides
   @Singleton
-    fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
-      return CreateElectionUseCase(electionsRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTwoFactorAuthUseCases(
-      resendOTPUseCase: ResendOTPUseCase,
-      verifyOTPUseCase: VerifyOTPUseCase,
-      saveUserUseCase: SaveUserUseCase,
-      getUserUseCase: GetUserUseCase
-    ): TwoFactorAuthUseCases {
-      return TwoFactorAuthUseCases(
-        resendOTPUseCase,
-        verifyOTPUseCase,
-        saveUserUseCase,
-        getUserUseCase
-      )
-    }
-
-    @Provides
-    @Singleton
-    fun provideHomeFragmentUseCases(
-      fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
-      getActiveElectionsCountUseCase: GetActiveElectionsCountUseCase,
-      getFinishedElectionsCountUseCase: GetFinishedElectionsCountUseCase,
-      getPendingElectionsCountUseCase: GetPendingElectionsCountUseCase,
-      getTotalElectionsCountUseCase: GetTotalElectionsCountUseCase,
-      deleteUserUseCase: DeleteUserUseCase,
-      logOutUseCase: LogOutUseCase
-    ): HomeFragmentUseCases {
-      return HomeFragmentUseCases(
-        fetchAndSaveElectionUseCase,
-        getActiveElectionsCountUseCase,
-        getFinishedElectionsCountUseCase,
-        getPendingElectionsCountUseCase,
-        getTotalElectionsCountUseCase,
-        deleteUserUseCase,
-        logOutUseCase
-      )
-    }
-
-    @Provides
-    @Singleton
-    fun provideSendForgotPasswordLinkUseCase(repository: UserRepository): SendForgotPasswordLinkUseCase {
-      return SendForgotPasswordLinkUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideDisplayElectionsUseCases(
-      getActiveElectionsUseCase: GetActiveElectionsUseCase,
-      getFinishedElectionsUseCase: GetFinishedElectionsUseCase,
-      getPendingElectionsUseCase: GetPendingElectionsUseCase
-    ): DisplayElectionsUseCases {
-      return DisplayElectionsUseCases(
-        getActiveElectionsUseCase,
-        getFinishedElectionsUseCase,
-        getPendingElectionsUseCase
-      )
-    }
-
-    @Provides
-    @Singleton
-    fun provideElectionsUseCases(
-      fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
-      getElectionsUseCase: GetElectionsUseCase
-    ): ElectionsUseCases {
-      return ElectionsUseCases(
-        fetchAndSaveElectionUseCase, getElectionsUseCase
-      )
-    }
-
-    @Provides
-    @Singleton
-    fun provideProfileUseCases(
-      saveUserUseCase: SaveUserUseCase,
-      changePasswordUseCase: ChangePasswordUseCase,
-      changeAvatarUseCase: ChangeAvatarUseCase,
-      getUserUseCase: GetUserUseCase,
-      toggleTwoFactorAuthUseCase: ToggleTwoFactorAuthUseCase,
-      updateUserUseCase: UpdateUserUseCase,
-      getUserDataUseCase: GetUserDataUseCase
-    ): ProfileUseCases {
-      return ProfileUseCases(
-        saveUserUseCase,
-        changePasswordUseCase,
-        changeAvatarUseCase,
-        getUserUseCase,
-        toggleTwoFactorAuthUseCase,
-        updateUserUseCase,
-        getUserDataUseCase
-      )
-    }
+  fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
+    return CreateElectionUseCase(electionsRepository)
+  }
 
   @Provides
   @Singleton
-    fun providesElectionDetailsUseCases(
-      deleteElectionUseCase: DeleteElectionUseCase,
-      getBallotsUseCase: GetBallotsUseCase,
-      getElectionByIdUseCase: GetElectionByIdUseCase,
-      getResultUseCase: GetResultUseCase,
-      getVotersUseCase: GetVotersUseCase
-    ): ElectionDetailsUseCases {
-      return ElectionDetailsUseCases(
-        deleteElectionUseCase,
-        getBallotsUseCase,
-        getElectionByIdUseCase,
-        getResultUseCase,
-        getVotersUseCase
-      )
-    }
+  fun provideTwoFactorAuthUseCases(
+    resendOTPUseCase: ResendOTPUseCase,
+    verifyOTPUseCase: VerifyOTPUseCase,
+    saveUserUseCase: SaveUserUseCase,
+    getUserUseCase: GetUserUseCase
+  ): TwoFactorAuthUseCases {
+    return TwoFactorAuthUseCases(
+      resendOTPUseCase,
+      verifyOTPUseCase,
+      saveUserUseCase,
+      getUserUseCase
+    )
   }
+
+  @Provides
+  @Singleton
+  fun provideHomeFragmentUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getActiveElectionsCountUseCase: GetActiveElectionsCountUseCase,
+    getFinishedElectionsCountUseCase: GetFinishedElectionsCountUseCase,
+    getPendingElectionsCountUseCase: GetPendingElectionsCountUseCase,
+    getTotalElectionsCountUseCase: GetTotalElectionsCountUseCase,
+    deleteUserUseCase: DeleteUserUseCase,
+    logOutUseCase: LogOutUseCase
+  ): HomeFragmentUseCases {
+    return HomeFragmentUseCases(
+      fetchAndSaveElectionUseCase,
+      getActiveElectionsCountUseCase,
+      getFinishedElectionsCountUseCase,
+      getPendingElectionsCountUseCase,
+      getTotalElectionsCountUseCase,
+      deleteUserUseCase,
+      logOutUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideSendForgotPasswordLinkUseCase(repository: UserRepository): SendForgotPasswordLinkUseCase {
+    return SendForgotPasswordLinkUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideDisplayElectionsUseCases(
+    getActiveElectionsUseCase: GetActiveElectionsUseCase,
+    getFinishedElectionsUseCase: GetFinishedElectionsUseCase,
+    getPendingElectionsUseCase: GetPendingElectionsUseCase
+  ): DisplayElectionsUseCases {
+    return DisplayElectionsUseCases(
+      getActiveElectionsUseCase,
+      getFinishedElectionsUseCase,
+      getPendingElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideElectionsUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getElectionsUseCase: GetElectionsUseCase
+  ): ElectionsUseCases {
+    return ElectionsUseCases(
+      fetchAndSaveElectionUseCase, getElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideProfileUseCases(
+    saveUserUseCase: SaveUserUseCase,
+    changePasswordUseCase: ChangePasswordUseCase,
+    changeAvatarUseCase: ChangeAvatarUseCase,
+    getUserUseCase: GetUserUseCase,
+    toggleTwoFactorAuthUseCase: ToggleTwoFactorAuthUseCase,
+    updateUserUseCase: UpdateUserUseCase,
+    getUserDataUseCase: GetUserDataUseCase
+  ): ProfileUseCases {
+    return ProfileUseCases(
+      saveUserUseCase,
+      changePasswordUseCase,
+      changeAvatarUseCase,
+      getUserUseCase,
+      toggleTwoFactorAuthUseCase,
+      updateUserUseCase,
+      getUserDataUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun providesElectionDetailsUseCases(
+    deleteElectionUseCase: DeleteElectionUseCase,
+    getBallotsUseCase: GetBallotsUseCase,
+    getElectionByIdUseCase: GetElectionByIdUseCase,
+    getResultUseCase: GetResultUseCase,
+    getVotersUseCase: GetVotersUseCase
+  ): ElectionDetailsUseCases {
+    return ElectionDetailsUseCases(
+      deleteElectionUseCase,
+      getBallotsUseCase,
+      getElectionByIdUseCase,
+      getResultUseCase,
+      getVotersUseCase
+    )
+  }
+}
