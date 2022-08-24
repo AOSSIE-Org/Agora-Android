@@ -1,8 +1,8 @@
 package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import androidx.lifecycle.ViewModel
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.db.entities.Election
+import org.aossie.agoraandroid.domain.model.ElectionModel
+import org.aossie.agoraandroid.domain.use_cases.display_election.DisplayElectionsUseCases
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class DisplayElectionViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepository
+  private val displayElectionsUseCases: DisplayElectionsUseCases
 ) : ViewModel() {
 
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
@@ -22,19 +22,19 @@ constructor(
   private val date: String = formatter.format(currentDate)
 
   val activeElections by lazyDeferred {
-    electionsRepository.getActiveElections(date)
+    displayElectionsUseCases.getActiveElectionsUseCase(date)
   }
   val pendingElections by lazyDeferred {
-    electionsRepository.getPendingElections(date)
+    displayElectionsUseCases.getPendingElectionsUseCase(date)
   }
   val finishedElections by lazyDeferred {
-    electionsRepository.getFinishedElections(date)
+    displayElectionsUseCases.getFinishedElectionsUseCase(date)
   }
 
   fun filter(
-    mElections: List<Election>,
+    mElections: List<ElectionModel>,
     query: String
-  ): List<Election> {
+  ): List<ElectionModel> {
     return mElections.filter {
       it.name?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true ||
         it.description?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true

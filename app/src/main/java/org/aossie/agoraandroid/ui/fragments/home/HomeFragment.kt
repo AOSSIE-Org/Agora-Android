@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.color
@@ -27,7 +27,6 @@ import org.aossie.agoraandroid.utilities.scrollToView
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -105,10 +104,9 @@ constructor(
       }
     )
 
-    loginViewModel.getLoggedInUser()
-      .observe(
-        viewLifecycleOwner,
-        Observer { user ->
+    lifecycleScope.launch {
+      loginViewModel.getLoggedInUser()
+        .collect { user ->
           if (user != null) {
             val formatter =
               SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
@@ -142,7 +140,7 @@ constructor(
             }
           }
         }
-      )
+    }
 
     homeViewModel.countMediatorLiveData.observe(
       viewLifecycleOwner,

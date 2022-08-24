@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.adapters.VotersAdapter
-import org.aossie.agoraandroid.data.network.dto.VotersDto
 import org.aossie.agoraandroid.databinding.FragmentVotersBinding
+import org.aossie.agoraandroid.domain.model.VotersDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
@@ -54,7 +54,7 @@ constructor(
 
     binding.recyclerViewVoters.apply {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-      val arr = ArrayList<VotersDto>()
+      val arr = ArrayList<VotersDtoModel>()
       adapter = VotersAdapter(arr)
     }
 
@@ -94,7 +94,7 @@ constructor(
     )
   }
 
-  private fun initRecyclerView(voters: List<VotersDto>) {
+  private fun initRecyclerView(voters: List<VotersDtoModel>) {
     if (voters.isEmpty()) {
       binding.tvNoVotersForThisElection.show()
     }
@@ -111,7 +111,7 @@ constructor(
         viewLifecycleOwner,
         Observer {
           if (it != null) {
-            initRecyclerView(it.voterList as List<VotersDto>)
+            initRecyclerView(it.voterList as List<VotersDtoModel>)
             binding.progressBar.hide()
           }
         }

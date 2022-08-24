@@ -25,13 +25,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
+import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
@@ -79,7 +80,7 @@ constructor(
     viewModelFactory
   }
 
-  private lateinit var mUser: User
+  private lateinit var mUser: UserModel
   private lateinit var binding: FragmentProfileBinding
 
   override fun onCreateView(
@@ -235,14 +236,13 @@ constructor(
       }
     )
 
-    viewModel.user.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      viewModel.user.collect {
         if (it != null) {
           updateUI(it)
         }
       }
-    )
+    }
 
     viewModel.passwordRequestCode.observe(
       viewLifecycleOwner,
@@ -315,7 +315,7 @@ constructor(
   }
 
   private fun updateUI(
-    it: User,
+    it: UserModel,
   ) {
     binding.userNameTv.text = it.username
     binding.emailIdTv.text = it.email

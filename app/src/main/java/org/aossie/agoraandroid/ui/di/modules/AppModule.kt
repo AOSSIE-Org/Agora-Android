@@ -1,16 +1,16 @@
 package org.aossie.agoraandroid.ui.di.modules
 
 import android.content.Context
+import androidx.viewbinding.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
-import org.aossie.agoraandroid.BuildConfig
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
+import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.api.Api
@@ -18,6 +18,46 @@ import org.aossie.agoraandroid.data.network.api.FCMApi
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
+import org.aossie.agoraandroid.domain.repository.ElectionsRepository
+import org.aossie.agoraandroid.domain.repository.UserRepository
+import org.aossie.agoraandroid.domain.use_cases.authentication.forgot_password.SendForgotPasswordLinkUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.LogInUseCases
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.ResendOTPUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.TwoFactorAuthUseCases
+import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.VerifyOTPUseCase
+import org.aossie.agoraandroid.domain.use_cases.create_election.CreateElectionUseCase
+import org.aossie.agoraandroid.domain.use_cases.display_election.DisplayElectionsUseCases
+import org.aossie.agoraandroid.domain.use_cases.display_election.GetActiveElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.display_election.GetFinishedElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.display_election.GetPendingElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.DeleteElectionUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.ElectionDetailsUseCases
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetBallotsUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetElectionByIdUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetResultUseCase
+import org.aossie.agoraandroid.domain.use_cases.election_details.GetVotersUseCase
+import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.ElectionsUseCases
+import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.GetElectionsUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.DeleteUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.FetchAndSaveElectionUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetActiveElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetFinishedElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetPendingElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetTotalElectionsCountUseCase
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.HomeFragmentUseCases
+import org.aossie.agoraandroid.domain.use_cases.home_fragment.LogOutUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ChangeAvatarUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ChangePasswordUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.GetUserDataUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ProfileUseCases
+import org.aossie.agoraandroid.domain.use_cases.profile.ToggleTwoFactorAuthUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.UpdateUserUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -36,6 +76,7 @@ class AppModule {
   fun providesPreferenceProvider(context: Context, securityUtil: SecurityUtil): PreferenceProvider {
     return PreferenceProvider(context, securityUtil)
   }
+
   @Provides
   @Singleton
   fun provideInternetManager(context: Context): InternetManager {
@@ -44,7 +85,10 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesNetworkInterceptor(context: Context, internetManager: InternetManager): NetworkInterceptor {
+  fun providesNetworkInterceptor(
+    context: Context,
+    internetManager: InternetManager
+  ): NetworkInterceptor {
     return NetworkInterceptor(
       context,
       internetManager
@@ -53,7 +97,10 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider, context: Context): HeaderInterceptor {
+  fun providesHeaderInterceptor(
+    preferenceProvider: PreferenceProvider,
+    context: Context
+  ): HeaderInterceptor {
     return HeaderInterceptor(preferenceProvider, context.resources.getString(R.string.serverKey))
   }
 
@@ -164,12 +211,22 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesUserRepository(
+  fun provideUserRepository(
     api: Api,
     appDatabase: AppDatabase,
     preferenceProvider: PreferenceProvider
   ): UserRepository {
-    return UserRepository(api, appDatabase, preferenceProvider)
+    return UserRepositoryImpl(api, appDatabase, preferenceProvider)
+  }
+
+  @Provides
+  @Singleton
+  fun provideUserRepositoryImpl(
+    api: Api,
+    appDatabase: AppDatabase,
+    preferenceProvider: PreferenceProvider
+  ): UserRepositoryImpl {
+    return UserRepositoryImpl(api, appDatabase, preferenceProvider)
   }
 
   @Provides
@@ -179,7 +236,17 @@ class AppModule {
     appDatabase: AppDatabase,
     preferenceProvider: PreferenceProvider
   ): ElectionsRepository {
-    return ElectionsRepository(api, appDatabase, preferenceProvider)
+    return ElectionsRepositoryImpl(api, appDatabase, preferenceProvider)
+  }
+
+  @Provides
+  @Singleton
+  fun providesElectionsRepositoryImpl(
+    api: Api,
+    appDatabase: AppDatabase,
+    preferenceProvider: PreferenceProvider
+  ): ElectionsRepositoryImpl {
+    return ElectionsRepositoryImpl(api, appDatabase, preferenceProvider)
   }
 
   @Provides
@@ -232,4 +299,143 @@ class AppModule {
   @Singleton
   fun providesFCM(@Named("retrofitForFCM") retrofit: Retrofit): FCMApi =
     retrofit.create(FCMApi::class.java)
+
+  @Provides
+  @Singleton
+  fun provideLogInUseCases(
+    faceBookLogInUseCase: FaceBookLogInUseCase,
+    getUserUseCase: GetUserUseCase,
+    refreshAccessTokenUseCase: RefreshAccessTokenUseCase,
+    saveUserUseCase: SaveUserUseCase,
+    userLogInUseCase: UserLogInUseCase
+  ): LogInUseCases {
+    return LogInUseCases(
+      faceBookLogInUseCase,
+      getUserUseCase,
+      refreshAccessTokenUseCase,
+      saveUserUseCase,
+      userLogInUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
+    return SignUpUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
+    return CreateElectionUseCase(electionsRepository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideTwoFactorAuthUseCases(
+    resendOTPUseCase: ResendOTPUseCase,
+    verifyOTPUseCase: VerifyOTPUseCase,
+    saveUserUseCase: SaveUserUseCase,
+    getUserUseCase: GetUserUseCase
+  ): TwoFactorAuthUseCases {
+    return TwoFactorAuthUseCases(
+      resendOTPUseCase,
+      verifyOTPUseCase,
+      saveUserUseCase,
+      getUserUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideHomeFragmentUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getActiveElectionsCountUseCase: GetActiveElectionsCountUseCase,
+    getFinishedElectionsCountUseCase: GetFinishedElectionsCountUseCase,
+    getPendingElectionsCountUseCase: GetPendingElectionsCountUseCase,
+    getTotalElectionsCountUseCase: GetTotalElectionsCountUseCase,
+    deleteUserUseCase: DeleteUserUseCase,
+    logOutUseCase: LogOutUseCase
+  ): HomeFragmentUseCases {
+    return HomeFragmentUseCases(
+      fetchAndSaveElectionUseCase,
+      getActiveElectionsCountUseCase,
+      getFinishedElectionsCountUseCase,
+      getPendingElectionsCountUseCase,
+      getTotalElectionsCountUseCase,
+      deleteUserUseCase,
+      logOutUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideSendForgotPasswordLinkUseCase(repository: UserRepository): SendForgotPasswordLinkUseCase {
+    return SendForgotPasswordLinkUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideDisplayElectionsUseCases(
+    getActiveElectionsUseCase: GetActiveElectionsUseCase,
+    getFinishedElectionsUseCase: GetFinishedElectionsUseCase,
+    getPendingElectionsUseCase: GetPendingElectionsUseCase
+  ): DisplayElectionsUseCases {
+    return DisplayElectionsUseCases(
+      getActiveElectionsUseCase,
+      getFinishedElectionsUseCase,
+      getPendingElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideElectionsUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getElectionsUseCase: GetElectionsUseCase
+  ): ElectionsUseCases {
+    return ElectionsUseCases(
+      fetchAndSaveElectionUseCase, getElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideProfileUseCases(
+    saveUserUseCase: SaveUserUseCase,
+    changePasswordUseCase: ChangePasswordUseCase,
+    changeAvatarUseCase: ChangeAvatarUseCase,
+    getUserUseCase: GetUserUseCase,
+    toggleTwoFactorAuthUseCase: ToggleTwoFactorAuthUseCase,
+    updateUserUseCase: UpdateUserUseCase,
+    getUserDataUseCase: GetUserDataUseCase
+  ): ProfileUseCases {
+    return ProfileUseCases(
+      saveUserUseCase,
+      changePasswordUseCase,
+      changeAvatarUseCase,
+      getUserUseCase,
+      toggleTwoFactorAuthUseCase,
+      updateUserUseCase,
+      getUserDataUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun providesElectionDetailsUseCases(
+    deleteElectionUseCase: DeleteElectionUseCase,
+    getBallotsUseCase: GetBallotsUseCase,
+    getElectionByIdUseCase: GetElectionByIdUseCase,
+    getResultUseCase: GetResultUseCase,
+    getVotersUseCase: GetVotersUseCase
+  ): ElectionDetailsUseCases {
+    return ElectionDetailsUseCases(
+      deleteElectionUseCase,
+      getBallotsUseCase,
+      getElectionByIdUseCase,
+      getResultUseCase,
+      getVotersUseCase
+    )
+  }
 }

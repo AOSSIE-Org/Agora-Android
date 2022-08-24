@@ -8,10 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
+import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -26,7 +29,7 @@ constructor(
 ) : BaseFragment(viewModelFactory) {
 
   private var crypto: String? = null
-  private var user: User? = null
+  private var user: UserModel? = null
 
   private val viewModel: TwoFactorAuthViewModel by viewModels {
     viewModelFactory
@@ -46,14 +49,13 @@ constructor(
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
     viewModel.sessionExpiredListener = this
 
-    viewModel.user.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      viewModel.user.collect {
         if (it != null) {
           user = it
         }
       }
-    )
+    }
 
     binding.btnVerifyOtp.setOnClickListener {
       binding.progressBar.show()
@@ -99,6 +101,7 @@ constructor(
       }
     )
   }
+
   private fun handleVerifyOtp(response: ResponseUI<Any>) = when (response.status) {
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
