@@ -25,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
@@ -235,14 +236,13 @@ constructor(
       }
     )
 
-    viewModel.user.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      viewModel.user.collect {
         if (it != null) {
           updateUI(it)
         }
       }
-    )
+    }
 
     viewModel.passwordRequestCode.observe(
       viewLifecycleOwner,
@@ -438,7 +438,7 @@ constructor(
 
   private fun checkNewPasswordAndConfirmPassword(s: Editable?) {
     if (s.toString() == binding.confirmPasswordTiet.text.toString()
-      .trim()
+        .trim()
     ) {
       binding.confirmPasswordTil.error = null
     } else {
