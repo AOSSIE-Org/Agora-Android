@@ -287,12 +287,6 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
-    return SignUpUseCase(repository)
-  }
-
-  @Provides
-  @Singleton
   fun provideTwoFactorAuthUseCases(
     resendOTPUseCase: ResendOTPUseCase,
     verifyOTPUseCase: VerifyOTPUseCase,
