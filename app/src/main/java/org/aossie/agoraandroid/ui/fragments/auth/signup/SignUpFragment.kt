@@ -15,9 +15,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.network.dto.NewUserDto
 import org.aossie.agoraandroid.data.network.dto.SecurityQuestionDto
 import org.aossie.agoraandroid.databinding.FragmentSignUpBinding
+import org.aossie.agoraandroid.domain.model.NewUserDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -153,7 +153,7 @@ constructor(
     } else {
       binding.signupEmail.error = null
       signUpViewModel.signUpRequest(
-        NewUserDto(
+        NewUserDtoModel(
           userEmail, firstName, userName, lastName, userPass,
           SecurityQuestionDto(securityQuestionAnswer, "", securityQuestion!!)
         )
