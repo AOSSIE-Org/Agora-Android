@@ -28,7 +28,7 @@ object AppConstants {
   const val LOGIN_AGAIN_MESSAGE = "Login Again"
   const val INVALID_USERNAME_MESSAGE = "Invalid Username"
   const val NOT_FOUND_MESSAGE = "Something went wrong"
-  const val USER_ALREADY_FOUND_MESSAGE = "User with this username already exists"
+  const val USER_ALREADY_FOUND_MESSAGE = "User with this username or emailId already exists"
   const val INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error. Please enter valid input"
   const val URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$"
   const val BASE_URL = "https://agora-rest-api.herokuapp.com/api/v1/"
