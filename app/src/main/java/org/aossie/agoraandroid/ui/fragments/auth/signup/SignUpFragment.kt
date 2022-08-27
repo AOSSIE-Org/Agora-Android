@@ -150,8 +150,11 @@ constructor(
       .matches()
     ) {
       binding.signupEmail.error = "Enter a valid email address!!!"
+    } else if (userPass.length < 6) {
+      binding.signupPassword.error = "password length must be atleast 6 !!!"
     } else {
       binding.signupEmail.error = null
+      binding.signupPassword.error = null
       signUpViewModel.signUpRequest(
         NewUserDto(
           userEmail, firstName, userName, lastName, userPass,
