@@ -1,16 +1,16 @@
 package org.aossie.agoraandroid.ui.di.modules
 
 import android.content.Context
+import androidx.viewbinding.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
-import org.aossie.agoraandroid.BuildConfig
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.network.api.Api
@@ -18,6 +18,13 @@ import org.aossie.agoraandroid.data.network.api.FCMApi
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
+import org.aossie.agoraandroid.domain.repository.UserRepository
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.LogInUseCases
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -36,6 +43,7 @@ class AppModule {
   fun providesPreferenceProvider(context: Context, securityUtil: SecurityUtil): PreferenceProvider {
     return PreferenceProvider(context, securityUtil)
   }
+
   @Provides
   @Singleton
   fun provideInternetManager(context: Context): InternetManager {
@@ -44,7 +52,10 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesNetworkInterceptor(context: Context, internetManager: InternetManager): NetworkInterceptor {
+  fun providesNetworkInterceptor(
+    context: Context,
+    internetManager: InternetManager
+  ): NetworkInterceptor {
     return NetworkInterceptor(
       context,
       internetManager
@@ -53,7 +64,10 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesHeaderInterceptor(preferenceProvider: PreferenceProvider, context: Context): HeaderInterceptor {
+  fun providesHeaderInterceptor(
+    preferenceProvider: PreferenceProvider,
+    context: Context
+  ): HeaderInterceptor {
     return HeaderInterceptor(preferenceProvider, context.resources.getString(R.string.serverKey))
   }
 
@@ -164,12 +178,22 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun providesUserRepository(
+  fun provideUserRepository(
     api: Api,
     appDatabase: AppDatabase,
     preferenceProvider: PreferenceProvider
   ): UserRepository {
-    return UserRepository(api, appDatabase, preferenceProvider)
+    return UserRepositoryImpl(api, appDatabase, preferenceProvider)
+  }
+
+  @Provides
+  @Singleton
+  fun provideUserRepositoryImpl(
+    api: Api,
+    appDatabase: AppDatabase,
+    preferenceProvider: PreferenceProvider
+  ): UserRepositoryImpl {
+    return UserRepositoryImpl(api, appDatabase, preferenceProvider)
   }
 
   @Provides
@@ -232,4 +256,22 @@ class AppModule {
   @Singleton
   fun providesFCM(@Named("retrofitForFCM") retrofit: Retrofit): FCMApi =
     retrofit.create(FCMApi::class.java)
+
+  @Provides
+  @Singleton
+  fun provideLogInUseCases(
+    faceBookLogInUseCase: FaceBookLogInUseCase,
+    getUserUseCase: GetUserUseCase,
+    refreshAccessTokenUseCase: RefreshAccessTokenUseCase,
+    saveUserUseCase: SaveUserUseCase,
+    userLogInUseCase: UserLogInUseCase
+  ): LogInUseCases {
+    return LogInUseCases(
+      faceBookLogInUseCase,
+      getUserUseCase,
+      refreshAccessTokenUseCase,
+      saveUserUseCase,
+      userLogInUseCase
+    )
+  }
 }
