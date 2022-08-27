@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
-import org.aossie.agoraandroid.data.network.dto.NewUserDto
+import org.aossie.agoraandroid.domain.model.NewUserDtoModel
+import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseCase
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
@@ -18,19 +18,19 @@ import javax.inject.Inject
 class SignUpViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepositoryImpl
+  private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
 
   lateinit var sessionExpiredListener: SessionExpiredListener
   private val _getSignUpLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
   val getSignUpLiveData = _getSignUpLiveData
   fun signUpRequest(
-    userData: NewUserDto
+    userDataModel: NewUserDtoModel
   ) {
     _getSignUpLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val call = userRepository.userSignup(userData)
+        val call = signUpUseCase(userDataModel)
         Timber.d(call)
         _getSignUpLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
