@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
+import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -26,7 +26,7 @@ constructor(
 ) : BaseFragment(viewModelFactory) {
 
   private var crypto: String? = null
-  private var user: User? = null
+  private var user: UserModel? = null
 
   private val viewModel: TwoFactorAuthViewModel by viewModels {
     viewModelFactory
@@ -99,6 +99,7 @@ constructor(
       }
     )
   }
+
   private fun handleVerifyOtp(response: ResponseUI<Any>) = when (response.status) {
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
