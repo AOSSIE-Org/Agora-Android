@@ -30,6 +30,12 @@ import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseC
 import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.ResendOTPUseCase
 import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.VerifyOTPUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ChangeAvatarUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ChangePasswordUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.GetUserDataUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ProfileUseCases
+import org.aossie.agoraandroid.domain.use_cases.profile.ToggleTwoFactorAuthUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.UpdateUserUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -306,5 +312,27 @@ class AppModule {
   @Singleton
   fun provideSendForgotPasswordLinkUseCase(repository: UserRepository): SendForgotPasswordLinkUseCase {
     return SendForgotPasswordLinkUseCase(repository)
+  }
+
+  @Provides
+  @Singleton
+  fun provideProfileUseCases(
+    saveUserUseCase: SaveUserUseCase,
+    changePasswordUseCase: ChangePasswordUseCase,
+    changeAvatarUseCase: ChangeAvatarUseCase,
+    getUserUseCase: GetUserUseCase,
+    toggleTwoFactorAuthUseCase: ToggleTwoFactorAuthUseCase,
+    updateUserUseCase: UpdateUserUseCase,
+    getUserDataUseCase: GetUserDataUseCase
+  ): ProfileUseCases {
+    return ProfileUseCases(
+      saveUserUseCase,
+      changePasswordUseCase,
+      changeAvatarUseCase,
+      getUserUseCase,
+      toggleTwoFactorAuthUseCase,
+      updateUserUseCase,
+      getUserDataUseCase
+    )
   }
 }
