@@ -32,12 +32,6 @@ import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authen
 import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.VerifyOTPUseCase
 import org.aossie.agoraandroid.domain.use_cases.create_election.CreateElectionUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.ChangeAvatarUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.ChangePasswordUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.GetUserDataUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.ProfileUseCases
-import org.aossie.agoraandroid.domain.use_cases.profile.ToggleTwoFactorAuthUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.UpdateUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.DeleteUserUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.FetchAndSaveElectionUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetActiveElectionsCountUseCase
@@ -46,6 +40,12 @@ import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetPendingElection
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetTotalElectionsCountUseCase
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.HomeFragmentUseCases
 import org.aossie.agoraandroid.domain.use_cases.home_fragment.LogOutUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ChangeAvatarUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ChangePasswordUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.GetUserDataUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.ProfileUseCases
+import org.aossie.agoraandroid.domain.use_cases.profile.ToggleTwoFactorAuthUseCase
+import org.aossie.agoraandroid.domain.use_cases.profile.UpdateUserUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
