@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
@@ -73,10 +74,9 @@ constructor(
 
   override fun onFragmentInitiated() {
 
-    val user = viewModel.user
-    user.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      val user = viewModel.user
+      user.collect {
         if (it != null) {
           binding.tvEmailId.text = it.email
           binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
@@ -91,7 +91,7 @@ constructor(
           }
         }
       }
-    )
+    }
 
     mAvatar.observe(
       viewLifecycleOwner,

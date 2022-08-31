@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.data.Repository
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -65,7 +65,7 @@ class UserRepositoryImpl(
     return apiRequest { api.logout() }
   }
 
-  override fun getUser(): LiveData<User> {
+  override fun getUser(): Flow<User> {
     return appDatabase.getUserDao()
       .getUser()
   }
