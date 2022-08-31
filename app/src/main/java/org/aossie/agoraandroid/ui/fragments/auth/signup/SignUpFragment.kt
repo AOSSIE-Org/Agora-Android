@@ -13,6 +13,9 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.network.dto.SecurityQuestionDto
@@ -92,27 +95,28 @@ constructor(
     binding.etAnswer.doAfterTextChanged { doAfterTextChange() }
     binding.etPassword.doAfterTextChanged { doAfterTextChange() }
 
-    signUpViewModel.getSignUpLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            binding.progressBar.show()
-            makeFieldsToggleEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            notify(getString(string.verify_account))
-            makeFieldsToggleEnable()
-          }
-          ResponseUI.Status.ERROR -> {
-            notify(it.message)
-            binding.progressBar.hide()
-            makeFieldsToggleEnable()
+    lifecycleScope.launch {
+      signUpViewModel.getSignUpStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
+              binding.progressBar.show()
+              makeFieldsToggleEnable()
+            }
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              notify(getString(string.verify_account))
+              makeFieldsToggleEnable()
+            }
+            ResponseUI.Status.ERROR -> {
+              notify(it.message)
+              binding.progressBar.hide()
+              makeFieldsToggleEnable()
+            }
           }
         }
       }
-    )
+    }
   }
 
   private fun makeFieldsToggleEnable() {

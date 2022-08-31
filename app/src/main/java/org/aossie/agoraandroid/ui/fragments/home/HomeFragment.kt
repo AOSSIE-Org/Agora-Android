@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.color
@@ -27,7 +28,6 @@ import org.aossie.agoraandroid.utilities.scrollToView
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -88,22 +88,23 @@ constructor(
     }
     binding.swipeRefresh.setOnRefreshListener { updateUi() }
 
-    loginViewModel.getLoginLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            // Do Nothing
-          }
-          ResponseUI.Status.SUCCESS -> {
-            updateUi()
-          }
-          ResponseUI.Status.ERROR -> {
-            notify(it.message)
+    lifecycleScope.launch {
+      loginViewModel.getLoginStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
+              // Do Nothing
+            }
+            ResponseUI.Status.SUCCESS -> {
+              updateUi()
+            }
+            ResponseUI.Status.ERROR -> {
+              notify(it.message)
+            }
           }
         }
       }
-    )
+    }
 
     loginViewModel.getLoggedInUser()
       .observe(

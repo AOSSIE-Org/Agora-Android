@@ -27,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
@@ -254,21 +255,23 @@ constructor(
       }
     )
 
-    loginViewModel.getLoginLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> onLoadingStarted()
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            toggleIsEnable()
-          }
-          ResponseUI.Status.ERROR -> {
-            onError(it.message)
+    lifecycleScope.launch {
+      loginViewModel.getLoginStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> onLoadingStarted()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              toggleIsEnable()
+            }
+            ResponseUI.Status.ERROR -> {
+              onError(it.message)
+            }
           }
         }
       }
-    )
+    }
+
     viewModel.userUpdateResponse.observe(
       viewLifecycleOwner,
       Observer {
