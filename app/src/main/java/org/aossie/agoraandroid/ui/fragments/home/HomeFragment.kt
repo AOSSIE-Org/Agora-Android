@@ -100,6 +100,8 @@ constructor(
             ResponseUI.Status.ERROR -> {
               notify(it.message)
             }
+          } catch (e: ParseException) {
+            e.printStackTrace()
           }
         }
       }
