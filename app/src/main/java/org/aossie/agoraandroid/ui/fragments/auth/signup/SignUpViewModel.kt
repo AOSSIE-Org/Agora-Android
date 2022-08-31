@@ -1,8 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.auth.signup
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.Repository.UserRepository
 import org.aossie.agoraandroid.data.network.dto.NewUserDto
@@ -22,29 +23,29 @@ constructor(
 ) : ViewModel() {
 
   lateinit var sessionExpiredListener: SessionExpiredListener
-  private val _getSignUpLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
-  val getSignUpLiveData = _getSignUpLiveData
+  private val _getSignUpStateFlow: MutableStateFlow<ResponseUI<Any>?> = MutableStateFlow(null)
+  val getSignUpStateFlow = _getSignUpStateFlow.asStateFlow()
   fun signUpRequest(
     userDataModel: NewUserDtoModel
   ) {
-    _getSignUpLiveData.value = ResponseUI.loading()
+    _getSignUpStateFlow.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
         val call = signUpUseCase(userDataModel)
         Timber.d(call)
-        _getSignUpLiveData.value = ResponseUI.success()
+        _getSignUpStateFlow.value = ResponseUI.success()
       } catch (e: ApiException) {
         if (e.message == "409") {
-          _getSignUpLiveData.value = ResponseUI.error(AppConstants.USER_ALREADY_FOUND_MESSAGE)
+          _getSignUpStateFlow.value = ResponseUI.error(AppConstants.USER_ALREADY_FOUND_MESSAGE)
         } else {
-          _getSignUpLiveData.value = ResponseUI.error(e.message)
+          _getSignUpStateFlow.value = ResponseUI.error(e.message)
         }
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getSignUpLiveData.value = ResponseUI.error(e.message)
+        _getSignUpStateFlow.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getSignUpLiveData.value = ResponseUI.error(e.message)
+        _getSignUpStateFlow.value = ResponseUI.error(e.message)
       }
     }
   }

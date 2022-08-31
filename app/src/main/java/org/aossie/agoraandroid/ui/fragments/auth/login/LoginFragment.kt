@@ -67,33 +67,34 @@ constructor(
 
   private fun initObjects() {
     loginViewModel.sessionExpiredListener = this
-    loginViewModel.getLoginLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            binding.progressBar.show()
-            makeFieldsToggleEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            makeFieldsToggleEnable()
-            it.message?.let { crypto ->
-              onTwoFactorAuthentication(crypto)
-            } ?: kotlin.run {
-              Navigation.findNavController(binding.root)
-                .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+    lifecycleScope.launch {
+      loginViewModel.getLoginStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
+              binding.progressBar.show()
+              makeFieldsToggleEnable()
             }
-          }
-          ResponseUI.Status.ERROR -> {
-            binding.progressBar.hide()
-            notify(it.message)
-            makeFieldsToggleEnable()
-            enableBtnFacebook()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              makeFieldsToggleEnable()
+              it.message?.let { crypto ->
+                onTwoFactorAuthentication(crypto)
+              } ?: kotlin.run {
+                Navigation.findNavController(binding.root)
+                  .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+              }
+            }
+            ResponseUI.Status.ERROR -> {
+              binding.progressBar.hide()
+              notify(it.message)
+              makeFieldsToggleEnable()
+              enableBtnFacebook()
+            }
           }
         }
       }
-    )
+    }
 
     callbackManager = Factory.create()
 
