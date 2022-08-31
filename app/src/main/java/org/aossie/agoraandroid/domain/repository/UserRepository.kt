@@ -1,6 +1,6 @@
 package org.aossie.agoraandroid.domain.repository
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.data.network.dto.LoginDto
 import org.aossie.agoraandroid.data.network.dto.NewUserDto
@@ -17,7 +17,7 @@ interface UserRepository {
   suspend fun getUserData(): AuthResponse
   suspend fun saveUser(user: User)
   suspend fun logout()
-  fun getUser(): LiveData<User>
+  fun getUser(): Flow<User>
   suspend fun deleteUser()
   suspend fun sendForgotPasswordLink(username: String?): String
   suspend fun updateUser(updateUserData: UpdateUserDto): List<String>
