@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.domain.model.VerifyOtpDtoModel
@@ -26,15 +29,15 @@ constructor(
 
   val user = twoFactorAuthUseCases.getUser()
 
-  private val mVerifyOtpResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mVerifyOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val verifyOtpResponse: LiveData<ResponseUI<Any>>
-    get() = mVerifyOtpResponse
+  val verifyOtpResponse: StateFlow<ResponseUI<Any>?>
+    get() = mVerifyOtpResponse.asStateFlow()
 
-  private val mResendOtpResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mResendOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val resendOtpResponse: LiveData<ResponseUI<Any>>
-    get() = mResendOtpResponse
+  val resendOtpResponse: StateFlow<ResponseUI<Any>?>
+    get() = mResendOtpResponse.asStateFlow()
 
   fun verifyOTP(
     otp: String,

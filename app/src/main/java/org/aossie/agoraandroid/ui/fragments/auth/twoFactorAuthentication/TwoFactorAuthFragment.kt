@@ -88,21 +88,20 @@ constructor(
       }
     }
 
-    viewModel.verifyOtpResponse.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      viewModel.verifyOtpResponse.collect {
         handleVerifyOtp(it)
       }
-    )
-    viewModel.resendOtpResponse.observe(
-      viewLifecycleOwner,
-      Observer {
+    }
+
+    lifecycleScope.launch {
+      viewModel.resendOtpResponse.collect {
         handleResendOtp(it)
       }
-    )
+    }
   }
 
-  private fun handleVerifyOtp(response: ResponseUI<Any>) = when (response.status) {
+  private fun handleVerifyOtp(response: ResponseUI<Any>?) = when (response?.status) {
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       Navigation.findNavController(binding.root)
@@ -110,21 +109,21 @@ constructor(
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      notify(response.message)
+      notify(response?.message)
     }
 
     else -> { // Do Nothing
     }
   }
 
-  private fun handleResendOtp(response: ResponseUI<Any>) = when (response.status) {
+  private fun handleResendOtp(response: ResponseUI<Any>?) = when (response?.status) {
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       notify(getString(string.otp_sent))
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      notify(response.message)
+      notify(response?.message)
     }
     else -> { // Do Nothing
     }
