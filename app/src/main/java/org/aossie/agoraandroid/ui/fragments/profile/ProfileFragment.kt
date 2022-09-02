@@ -27,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
@@ -290,31 +291,32 @@ constructor(
         handleChangeAvatar(it)
       }
     )
-    homeViewModel.getLogoutLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.ERROR -> onError(it.message)
+    lifecycleScope.launch {
+      homeViewModel.getLogoutStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.ERROR -> onError(it.message)
 
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            toggleIsEnable()
-            lifecycleScope.launch {
-              if (prefs.getIsFacebookUser().first()) {
-                LoginManager.getInstance()
-                  .logOut()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              toggleIsEnable()
+              lifecycleScope.launch {
+                if (prefs.getIsFacebookUser().first()) {
+                  LoginManager.getInstance()
+                    .logOut()
+                }
               }
+              homeViewModel.deleteUserData()
+              Navigation.findNavController(binding.root)
+                .navigate(
+                  ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
+                )
             }
-            homeViewModel.deleteUserData()
-            Navigation.findNavController(binding.root)
-              .navigate(
-                ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
-              )
+            ResponseUI.Status.LOADING -> onLoadingStarted()
           }
-          ResponseUI.Status.LOADING -> onLoadingStarted()
         }
       }
-    )
+    }
   }
 
   private fun updateUI(

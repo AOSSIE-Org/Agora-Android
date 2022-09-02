@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
@@ -100,37 +101,38 @@ constructor(
       }
     )
 
-    homeViewModel.getLogoutLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.ERROR -> {
-            binding.progressBar.hide()
-            notify(it.message)
-            binding.tvLogout.toggleIsEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            lifecycleScope.launch {
-              if (prefs.getIsFacebookUser().first()) {
-                LoginManager.getInstance()
-                  .logOut()
-              }
+    lifecycleScope.launch {
+      homeViewModel.getLogoutStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.ERROR -> {
+              binding.progressBar.hide()
+              notify(it.message)
+              binding.tvLogout.toggleIsEnable()
             }
-            homeViewModel.deleteUserData()
-            notify("Logged Out")
-            Navigation.findNavController(binding.root)
-              .navigate(
-                SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
-              )
-          }
-          ResponseUI.Status.LOADING -> {
-            binding.progressBar.show()
-            binding.tvLogout.toggleIsEnable()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              lifecycleScope.launch {
+                if (prefs.getIsFacebookUser().first()) {
+                  LoginManager.getInstance()
+                    .logOut()
+                }
+              }
+              homeViewModel.deleteUserData()
+              notify("Logged Out")
+              Navigation.findNavController(binding.root)
+                .navigate(
+                  SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
+                )
+            }
+            ResponseUI.Status.LOADING -> {
+              binding.progressBar.show()
+              binding.tvLogout.toggleIsEnable()
+            }
           }
         }
       }
-    )
+    }
     homeViewModel.sessionExpiredListener = this
 
     binding.tvAccountSettings.setOnClickListener {

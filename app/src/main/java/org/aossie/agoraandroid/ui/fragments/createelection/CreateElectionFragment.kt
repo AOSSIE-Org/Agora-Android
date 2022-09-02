@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
@@ -50,7 +51,6 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.scrollToView
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -119,49 +119,51 @@ constructor(
   }
 
   private fun initObserver() {
-    createElectionViewModel.getCreateElectionData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
+    lifecycleScope.launch {
+      createElectionViewModel.getCreateElectionData.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
 
-            binding.progressBar.show()
-            binding.submitDetailsBtn.toggleIsEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-
-            binding.progressBar.hide()
-            binding.submitDetailsBtn.toggleIsEnable()
-            notify(it.message)
-            lifecycleScope.launch {
-              prefs.setUpdateNeeded(true)
+              binding.progressBar.show()
+              binding.submitDetailsBtn.toggleIsEnable()
             }
-            Navigation.findNavController(binding.root)
-              .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
-          }
-          ResponseUI.Status.ERROR -> {
+            ResponseUI.Status.SUCCESS -> {
 
-            binding.progressBar.hide()
-            notify(it.message)
-            binding.submitDetailsBtn.toggleIsEnable()
+              binding.progressBar.hide()
+              binding.submitDetailsBtn.toggleIsEnable()
+              notify(it.message)
+              lifecycleScope.launch {
+                prefs.setUpdateNeeded(true)
+              }
+              Navigation.findNavController(binding.root)
+                .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+            }
+            ResponseUI.Status.ERROR -> {
+
+              binding.progressBar.hide()
+              notify(it.message)
+              binding.submitDetailsBtn.toggleIsEnable()
+            }
           }
         }
       }
-    )
+    }
 
-    createElectionViewModel.getImportVotersLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> { // Do Nothing
+    lifecycleScope.launch {
+      createElectionViewModel.getImportVotersLiveData.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> { // Do Nothing
+            }
+
+            ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+
+            ResponseUI.Status.ERROR -> onReadFailure(it.message)
           }
-
-          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
-
-          ResponseUI.Status.ERROR -> onReadFailure(it.message)
         }
       }
-    )
+    }
   }
 
   override fun onNetworkConnected() {
