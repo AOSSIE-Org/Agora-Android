@@ -292,31 +292,32 @@ constructor(
         handleChangeAvatar(it)
       }
     )
-    homeViewModel.getLogoutLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.ERROR -> onError(it.message)
+    lifecycleScope.launch {
+      homeViewModel.getLogoutStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.ERROR -> onError(it.message)
 
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            toggleIsEnable()
-            lifecycleScope.launch {
-              if (prefs.getIsFacebookUser().first()) {
-                LoginManager.getInstance()
-                  .logOut()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              toggleIsEnable()
+              lifecycleScope.launch {
+                if (prefs.getIsFacebookUser().first()) {
+                  LoginManager.getInstance()
+                    .logOut()
+                }
               }
+              homeViewModel.deleteUserData()
+              Navigation.findNavController(binding.root)
+                .navigate(
+                  ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
+                )
             }
-            homeViewModel.deleteUserData()
-            Navigation.findNavController(binding.root)
-              .navigate(
-                ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
-              )
+            ResponseUI.Status.LOADING -> onLoadingStarted()
           }
-          ResponseUI.Status.LOADING -> onLoadingStarted()
         }
       }
-    )
+    }
   }
 
   private fun updateUI(
