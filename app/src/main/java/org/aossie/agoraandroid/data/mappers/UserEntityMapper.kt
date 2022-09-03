@@ -38,13 +38,4 @@ class UserEntityMapper @Inject constructor() {
       trustedDevice = domainModel.trustedDevice
     )
   }
-<<<<<<< HEAD
-=======
-
-  fun mapLiveDataFromEntity(userLivedata: LiveData<User>): LiveData<UserModel> {
-    return Transformations.map(
-      userLivedata
-    ) { mapFromEntity(it) }
-  }
->>>>>>> 53e2ff0 (profile fragment clean architecture use cases and implementation)
 }
