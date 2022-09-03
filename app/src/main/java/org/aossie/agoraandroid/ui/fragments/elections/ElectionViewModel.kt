@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.model.ElectionModel
-import org.aossie.agoraandroid.domain.use_cases.elections_and_calenderView.ElectionsUseCases
+import org.aossie.agoraandroid.domain.useCases.electionsAndCalenderView.ElectionsUseCases
 import java.util.Locale
 import javax.inject.Inject
 

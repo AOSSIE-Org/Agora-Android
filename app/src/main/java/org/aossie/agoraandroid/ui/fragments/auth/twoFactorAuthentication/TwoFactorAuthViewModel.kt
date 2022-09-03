@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.domain.model.VerifyOtpDtoModel
-import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.TwoFactorAuthUseCases
+import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants

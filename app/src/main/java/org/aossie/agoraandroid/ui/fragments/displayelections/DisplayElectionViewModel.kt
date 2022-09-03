@@ -2,7 +2,7 @@ package org.aossie.agoraandroid.ui.fragments.displayelections
 
 import androidx.lifecycle.ViewModel
 import org.aossie.agoraandroid.domain.model.ElectionModel
-import org.aossie.agoraandroid.domain.use_cases.display_election.DisplayElectionsUseCases
+import org.aossie.agoraandroid.domain.useCases.displayElection.DisplayElectionsUseCases
 import org.aossie.agoraandroid.utilities.lazyDeferred
 import java.text.SimpleDateFormat
 import java.util.Calendar
