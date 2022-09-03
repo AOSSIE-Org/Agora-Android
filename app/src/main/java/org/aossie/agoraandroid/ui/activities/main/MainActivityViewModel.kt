@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.DeleteUserUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.DeleteUserUseCase
 import javax.inject.Inject
 
 class MainActivityViewModel
@@ -22,6 +22,7 @@ constructor(
   fun setLogout(isLogout: Boolean) {
     mutableIsLogout.value = isLogout
   }
+
   fun onNetworkChanged(isConnected: Boolean) {
     _getNetworkStatusLiveData.value = isConnected
   }
