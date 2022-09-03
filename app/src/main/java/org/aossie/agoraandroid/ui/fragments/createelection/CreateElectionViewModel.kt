@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.domain.model.ElectionDtoModel
-import org.aossie.agoraandroid.domain.use_cases.create_election.CreateElectionUseCase
+import org.aossie.agoraandroid.domain.useCases.createElection.CreateElectionUseCase
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI

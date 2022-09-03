@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.network.responses.AuthToken
 import org.aossie.agoraandroid.domain.model.UpdateUserDtoModel
 import org.aossie.agoraandroid.domain.model.UserModel
-import org.aossie.agoraandroid.domain.use_cases.profile.ProfileUseCases
+import org.aossie.agoraandroid.domain.useCases.profile.ProfileUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
