@@ -19,15 +19,7 @@ import javax.inject.Inject
 class SignUpViewModel
 @Inject
 constructor(
-<<<<<<< HEAD
-<<<<<<< HEAD
   private val signUpUseCase: SignUpUseCase
-=======
-  private val userRepository: UserRepositoryImpl
->>>>>>> 0160a1b (added use cases for loginFragment)
-=======
-  private val signUpUseCase: SignUpUseCase
->>>>>>> eee7fa0 (added signup use cases and signUpfragment migration)
 ) : ViewModel() {
 
   lateinit var sessionExpiredListener: SessionExpiredListener
