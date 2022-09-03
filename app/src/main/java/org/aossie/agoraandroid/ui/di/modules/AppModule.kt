@@ -73,12 +73,6 @@ import org.aossie.agoraandroid.domain.useCases.profile.GetUserDataUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.ProfileUseCases
 import org.aossie.agoraandroid.domain.useCases.profile.ToggleTwoFactorAuthUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.UpdateUserUseCase
-import org.aossie.agoraandroid.domain.useCases.electionDetails.DeleteElectionUseCase
-import org.aossie.agoraandroid.domain.useCases.electionDetails.ElectionDetailsUseCases
-import org.aossie.agoraandroid.domain.useCases.electionDetails.GetBallotsUseCase
-import org.aossie.agoraandroid.domain.useCases.electionDetails.GetElectionByIdUseCase
-import org.aossie.agoraandroid.domain.useCases.electionDetails.GetResultUseCase
-import org.aossie.agoraandroid.domain.useCases.electionDetails.GetVotersUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
