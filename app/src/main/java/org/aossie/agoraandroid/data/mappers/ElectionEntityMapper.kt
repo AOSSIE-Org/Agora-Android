@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.domain.model.ElectionModel
-import org.aossie.agoraandroid.utilities.EntityMapper
 
-class ElectionEntityMapper : EntityMapper<Election, ElectionModel> {
-  override fun mapFromEntity(entity: Election): ElectionModel {
+class ElectionEntityMapper {
+  fun mapFromEntity(entity: Election): ElectionModel {
     return ElectionModel(
       _id = entity._id,
       name = entity.name,
@@ -32,10 +31,6 @@ class ElectionEntityMapper : EntityMapper<Election, ElectionModel> {
       isCounted = entity.isCounted,
       noVacancies = entity.noVacancies
     )
-  }
-
-  override fun mapToEntity(domainModel: ElectionModel): Election {
-    TODO("Not yet implemented")
   }
 
   private fun mapFromEntityList(listElection: List<Election>): List<ElectionModel> {
