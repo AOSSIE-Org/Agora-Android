@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.databinding.FragmentElectionsBinding
 import org.aossie.agoraandroid.domain.model.ElectionModel
@@ -69,18 +71,17 @@ constructor(
   }
 
   private fun bindUI() {
-    try {
-      electionViewModel.getElections()
-        .observe(
-          viewLifecycleOwner,
-          Observer {
+    lifecycleScope.launch {
+      try {
+        electionViewModel.getElections()
+          .collect {
             if (it != null) {
               addElections(it)
             }
           }
-        )
-    } catch (e: IllegalStateException) {
-      binding.tvSomethingWentWrong.show()
+      } catch (e: IllegalStateException) {
+        binding.tvSomethingWentWrong.show()
+      }
     }
   }
 
