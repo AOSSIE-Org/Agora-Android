@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.model.NewUserDtoModel
-import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.signUp.SignUpUseCase
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
