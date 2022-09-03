@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.aossie.agoraandroid.data.Repository.ElectionsRepository
+import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
 import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.utilities.ApiException
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class CastVoteViewModel
 @Inject
 constructor(
-  val electionsRepository: ElectionsRepository,
+  val electionsRepository: ElectionsRepositoryImpl,
   val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
