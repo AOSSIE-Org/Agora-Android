@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.domain.use_cases.election_details
+package org.aossie.agoraandroid.domain.useCases.electionDetails
 
 import org.aossie.agoraandroid.data.mappers.WinnerDtoEntityMapper
 import org.aossie.agoraandroid.domain.model.WinnerDtoModel
