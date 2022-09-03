@@ -1,8 +1,8 @@
 package org.aossie.agoraandroid.ui.fragments.elections
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.domain.useCases.electionsAndCalenderView.ElectionsUseCases
@@ -15,7 +15,7 @@ constructor(
   private val electionsUseCases: ElectionsUseCases
 ) : ViewModel() {
 
-  fun getElections(): LiveData<List<ElectionModel>> {
+  fun getElections(): Flow<List<ElectionModel>> {
     viewModelScope.launch {
       electionsUseCases.fetchAndSaveElection()
     }
