@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.domain.use_cases.election_details
+package org.aossie.agoraandroid.domain.useCases.electionDetails
 
 data class ElectionDetailsUseCases(
   val deleteElectionUseCase: DeleteElectionUseCase,

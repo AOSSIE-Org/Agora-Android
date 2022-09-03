@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.domain.use_cases.election_details
+package org.aossie.agoraandroid.domain.useCases.electionDetails
 
 import androidx.lifecycle.LiveData
 import org.aossie.agoraandroid.data.mappers.ElectionEntityMapper
