@@ -3,6 +3,7 @@ package org.aossie.agoraandroid.data.Repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
@@ -37,7 +38,7 @@ constructor(
 
   override suspend fun fetchAndSaveElections() = fetchElections()
 
-  override fun getElections(): LiveData<List<Election>> {
+  override fun getElections(): Flow<List<Election>> {
     return db.getElectionDao()
       .getElections()
   }
@@ -101,7 +102,7 @@ constructor(
       .saveElections(electionEntity)
   }
 
-  override fun getPendingElections(currentDate: String): LiveData<List<Election>> =
+  override fun getPendingElections(currentDate: String): Flow<List<Election>> =
 
     db.getElectionDao()
       .getPendingElections(currentDate)
@@ -124,17 +125,17 @@ constructor(
     }
   }
 
-  override fun getFinishedElections(currentDate: String): LiveData<List<Election>> =
+  override fun getFinishedElections(currentDate: String): Flow<List<Election>> =
 
     db.getElectionDao()
       .getFinishedElections(currentDate)
 
-  override fun getActiveElections(currentDate: String): LiveData<List<Election>> =
+  override fun getActiveElections(currentDate: String): Flow<List<Election>> =
 
     db.getElectionDao()
       .getActiveElections(currentDate)
 
-  override fun getElectionById(id: String): LiveData<Election> =
+  override fun getElectionById(id: String): Flow<Election> =
 
     db.getElectionDao()
       .getElectionById(id)

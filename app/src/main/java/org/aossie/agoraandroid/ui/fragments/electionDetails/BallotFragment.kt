@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.adapters.BallotsAdapter
 import org.aossie.agoraandroid.databinding.FragmentBallotBinding
@@ -18,7 +20,6 @@ import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
-import java.util.ArrayList
 import javax.inject.Inject
 
 /**
@@ -105,13 +106,12 @@ constructor(
   }
 
   private fun getBallotsFromDb() {
-    electionDetailsViewModel.getElectionById(id!!)
-      .observe(
-        viewLifecycleOwner,
-        Observer {
+    lifecycleScope.launch {
+      electionDetailsViewModel.getElectionById(id!!)
+        .collect {
           initRecyclerView(it.ballot as List<BallotDtoModel>)
           binding.progressBar.hide()
         }
-      )
+    }
   }
 }
