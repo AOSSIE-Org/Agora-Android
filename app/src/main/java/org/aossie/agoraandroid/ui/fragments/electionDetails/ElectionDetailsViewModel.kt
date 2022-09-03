@@ -16,7 +16,7 @@ import org.aossie.agoraandroid.domain.model.BallotDtoModel
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.domain.model.VotersDtoModel
 import org.aossie.agoraandroid.domain.model.WinnerDtoModel
-import org.aossie.agoraandroid.domain.use_cases.election_details.ElectionDetailsUseCases
+import org.aossie.agoraandroid.domain.useCases.electionDetails.ElectionDetailsUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.FileUtils
