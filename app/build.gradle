@@ -179,6 +179,8 @@ dependencies {
 
   //Biometric
   implementation "androidx.biometric:biometric:$biometricLibraryVersion"
+  // Splash screen
+  implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
 }
 repositories {
   mavenCentral()
