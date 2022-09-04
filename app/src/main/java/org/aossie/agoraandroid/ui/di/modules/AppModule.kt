@@ -43,6 +43,9 @@ import org.aossie.agoraandroid.domain.useCases.authentication.signUp.SignUpUseCa
 import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.ResendOTPUseCase
 import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.VerifyOTPUseCase
+import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteActivityUseCases
+import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteUseCase
+import org.aossie.agoraandroid.domain.useCases.castVoteActivity.VerifyVotersUseCase
 import org.aossie.agoraandroid.domain.useCases.createElection.CreateElectionUseCase
 import org.aossie.agoraandroid.domain.useCases.displayElection.DisplayElectionsUseCases
 import org.aossie.agoraandroid.domain.useCases.displayElection.GetActiveElectionsUseCase
@@ -70,9 +73,6 @@ import org.aossie.agoraandroid.domain.useCases.profile.GetUserDataUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.ProfileUseCases
 import org.aossie.agoraandroid.domain.useCases.profile.ToggleTwoFactorAuthUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.UpdateUserUseCase
-import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteActivityUseCases
-import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteUseCase
-import org.aossie.agoraandroid.domain.useCases.castVoteActivity.VerifyVotersUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
