@@ -548,8 +548,11 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
-    return CreateElectionUseCase(electionsRepository)
+  fun provideCreateElectionUseCase(
+    electionsRepository: ElectionsRepository,
+    mappers: Mappers
+  ): CreateElectionUseCase {
+    return CreateElectionUseCase(electionsRepository, mappers)
   }
 
   @Provides
@@ -621,5 +624,35 @@ class AppModule {
   @Singleton
   fun providesDeleteUseUseCase(userRepository: UserRepository): DeleteUserUseCase {
     return DeleteUserUseCase(userRepository)
+  }
+
+  @Provides
+  @Singleton
+  fun providesMappers(
+    authResponseEntityMapper: AuthResponseEntityMapper,
+    ballotDtoEntityMapper: BallotDtoEntityMapper,
+    electionDtoEntityMapper: ElectionDtoEntityMapper,
+    electionEntityMapper: ElectionEntityMapper,
+    loginDtoEntityMapper: LogInDtoEntityMapper,
+    newUserDtoEntityMapper: NewUserDtoEntityMapper,
+    updateUserDtoEntityMapper: UpdateUserDtoEntityMapper,
+    userEntityMapper: UserEntityMapper,
+    verifyOtpDtoEntityMapper: VerifyOtpDtoEntityMapper,
+    votersDtoEntityMapper: VotersDtoEntityMapper,
+    winnerDtoEntityMapper: WinnerDtoEntityMapper
+  ): Mappers {
+    return Mappers(
+      authResponseEntityMapper,
+      ballotDtoEntityMapper,
+      electionDtoEntityMapper,
+      electionEntityMapper,
+      loginDtoEntityMapper,
+      newUserDtoEntityMapper,
+      updateUserDtoEntityMapper,
+      userEntityMapper,
+      verifyOtpDtoEntityMapper,
+      votersDtoEntityMapper,
+      winnerDtoEntityMapper
+    )
   }
 }
