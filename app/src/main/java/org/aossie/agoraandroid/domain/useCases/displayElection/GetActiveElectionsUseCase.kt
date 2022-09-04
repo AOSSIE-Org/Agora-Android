@@ -1,7 +1,6 @@
 package org.aossie.agoraandroid.domain.useCases.displayElection
 
 import androidx.lifecycle.LiveData
-import org.aossie.agoraandroid.data.mappers.ElectionEntityMapper
 import org.aossie.agoraandroid.data.mappers.Mappers
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.domain.repository.ElectionsRepository
