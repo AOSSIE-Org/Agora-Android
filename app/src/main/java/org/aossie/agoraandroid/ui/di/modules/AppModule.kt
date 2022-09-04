@@ -13,6 +13,18 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
 import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.mappers.AuthResponseEntityMapper
+import org.aossie.agoraandroid.data.mappers.BallotDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.ElectionDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.ElectionEntityMapper
+import org.aossie.agoraandroid.data.mappers.LogInDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.Mappers
+import org.aossie.agoraandroid.data.mappers.NewUserDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.UpdateUserDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.UserEntityMapper
+import org.aossie.agoraandroid.data.mappers.VerifyOtpDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.VotersDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.WinnerDtoEntityMapper
 import org.aossie.agoraandroid.data.network.api.Api
 import org.aossie.agoraandroid.data.network.api.FCMApi
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
@@ -320,8 +332,8 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
-    return SignUpUseCase(repository)
+  fun provideSignUpUseCase(repository: UserRepository, mappers: Mappers): SignUpUseCase {
+    return SignUpUseCase(repository, mappers)
   }
 
   @Provides
@@ -370,8 +382,11 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
-    return CreateElectionUseCase(electionsRepository)
+  fun provideCreateElectionUseCase(
+    electionsRepository: ElectionsRepository,
+    mappers: Mappers
+  ): CreateElectionUseCase {
+    return CreateElectionUseCase(electionsRepository, mappers)
   }
 
   @Provides
@@ -443,5 +458,35 @@ class AppModule {
   @Singleton
   fun providesDeleteUseUseCase(userRepository: UserRepository): DeleteUserUseCase {
     return DeleteUserUseCase(userRepository)
+  }
+
+  @Provides
+  @Singleton
+  fun providesMappers(
+    authResponseEntityMapper: AuthResponseEntityMapper,
+    ballotDtoEntityMapper: BallotDtoEntityMapper,
+    electionDtoEntityMapper: ElectionDtoEntityMapper,
+    electionEntityMapper: ElectionEntityMapper,
+    loginDtoEntityMapper: LogInDtoEntityMapper,
+    newUserDtoEntityMapper: NewUserDtoEntityMapper,
+    updateUserDtoEntityMapper: UpdateUserDtoEntityMapper,
+    userEntityMapper: UserEntityMapper,
+    verifyOtpDtoEntityMapper: VerifyOtpDtoEntityMapper,
+    votersDtoEntityMapper: VotersDtoEntityMapper,
+    winnerDtoEntityMapper: WinnerDtoEntityMapper
+  ): Mappers {
+    return Mappers(
+      authResponseEntityMapper,
+      ballotDtoEntityMapper,
+      electionDtoEntityMapper,
+      electionEntityMapper,
+      loginDtoEntityMapper,
+      newUserDtoEntityMapper,
+      updateUserDtoEntityMapper,
+      userEntityMapper,
+      verifyOtpDtoEntityMapper,
+      votersDtoEntityMapper,
+      winnerDtoEntityMapper
+    )
   }
 }
