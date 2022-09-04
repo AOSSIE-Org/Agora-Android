@@ -17,9 +17,9 @@ constructor(
 
   fun getElections(): LiveData<List<ElectionModel>> {
     viewModelScope.launch {
-      electionsUseCases.fetchAndSaveElectionUseCase()
+      electionsUseCases.fetchAndSaveElection()
     }
-    return electionsUseCases.getElectionsUseCase()
+    return electionsUseCases.getElections()
   }
 
   fun filter(
