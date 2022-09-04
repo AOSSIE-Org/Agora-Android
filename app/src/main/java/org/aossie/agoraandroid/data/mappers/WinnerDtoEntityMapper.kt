@@ -2,8 +2,9 @@ package org.aossie.agoraandroid.data.mappers
 
 import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.domain.model.WinnerDtoModel
+import javax.inject.Inject
 
-class WinnerDtoEntityMapper {
+class WinnerDtoEntityMapper @Inject constructor() {
   fun mapFromEntity(entity: WinnerDto): WinnerDtoModel {
     return WinnerDtoModel(
       candidate = entity.candidate,

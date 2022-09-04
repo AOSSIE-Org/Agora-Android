@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.domain.model.UserModel
+import javax.inject.Inject
 
-class UserEntityMapper {
+class UserEntityMapper @Inject constructor() {
   fun mapFromEntity(entity: User): UserModel {
     return UserModel(
       username = entity.username,

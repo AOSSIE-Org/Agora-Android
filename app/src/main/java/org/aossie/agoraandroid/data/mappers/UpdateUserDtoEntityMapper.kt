@@ -2,8 +2,9 @@ package org.aossie.agoraandroid.data.mappers
 
 import org.aossie.agoraandroid.data.network.dto.UpdateUserDto
 import org.aossie.agoraandroid.domain.model.UpdateUserDtoModel
+import javax.inject.Inject
 
-class UpdateUserDtoEntityMapper {
+class UpdateUserDtoEntityMapper @Inject constructor() {
   fun mapToEntity(domainModel: UpdateUserDtoModel): UpdateUserDto {
     return UpdateUserDto(
       identifier = domainModel.identifier,
