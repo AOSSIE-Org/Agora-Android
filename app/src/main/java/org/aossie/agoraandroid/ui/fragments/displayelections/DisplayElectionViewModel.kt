@@ -22,13 +22,13 @@ constructor(
   private val date: String = formatter.format(currentDate)
 
   val activeElections by lazyDeferred {
-    displayElectionsUseCases.getActiveElectionsUseCase(date)
+    displayElectionsUseCases.getActiveElections(date)
   }
   val pendingElections by lazyDeferred {
-    displayElectionsUseCases.getPendingElectionsUseCase(date)
+    displayElectionsUseCases.getPendingElections(date)
   }
   val finishedElections by lazyDeferred {
-    displayElectionsUseCases.getFinishedElectionsUseCase(date)
+    displayElectionsUseCases.getFinishedElections(date)
   }
 
   fun filter(

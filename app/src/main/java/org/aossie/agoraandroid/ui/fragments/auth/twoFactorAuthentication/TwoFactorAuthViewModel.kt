@@ -24,7 +24,7 @@ constructor(
 ) : ViewModel() {
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  val user = twoFactorAuthUseCases.getUserUseCase()
+  val user = twoFactorAuthUseCases.getUser()
 
   private val mVerifyOtpResponse = MutableLiveData<ResponseUI<Any>>()
 
@@ -47,7 +47,7 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = twoFactorAuthUseCases.verifyOTPUseCase(VerifyOtpDtoModel(crypto, otp, trustedDevice))
+        val authResponse = twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(crypto, otp, trustedDevice))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -55,7 +55,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, it.trustedDevice
           )
-          twoFactorAuthUseCases.saveUserUseCase(user)
+          twoFactorAuthUseCases.saveUser(user)
           Timber.d(user.toString())
           mVerifyOtpResponse.value = ResponseUI.success()
         }
@@ -80,7 +80,7 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = twoFactorAuthUseCases.resendOTPUseCase(username)
+        val authResponse = twoFactorAuthUseCases.resendOTP(username)
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -88,7 +88,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, it.trustedDevice
           )
-          twoFactorAuthUseCases.saveUserUseCase(user)
+          twoFactorAuthUseCases.saveUser(user)
           mResendOtpResponse.value = ResponseUI.success()
         }
       } catch (e: ApiException) {

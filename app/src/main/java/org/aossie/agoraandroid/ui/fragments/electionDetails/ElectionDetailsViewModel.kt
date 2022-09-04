@@ -52,7 +52,7 @@ constructor(
   lateinit var sessionExpiredListener: SessionExpiredListener
 
   fun getElectionById(id: String): LiveData<ElectionModel> {
-    return electionDetailsUseCases.getElectionByIdUseCase(id)
+    return electionDetailsUseCases.getElectionById(id)
   }
 
   fun getBallot(
@@ -61,7 +61,7 @@ constructor(
     _getBallotResponseLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response: List<BallotDtoModel> = electionDetailsUseCases.getBallotsUseCase(id)
+        val response: List<BallotDtoModel> = electionDetailsUseCases.getBallots(id)
         Timber.d(response.toString())
         _getBallotResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
@@ -82,7 +82,7 @@ constructor(
     _getVoterResponseLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response = electionDetailsUseCases.getVotersUseCase(id)
+        val response = electionDetailsUseCases.getVoters(id)
         Timber.d(response.toString())
         _getVoterResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
@@ -103,7 +103,7 @@ constructor(
     _getDeleteElectionLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response = electionDetailsUseCases.deleteElectionUseCase(id)
+        val response = electionDetailsUseCases.deleteElection(id)
         Timber.d(response.toString())
         _getDeleteElectionLiveData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
@@ -124,7 +124,7 @@ constructor(
     _getResultResponseLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response = electionDetailsUseCases.getResultUseCase(id)
+        val response = electionDetailsUseCases.getResult(id)
         if (!response.isNullOrEmpty())
           _getResultResponseLiveData.value = ResponseUI.success(response[0])
         else
