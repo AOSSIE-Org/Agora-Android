@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.domain.model.ElectionModel
+import javax.inject.Inject
 
-class ElectionEntityMapper {
+class ElectionEntityMapper @Inject constructor() {
   fun mapFromEntity(entity: Election): ElectionModel {
     return ElectionModel(
       _id = entity._id,
