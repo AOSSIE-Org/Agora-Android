@@ -23,7 +23,7 @@ constructor(
   private val profileUseCases: ProfileUseCases
 ) : ViewModel() {
 
-  val user = profileUseCases.getUserUseCase()
+  val user = profileUseCases.getUser()
   private lateinit var sessionExpiredListener: SessionExpiredListener
   private val _passwordRequestCode = MutableLiveData<ResponseUI<Any>>()
 
@@ -49,7 +49,7 @@ constructor(
 
     viewModelScope.launch {
       try {
-        profileUseCases.changePasswordUseCase(password)
+        profileUseCases.changePassword(password)
         _passwordRequestCode.value = ResponseUI.success()
       } catch (e: ApiException) {
         _passwordRequestCode.value = ResponseUI.error(e.message)
@@ -70,9 +70,9 @@ constructor(
 
     viewModelScope.launch {
       try {
-        profileUseCases.changeAvatarUseCase(url)
+        profileUseCases.changeAvatar(url)
 
-        val authResponse = profileUseCases.getUserDataUseCase()
+        val authResponse = profileUseCases.getUserData()
         Timber.d(authResponse.toString())
         authResponse.let {
           val mUser = UserModel(
@@ -81,7 +81,7 @@ constructor(
             user.authTokenExpiresOn, user.refreshToken, user.refreshTokenExpiresOn,
             user.trustedDevice
           )
-          profileUseCases.saveUserUseCase(mUser)
+          profileUseCases.saveUser(mUser)
         }
         _changeAvatarResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
@@ -99,7 +99,7 @@ constructor(
   fun toggleTwoFactorAuth() {
     viewModelScope.launch {
       try {
-        profileUseCases.toggleTwoFactorAuthUseCase()
+        profileUseCases.toggleTwoFactorAuth()
         _toggleTwoFactorAuthResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message)
@@ -128,8 +128,8 @@ constructor(
           authToken = AuthToken(user.authToken, user.authTokenExpiresOn),
           refreshToken = AuthToken(user.refreshToken, user.refreshTokenExpiresOn)
         )
-        profileUseCases.updateUserUseCase(updateUserDtoModel)
-        profileUseCases.saveUserUseCase(user)
+        profileUseCases.updateUser(updateUserDtoModel)
+        profileUseCases.saveUser(user)
         _userUpdateResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
         _userUpdateResponse.value = ResponseUI.error(e.message)

@@ -4,8 +4,8 @@ import org.aossie.agoraandroid.domain.useCases.authentication.login.GetUserUseCa
 import org.aossie.agoraandroid.domain.useCases.authentication.login.SaveUserUseCase
 
 data class TwoFactorAuthUseCases(
-  val resendOTPUseCase: ResendOTPUseCase,
-  val verifyOTPUseCase: VerifyOTPUseCase,
-  val saveUserUseCase: SaveUserUseCase,
-  val getUserUseCase: GetUserUseCase
+  val resendOTP: ResendOTPUseCase,
+  val verifyOTP: VerifyOTPUseCase,
+  val saveUser: SaveUserUseCase,
+  val getUser: GetUserUseCase
 )

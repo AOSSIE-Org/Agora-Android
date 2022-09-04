@@ -4,11 +4,11 @@ import org.aossie.agoraandroid.domain.useCases.authentication.login.GetUserUseCa
 import org.aossie.agoraandroid.domain.useCases.authentication.login.SaveUserUseCase
 
 data class ProfileUseCases(
-  val saveUserUseCase: SaveUserUseCase,
-  val changePasswordUseCase: ChangePasswordUseCase,
-  val changeAvatarUseCase: ChangeAvatarUseCase,
-  val getUserUseCase: GetUserUseCase,
-  val toggleTwoFactorAuthUseCase: ToggleTwoFactorAuthUseCase,
-  val updateUserUseCase: UpdateUserUseCase,
-  val getUserDataUseCase: GetUserDataUseCase
+  val saveUser: SaveUserUseCase,
+  val changePassword: ChangePasswordUseCase,
+  val changeAvatar: ChangeAvatarUseCase,
+  val getUser: GetUserUseCase,
+  val toggleTwoFactorAuth: ToggleTwoFactorAuthUseCase,
+  val updateUser: UpdateUserUseCase,
+  val getUserData: GetUserDataUseCase
 )

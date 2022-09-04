@@ -35,7 +35,7 @@ constructor(
   private val _getLoginLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
   val getLoginLiveData = _getLoginLiveData
 
-  fun getLoggedInUser() = logInUseCases.getUserUseCase()
+  fun getLoggedInUser() = logInUseCases.getUser()
 
   fun logInRequest(
     identifier: String,
@@ -50,7 +50,7 @@ constructor(
     viewModelScope.launch {
       try {
         val authResponse =
-          logInUseCases.userLogInUseCase(LoginDtoModel(identifier, trustedDevice, password))
+          logInUseCases.userLogIn(LoginDtoModel(identifier, trustedDevice, password))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -58,7 +58,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, trustedDevice
           )
-          logInUseCases.saveUserUseCase(user)
+          logInUseCases.saveUser(user)
           it.email?.let { mail ->
             prefs.setMailId(mail)
             subscribeToFCM(mail)
@@ -87,7 +87,7 @@ constructor(
   ) {
     viewModelScope.launch {
       try {
-        val authResponse = logInUseCases.refreshAccessTokenUseCase()
+        val authResponse = logInUseCases.refreshAccessToken()
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -95,7 +95,7 @@ constructor(
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, trustedDevice
           )
-          logInUseCases.saveUserUseCase(user)
+          logInUseCases.saveUser(user)
         }
       } catch (e: Exception) {
         sessionExpiredListener?.onSessionExpired()
@@ -107,7 +107,7 @@ constructor(
     _getLoginLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val authResponse = logInUseCases.faceBookLogInUseCase()
+        val authResponse = logInUseCases.faceBookLogIn()
         getUserData(authResponse)
         authResponse.email?.let {
           prefs.setMailId(it)
@@ -136,7 +136,7 @@ constructor(
           authResponse.refreshToken?.token, authResponse.refreshToken?.expiresOn,
           authResponse.trustedDevice
         )
-        logInUseCases.saveUserUseCase(user)
+        logInUseCases.saveUser(user)
         Timber.d(authResponse.toString())
         prefs.setIsFacebookUser(true)
         _getLoginLiveData.value = ResponseUI.success()
