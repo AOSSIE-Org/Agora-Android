@@ -43,6 +43,9 @@ import org.aossie.agoraandroid.domain.useCases.authentication.signUp.SignUpUseCa
 import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.ResendOTPUseCase
 import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.VerifyOTPUseCase
+import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteActivityUseCases
+import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteUseCase
+import org.aossie.agoraandroid.domain.useCases.castVoteActivity.VerifyVotersUseCase
 import org.aossie.agoraandroid.domain.useCases.createElection.CreateElectionUseCase
 import org.aossie.agoraandroid.domain.useCases.displayElection.DisplayElectionsUseCases
 import org.aossie.agoraandroid.domain.useCases.displayElection.GetActiveElectionsUseCase
@@ -488,5 +491,14 @@ class AppModule {
       votersDtoEntityMapper,
       winnerDtoEntityMapper
     )
+  }
+
+  @Provides
+  @Singleton
+  fun providesCastVoteActivityUseCases(
+    castVoteUseCase: CastVoteUseCase,
+    verifyVotersUseCase: VerifyVotersUseCase
+  ): CastVoteActivityUseCases {
+    return CastVoteActivityUseCases(castVoteUseCase, verifyVotersUseCase)
   }
 }
