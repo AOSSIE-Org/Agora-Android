@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.domain.model.UserModel
-import org.aossie.agoraandroid.utilities.EntityMapper
+import javax.inject.Inject
 
-class UserEntityMapper : EntityMapper<User, UserModel> {
-  override fun mapFromEntity(entity: User): UserModel {
+class UserEntityMapper @Inject constructor() {
+  fun mapFromEntity(entity: User): UserModel {
     return UserModel(
       username = entity.username,
       email = entity.email,
@@ -24,7 +24,7 @@ class UserEntityMapper : EntityMapper<User, UserModel> {
     )
   }
 
-  override fun mapToEntity(domainModel: UserModel): User {
+  fun mapToEntity(domainModel: UserModel): User {
     return User(
       username = domainModel.username,
       email = domainModel.email,

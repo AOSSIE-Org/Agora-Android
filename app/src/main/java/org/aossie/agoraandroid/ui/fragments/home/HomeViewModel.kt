@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.HomeFragmentUseCases
+import org.aossie.agoraandroid.domain.useCases.homeFragment.HomeFragmentUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -45,27 +45,27 @@ constructor(
 
   fun getElections() {
     GlobalScope.launch {
-      homeViewModelUseCases.fetchAndSaveElectionUseCase()
+      homeViewModelUseCases.fetchAndSaveElection()
     }
   }
 
   private fun addSource() {
     viewModelScope.launch {
-      _countMediatorLiveData.addSource(homeViewModelUseCases.getTotalElectionsCountUseCase()) { value ->
+      _countMediatorLiveData.addSource(homeViewModelUseCases.getTotalElectionsCount()) { value ->
         _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
           this?.let {
             this[TOTAL_ELECTION_COUNT] = value
           }
         }
       }
-      _countMediatorLiveData.addSource(homeViewModelUseCases.getPendingElectionsCountUseCase(date)) { value ->
+      _countMediatorLiveData.addSource(homeViewModelUseCases.getPendingElectionsCount(date)) { value ->
         _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
           this?.let {
             this[PENDING_ELECTION_COUNT] = value
           }
         }
       }
-      _countMediatorLiveData.addSource(homeViewModelUseCases.getActiveElectionsCountUseCase(date)) { value ->
+      _countMediatorLiveData.addSource(homeViewModelUseCases.getActiveElectionsCount(date)) { value ->
         _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
           this?.let {
             this[ACTIVE_ELECTION_COUNT] = value
@@ -73,7 +73,7 @@ constructor(
         }
       }
 
-      _countMediatorLiveData.addSource(homeViewModelUseCases.getFinishedElectionsCountUseCase(date)) { value ->
+      _countMediatorLiveData.addSource(homeViewModelUseCases.getFinishedElectionsCount(date)) { value ->
         _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
           this?.let {
             this[FINISHED_ELECTION_COUNT] = value
@@ -85,7 +85,7 @@ constructor(
 
   fun deleteUserData() {
     viewModelScope.launch {
-      homeViewModelUseCases.deleteUserUseCase()
+      homeViewModelUseCases.deleteUser()
     }
   }
 
@@ -93,7 +93,7 @@ constructor(
     _getLogoutLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        homeViewModelUseCases.logOutUseCase()
+        homeViewModelUseCases.logOut()
         _getLogoutLiveData.value = ResponseUI.success()
       } catch (e: ApiException) {
         _getLogoutLiveData.value = ResponseUI.error(e.message)

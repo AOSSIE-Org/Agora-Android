@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
+import org.aossie.agoraandroid.domain.useCases.homeFragment.DeleteUserUseCase
 import javax.inject.Inject
 
 class MainActivityViewModel
 @Inject
 constructor(
-  val userRepository: UserRepositoryImpl
+  private val deleteUserUseCase: DeleteUserUseCase
 ) : ViewModel() {
 
   private val mutableIsLogout = MutableLiveData<Boolean>()
@@ -22,13 +22,14 @@ constructor(
   fun setLogout(isLogout: Boolean) {
     mutableIsLogout.value = isLogout
   }
+
   fun onNetworkChanged(isConnected: Boolean) {
     _getNetworkStatusLiveData.value = isConnected
   }
 
   fun deleteUserData() {
     viewModelScope.launch {
-      userRepository.deleteUser()
+      deleteUserUseCase()
     }
   }
 }

@@ -2,14 +2,10 @@ package org.aossie.agoraandroid.data.mappers
 
 import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.domain.model.ElectionDtoModel
-import org.aossie.agoraandroid.utilities.EntityMapper
+import javax.inject.Inject
 
-class ElectionDtoEntityMapper : EntityMapper<ElectionDto, ElectionDtoModel> {
-  override fun mapFromEntity(entity: ElectionDto): ElectionDtoModel {
-    TODO("Not yet implemented")
-  }
-
-  override fun mapToEntity(domainModel: ElectionDtoModel): ElectionDto {
+class ElectionDtoEntityMapper @Inject constructor() {
+  fun mapToEntity(domainModel: ElectionDtoModel): ElectionDto {
     return ElectionDto(
       ballot = domainModel.ballot,
       ballotVisibility = domainModel.ballotVisibility,
