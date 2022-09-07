@@ -21,15 +21,14 @@ import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.layout
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentCalendarViewElectionBinding
+import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.SwipeDetector
 import org.aossie.agoraandroid.utilities.hide
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Collections
 import java.util.Date
@@ -335,7 +334,7 @@ constructor(
     v.isPressed = isPressed
   }
 
-  private fun addEvent(election: Election) {
+  private fun addEvent(election: ElectionModel) {
     val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
     var formattedStartingDate: Date? = formatter.parse(election.start!!)
     val formattedEndingDate: Date? = formatter.parse(election.end!!)

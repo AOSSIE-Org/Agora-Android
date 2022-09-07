@@ -13,6 +13,18 @@ import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
 import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.data.mappers.AuthResponseEntityMapper
+import org.aossie.agoraandroid.data.mappers.BallotDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.ElectionDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.ElectionEntityMapper
+import org.aossie.agoraandroid.data.mappers.LogInDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.Mappers
+import org.aossie.agoraandroid.data.mappers.NewUserDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.UpdateUserDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.UserEntityMapper
+import org.aossie.agoraandroid.data.mappers.VerifyOtpDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.VotersDtoEntityMapper
+import org.aossie.agoraandroid.data.mappers.WinnerDtoEntityMapper
 import org.aossie.agoraandroid.data.network.api.Api
 import org.aossie.agoraandroid.data.network.api.FCMApi
 import org.aossie.agoraandroid.data.network.interceptors.AuthorizationInterceptor
@@ -20,32 +32,44 @@ import org.aossie.agoraandroid.data.network.interceptors.HeaderInterceptor
 import org.aossie.agoraandroid.data.network.interceptors.NetworkInterceptor
 import org.aossie.agoraandroid.domain.repository.ElectionsRepository
 import org.aossie.agoraandroid.domain.repository.UserRepository
-import org.aossie.agoraandroid.domain.use_cases.authentication.forgot_password.SendForgotPasswordLinkUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.FaceBookLogInUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.GetUserUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.LogInUseCases
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.RefreshAccessTokenUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.SaveUserUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.login.UserLogInUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.signUp.SignUpUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.ResendOTPUseCase
-import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.TwoFactorAuthUseCases
-import org.aossie.agoraandroid.domain.use_cases.authentication.two_factor_authentication.VerifyOTPUseCase
-import org.aossie.agoraandroid.domain.use_cases.create_election.CreateElectionUseCase
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.DeleteUserUseCase
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.FetchAndSaveElectionUseCase
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetActiveElectionsCountUseCase
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetFinishedElectionsCountUseCase
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetPendingElectionsCountUseCase
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.GetTotalElectionsCountUseCase
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.HomeFragmentUseCases
-import org.aossie.agoraandroid.domain.use_cases.home_fragment.LogOutUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.ChangeAvatarUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.ChangePasswordUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.GetUserDataUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.ProfileUseCases
-import org.aossie.agoraandroid.domain.use_cases.profile.ToggleTwoFactorAuthUseCase
-import org.aossie.agoraandroid.domain.use_cases.profile.UpdateUserUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.forgotPassword.SendForgotPasswordLinkUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.login.FaceBookLogInUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.login.GetUserUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.login.LogInUseCases
+import org.aossie.agoraandroid.domain.useCases.authentication.login.RefreshAccessTokenUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.login.SaveUserUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.login.UserLogInUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.signUp.SignUpUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.ResendOTPUseCase
+import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.TwoFactorAuthUseCases
+import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.VerifyOTPUseCase
+import org.aossie.agoraandroid.domain.useCases.createElection.CreateElectionUseCase
+import org.aossie.agoraandroid.domain.useCases.displayElection.DisplayElectionsUseCases
+import org.aossie.agoraandroid.domain.useCases.displayElection.GetActiveElectionsUseCase
+import org.aossie.agoraandroid.domain.useCases.displayElection.GetFinishedElectionsUseCase
+import org.aossie.agoraandroid.domain.useCases.displayElection.GetPendingElectionsUseCase
+import org.aossie.agoraandroid.domain.useCases.electionDetails.DeleteElectionUseCase
+import org.aossie.agoraandroid.domain.useCases.electionDetails.ElectionDetailsUseCases
+import org.aossie.agoraandroid.domain.useCases.electionDetails.GetBallotsUseCase
+import org.aossie.agoraandroid.domain.useCases.electionDetails.GetElectionByIdUseCase
+import org.aossie.agoraandroid.domain.useCases.electionDetails.GetResultUseCase
+import org.aossie.agoraandroid.domain.useCases.electionDetails.GetVotersUseCase
+import org.aossie.agoraandroid.domain.useCases.electionsAndCalenderView.ElectionsUseCases
+import org.aossie.agoraandroid.domain.useCases.electionsAndCalenderView.GetElectionsUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.DeleteUserUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.FetchAndSaveElectionUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.GetActiveElectionsCountUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.GetFinishedElectionsCountUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.GetPendingElectionsCountUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.GetTotalElectionsCountUseCase
+import org.aossie.agoraandroid.domain.useCases.homeFragment.HomeFragmentUseCases
+import org.aossie.agoraandroid.domain.useCases.homeFragment.LogOutUseCase
+import org.aossie.agoraandroid.domain.useCases.profile.ChangeAvatarUseCase
+import org.aossie.agoraandroid.domain.useCases.profile.ChangePasswordUseCase
+import org.aossie.agoraandroid.domain.useCases.profile.GetUserDataUseCase
+import org.aossie.agoraandroid.domain.useCases.profile.ProfileUseCases
+import org.aossie.agoraandroid.domain.useCases.profile.ToggleTwoFactorAuthUseCase
+import org.aossie.agoraandroid.domain.useCases.profile.UpdateUserUseCase
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -308,8 +332,8 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideSignUpUseCase(repository: UserRepository): SignUpUseCase {
-    return SignUpUseCase(repository)
+  fun provideSignUpUseCase(repository: UserRepository, mappers: Mappers): SignUpUseCase {
+    return SignUpUseCase(repository, mappers)
   }
 
   @Provides
@@ -358,8 +382,11 @@ class AppModule {
 
   @Provides
   @Singleton
-  fun provideCreateElectionUseCase(electionsRepository: ElectionsRepository): CreateElectionUseCase {
-    return CreateElectionUseCase(electionsRepository)
+  fun provideCreateElectionUseCase(
+    electionsRepository: ElectionsRepository,
+    mappers: Mappers
+  ): CreateElectionUseCase {
+    return CreateElectionUseCase(electionsRepository, mappers)
   }
 
   @Provides
@@ -381,6 +408,85 @@ class AppModule {
       getTotalElectionsCountUseCase,
       deleteUserUseCase,
       logOutUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideDisplayElectionsUseCases(
+    getActiveElectionsUseCase: GetActiveElectionsUseCase,
+    getFinishedElectionsUseCase: GetFinishedElectionsUseCase,
+    getPendingElectionsUseCase: GetPendingElectionsUseCase
+  ): DisplayElectionsUseCases {
+    return DisplayElectionsUseCases(
+      getActiveElectionsUseCase,
+      getFinishedElectionsUseCase,
+      getPendingElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun provideElectionsUseCases(
+    fetchAndSaveElectionUseCase: FetchAndSaveElectionUseCase,
+    getElectionsUseCase: GetElectionsUseCase
+  ): ElectionsUseCases {
+    return ElectionsUseCases(
+      fetchAndSaveElectionUseCase, getElectionsUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun providesElectionDetailsUseCases(
+    deleteElectionUseCase: DeleteElectionUseCase,
+    getBallotsUseCase: GetBallotsUseCase,
+    getElectionByIdUseCase: GetElectionByIdUseCase,
+    getResultUseCase: GetResultUseCase,
+    getVotersUseCase: GetVotersUseCase
+  ): ElectionDetailsUseCases {
+    return ElectionDetailsUseCases(
+      deleteElectionUseCase,
+      getBallotsUseCase,
+      getElectionByIdUseCase,
+      getResultUseCase,
+      getVotersUseCase
+    )
+  }
+
+  @Provides
+  @Singleton
+  fun providesDeleteUseUseCase(userRepository: UserRepository): DeleteUserUseCase {
+    return DeleteUserUseCase(userRepository)
+  }
+
+  @Provides
+  @Singleton
+  fun providesMappers(
+    authResponseEntityMapper: AuthResponseEntityMapper,
+    ballotDtoEntityMapper: BallotDtoEntityMapper,
+    electionDtoEntityMapper: ElectionDtoEntityMapper,
+    electionEntityMapper: ElectionEntityMapper,
+    loginDtoEntityMapper: LogInDtoEntityMapper,
+    newUserDtoEntityMapper: NewUserDtoEntityMapper,
+    updateUserDtoEntityMapper: UpdateUserDtoEntityMapper,
+    userEntityMapper: UserEntityMapper,
+    verifyOtpDtoEntityMapper: VerifyOtpDtoEntityMapper,
+    votersDtoEntityMapper: VotersDtoEntityMapper,
+    winnerDtoEntityMapper: WinnerDtoEntityMapper
+  ): Mappers {
+    return Mappers(
+      authResponseEntityMapper,
+      ballotDtoEntityMapper,
+      electionDtoEntityMapper,
+      electionEntityMapper,
+      loginDtoEntityMapper,
+      newUserDtoEntityMapper,
+      updateUserDtoEntityMapper,
+      userEntityMapper,
+      verifyOtpDtoEntityMapper,
+      votersDtoEntityMapper,
+      winnerDtoEntityMapper
     )
   }
 }

@@ -12,11 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
-import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.network.dto.BallotDto
-import org.aossie.agoraandroid.data.network.dto.VotersDto
-import org.aossie.agoraandroid.data.network.dto.WinnerDto
+import org.aossie.agoraandroid.domain.model.BallotDtoModel
+import org.aossie.agoraandroid.domain.model.ElectionModel
+import org.aossie.agoraandroid.domain.model.VotersDtoModel
+import org.aossie.agoraandroid.domain.model.WinnerDtoModel
+import org.aossie.agoraandroid.domain.useCases.electionDetails.ElectionDetailsUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.FileUtils
@@ -35,24 +35,24 @@ import javax.inject.Inject
 class ElectionDetailsViewModel
 @Inject
 constructor(
-  private val electionsRepository: ElectionsRepositoryImpl
+  private val electionDetailsUseCases: ElectionDetailsUseCases
 ) : ViewModel() {
 
-  private val _getVoterResponseLiveData = MutableLiveData<ResponseUI<VotersDto>>()
-  var getVoterResponseLiveData: LiveData<ResponseUI<VotersDto>> = _getVoterResponseLiveData
-  private val _getBallotResponseLiveData = MutableLiveData<ResponseUI<BallotDto>>()
-  var getBallotResponseLiveData: LiveData<ResponseUI<BallotDto>> = _getBallotResponseLiveData
+  private val _getVoterResponseLiveData = MutableLiveData<ResponseUI<VotersDtoModel>>()
+  var getVoterResponseLiveData: LiveData<ResponseUI<VotersDtoModel>> = _getVoterResponseLiveData
+  private val _getBallotResponseLiveData = MutableLiveData<ResponseUI<BallotDtoModel>>()
+  var getBallotResponseLiveData: LiveData<ResponseUI<BallotDtoModel>> = _getBallotResponseLiveData
   private val _getShareResponseLiveData = MutableLiveData<ResponseUI<Uri>>()
   var getShareResponseLiveData: LiveData<ResponseUI<Uri>> = _getShareResponseLiveData
-  private val _getResultResponseLiveData = MutableLiveData<ResponseUI<WinnerDto>>()
-  var getResultResponseLiveData: LiveData<ResponseUI<WinnerDto>> = _getResultResponseLiveData
-  private val _getDeleteElectionLiveData = MutableLiveData<ResponseUI<WinnerDto>>()
-  var getDeleteElectionLiveData: LiveData<ResponseUI<WinnerDto>> = _getDeleteElectionLiveData
+  private val _getResultResponseLiveData = MutableLiveData<ResponseUI<WinnerDtoModel>>()
+  var getResultResponseLiveData: LiveData<ResponseUI<WinnerDtoModel>> = _getResultResponseLiveData
+  private val _getDeleteElectionLiveData = MutableLiveData<ResponseUI<WinnerDtoModel>>()
+  var getDeleteElectionLiveData: LiveData<ResponseUI<WinnerDtoModel>> = _getDeleteElectionLiveData
 
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  fun getElectionById(id: String): LiveData<Election> {
-    return electionsRepository.getElectionById(id)
+  fun getElectionById(id: String): LiveData<ElectionModel> {
+    return electionDetailsUseCases.getElectionById(id)
   }
 
   fun getBallot(
@@ -61,7 +61,7 @@ constructor(
     _getBallotResponseLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response: List<BallotDto> = electionsRepository.getBallots(id!!).ballots
+        val response: List<BallotDtoModel> = electionDetailsUseCases.getBallots(id)
         Timber.d(response.toString())
         _getBallotResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
@@ -82,7 +82,7 @@ constructor(
     _getVoterResponseLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response = electionsRepository.getVoters(id!!)
+        val response = electionDetailsUseCases.getVoters(id)
         Timber.d(response.toString())
         _getVoterResponseLiveData.value = ResponseUI.success(response)
       } catch (e: ApiException) {
@@ -103,7 +103,7 @@ constructor(
     _getDeleteElectionLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response = electionsRepository.deleteElection(id!!)
+        val response = electionDetailsUseCases.deleteElection(id)
         Timber.d(response.toString())
         _getDeleteElectionLiveData.value = ResponseUI.success(response[1])
       } catch (e: ApiException) {
@@ -124,7 +124,7 @@ constructor(
     _getResultResponseLiveData.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
-        val response = electionsRepository.getResult(id!!)
+        val response = electionDetailsUseCases.getResult(id)
         if (!response.isNullOrEmpty())
           _getResultResponseLiveData.value = ResponseUI.success(response[0])
         else
@@ -160,7 +160,7 @@ constructor(
 
   fun createExcelFile(
     context: Context,
-    winnerDto: WinnerDto,
+    winnerDto: WinnerDtoModel,
     id: String
   ) {
     viewModelScope.launch {
@@ -187,7 +187,7 @@ constructor(
 
   private fun createWorkbook(
     context: Context,
-    winnerDto: WinnerDto
+    winnerDto: WinnerDtoModel
   ): XSSFWorkbook {
     val workbook = XSSFWorkbook()
     val sheet: XSSFSheet = workbook.createSheet(context.getString(string.result))
