@@ -502,4 +502,3 @@ class AppModule {
     return CastVoteActivityUseCases(castVoteUseCase, verifyVotersUseCase)
   }
 }
-
