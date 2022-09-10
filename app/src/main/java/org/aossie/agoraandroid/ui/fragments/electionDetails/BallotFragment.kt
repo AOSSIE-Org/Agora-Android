@@ -71,27 +71,28 @@ constructor(
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    electionDetailsViewModel.getBallotResponseLiveData.observe(
-      viewLifecycleOwner,
-      { responseUI ->
-        when (responseUI.status) {
-          ResponseUI.Status.LOADING -> binding.progressBar.hide()
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            responseUI.dataList?.let {
-              initRecyclerView(it)
-            } ?: binding.tvEmptyBallots.show()
-          }
-          ResponseUI.Status.ERROR -> {
-            if (responseUI.message == getString(R.string.no_network)) getBallotsFromDb()
-            else {
-              notify(responseUI.message)
+    lifecycleScope.launch {
+      electionDetailsViewModel.getBallotResponseStateFlow.collect { responseUI ->
+        if (responseUI != null) {
+          when (responseUI.status) {
+            ResponseUI.Status.LOADING -> binding.progressBar.hide()
+            ResponseUI.Status.SUCCESS -> {
               binding.progressBar.hide()
+              responseUI.dataList?.let {
+                initRecyclerView(it)
+              } ?: binding.tvEmptyBallots.show()
+            }
+            ResponseUI.Status.ERROR -> {
+              if (responseUI.message == getString(R.string.no_network)) getBallotsFromDb()
+              else {
+                notify(responseUI.message)
+                binding.progressBar.hide()
+              }
             }
           }
         }
       }
-    )
+    }
   }
 
   private fun initRecyclerView(ballots: List<BallotDtoModel>) {
