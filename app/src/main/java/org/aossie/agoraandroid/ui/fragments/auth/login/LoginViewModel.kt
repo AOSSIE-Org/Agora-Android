@@ -1,8 +1,10 @@
 package org.aossie.agoraandroid.ui.fragments.auth.login
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
@@ -28,8 +30,9 @@ constructor(
 
   var sessionExpiredListener: SessionExpiredListener? = null
 
-  private val _getLoginLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
-  val getLoginLiveData = _getLoginLiveData
+  private val _getLoginStateFlow: MutableStateFlow<ResponseUI<String>?> =
+    MutableStateFlow(null)
+  val getLoginStateFlow: StateFlow<ResponseUI<String>?> = _getLoginStateFlow.asStateFlow()
 
   fun getLoggedInUser() = logInUseCases.getUser()
 
@@ -38,9 +41,9 @@ constructor(
     password: String,
     trustedDevice: String? = null
   ) {
-    _getLoginLiveData.value = ResponseUI.loading()
+    _getLoginStateFlow.value = ResponseUI.loading()
     if (identifier.isEmpty() || password.isEmpty()) {
-      _getLoginLiveData.value = ResponseUI.error(AppConstants.INVALID_CREDENTIALS_MESSAGE)
+      _getLoginStateFlow.value = ResponseUI.error(AppConstants.INVALID_CREDENTIALS_MESSAGE)
       return
     }
     viewModelScope.launch {
@@ -61,19 +64,19 @@ constructor(
           }
           Timber.d(user.toString())
           if (!it.twoFactorAuthentication!!) {
-            _getLoginLiveData.value = ResponseUI.success()
+            _getLoginStateFlow.value = ResponseUI.success()
           } else {
-            _getLoginLiveData.value = ResponseUI.success(user.crypto!!)
+            _getLoginStateFlow.value = ResponseUI.success(user.crypto!!)
           }
         }
       } catch (e: ApiException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -100,7 +103,7 @@ constructor(
   }
 
   fun facebookLogInRequest() {
-    _getLoginLiveData.value = ResponseUI.loading()
+    _getLoginStateFlow.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
         val authResponse = logInUseCases.faceBookLogIn()
@@ -111,13 +114,13 @@ constructor(
         }
         Timber.d(authResponse.toString())
       } catch (e: ApiException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       }
     }
   }
@@ -135,15 +138,15 @@ constructor(
         logInUseCases.saveUser(user)
         Timber.d(authResponse.toString())
         prefs.setIsFacebookUser(true)
-        _getLoginLiveData.value = ResponseUI.success()
+        _getLoginStateFlow.value = ResponseUI.success()
       } catch (e: ApiException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
-        _getLoginLiveData.value = ResponseUI.error(e.message)
+        _getLoginStateFlow.value = ResponseUI.error(e.message)
       }
     }
   }
