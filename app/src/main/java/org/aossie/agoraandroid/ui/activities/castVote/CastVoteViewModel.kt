@@ -1,10 +1,10 @@
 package org.aossie.agoraandroid.ui.activities.castVote
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.Repository.ElectionsRepository
@@ -24,24 +24,24 @@ constructor(
   private val castVoteActivityUseCases: CastVoteActivityUseCases
 ) : ViewModel() {
 
-  private val mVerifyVoterResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mVerifyVoterResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val verifyVoterResponse: LiveData<ResponseUI<Any>>
+  val verifyVoterResponse: StateFlow<ResponseUI<Any>?>
     get() = mVerifyVoterResponse
 
-  private val _getDeepLinkLiveData = MutableLiveData<ResponseUI<String>>()
+  private val _getDeepLinkStateFlow = MutableStateFlow<ResponseUI<String>?>(null)
 
-  val getDeepLinkLiveData: LiveData<ResponseUI<String>>
-    get() = _getDeepLinkLiveData
+  val getDeepLinkStateFlow: StateFlow<ResponseUI<String>?>
+    get() = _getDeepLinkStateFlow
 
-  private val mCastVoteResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mCastVoteResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val castVoteResponse: LiveData<ResponseUI<Any>>
+  val castVoteResponse: StateFlow<ResponseUI<Any>?>
     get() = mCastVoteResponse
 
-  private val mElection = MutableLiveData<ElectionDtoModel>()
+  private val mElection = MutableStateFlow<ElectionDtoModel?>(null)
 
-  val election: LiveData<ElectionDtoModel>
+  val election: StateFlow<ElectionDtoModel?>
     get() = mElection
 
   fun verifyVoter(id: String) {
@@ -81,7 +81,7 @@ constructor(
   }
 
   fun getResolvedPath(encodedURL: String) {
-    _getDeepLinkLiveData.value = ResponseUI.loading()
+    _getDeepLinkStateFlow.value = ResponseUI.loading()
     viewModelScope.launch(Dispatchers.IO) {
       try {
         val originalURL = URL(encodedURL)
@@ -89,15 +89,15 @@ constructor(
         con.instanceFollowRedirects = false
         val resolvedURL = URL(con.getHeaderField("Location"))
         withContext(Dispatchers.Main) {
-          _getDeepLinkLiveData.value = ResponseUI.success(resolvedURL.path.toString())
+          _getDeepLinkStateFlow.value = ResponseUI.success(resolvedURL.path.toString())
         }
       } catch (ex: MalformedURLException) {
         withContext(Dispatchers.Main) {
-          _getDeepLinkLiveData.value = ResponseUI.error("")
+          _getDeepLinkStateFlow.value = ResponseUI.error("")
         }
       } catch (ex: Exception) {
         withContext(Dispatchers.Main) {
-          _getDeepLinkLiveData.value = ResponseUI.error(ex.message)
+          _getDeepLinkStateFlow.value = ResponseUI.error(ex.message)
         }
       }
     }
