@@ -22,7 +22,7 @@ constructor(
   private val _getSendResetLinkStateFlow: MutableStateFlow<ResponseUI<Any>?> =
     MutableStateFlow(null)
   val getSendResetLinkStateFlow: StateFlow<ResponseUI<Any>?> =
-    _getSendResetLinkStateFlow.asStateFlow()
+    _getSendResetLinkStateFlow
 
   fun sendResetLink(userName: String?) = viewModelScope.launch {
     _getSendResetLinkStateFlow.value = ResponseUI.loading()
