@@ -8,10 +8,12 @@ import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.AgoraApp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
@@ -174,41 +176,40 @@ class CastVoteActivity :
   }
 
   private fun initObservers() {
-    viewModel.verifyVoterResponse.observe(
-      this,
-      Observer {
-        handleVerifyVoter(it)
-      }
-    )
-
-    viewModel.getDeepLinkLiveData.observe(
-      this,
-      Observer {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> binding.progressBar.show()
-          ResponseUI.Status.SUCCESS -> {
-            it.message?.let { message ->
-              val strings = message.split("/")
-              passCode = strings[3]
-              id = strings[2]
-              checkAndNavigate {
-                viewModel.verifyVoter(strings[2])
-              }
-            }
-          }
-          ResponseUI.Status.ERROR -> navigateToMainActivity(
-            it.message ?: getString(string.invalid_url)
-          )
+    lifecycleScope.launch {
+      viewModel.verifyVoterResponse.collect {
+        if (it != null) {
+          handleVerifyVoter(it)
         }
       }
-    )
 
-    viewModel.castVoteResponse.observe(
-      this,
-      Observer {
-        handleCastVote(it)
-      }
-    )
+      viewModel.getDeepLinkStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> binding.progressBar.show()
+            ResponseUI.Status.SUCCESS -> {
+              it.message?.let { message ->
+                val strings = message.split("/")
+                passCode = strings[3]
+                id = strings[2]
+                checkAndNavigate {
+                  viewModel.verifyVoter(strings[2])
+                }
+              }
+            }
+            ResponseUI.Status.ERROR -> navigateToMainActivity(
+              it.message ?: getString(string.invalid_url)
+            )
+          }
+        }
+        }
+
+      viewModel.castVoteResponse.collect {
+        if (it != null) {
+          handleCastVote(it)
+        }
+        }
+    }
   }
 
   private fun handleCastVote(response: ResponseUI<Any>) = when (response.status) {
@@ -226,9 +227,8 @@ class CastVoteActivity :
 
   private fun handleVerifyVoter(response: ResponseUI<Any>) = when (response.status) {
     ResponseUI.Status.SUCCESS -> {
-      viewModel.election.observe(
-        this,
-        Observer {
+      lifecycleScope.launch {
+        viewModel.election.collect {
           Timber.d(it.toString())
           if (it != null) {
             try {
@@ -266,7 +266,7 @@ class CastVoteActivity :
           binding.constraintLayout.visibility = View.VISIBLE
           binding.progressBar.hide()
         }
-      )
+      }
     }
     ResponseUI.Status.ERROR -> {
       navigateToMainActivity(
