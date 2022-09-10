@@ -23,4 +23,23 @@ class ElectionDtoEntityMapper @Inject constructor() {
       _id = domainModel._id
     )
   }
+
+  fun mapFromEntity(entity: ElectionDto): ElectionDtoModel {
+    return ElectionDtoModel(
+      ballot = entity.ballot,
+      ballotVisibility = entity.ballotVisibility,
+      candidates = entity.candidates,
+      description = entity.description,
+      electionType = entity.electionType,
+      endingDate = entity.endingDate,
+      isInvite = entity.isInvite,
+      isRealTime = entity.isRealTime,
+      name = entity.name,
+      noVacancies = entity.noVacancies,
+      startingDate = entity.startingDate,
+      voterListVisibility = entity.voterListVisibility,
+      votingAlgo = entity.votingAlgo,
+      _id = entity._id
+    )
+  }
 }
