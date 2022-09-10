@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.color
@@ -27,7 +27,6 @@ import org.aossie.agoraandroid.utilities.scrollToView
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -105,44 +104,41 @@ constructor(
       }
     )
 
-    loginViewModel.getLoggedInUser()
-      .observe(
-        viewLifecycleOwner,
-        Observer { user ->
-          if (user != null) {
-            val formatter =
-              SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            // Timber.d(user.token!!)
-            val currentDate = Calendar.getInstance()
-              .time
-            val expireOn = user.authTokenExpiresOn
-            Timber.d(user.toString())
-            Timber.tag("expiresOn")
-              .d(expireOn.toString())
-            try {
-              if (expireOn != null) {
-                val expiresOn = formatter.parse(expireOn)
-                // If the token is expired, get a new one to continue login session of user
-                if (currentDate.after(expiresOn)) {
-                  Timber.tag("expired")
-                    .d(expireOn.toString())
-                  lifecycleScope.launch {
-                    if (preferenceProvider.getIsFacebookUser()
-                      .first()
-                    ) {
-                      loginViewModel.facebookLogInRequest()
-                    } else {
-                      loginViewModel.refreshAccessToken(user.trustedDevice)
-                    }
+    lifecycleScope.launch {
+      loginViewModel.getLoggedInUser()
+        .collect { user ->
+          val formatter =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+          // Timber.d(user.token!!)
+          val currentDate = Calendar.getInstance()
+            .time
+          val expireOn = user.authTokenExpiresOn
+          Timber.d(user.toString())
+          Timber.tag("expiresOn")
+            .d(expireOn.toString())
+          try {
+            if (expireOn != null) {
+              val expiresOn = formatter.parse(expireOn)
+              // If the token is expired, get a new one to continue login session of user
+              if (currentDate.after(expiresOn)) {
+                Timber.tag("expired")
+                  .d(expireOn.toString())
+                lifecycleScope.launch {
+                  if (preferenceProvider.getIsFacebookUser()
+                    .first()
+                  ) {
+                    loginViewModel.facebookLogInRequest()
+                  } else {
+                    loginViewModel.refreshAccessToken(user.trustedDevice)
                   }
                 }
               }
-            } catch (e: ParseException) {
-              e.printStackTrace()
             }
+          } catch (e: ParseException) {
+            e.printStackTrace()
           }
         }
-      )
+    }
 
     homeViewModel.countMediatorLiveData.observe(
       viewLifecycleOwner,
