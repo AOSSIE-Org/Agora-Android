@@ -47,7 +47,8 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(crypto, otp, trustedDevice))
+        val authResponse =
+          twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(crypto, otp, trustedDevice))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
