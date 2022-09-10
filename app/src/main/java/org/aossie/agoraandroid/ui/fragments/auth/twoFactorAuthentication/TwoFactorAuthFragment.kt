@@ -8,7 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
 import org.aossie.agoraandroid.domain.model.UserModel
@@ -46,14 +49,13 @@ constructor(
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
     viewModel.sessionExpiredListener = this
 
-    viewModel.user.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      viewModel.user.collect {
         if (it != null) {
           user = it
         }
       }
-    )
+    }
 
     binding.btnVerifyOtp.setOnClickListener {
       binding.progressBar.show()

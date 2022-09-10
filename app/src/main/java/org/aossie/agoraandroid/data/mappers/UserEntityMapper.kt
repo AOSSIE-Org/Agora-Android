@@ -1,7 +1,5 @@
 package org.aossie.agoraandroid.data.mappers
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.domain.model.UserModel
 import javax.inject.Inject
@@ -39,11 +37,5 @@ class UserEntityMapper @Inject constructor() {
       refreshTokenExpiresOn = domainModel.refreshTokenExpiresOn,
       trustedDevice = domainModel.trustedDevice
     )
-  }
-
-  fun mapLiveDataFromEntity(userLivedata: LiveData<User>): LiveData<UserModel> {
-    return Transformations.map(
-      userLivedata
-    ) { mapFromEntity(it) }
   }
 }

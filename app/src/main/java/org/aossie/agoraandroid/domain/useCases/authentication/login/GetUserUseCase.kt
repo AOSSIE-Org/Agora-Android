@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.domain.useCases.authentication.login
 
-import androidx.lifecycle.LiveData
-import org.aossie.agoraandroid.data.db.entities.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.aossie.agoraandroid.data.mappers.Mappers
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.domain.repository.UserRepository
@@ -11,8 +11,10 @@ class GetUserUseCase @Inject constructor(
   private val repository: UserRepository,
   private val mappers: Mappers
 ) {
-  operator fun invoke(): LiveData<UserModel> {
-    val response: LiveData<User> = repository.getUser()
-    return mappers.userEntityMapper.mapLiveDataFromEntity(response)
+  operator fun invoke(): Flow<UserModel> {
+    val response = repository.getUser()
+    return response.map {
+      mappers.userEntityMapper.mapFromEntity(it)
+    }
   }
 }
