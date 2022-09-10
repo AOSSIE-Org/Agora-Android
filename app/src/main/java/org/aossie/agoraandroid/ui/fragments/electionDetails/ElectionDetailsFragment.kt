@@ -67,6 +67,7 @@ constructor(
     binding = FragmentElectionDetailsBinding.inflate(inflater)
     return binding.root
   }
+
   override fun onFragmentInitiated() {
     val args =
       ElectionDetailsFragmentArgs.fromBundle(
@@ -86,33 +87,34 @@ constructor(
   override fun onNetworkConnected() {
     view?.let { getElectionById() }
   }
-  private fun setObserver() {
 
-    electionDetailsViewModel.getDeleteElectionLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            binding.progressBar.show()
-            binding.buttonDelete.toggleIsEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            lifecycleScope.launch {
-              prefs.setUpdateNeeded(true)
+  private fun setObserver() {
+    lifecycleScope.launch {
+      electionDetailsViewModel.getDeleteElectionStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
+              binding.progressBar.show()
+              binding.buttonDelete.toggleIsEnable()
             }
-            Navigation.findNavController(binding.root)
-              .navigate(
-                ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
-              )
-          }
-          ResponseUI.Status.ERROR -> {
-            notify(it.message)
-            binding.progressBar.hide()
-            binding.buttonDelete.toggleIsEnable()
+            ResponseUI.Status.SUCCESS -> {
+              lifecycleScope.launch {
+                prefs.setUpdateNeeded(true)
+              }
+              Navigation.findNavController(binding.root)
+                .navigate(
+                  ElectionDetailsFragmentDirections.actionElectionDetailsFragmentToHomeFragment()
+                )
+            }
+            ResponseUI.Status.ERROR -> {
+              notify(it.message)
+              binding.progressBar.hide()
+              binding.buttonDelete.toggleIsEnable()
+            }
           }
         }
       }
-    )
+    }
   }
 
   private fun initListeners() {
@@ -252,7 +254,7 @@ constructor(
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!prefs.isDisplayed(binding.root.id.toString())
-        .first()
+          .first()
       ) {
         spotlightTargets = getSpotlightTargets()
         prefs.setDisplayed(binding.root.id.toString())
