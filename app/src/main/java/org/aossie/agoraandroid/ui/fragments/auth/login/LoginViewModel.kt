@@ -36,7 +36,7 @@ constructor(
 
   private val _getLoginStateFlow: MutableStateFlow<ResponseUI<String>?> =
     MutableStateFlow(null)
-  val getLoginStateFlow: StateFlow<ResponseUI<String>?> = _getLoginStateFlow.asStateFlow()
+  val getLoginStateFlow: StateFlow<ResponseUI<String>?> = _getLoginStateFlow
 
   fun getLoggedInUser() = logInUseCases.getUser()
 

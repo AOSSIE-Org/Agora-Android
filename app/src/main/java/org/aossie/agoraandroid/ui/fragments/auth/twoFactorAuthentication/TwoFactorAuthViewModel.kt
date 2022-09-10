@@ -30,12 +30,12 @@ constructor(
   private val mVerifyOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
   val verifyOtpResponse: StateFlow<ResponseUI<Any>?>
-    get() = mVerifyOtpResponse.asStateFlow()
+    get() = mVerifyOtpResponse
 
   private val mResendOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
   val resendOtpResponse: StateFlow<ResponseUI<Any>?>
-    get() = mResendOtpResponse.asStateFlow()
+    get() = mResendOtpResponse
 
   fun verifyOTP(
     otp: String,
