@@ -87,22 +87,23 @@ constructor(
     }
     binding.swipeRefresh.setOnRefreshListener { updateUi() }
 
-    loginViewModel.getLoginLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            // Do Nothing
-          }
-          ResponseUI.Status.SUCCESS -> {
-            updateUi()
-          }
-          ResponseUI.Status.ERROR -> {
-            notify(it.message)
+    lifecycleScope.launch {
+      loginViewModel.getLoginStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
+              // Do Nothing
+            }
+            ResponseUI.Status.SUCCESS -> {
+              updateUi()
+            }
+            ResponseUI.Status.ERROR -> {
+              notify(it.message)
+            }
           }
         }
       }
-    )
+    }
 
     lifecycleScope.launch {
       loginViewModel.getLoggedInUser()
