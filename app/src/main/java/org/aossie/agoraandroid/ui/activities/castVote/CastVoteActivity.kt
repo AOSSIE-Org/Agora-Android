@@ -202,13 +202,13 @@ class CastVoteActivity :
             )
           }
         }
-        }
+      }
 
       viewModel.castVoteResponse.collect {
         if (it != null) {
           handleCastVote(it)
         }
-        }
+      }
     }
   }
 
