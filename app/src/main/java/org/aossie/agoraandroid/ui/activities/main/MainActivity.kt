@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     GlobalScope.launch {
       prefs.setUpdateNeeded(true)
       if (prefs.getIsLoggedIn()
-          .first()
+        .first()
       ) {
         if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
           withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity() {
   private fun logout() {
     lifecycleScope.launch {
       if (prefs.getIsLoggedIn()
-          .first()
+        .first()
       ) binding.root.snackbar(resources.getString(R.string.token_expired))
       if (prefs.getIsFacebookUser().first()) {
         LoginManager.getInstance()
