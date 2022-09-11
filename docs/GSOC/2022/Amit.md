@@ -200,7 +200,7 @@ The major next step for the project is UNIT TESTING and automate android release
 
 7. [Merge Request !28](https://gitlab.com/aossie/agora-android/-/merge_requests/452)- Setup For jetpack compose  -status:**Ready to merge**
 * Updated compileSdk and targetSdk to 32.
-* And added dependencies for ComposeVersion 1.5.0.
+* And added dependencies for ComposeVersion 1.2.1.
 
 ### Future Scope
 * Unit Testing
