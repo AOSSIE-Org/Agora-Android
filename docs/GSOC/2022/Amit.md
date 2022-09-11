@@ -29,6 +29,7 @@ During community bonding period,  We did modification in my original proposal. A
 10. Add a restriction on password size - **Done**
 11. Confusing toast when user register by same email or username - **Done**
 12. Fix android 12 migration error - **Done**
+13. Migration of xml layout to Jetpack Compose - **In Progress*
 
 ### Summary of whole GSoC journey
 
@@ -196,6 +197,10 @@ The major next step for the project is UNIT TESTING and automate android release
 
 27. [Merge Request !27](https://gitlab.com/aossie/agora-android/-/merge_requests/451)- Costomization in contributing.md  -status:**Ready to merge**
 * Added a note in Contributing.md file.
+
+7. [Merge Request !28](https://gitlab.com/aossie/agora-android/-/merge_requests/452)- Setup For jetpack compose  -status:**Ready to merge**
+* Updated compileSdk and targetSdk to 32.
+* And added dependencies for ComposeVersion 1.5.0.
 
 ### Future Scope
 * Unit Testing
