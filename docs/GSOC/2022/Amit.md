@@ -13,7 +13,7 @@
 ### Overview of the Application
 
 Android Application for Agora Web that uses Agora: An Electronic Voting Library implemented in Scala. This application uses Agora Web API as backend application.
-And its android version is written in KOTLIN.
+And its android version is written in KOTLIN. It allows for elections to be held by using multiple algorithms such as Oklahoma, RangeVoting, RankedPairs, Satisfaction Approval Voting, Smithset, Boarda etc.
 
 ### Goals
 
@@ -46,17 +46,17 @@ The major next step for the project is UNIT TESTING and automate android release
 
 ### Merge Requests
 
-1. [Merge Request !1](https://gitlab.com/aossie/agora-android/-/merge_requests/421)- hide the empty election text view when the election list is non empty  (**Merged**)
+1. [Merge Request !1](https://gitlab.com/aossie/agora-android/-/merge_requests/421)- hide the empty election text view when the election list is non empty - Status (**Merged**)
 * I have made the empty text TV hide when the list is not empty otherwise the text view will be shown.
 * Earlier we were handling only showing the text view and not hiding the text view.
 
-2. [Merge Request !2](https://gitlab.com/aossie/agora-android/-/merge_requests/426)- Clean architecture module and package setup  (**Merged**)
+2. [Merge Request !2](https://gitlab.com/aossie/agora-android/-/merge_requests/426)- Clean architecture module and package setup - Status (**Merged**)
 * created three layer data, domain and UI
 * Data layer have local db, remote db , adapters, Api , mappers, repositories implementation.
 * Domain layer will have model ,use cases and repository interface.
 * UI layer will have activities , fragments and DI module.
 
-3. [Merge Request !3](https://gitlab.com/aossie/agora-android/-/merge_requests/418)- Added a time check during creating new election    (**Merged**)
+3. [Merge Request !3](https://gitlab.com/aossie/agora-android/-/merge_requests/418)- Added a time check during creating new election - Status   (**Merged**)
 * Added a comparison between the current time and the election start time. So when user click on submit button then a comparison take place.
 * if the current time is greater than start time of election then there will be a error and as he will select a time grater than current time then the error will be gone.
 
@@ -66,7 +66,7 @@ The major next step for the project is UNIT TESTING and automate android release
 * When Fragment Id will be equal to the settings fragment then window.addFlags(.....) will not be used.
 
 
-5. [Merge Request !5](https://gitlab.com/aossie/agora-android/-/merge_requests/427)-Log in fragment migration to clean architecture   (**Merged**)
+5. [Merge Request !5](https://gitlab.com/aossie/agora-android/-/merge_requests/427)-Log in fragment migration to clean architecture  - Status (**Merged**)
 * Created UserRepository interface in domain layer. And added its implementation in data layer.
 * Added DI module for this interface.
 * Added domain model for User , autoresponder, LoginDto and also mapper function for them.
@@ -75,14 +75,14 @@ The major next step for the project is UNIT TESTING and automate android release
 * Added these all use cases in a wrapper class and injected that in logIn viewmodel.
 * Implementation of useCases in logIn viewModel.
 
-6. [Merge Request !6](https://gitlab.com/aossie/agora-android/-/merge_requests/428)-Signup fragment to clean architecture    (**Merged**)
+6. [Merge Request !6](https://gitlab.com/aossie/agora-android/-/merge_requests/428)-Signup fragment to clean architecture  - Status  (**Merged**)
 
 * Added SignUp Fragment Use Cases. And Kept them all in a wrapper class.
 * Added DI module function for SignUpUseCases wrapper class.
 * Injected wrapper class in SignUp ViewModel.
 * Implementation of signUp use cases.
 
-7. [Merge Request !7](https://gitlab.com/aossie/agora-android/-/merge_requests/438)- Change in the toast message of the registration conflict response  (**Merged**)
+7. [Merge Request !7](https://gitlab.com/aossie/agora-android/-/merge_requests/438)- Change in the toast message of the registration conflict response - Status (**Merged**)
 * Did modification in the toast message of the registration response.
 * When we were getting conflict then we can not distinguish between the email and username. We were getting error code 412. So its a backend dependency. So I modify message.
 
@@ -149,35 +149,32 @@ The major next step for the project is UNIT TESTING and automate android release
 * Kept all the mapper classes in wrapper class
 * Injected mapper wrapper class in all the use cases instead of manually
 
-
 18. [Merge Request !18](https://gitlab.com/aossie/agora-android/-/merge_requests/420/diffs)-Added a remove profile pic option -status   (**Merged**)
 * Added a local drawable which will be used as placeholder
 * Added a delete icon
 * Made modification in delete profile pic dialog box
 * Added a delete pic function in profile fragment
 
-19. [Merge Request !19](https://gitlab.com/aossie/agora-android/-/merge_requests/437)-Cast vote activity migration  -status   (**Ready to merge**)
+19. [Merge Request !19](https://gitlab.com/aossie/agora-android/-/merge_requests/437)-Cast vote activity migration  -status   (**Merged**)
 * Added election dto entity mapper
 * added CastVoteActivity UseCases and kept them all in a wrapper class
 * Injected that class in castVoteViewModel
 * Implemented use cases in castVoteActivityViewModel
 
-20. [Merge Request !20](https://gitlab.com/aossie/agora-android/-/merge_requests/440)- UserRepository kotlinFlow migration -status   (**Ready to merge**)
+20. [Merge Request !20](https://gitlab.com/aossie/agora-android/-/merge_requests/440)- UserRepository kotlinFlow migration -status   (**Merged**)
 * Changed return type of getUser function in UserDao
 * Removed mapLiveData from userEntityMapper
 * Changed return type of getUserUseCase
 * collected flow in respective fragments
 
-21. [Merge Request !21](https://gitlab.com/aossie/agora-android/-/merge_requests/441)- Login and SignUp fragments Stateflow implementation -status   (**Ready to merge**)
+21. [Merge Request !21](https://gitlab.com/aossie/agora-android/-/merge_requests/441)- Login and SignUp fragments Stateflow implementation -status   (**Merged**)
 * Added mutableStateFlow in logIn and Signup viewmodels
 * Collected them in their respected fragments
-
 
 22. [Merge Request !22](https://gitlab.com/aossie/agora-android/-/merge_requests/442)-  Two factorauth and forgot password Stateflow migration
  -status   (**Ready to merge**)
 * Added mutableStateFlow in TwoFactorAuth and Forgot Password viewmodels
 * Collected them in their respected fragments
-
 
 23. [Merge Request !23](https://gitlab.com/aossie/agora-android/-/merge_requests/443)- Create Election and home fragment Stateflow migration -status   (**Ready to merge**)
 * * Added mutableStateFlow in createElection and homeFragment viewModel
@@ -189,9 +186,20 @@ The major next step for the project is UNIT TESTING and automate android release
 * Changed return type of getActiveElectionUSeCase, getPendingElectionUSeCase,getFinishedElectionUseCase, getElectionsUseCase, getElectionByIdUseCase.
 * collected all these flows in their respective fragments
 
+25. [Merge Request !25](https://gitlab.com/aossie/agora-android/-/merge_requests/449)- Mainactivity and castvote activity state flow implementation  -status:**Ready to merge**
+* Replaced Livedata with Statelow in mainActivity and CastVoteActivity.
+* We will collect stateflow in respective fragments.
+
+26. [Merge Request !26](https://gitlab.com/aossie/agora-android/-/merge_requests/450)- Election Details fragment state flow implementation  -status:**Ready to merge**
+* Replaced Livedata with Statelow in ElectionDetails viewmodel
+* We will collect stateflow in respective fragments.
+
+27. [Merge Request !27](https://gitlab.com/aossie/agora-android/-/merge_requests/451)- Costomization in contributing.md  -status:**Ready to merge**
+* Added a note in Contributing.md file.
+
 ### Future Scope
-* Remaining Unit Testing
-* Migrate to jetpack compose
+* Unit Testing
+* Migration to jetpack compose
 * CI/CD PipeLine implementation to automate android release.
 * Adding support for Android 12 Material-You theme engine "Monet"
 * Adding Functionality to remind user before the election timing
