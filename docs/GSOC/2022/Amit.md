@@ -201,9 +201,13 @@ The major next step for the project is UNIT TESTING and automate android release
 27. [Merge Request !27](https://gitlab.com/aossie/agora-android/-/merge_requests/451)- Costomization in contributing.md  -status:**Ready to merge**
 * Added a note in Contributing.md file.
 
-7. [Merge Request !28](https://gitlab.com/aossie/agora-android/-/merge_requests/452)- Setup For jetpack compose  -status:**Ready to merge**
+28. [Merge Request !28](https://gitlab.com/aossie/agora-android/-/merge_requests/452)- Setup For jetpack compose  -status:**Ready to merge**
 * Updated compileSdk and targetSdk to 32.
 * And added dependencies for ComposeVersion 1.2.1.
+
+29. [Merge Request !29](https://gitlab.com/aossie/agora-android/-/merge_requests/419)- Implementation of android 12 animated splash screen API. -status:**Improvement Required**
+* Added animated splash screen dependency
+* Added implementation of splash screen api
 
 ### Future Scope
 * Unit Testing
