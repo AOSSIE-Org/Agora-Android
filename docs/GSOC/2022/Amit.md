@@ -32,7 +32,7 @@ During community bonding period,  We did modification in my original proposal. A
 11. Confusing toast when user register by same email or username - **Done**
 12. Fix android 12 migration error - **Done**
 13. Migration of xml layout to Jetpack Compose - **In Progress** <br>
-**Note** We have decided that whatever time will be remained in that time Migration of xml layout to Jetpack Compose will be done. So I will also do it after GSOC period because it will take months for doing it.
+**Note** We have decided that whatever time will be remained in that time Migration of xml layout to Jetpack Compose will be done. I will also do it after GSOC period because it will take months in completing it.
 
 ### Summary of whole GSoC journey
 
