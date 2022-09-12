@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.model.AuthResponseModel
@@ -32,7 +31,7 @@ constructor(
 
   private val _getLoginStateFlow: MutableStateFlow<ResponseUI<String>?> =
     MutableStateFlow(null)
-  val getLoginStateFlow: StateFlow<ResponseUI<String>?> = _getLoginStateFlow.asStateFlow()
+  val getLoginStateFlow: StateFlow<ResponseUI<String>?> = _getLoginStateFlow
 
   fun getLoggedInUser() = logInUseCases.getUser()
 

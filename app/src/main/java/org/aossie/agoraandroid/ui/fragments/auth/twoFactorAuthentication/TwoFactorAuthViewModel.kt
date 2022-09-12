@@ -1,9 +1,9 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.domain.model.VerifyOtpDtoModel
@@ -26,14 +26,14 @@ constructor(
 
   val user = twoFactorAuthUseCases.getUser()
 
-  private val mVerifyOtpResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mVerifyOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val verifyOtpResponse: LiveData<ResponseUI<Any>>
+  val verifyOtpResponse: StateFlow<ResponseUI<Any>?>
     get() = mVerifyOtpResponse
 
-  private val mResendOtpResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mResendOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val resendOtpResponse: LiveData<ResponseUI<Any>>
+  val resendOtpResponse: StateFlow<ResponseUI<Any>?>
     get() = mResendOtpResponse
 
   fun verifyOTP(
@@ -47,7 +47,8 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(crypto, otp, trustedDevice))
+        val authResponse =
+          twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(crypto, otp, trustedDevice))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
