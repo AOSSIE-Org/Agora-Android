@@ -9,6 +9,8 @@
 [Source Code](https://gitlab.com/aossie/agora-android/-/tree/gsoc-2022)
 
 ## Mentors: [Abhishek Kumar](https://github.com/https://gitlab.com/ABHI165), [Divyank Lunkad](https://github.com/divyank00)
+## APK: [release.apk](https://drive.google.com/file/d/1eJ61Y-ZewTN7dzzIAZkzWuRyjFkGmYWc/view?usp=sharing)
+## App will be released on Google Play Store soon!
 
 ### Overview of the Application
 
