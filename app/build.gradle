@@ -13,7 +13,6 @@ def fbApiKey = properties.getProperty('fbApiKey')
 def secretKey = properties.getProperty('secretKey')
 def serverKey = properties.getProperty('serverKey')
 
-
 android {
   def keystoreProperties = new Properties()
   def keystorePropertiesFile = rootProject.file('signing.properties')
@@ -24,7 +23,7 @@ android {
   lintOptions {
     baseline file("lint-baseline.xml")
   }
-  compileSdkVersion  rootProject.ext.compileSdk
+  compileSdkVersion rootProject.ext.compileSdk
   defaultConfig {
     resValue("string", "fbApiKey", fbApiKey)
     resValue("string", "fbApiScheme", fbApiScheme)
@@ -47,8 +46,7 @@ android {
           storeFile file(keystoreProperties['storeFile'])
           storePassword keystoreProperties['storePassword']
         }
-      }
-      else {
+      } else {
         print('not signed')
       }
     }
@@ -73,8 +71,7 @@ android {
     viewBinding true
   }
   kotlinOptions {
-//    jvmTarget = JavaVersion.VERSION_1_8.toString()
-    jvmTarget = "1.8"
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -168,7 +165,7 @@ dependencies {
 
   //FirebaseBoM
   implementation platform("com.google.firebase:firebase-bom:$firebaseBOMVersion")
-  
+
   //Firebase Messaging
   implementation "com.google.firebase:firebase-messaging-ktx"
 
