@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.useCases.homeFragment.HomeFragmentUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
@@ -29,7 +29,7 @@ constructor(
   private val homeViewModelUseCases: HomeFragmentUseCases
 ) : ViewModel() {
   private val _getLogoutStateFLow: MutableStateFlow<ResponseUI<Any>?> = MutableStateFlow(null)
-  val getLogoutStateFlow = _getLogoutStateFLow.asStateFlow()
+  val getLogoutStateFlow: StateFlow<ResponseUI<Any>?> = _getLogoutStateFLow
   var sessionExpiredListener: SessionExpiredListener? = null
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
   private val currentDate: Date = Calendar.getInstance()
