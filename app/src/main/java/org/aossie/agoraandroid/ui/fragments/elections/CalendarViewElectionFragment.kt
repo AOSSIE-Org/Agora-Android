@@ -15,6 +15,7 @@ import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
@@ -152,10 +153,9 @@ constructor(
   }
 
   private fun initObservers() {
-    electionViewModel.getElections()
-      .observe(
-        viewLifecycleOwner,
-        {
+    lifecycleScope.launch {
+      electionViewModel.getElections()
+        .collect {
           if (it != null) {
             allEvents?.clear()
             for (election in it) {
@@ -164,7 +164,7 @@ constructor(
             }
           }
         }
-      )
+    }
   }
 
   private fun initListeners() {

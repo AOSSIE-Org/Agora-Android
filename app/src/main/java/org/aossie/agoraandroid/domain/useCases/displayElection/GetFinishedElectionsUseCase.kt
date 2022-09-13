@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.domain.useCases.displayElection
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.aossie.agoraandroid.data.mappers.Mappers
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.domain.repository.ElectionsRepository
@@ -10,13 +11,10 @@ class GetFinishedElectionsUseCase @Inject constructor(
   private val electionsRepository: ElectionsRepository,
   private val mappers: Mappers
 ) {
-  suspend operator fun invoke(
+  operator fun invoke(
     date: String
-  ): LiveData<List<ElectionModel>> {
-    return mappers.electionEntityMapper.mapFromEntityLiveDataList(
-      electionsRepository.getFinishedElections(
-        date
-      )
-    )
+  ): Flow<List<ElectionModel>> {
+    val response = electionsRepository.getFinishedElections(date)
+    return response.map { list -> list.map { mappers.electionEntityMapper.mapFromEntity(it) } }
   }
 }

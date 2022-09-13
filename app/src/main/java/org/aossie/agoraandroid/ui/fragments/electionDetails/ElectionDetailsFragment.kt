@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.takusemba.spotlight.Spotlight
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.drawable
@@ -31,7 +31,6 @@ import org.aossie.agoraandroid.utilities.toggleIsEnable
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -173,9 +172,8 @@ constructor(
   }
 
   private fun getElectionById() {
-    electionDetailsViewModel.getElectionById(id ?: "").observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      electionDetailsViewModel.getElectionById(id ?: "").collect {
         if (it != null) {
           Timber.d(it.toString())
           try {
@@ -191,8 +189,15 @@ constructor(
             binding.tvEndDate.text = outFormat.format(formattedEndingDate)
             binding.tvStartDate.text = outFormat.format(formattedStartingDate)
             // set label color and election status
-            binding.label.text = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
-            binding.label.setBackgroundResource(getEventColor(currentDate, formattedStartingDate, formattedEndingDate))
+            binding.label.text =
+              getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
+            binding.label.setBackgroundResource(
+              getEventColor(
+                currentDate,
+                formattedStartingDate,
+                formattedEndingDate
+              )
+            )
             status = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
           } catch (e: ParseException) {
             e.printStackTrace()
@@ -211,7 +216,7 @@ constructor(
           binding.tvCandidateList.text = mCandidatesName
         }
       }
-    )
+    }
   }
 
   private fun getEventStatus(
