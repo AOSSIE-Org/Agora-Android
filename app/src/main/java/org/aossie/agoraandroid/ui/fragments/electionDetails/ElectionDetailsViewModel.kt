@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
@@ -51,7 +52,7 @@ constructor(
 
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  fun getElectionById(id: String): LiveData<ElectionModel> {
+  fun getElectionById(id: String): Flow<ElectionModel> {
     return electionDetailsUseCases.getElectionById(id)
   }
 

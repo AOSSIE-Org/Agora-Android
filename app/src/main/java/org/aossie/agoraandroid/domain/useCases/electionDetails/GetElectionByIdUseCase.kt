@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.domain.useCases.electionDetails
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.aossie.agoraandroid.data.mappers.Mappers
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.domain.repository.ElectionsRepository
@@ -12,7 +13,8 @@ class GetElectionByIdUseCase @Inject constructor(
 ) {
   operator fun invoke(
     id: String
-  ): LiveData<ElectionModel> {
-    return mappers.electionEntityMapper.mapFromEntityLiveData(electionsRepository.getElectionById(id))
+  ): Flow<ElectionModel> {
+    val response = electionsRepository.getElectionById(id)
+    return response.map { mappers.electionEntityMapper.mapFromEntity(it) }
   }
 }

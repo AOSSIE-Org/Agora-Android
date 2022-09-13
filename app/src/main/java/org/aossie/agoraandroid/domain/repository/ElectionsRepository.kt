@@ -1,6 +1,7 @@
 package org.aossie.agoraandroid.domain.repository
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.data.network.dto.VotersDto
@@ -10,17 +11,17 @@ import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 
 interface ElectionsRepository {
   suspend fun fetchAndSaveElections()
-  fun getElections(): LiveData<List<Election>>
+  fun getElections(): Flow<List<Election>>
   fun getFinishedElectionsCount(currentDate: String): LiveData<Int>
   fun getPendingElectionsCount(currentDate: String): LiveData<Int>
   fun getTotalElectionsCount(): LiveData<Int>
   fun getActiveElectionsCount(currentDate: String): LiveData<Int>
   suspend fun saveElections(elections: List<ElectionResponse>)
-  fun getPendingElections(currentDate: String): LiveData<List<Election>>
+  fun getPendingElections(currentDate: String): Flow<List<Election>>
   suspend fun fetchElections()
-  fun getFinishedElections(currentDate: String): LiveData<List<Election>>
-  fun getActiveElections(currentDate: String): LiveData<List<Election>>
-  fun getElectionById(id: String): LiveData<Election>
+  fun getFinishedElections(currentDate: String): Flow<List<Election>>
+  fun getActiveElections(currentDate: String): Flow<List<Election>>
+  fun getElectionById(id: String): Flow<Election>
   suspend fun deleteElection(id: String): List<String>
   suspend fun getVoters(id: String): List<VotersDto>
   suspend fun getBallots(id: String): Ballots
