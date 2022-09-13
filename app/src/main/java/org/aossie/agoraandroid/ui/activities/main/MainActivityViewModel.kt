@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.useCases.homeFragment.DeleteUserUseCase
 import javax.inject.Inject
@@ -16,9 +15,9 @@ constructor(
 ) : ViewModel() {
 
   private val mutableIsLogout = MutableStateFlow<Boolean?>(null)
+  val isLogout: StateFlow<Boolean?> = mutableIsLogout
   private val _getNetworkStatusStateFlow = MutableStateFlow<Boolean?>(null)
-  val getNetworkStatusStateFlow = _getNetworkStatusStateFlow.asStateFlow()
-  val isLogout: StateFlow<Boolean?> get() = mutableIsLogout
+  val getNetworkStatusStateFlow: StateFlow<Boolean?> = _getNetworkStatusStateFlow
 
   fun setLogout(isLogout: Boolean) {
     mutableIsLogout.value = isLogout
