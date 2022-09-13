@@ -92,7 +92,7 @@ To use Facebook login, get your fb_api_key and fb_api_scheme from [here](https:/
 
 **Note:** Don't forget to add "fb" before your fb_login_protocol_scheme. <br>
 
-( As of now a contributer can also use random values of keys.)
+(Temporarily, you can use any random value)
 
 ## Setting up appetize.io
 
