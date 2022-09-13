@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -88,21 +87,20 @@ constructor(
       }
     }
 
-    viewModel.verifyOtpResponse.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      viewModel.verifyOtpResponse.collect {
         handleVerifyOtp(it)
       }
-    )
-    viewModel.resendOtpResponse.observe(
-      viewLifecycleOwner,
-      Observer {
+    }
+
+    lifecycleScope.launch {
+      viewModel.resendOtpResponse.collect {
         handleResendOtp(it)
       }
-    )
+    }
   }
 
-  private fun handleVerifyOtp(response: ResponseUI<Any>) = when (response.status) {
+  private fun handleVerifyOtp(response: ResponseUI<Any>?) = when (response?.status) {
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       Navigation.findNavController(binding.root)
@@ -110,21 +108,21 @@ constructor(
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      notify(response.message)
+      notify(response?.message)
     }
 
     else -> { // Do Nothing
     }
   }
 
-  private fun handleResendOtp(response: ResponseUI<Any>) = when (response.status) {
+  private fun handleResendOtp(response: ResponseUI<Any>?) = when (response?.status) {
     ResponseUI.Status.SUCCESS -> {
       binding.progressBar.hide()
       notify(getString(string.otp_sent))
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      notify(response.message)
+      notify(response?.message)
     }
     else -> { // Do Nothing
     }
