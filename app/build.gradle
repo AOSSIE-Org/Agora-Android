@@ -13,7 +13,6 @@ def fbApiKey = properties.getProperty('fbApiKey')
 def secretKey = properties.getProperty('secretKey')
 def serverKey = properties.getProperty('serverKey')
 
-
 android {
   def keystoreProperties = new Properties()
   def keystorePropertiesFile = rootProject.file('signing.properties')
@@ -24,7 +23,7 @@ android {
   lintOptions {
     baseline file("lint-baseline.xml")
   }
-  compileSdkVersion  rootProject.ext.compileSdk
+  compileSdkVersion rootProject.ext.compileSdk
   defaultConfig {
     resValue("string", "fbApiKey", fbApiKey)
     resValue("string", "fbApiScheme", fbApiScheme)
@@ -47,8 +46,7 @@ android {
           storeFile file(keystoreProperties['storeFile'])
           storePassword keystoreProperties['storePassword']
         }
-      }
-      else {
+      } else {
         print('not signed')
       }
     }
@@ -167,7 +165,7 @@ dependencies {
 
   //FirebaseBoM
   implementation platform("com.google.firebase:firebase-bom:$firebaseBOMVersion")
-  
+
   //Firebase Messaging
   implementation "com.google.firebase:firebase-messaging-ktx"
 
@@ -179,6 +177,15 @@ dependencies {
 
   //Biometric
   implementation "androidx.biometric:biometric:$biometricLibraryVersion"
+  // Compose
+  implementation "androidx.compose.runtime:runtime:$rootProject.composeVersion"
+  implementation "androidx.compose.ui:ui:$rootProject.composeVersion"
+  implementation "androidx.compose.foundation:foundation:$rootProject.composeVersion"
+  implementation "androidx.compose.foundation:foundation-layout:$rootProject.composeVersion"
+  implementation "androidx.compose.material:material:$rootProject.composeVersion"
+  implementation "androidx.compose.runtime:runtime-livedata:$rootProject.composeVersion"
+  implementation "androidx.compose.ui:ui-tooling-preview:$rootProject.composeVersion"
+  debugImplementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
 }
 repositories {
   mavenCentral()
