@@ -1,10 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.createelection
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
@@ -21,7 +22,6 @@ import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
-import java.util.ArrayList
 import javax.inject.Inject
 
 internal class CreateElectionViewModel
@@ -30,10 +30,11 @@ constructor(
   private val createElectionUseCase: CreateElectionUseCase
 ) : ViewModel() {
 
-  private val _getCreateElectionData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
-  val getCreateElectionData = _getCreateElectionData
-  private val _getImportVotersLiveData: MutableLiveData<ResponseUI<String>> = MutableLiveData()
-  val getImportVotersLiveData = _getImportVotersLiveData
+  private val _getCreateElectionData: MutableStateFlow<ResponseUI<Any>?> = MutableStateFlow(null)
+  val getCreateElectionData: StateFlow<ResponseUI<Any>?> = _getCreateElectionData
+  private val _getImportVotersStateFlow: MutableStateFlow<ResponseUI<String>?> =
+    MutableStateFlow(null)
+  val getImportVotersLiveData: StateFlow<ResponseUI<String>?> = _getImportVotersStateFlow
 
   fun createElection(election: ElectionDtoModel) {
     _getCreateElectionData.value = ResponseUI.loading()
@@ -61,7 +62,7 @@ constructor(
         val workbook = XSSFWorkbook(inputStream)
         val sheet: XSSFSheet = workbook.getSheetAt(0) ?: run {
           withContext(Dispatchers.Main) {
-            _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.no_sheet))
+            _getImportVotersStateFlow.value = ResponseUI.error(context.getString(string.no_sheet))
           }
           return@launch
         }
@@ -73,19 +74,21 @@ constructor(
             }
         }
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value = ResponseUI.success(list)
+          _getImportVotersStateFlow.value = ResponseUI.success(list)
         }
       } catch (e: NotOfficeXmlFileException) {
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.not_excel))
+          _getImportVotersStateFlow.value = ResponseUI.error(context.getString(string.not_excel))
         }
       } catch (e: FileNotFoundException) {
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.file_not_available))
+          _getImportVotersStateFlow.value =
+            ResponseUI.error(context.getString(string.file_not_available))
         }
       } catch (e: IOException) {
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.cannot_read_file))
+          _getImportVotersStateFlow.value =
+            ResponseUI.error(context.getString(string.cannot_read_file))
         }
       }
     }
