@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.R.string
@@ -31,10 +31,10 @@ constructor(
 ) : ViewModel() {
 
   private val _getCreateElectionData: MutableStateFlow<ResponseUI<Any>?> = MutableStateFlow(null)
-  val getCreateElectionData = _getCreateElectionData.asStateFlow()
+  val getCreateElectionData: StateFlow<ResponseUI<Any>?> = _getCreateElectionData
   private val _getImportVotersStateFlow: MutableStateFlow<ResponseUI<String>?> =
     MutableStateFlow(null)
-  val getImportVotersLiveData = _getImportVotersStateFlow.asStateFlow()
+  val getImportVotersLiveData: StateFlow<ResponseUI<String>?> = _getImportVotersStateFlow
 
   fun createElection(election: ElectionDtoModel) {
     _getCreateElectionData.value = ResponseUI.loading()
