@@ -24,6 +24,7 @@ import androidx.navigation.ui.NavigationUI
 import com.facebook.login.LoginManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -209,10 +210,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun initObservers() {
-    viewModel.getNetworkStatusLiveData.observe(
-      this,
-      { isConnected ->
-        if (isConnected) {
+    lifecycleScope.launch {
+      viewModel.getNetworkStatusStateFlow.collect { isConnected ->
+        if (isConnected == true) {
           if (!isInitiallyNetworkConnected)
             binding.root.notifyNetworkChanged(true, binding.bottomNavigation)
           isInitiallyNetworkConnected = true
@@ -221,13 +221,12 @@ class MainActivity : AppCompatActivity() {
           binding.root.notifyNetworkChanged(false, binding.bottomNavigation)
         }
       }
-    )
-    viewModel.isLogout.observe(
-      this,
-      {
-        if (it) logout()
+    }
+    lifecycleScope.launch {
+      viewModel.isLogout.collect {
+        if (it == true) logout()
       }
-    )
+    }
   }
 
   override fun onActivityResult(
@@ -243,7 +242,9 @@ class MainActivity : AppCompatActivity() {
 
   private fun logout() {
     lifecycleScope.launch {
-      if (prefs.getIsLoggedIn().first())binding.root.snackbar(resources.getString(R.string.token_expired))
+      if (prefs.getIsLoggedIn()
+        .first()
+      ) binding.root.snackbar(resources.getString(R.string.token_expired))
       if (prefs.getIsFacebookUser().first()) {
         LoginManager.getInstance()
           .logOut()
