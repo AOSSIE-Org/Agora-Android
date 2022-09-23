@@ -71,28 +71,29 @@ constructor(
   }
 
   private fun setObserver() {
-    electionDetailsViewModel.getVoterResponseLiveData.observe(
-      viewLifecycleOwner,
-      { responseUI ->
-        when (responseUI.status) {
-          ResponseUI.Status.LOADING -> binding.progressBar.show()
-          ResponseUI.Status.SUCCESS -> {
-            notify(responseUI.message ?: "")
-            binding.progressBar.hide()
-            responseUI.dataList?.let {
-              initRecyclerView(it)
-            } ?: binding.tvNoVotersForThisElection.show()
-          }
-          ResponseUI.Status.ERROR -> {
-            if (responseUI.message == getString(R.string.no_network)) getVotersFromDb()
-            else {
-              notify(responseUI.message)
+    lifecycleScope.launch {
+      electionDetailsViewModel.getVoterResponseStateFlow.collect { responseUI ->
+        if (responseUI != null) {
+          when (responseUI.status) {
+            ResponseUI.Status.LOADING -> binding.progressBar.show()
+            ResponseUI.Status.SUCCESS -> {
+              notify(responseUI.message ?: "")
               binding.progressBar.hide()
+              responseUI.dataList?.let {
+                initRecyclerView(it)
+              } ?: binding.tvNoVotersForThisElection.show()
+            }
+            ResponseUI.Status.ERROR -> {
+              if (responseUI.message == getString(R.string.no_network)) getVotersFromDb()
+              else {
+                notify(responseUI.message)
+                binding.progressBar.hide()
+              }
             }
           }
         }
       }
-    )
+    }
   }
 
   private fun initRecyclerView(voters: List<VotersDtoModel>) {
