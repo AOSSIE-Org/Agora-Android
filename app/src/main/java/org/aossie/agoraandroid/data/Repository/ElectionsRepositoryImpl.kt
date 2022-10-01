@@ -9,12 +9,12 @@ import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.data.db.AppDatabase
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.data.db.entities.Election
-import org.aossie.agoraandroid.data.network.api.Api
-import org.aossie.agoraandroid.data.network.api.ApiRequest
 import org.aossie.agoraandroid.data.network.dto.CastVoteDto
 import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.data.network.dto.VotersDto
 import org.aossie.agoraandroid.data.network.dto.WinnerDto
+import org.aossie.agoraandroid.data.network.api.Api
+import org.aossie.agoraandroid.data.network.api.ApiRequest
 import org.aossie.agoraandroid.data.network.responses.Ballots
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.domain.repository.ElectionsRepository
