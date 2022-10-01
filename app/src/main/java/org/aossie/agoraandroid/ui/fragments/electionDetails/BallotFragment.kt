@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.adapters.BallotsAdapter
-import org.aossie.agoraandroid.data.dto.BallotDto
+import org.aossie.agoraandroid.data.adapters.BallotsAdapter
+import org.aossie.agoraandroid.data.network.dto.BallotDto
 import org.aossie.agoraandroid.databinding.FragmentBallotBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
