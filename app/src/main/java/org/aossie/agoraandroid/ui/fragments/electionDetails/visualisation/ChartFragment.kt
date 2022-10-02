@@ -19,8 +19,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import org.aossie.agoraandroid.R.color
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentChartBinding
+import org.aossie.agoraandroid.domain.model.WinnerDtoModel
 import org.aossie.agoraandroid.utilities.AppConstants.GRAPH_ANIMATION_DURATION
 import java.util.ArrayList
 import kotlin.math.roundToInt
@@ -32,7 +32,7 @@ class ChartFragment : Fragment() {
 
   private var binding: FragmentChartBinding? = null
   private var chartType: Int? = null
-  private var winnerDto: WinnerDto? = null
+  private var winnerDto: WinnerDtoModel? = null
   private val colorList = ColorTemplate.MATERIAL_COLORS.toList().subList(0, 2)
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +59,7 @@ class ChartFragment : Fragment() {
     return binding?.root
   }
 
-  private fun initBarChart(winner: WinnerDto) {
+  private fun initBarChart(winner: WinnerDtoModel) {
     binding?.let {
       val barChart = it.horizontalBarChart
       barChart.visibility = View.VISIBLE
@@ -119,7 +119,7 @@ class ChartFragment : Fragment() {
     }
   }
 
-  private fun initPieChart(winner: WinnerDto) {
+  private fun initPieChart(winner: WinnerDtoModel) {
     binding?.let {
       val pieChart = it.pieChart
       pieChart.visibility = View.VISIBLE
@@ -156,7 +156,7 @@ class ChartFragment : Fragment() {
   companion object {
     fun newInstance(
       chartType: Int,
-      winnerDto: WinnerDto,
+      winnerDto: WinnerDtoModel,
     ) = ChartFragment().apply {
       arguments = Bundle().apply {
         putInt(CHART_TYPE, chartType)

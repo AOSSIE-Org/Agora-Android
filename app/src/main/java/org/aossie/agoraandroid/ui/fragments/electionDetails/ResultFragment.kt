@@ -12,12 +12,15 @@ import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.adapters.ResultViewpagerAdapter
-import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.databinding.FragmentResultBinding
+import org.aossie.agoraandroid.domain.model.WinnerDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.hide
@@ -40,7 +43,7 @@ constructor(
   }
 
   private var id: String? = null
-  private lateinit var winnerDto: WinnerDto
+  private lateinit var winnerDto: WinnerDtoModel
   private val chartType: Array<Int> = arrayOf(
     string.bar_chart,
     string.pie_chart
@@ -70,62 +73,63 @@ constructor(
   }
 
   private fun observeResult() {
-
-    electionDetailsViewModel.getResultResponseLiveData.observe(
-      viewLifecycleOwner,
-      { responseUI ->
-        when (responseUI.status) {
-          ResponseUI.Status.LOADING -> {
-            binding.resultView.visibility = View.GONE
-            binding.progressBar.show()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            notify(responseUI.message ?: "")
-            binding.progressBar.hide()
-            responseUI.data?.let {
-              winnerDto = it
-              initResultView(it)
-            } ?: run {
+    lifecycleScope.launch {
+      electionDetailsViewModel.getResultResponseStateFlow.collect { responseUI ->
+        if (responseUI != null) {
+          when (responseUI.status) {
+            ResponseUI.Status.LOADING -> {
               binding.resultView.visibility = View.GONE
-              binding.tvNoResult.text = resources.getString(string.no_result)
+              binding.progressBar.show()
+            }
+            ResponseUI.Status.SUCCESS -> {
+              notify(responseUI.message ?: "")
+              binding.progressBar.hide()
+              responseUI.data?.let {
+                winnerDto = it
+                initResultView(it)
+              } ?: run {
+                binding.resultView.visibility = View.GONE
+                binding.tvNoResult.text = resources.getString(string.no_result)
+                binding.tvNoResult.show()
+              }
+            }
+            ResponseUI.Status.ERROR -> {
+              notify(responseUI.message)
+              binding.progressBar.hide()
+              binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
               binding.tvNoResult.show()
             }
           }
-          ResponseUI.Status.ERROR -> {
-            notify(responseUI.message)
-            binding.progressBar.hide()
-            binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
-            binding.tvNoResult.show()
-          }
         }
       }
-    )
+    }
 
-    electionDetailsViewModel.getShareResponseLiveData.observe(
-      viewLifecycleOwner,
-      { responseUI ->
-        when (responseUI.status) {
-          ResponseUI.Status.LOADING -> {
-            // Do Nothing
-          }
-          ResponseUI.Status.SUCCESS -> {
-            responseUI.data?.let { uri ->
-              val shareIntent = Intent()
-              shareIntent.let {
-                it.action = Intent.ACTION_SEND
-                it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                it.setDataAndType(uri, requireContext().contentResolver.getType(uri))
-                it.putExtra(Intent.EXTRA_STREAM, uri)
+    lifecycleScope.launch {
+      electionDetailsViewModel.getShareResponseStateFlow.collect { responseUI ->
+        if (responseUI != null) {
+          when (responseUI.status) {
+            ResponseUI.Status.LOADING -> {
+              // Do Nothing
+            }
+            ResponseUI.Status.SUCCESS -> {
+              responseUI.data?.let { uri ->
+                val shareIntent = Intent()
+                shareIntent.let {
+                  it.action = Intent.ACTION_SEND
+                  it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                  it.setDataAndType(uri, requireContext().contentResolver.getType(uri))
+                  it.putExtra(Intent.EXTRA_STREAM, uri)
+                }
+                startActivity(Intent.createChooser(shareIntent, getString(string.share_result)))
               }
-              startActivity(Intent.createChooser(shareIntent, getString(string.share_result)))
+            }
+            ResponseUI.Status.ERROR -> {
+              notify(responseUI.message)
             }
           }
-          ResponseUI.Status.ERROR -> {
-            notify(responseUI.message)
-          }
         }
       }
-    )
+    }
   }
 
   private fun initListeners() {
@@ -167,7 +171,7 @@ constructor(
     }
   }
 
-  private fun initResultView(winner: WinnerDto) {
+  private fun initResultView(winner: WinnerDtoModel) {
     binding.tvNoResult.hide()
     binding.resultView.visibility = View.VISIBLE
     binding.textViewWinnerName.text = winner.candidate?.name

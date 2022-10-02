@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.adapters.ElectionsAdapter
-import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.databinding.FragmentElectionsBinding
+import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.show
@@ -29,7 +31,7 @@ constructor(
     viewModelFactory
   }
 
-  lateinit var mElections: ArrayList<Election>
+  lateinit var mElections: ArrayList<ElectionModel>
   private lateinit var electionsAdapter: ElectionsAdapter
 
   private val onItemClicked = { _id: String ->
@@ -69,22 +71,21 @@ constructor(
   }
 
   private fun bindUI() {
-    try {
-      electionViewModel.getElections()
-        .observe(
-          viewLifecycleOwner,
-          Observer {
+    lifecycleScope.launch {
+      try {
+        electionViewModel.getElections()
+          .collect {
             if (it != null) {
               addElections(it)
             }
           }
-        )
-    } catch (e: IllegalStateException) {
-      binding.tvSomethingWentWrong.show()
+      } catch (e: IllegalStateException) {
+        binding.tvSomethingWentWrong.show()
+      }
     }
   }
 
-  private fun addElections(elections: List<Election>) {
+  private fun addElections(elections: List<ElectionModel>) {
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
       electionsAdapter.submitList(elections)

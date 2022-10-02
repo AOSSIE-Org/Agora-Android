@@ -13,11 +13,14 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.data.network.dto.NewUserDto
 import org.aossie.agoraandroid.data.network.dto.SecurityQuestionDto
 import org.aossie.agoraandroid.databinding.FragmentSignUpBinding
+import org.aossie.agoraandroid.domain.model.NewUserDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.HideKeyboard
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -92,27 +95,28 @@ constructor(
     binding.etAnswer.doAfterTextChanged { doAfterTextChange() }
     binding.etPassword.doAfterTextChanged { doAfterTextChange() }
 
-    signUpViewModel.getSignUpLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            binding.progressBar.show()
-            makeFieldsToggleEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            notify(getString(string.verify_account))
-            makeFieldsToggleEnable()
-          }
-          ResponseUI.Status.ERROR -> {
-            notify(it.message)
-            binding.progressBar.hide()
-            makeFieldsToggleEnable()
+    lifecycleScope.launch {
+      signUpViewModel.getSignUpStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
+              binding.progressBar.show()
+              makeFieldsToggleEnable()
+            }
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              notify(getString(string.verify_account))
+              makeFieldsToggleEnable()
+            }
+            ResponseUI.Status.ERROR -> {
+              notify(it.message)
+              binding.progressBar.hide()
+              makeFieldsToggleEnable()
+            }
           }
         }
       }
-    )
+    }
   }
 
   private fun makeFieldsToggleEnable() {
@@ -150,10 +154,13 @@ constructor(
       .matches()
     ) {
       binding.signupEmail.error = "Enter a valid email address!!!"
+    } else if (userPass.length < 6) {
+      binding.signupPassword.error = "password length must be atleast 6 !!!"
     } else {
       binding.signupEmail.error = null
+      binding.signupPassword.error = null
       signUpViewModel.signUpRequest(
-        NewUserDto(
+        NewUserDtoModel(
           userEmail, firstName, userName, lastName, userPass,
           SecurityQuestionDto(securityQuestionAnswer, "", securityQuestion!!)
         )
