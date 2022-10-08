@@ -50,7 +50,7 @@ constructor(
     }
   }
 
-  private fun addSource() {
+  fun addSource() {
     viewModelScope.launch {
       _countMediatorLiveData.addSource(electionsRepository.getTotalElectionsCount()) { value ->
         _countMediatorLiveData.value = _countMediatorLiveData.value.apply {

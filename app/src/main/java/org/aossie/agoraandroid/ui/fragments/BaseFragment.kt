@@ -45,6 +45,7 @@ abstract class BaseFragment(
           }
           else -> {
             withContext(Dispatchers.Main) {
+              onNetworkDisconnected()
               hostViewModel.onNetworkChanged(false)
             }
           }
@@ -55,6 +56,7 @@ abstract class BaseFragment(
   }
 
   open fun onNetworkConnected() {}
+  open fun onNetworkDisconnected() {}
   abstract fun onFragmentInitiated()
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)

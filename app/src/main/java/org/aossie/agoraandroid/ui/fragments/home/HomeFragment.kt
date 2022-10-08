@@ -52,7 +52,7 @@ constructor(
   private var spotlight: Spotlight? = null
   private var spotlightTargets: ArrayList<TargetData>? = null
   private var currentSpotlightIndex = 0
-
+  private var isUpdateCalled = false
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -116,16 +116,13 @@ constructor(
             val currentDate = Calendar.getInstance()
               .time
             val expireOn = user.authTokenExpiresOn
-            Timber.d(user.toString())
-            Timber.tag("expiresOn")
-              .d(expireOn.toString())
             try {
               if (expireOn != null) {
                 val expiresOn = formatter.parse(expireOn)
+                Timber.d(user.toString())
+                Timber.tag("expiresOn")
                 // If the token is expired, get a new one to continue login session of user
                 if (currentDate.after(expiresOn)) {
-                  Timber.tag("expired")
-                    .d(expireOn.toString())
                   lifecycleScope.launch {
                     if (preferenceProvider.getIsFacebookUser()
                       .first()
@@ -145,18 +142,17 @@ constructor(
       )
 
     homeViewModel.countMediatorLiveData.observe(
-      viewLifecycleOwner,
-      {
-        binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
-        binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
-        binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
-        binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
-        binding.shimmerViewContainer.stopShimmer()
-        binding.shimmerViewContainer.visibility = View.GONE
-        binding.constraintLayout.visibility = View.VISIBLE
-        binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
-      }
-    )
+      viewLifecycleOwner
+    ) {
+      binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
+      binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
+      binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
+      binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
+      binding.shimmerViewContainer.stopShimmer()
+      binding.shimmerViewContainer.visibility = View.GONE
+      binding.constraintLayout.visibility = View.VISIBLE
+      binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
+    }
     updateUi()
     binding.root.doOnLayout {
       checkIsFirstOpen()
@@ -164,7 +160,15 @@ constructor(
   }
 
   override fun onNetworkConnected() {
-    updateUi()
+    if (!isUpdateCalled) {
+      isUpdateCalled = true
+      updateUi()
+      homeViewModel.addSource()
+    }
+  }
+
+  override fun onNetworkDisconnected() {
+    isUpdateCalled = false
   }
 
   override fun onDestroyView() {
