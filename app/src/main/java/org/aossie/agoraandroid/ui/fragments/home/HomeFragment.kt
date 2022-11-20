@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.takusemba.spotlight.Spotlight
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.color
@@ -100,8 +99,6 @@ constructor(
             ResponseUI.Status.ERROR -> {
               notify(it.message)
             }
-          } catch (e: ParseException) {
-            e.printStackTrace()
           }
         }
       }
@@ -128,7 +125,7 @@ constructor(
                   .d(expireOn.toString())
                 lifecycleScope.launch {
                   if (preferenceProvider.getIsFacebookUser()
-                    .first()
+                      .first()
                   ) {
                     loginViewModel.facebookLogInRequest()
                   } else {
@@ -186,7 +183,7 @@ constructor(
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!preferenceProvider.isDisplayed(binding.root.id.toString())
-        .first()
+          .first()
       ) {
         spotlightTargets = getSpotlightTargets()
         preferenceProvider.setDisplayed(binding.root.id.toString())
