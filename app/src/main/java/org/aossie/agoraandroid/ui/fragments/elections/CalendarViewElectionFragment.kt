@@ -15,7 +15,6 @@ import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
@@ -205,16 +204,16 @@ constructor(
     binding.calendarLayout.sampleDay.setOnTouchListener(object : SwipeDetector(
       requireContext()
     ) {
-        override fun onSwipeRight() {
-          super.onSwipeRight()
-          onPreviousDay()
-        }
+      override fun onSwipeRight() {
+        super.onSwipeRight()
+        onPreviousDay()
+      }
 
-        override fun onSwipeLeft() {
-          super.onSwipeLeft()
-          onNextDay()
-        }
-      })
+      override fun onSwipeLeft() {
+        super.onSwipeLeft()
+        onNextDay()
+      }
+    })
   }
 
   private fun onNextDay() {
@@ -276,31 +275,31 @@ constructor(
         eventView.setOnTouchListener(object : SwipeDetector(
           requireContext()
         ) {
-            override fun onSwipeRight() {
-              super.onSwipeRight()
-              onPreviousDay()
-            }
+          override fun onSwipeRight() {
+            super.onSwipeRight()
+            onPreviousDay()
+          }
 
-            override fun onSwipeLeft() {
-              super.onSwipeLeft()
-              onNextDay()
-            }
+          override fun onSwipeLeft() {
+            super.onSwipeLeft()
+            onNextDay()
+          }
 
-            override fun onClick() {
-              super.onClick()
-              openElectionDetail(event)
-            }
+          override fun onClick() {
+            super.onClick()
+            openElectionDetail(event)
+          }
 
-            override fun showRipple() {
-              super.showRipple()
-              setPressed(eventView, true)
-            }
+          override fun showRipple() {
+            super.showRipple()
+            setPressed(eventView, true)
+          }
 
-            override fun hideRipple() {
-              super.hideRipple()
-              setPressed(eventView, false)
-            }
-          })
+          override fun hideRipple() {
+            super.hideRipple()
+            setPressed(eventView, false)
+          }
+        })
 
         eventViews.add(eventView)
         val startMinute = 60 * event.hour + event.minute

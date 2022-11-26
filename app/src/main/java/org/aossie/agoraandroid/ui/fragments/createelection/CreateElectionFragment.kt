@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.takusemba.spotlight.Spotlight
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
@@ -169,6 +168,7 @@ constructor(
   override fun onNetworkConnected() {
     initView()
   }
+
   private fun initView() {
     candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
     binding.namesRv.layoutManager = LinearLayoutManager(context)
@@ -529,7 +529,7 @@ constructor(
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!prefs.isDisplayed(binding.root.id.toString())
-        .first()
+          .first()
       ) {
         spotlightTargets = getSpotlightTargets()
         prefs.setDisplayed(binding.root.id.toString())

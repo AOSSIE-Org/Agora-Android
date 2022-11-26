@@ -24,7 +24,6 @@ import androidx.navigation.ui.NavigationUI
 import com.facebook.login.LoginManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

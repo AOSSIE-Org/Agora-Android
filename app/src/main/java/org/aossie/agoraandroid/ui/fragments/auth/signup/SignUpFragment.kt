@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
@@ -151,7 +150,7 @@ constructor(
       .toString()
     val securityQuestion = securityQuestionOfSignUp
     if (!Patterns.EMAIL_ADDRESS.matcher(userEmail)
-      .matches()
+        .matches()
     ) {
       binding.signupEmail.error = "Enter a valid email address!!!"
     } else if (userPass.length < 6) {
