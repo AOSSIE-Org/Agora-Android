@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -67,33 +66,34 @@ constructor(
 
   private fun initObjects() {
     loginViewModel.sessionExpiredListener = this
-    loginViewModel.getLoginLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            binding.progressBar.show()
-            makeFieldsToggleEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            makeFieldsToggleEnable()
-            it.message?.let { crypto ->
-              onTwoFactorAuthentication(crypto)
-            } ?: kotlin.run {
-              Navigation.findNavController(binding.root)
-                .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+    lifecycleScope.launch {
+      loginViewModel.getLoginStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
+              binding.progressBar.show()
+              makeFieldsToggleEnable()
             }
-          }
-          ResponseUI.Status.ERROR -> {
-            binding.progressBar.hide()
-            notify(it.message)
-            makeFieldsToggleEnable()
-            enableBtnFacebook()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              makeFieldsToggleEnable()
+              it.message?.let { crypto ->
+                onTwoFactorAuthentication(crypto)
+              } ?: kotlin.run {
+                Navigation.findNavController(binding.root)
+                  .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+              }
+            }
+            ResponseUI.Status.ERROR -> {
+              binding.progressBar.hide()
+              notify(it.message)
+              makeFieldsToggleEnable()
+              enableBtnFacebook()
+            }
           }
         }
       }
-    )
+    }
 
     callbackManager = Factory.create()
 
@@ -194,10 +194,9 @@ constructor(
   fun onTwoFactorAuthentication(
     crypto: String
   ) {
-    loginViewModel.getLoggedInUser()
-      .observe(
-        viewLifecycleOwner,
-        Observer {
+    lifecycleScope.launch {
+      loginViewModel.getLoggedInUser()
+        .collect {
           if (it != null) {
             if (it.twoFactorAuthentication!!) {
               notify(getString(R.string.otp_sent))
@@ -208,6 +207,6 @@ constructor(
             }
           }
         }
-      )
+    }
   }
 }

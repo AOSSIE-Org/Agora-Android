@@ -1,13 +1,13 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.dto.VerifyOtpDto
+import org.aossie.agoraandroid.domain.model.UserModel
+import org.aossie.agoraandroid.domain.model.VerifyOtpDtoModel
+import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
@@ -20,20 +20,20 @@ import javax.inject.Inject
 class TwoFactorAuthViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository
+  private val twoFactorAuthUseCases: TwoFactorAuthUseCases
 ) : ViewModel() {
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  val user = userRepository.getUser()
+  val user = twoFactorAuthUseCases.getUser()
 
-  private val mVerifyOtpResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mVerifyOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val verifyOtpResponse: LiveData<ResponseUI<Any>>
+  val verifyOtpResponse: StateFlow<ResponseUI<Any>?>
     get() = mVerifyOtpResponse
 
-  private val mResendOtpResponse = MutableLiveData<ResponseUI<Any>>()
+  private val mResendOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
 
-  val resendOtpResponse: LiveData<ResponseUI<Any>>
+  val resendOtpResponse: StateFlow<ResponseUI<Any>?>
     get() = mResendOtpResponse
 
   fun verifyOTP(
@@ -47,15 +47,16 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = userRepository.verifyOTP(VerifyOtpDto(crypto, otp, trustedDevice))
+        val authResponse =
+          twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(crypto, otp, trustedDevice))
         authResponse.let {
-          val user = User(
+          val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, it.trustedDevice
           )
-          userRepository.saveUser(user)
+          twoFactorAuthUseCases.saveUser(user)
           Timber.d(user.toString())
           mVerifyOtpResponse.value = ResponseUI.success()
         }
@@ -80,15 +81,15 @@ constructor(
     }
     viewModelScope.launch {
       try {
-        val authResponse = userRepository.resendOTP(username)
+        val authResponse = twoFactorAuthUseCases.resendOTP(username)
         authResponse.let {
-          val user = User(
+          val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
             it.twoFactorAuthentication,
             it.authToken?.token, it.authToken?.expiresOn, it.refreshToken?.token,
             it.refreshToken?.expiresOn, it.trustedDevice
           )
-          userRepository.saveUser(user)
+          twoFactorAuthUseCases.saveUser(user)
           mResendOtpResponse.value = ResponseUI.success()
         }
       } catch (e: ApiException) {

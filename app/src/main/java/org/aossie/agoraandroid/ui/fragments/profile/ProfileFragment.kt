@@ -2,10 +2,12 @@ package org.aossie.agoraandroid.ui.fragments.profile
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -27,11 +29,12 @@ import com.facebook.login.LoginManager
 import com.squareup.picasso.NetworkPolicy.OFFLINE
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.DialogChangeAvatarBinding
 import org.aossie.agoraandroid.databinding.FragmentProfileBinding
+import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
@@ -79,7 +82,7 @@ constructor(
     viewModelFactory
   }
 
-  private lateinit var mUser: User
+  private lateinit var mUser: UserModel
   private lateinit var binding: FragmentProfileBinding
 
   override fun onCreateView(
@@ -235,14 +238,13 @@ constructor(
       }
     )
 
-    viewModel.user.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      viewModel.user.collect {
         if (it != null) {
           updateUI(it)
         }
       }
-    )
+    }
 
     viewModel.passwordRequestCode.observe(
       viewLifecycleOwner,
@@ -251,21 +253,23 @@ constructor(
       }
     )
 
-    loginViewModel.getLoginLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> onLoadingStarted()
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            toggleIsEnable()
-          }
-          ResponseUI.Status.ERROR -> {
-            onError(it.message)
+    lifecycleScope.launch {
+      loginViewModel.getLoginStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> onLoadingStarted()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              toggleIsEnable()
+            }
+            ResponseUI.Status.ERROR -> {
+              onError(it.message)
+            }
           }
         }
       }
-    )
+    }
+
     viewModel.userUpdateResponse.observe(
       viewLifecycleOwner,
       Observer {
@@ -287,35 +291,36 @@ constructor(
         handleChangeAvatar(it)
       }
     )
-    homeViewModel.getLogoutLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.ERROR -> onError(it.message)
+    lifecycleScope.launch {
+      homeViewModel.getLogoutStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.ERROR -> onError(it.message)
 
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            toggleIsEnable()
-            lifecycleScope.launch {
-              if (prefs.getIsFacebookUser().first()) {
-                LoginManager.getInstance()
-                  .logOut()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              toggleIsEnable()
+              lifecycleScope.launch {
+                if (prefs.getIsFacebookUser().first()) {
+                  LoginManager.getInstance()
+                    .logOut()
+                }
               }
+              homeViewModel.deleteUserData()
+              Navigation.findNavController(binding.root)
+                .navigate(
+                  ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
+                )
             }
-            homeViewModel.deleteUserData()
-            Navigation.findNavController(binding.root)
-              .navigate(
-                ProfileFragmentDirections.actionProfileFragmentToWelcomeFragment()
-              )
+            ResponseUI.Status.LOADING -> onLoadingStarted()
           }
-          ResponseUI.Status.LOADING -> onLoadingStarted()
         }
       }
-    )
+    }
   }
 
   private fun updateUI(
-    it: User,
+    it: UserModel,
   ) {
     binding.userNameTv.text = it.username
     binding.emailIdTv.text = it.email
@@ -354,6 +359,11 @@ constructor(
       .setView(dialogView.root)
       .create()
 
+    dialogView.deleteProfile.setOnClickListener {
+      dialog.cancel()
+      deletePic()
+    }
+
     dialogView.cameraView.setOnClickListener {
       dialog.cancel()
       if (ActivityCompat.checkSelfPermission(
@@ -379,6 +389,29 @@ constructor(
     }
 
     dialog.show()
+  }
+
+  private fun deletePic() {
+    val imageUri = Uri.parse(
+      ContentResolver.SCHEME_ANDROID_RESOURCE +
+        "://" + resources.getResourcePackageName(R.drawable.ic_user1) +
+        '/' + resources.getResourceTypeName(R.drawable.ic_user1) + '/' + resources.getResourceEntryName(
+        R.drawable.ic_user1
+      )
+    )
+    try {
+      val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
+      encodedImage = encodeJpegImage(bitmap!!)
+      val url = encodedImage!!.toUri()
+      binding.progressBar.show()
+      toggleIsEnable()
+      viewModel.changeAvatar(
+        url.toString(),
+        mUser
+      )
+    } catch (e: FileNotFoundException) {
+      notify(getString(string.file_not_found))
+    }
   }
 
   private fun askReadStoragePermission() {
