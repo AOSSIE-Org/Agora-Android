@@ -204,16 +204,16 @@ constructor(
     binding.calendarLayout.sampleDay.setOnTouchListener(object : SwipeDetector(
       requireContext()
     ) {
-      override fun onSwipeRight() {
-        super.onSwipeRight()
-        onPreviousDay()
-      }
+        override fun onSwipeRight() {
+          super.onSwipeRight()
+          onPreviousDay()
+        }
 
-      override fun onSwipeLeft() {
-        super.onSwipeLeft()
-        onNextDay()
-      }
-    })
+        override fun onSwipeLeft() {
+          super.onSwipeLeft()
+          onNextDay()
+        }
+      })
   }
 
   private fun onNextDay() {
@@ -275,31 +275,31 @@ constructor(
         eventView.setOnTouchListener(object : SwipeDetector(
           requireContext()
         ) {
-          override fun onSwipeRight() {
-            super.onSwipeRight()
-            onPreviousDay()
-          }
+            override fun onSwipeRight() {
+              super.onSwipeRight()
+              onPreviousDay()
+            }
 
-          override fun onSwipeLeft() {
-            super.onSwipeLeft()
-            onNextDay()
-          }
+            override fun onSwipeLeft() {
+              super.onSwipeLeft()
+              onNextDay()
+            }
 
-          override fun onClick() {
-            super.onClick()
-            openElectionDetail(event)
-          }
+            override fun onClick() {
+              super.onClick()
+              openElectionDetail(event)
+            }
 
-          override fun showRipple() {
-            super.showRipple()
-            setPressed(eventView, true)
-          }
+            override fun showRipple() {
+              super.showRipple()
+              setPressed(eventView, true)
+            }
 
-          override fun hideRipple() {
-            super.hideRipple()
-            setPressed(eventView, false)
-          }
-        })
+            override fun hideRipple() {
+              super.hideRipple()
+              setPressed(eventView, false)
+            }
+          })
 
         eventViews.add(eventView)
         val startMinute = 60 * event.hour + event.minute

@@ -253,7 +253,7 @@ constructor(
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!prefs.isDisplayed(binding.root.id.toString())
-          .first()
+        .first()
       ) {
         spotlightTargets = getSpotlightTargets()
         prefs.setDisplayed(binding.root.id.toString())
