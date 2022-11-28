@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.db.entities.User
 import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
+import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
@@ -56,7 +56,7 @@ constructor(
 
   private lateinit var binding: FragmentSettingsBinding
 
-  private lateinit var mUser: User
+  private lateinit var mUser: UserModel
 
   private val viewModel: ProfileViewModel by viewModels {
     viewModelFactory
@@ -70,12 +70,12 @@ constructor(
     binding = FragmentSettingsBinding.inflate(inflater)
     return binding.root
   }
+
   override fun onFragmentInitiated() {
 
-    val user = viewModel.user
-    user.observe(
-      viewLifecycleOwner,
-      Observer {
+    lifecycleScope.launch {
+      val user = viewModel.user
+      user.collect {
         if (it != null) {
           binding.tvEmailId.text = it.email
           binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
@@ -90,7 +90,7 @@ constructor(
           }
         }
       }
-    )
+    }
 
     mAvatar.observe(
       viewLifecycleOwner,
@@ -99,37 +99,38 @@ constructor(
       }
     )
 
-    homeViewModel.getLogoutLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.ERROR -> {
-            binding.progressBar.hide()
-            notify(it.message)
-            binding.tvLogout.toggleIsEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-            binding.progressBar.hide()
-            lifecycleScope.launch {
-              if (prefs.getIsFacebookUser().first()) {
-                LoginManager.getInstance()
-                  .logOut()
-              }
+    lifecycleScope.launch {
+      homeViewModel.getLogoutStateFlow.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.ERROR -> {
+              binding.progressBar.hide()
+              notify(it.message)
+              binding.tvLogout.toggleIsEnable()
             }
-            homeViewModel.deleteUserData()
-            notify("Logged Out")
-            Navigation.findNavController(binding.root)
-              .navigate(
-                SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
-              )
-          }
-          ResponseUI.Status.LOADING -> {
-            binding.progressBar.show()
-            binding.tvLogout.toggleIsEnable()
+            ResponseUI.Status.SUCCESS -> {
+              binding.progressBar.hide()
+              lifecycleScope.launch {
+                if (prefs.getIsFacebookUser().first()) {
+                  LoginManager.getInstance()
+                    .logOut()
+                }
+              }
+              homeViewModel.deleteUserData()
+              notify("Logged Out")
+              Navigation.findNavController(binding.root)
+                .navigate(
+                  SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
+                )
+            }
+            ResponseUI.Status.LOADING -> {
+              binding.progressBar.show()
+              binding.tvLogout.toggleIsEnable()
+            }
           }
         }
       }
-    )
+    }
     homeViewModel.sessionExpiredListener = this
 
     binding.tvAccountSettings.setOnClickListener {

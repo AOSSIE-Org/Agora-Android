@@ -1,10 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.auth.forgotpassword
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
+import org.aossie.agoraandroid.domain.useCases.authentication.forgotPassword.SendForgotPasswordLinkUseCase
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -14,26 +15,29 @@ import javax.inject.Inject
 class ForgotPasswordViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository
+  private val sendForgotPasswordLinkUseCase: SendForgotPasswordLinkUseCase
 ) : ViewModel() {
 
-  private val _getSendResetLinkLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
-  val getSendResetLinkLiveData = _getSendResetLinkLiveData
+  private val _getSendResetLinkStateFlow: MutableStateFlow<ResponseUI<Any>?> =
+    MutableStateFlow(null)
+  val getSendResetLinkStateFlow: StateFlow<ResponseUI<Any>?> =
+    _getSendResetLinkStateFlow
+
   fun sendResetLink(userName: String?) = viewModelScope.launch {
-    _getSendResetLinkLiveData.value = ResponseUI.loading()
+    _getSendResetLinkStateFlow.value = ResponseUI.loading()
     try {
-      userRepository.sendForgotPasswordLink(userName)
-      _getSendResetLinkLiveData.value = ResponseUI.success()
+      sendForgotPasswordLinkUseCase(userName)
+      _getSendResetLinkStateFlow.value = ResponseUI.success()
     } catch (e: ApiException) {
       if (e.message == "412") {
-        _getSendResetLinkLiveData.value = ResponseUI.error(AppConstants.INVALID_USERNAME_MESSAGE)
+        _getSendResetLinkStateFlow.value = ResponseUI.error(AppConstants.INVALID_USERNAME_MESSAGE)
       } else {
-        getSendResetLinkLiveData.value = ResponseUI.error(e.message)
+        _getSendResetLinkStateFlow.value = ResponseUI.error(e.message)
       }
     } catch (e: NoInternetException) {
-      getSendResetLinkLiveData.value = ResponseUI.error(e.message)
+      _getSendResetLinkStateFlow.value = ResponseUI.error(e.message)
     } catch (e: Exception) {
-      getSendResetLinkLiveData.value = ResponseUI.error(e.message)
+      _getSendResetLinkStateFlow.value = ResponseUI.error(e.message)
     }
   }
 }

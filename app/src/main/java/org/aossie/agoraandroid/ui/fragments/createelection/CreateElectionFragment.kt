@@ -37,8 +37,8 @@ import org.aossie.agoraandroid.R.array
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.adapters.CandidateRecyclerAdapter
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.databinding.FragmentCreateElectionBinding
+import org.aossie.agoraandroid.domain.model.ElectionDtoModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.utilities.FileUtils
 import org.aossie.agoraandroid.utilities.HideKeyboard
@@ -50,7 +50,6 @@ import org.aossie.agoraandroid.utilities.hide
 import org.aossie.agoraandroid.utilities.scrollToView
 import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.toggleIsEnable
-import java.util.ArrayList
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -119,54 +118,57 @@ constructor(
   }
 
   private fun initObserver() {
-    createElectionViewModel.getCreateElectionData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
+    lifecycleScope.launch {
+      createElectionViewModel.getCreateElectionData.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> {
 
-            binding.progressBar.show()
-            binding.submitDetailsBtn.toggleIsEnable()
-          }
-          ResponseUI.Status.SUCCESS -> {
-
-            binding.progressBar.hide()
-            binding.submitDetailsBtn.toggleIsEnable()
-            notify(it.message)
-            lifecycleScope.launch {
-              prefs.setUpdateNeeded(true)
+              binding.progressBar.show()
+              binding.submitDetailsBtn.toggleIsEnable()
             }
-            Navigation.findNavController(binding.root)
-              .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
-          }
-          ResponseUI.Status.ERROR -> {
+            ResponseUI.Status.SUCCESS -> {
 
-            binding.progressBar.hide()
-            notify(it.message)
-            binding.submitDetailsBtn.toggleIsEnable()
+              binding.progressBar.hide()
+              binding.submitDetailsBtn.toggleIsEnable()
+              notify(it.message)
+              lifecycleScope.launch {
+                prefs.setUpdateNeeded(true)
+              }
+              Navigation.findNavController(binding.root)
+                .navigate(CreateElectionFragmentDirections.actionCreateElectionFragmentToHomeFragment())
+            }
+            ResponseUI.Status.ERROR -> {
+
+              binding.progressBar.hide()
+              notify(it.message)
+              binding.submitDetailsBtn.toggleIsEnable()
+            }
           }
         }
       }
-    )
+    }
 
-    createElectionViewModel.getImportVotersLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> { // Do Nothing
+    lifecycleScope.launch {
+      createElectionViewModel.getImportVotersLiveData.collect {
+        if (it != null) {
+          when (it.status) {
+            ResponseUI.Status.LOADING -> { // Do Nothing
+            }
+
+            ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+
+            ResponseUI.Status.ERROR -> onReadFailure(it.message)
           }
-
-          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
-
-          ResponseUI.Status.ERROR -> onReadFailure(it.message)
         }
       }
-    )
+    }
   }
 
   override fun onNetworkConnected() {
     initView()
   }
+
   private fun initView() {
     candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
     binding.namesRv.layoutManager = LinearLayoutManager(context)
@@ -218,7 +220,7 @@ constructor(
     binding.submitDetailsBtn.setOnClickListener {
       HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
       if (validateInputs()) {
-        if (mCandidates.isNotEmpty()) {
+        if (mCandidates.isNotEmpty() and (Calendar.getInstance() < startDateCalendar)) {
           val mElectionName = binding.electionNameTil.editText?.text.toString()
           val mElectionDescription = binding.electionDescriptionTil.editText?.text.toString()
           val mFinalIsInvite = binding.checkboxInvite.isChecked
@@ -227,7 +229,7 @@ constructor(
           val startTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", startDateCalendar)
           val endTime = DateFormat.format("yyyy-MM-dd'T'HH:mm:ss'Z'", endDateCalendar)
           createElectionViewModel.createElection(
-            ElectionDto(
+            ElectionDtoModel(
               listOf(),
               ballotVisibility,
               mCandidates,
@@ -244,7 +246,10 @@ constructor(
             )
           )
         } else {
-          notify(getString(string.add_one_candidate))
+          if (mCandidates.isEmpty())
+            notify(getString(string.add_one_candidate))
+          else
+            notify(getString(string.time_tracker))
         }
       }
     }

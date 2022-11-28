@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.Repository.UserRepository
-import org.aossie.agoraandroid.data.db.entities.User
-import org.aossie.agoraandroid.data.network.dto.UpdateUserDto
 import org.aossie.agoraandroid.data.network.responses.AuthToken
+import org.aossie.agoraandroid.domain.model.UpdateUserDtoModel
+import org.aossie.agoraandroid.domain.model.UserModel
+import org.aossie.agoraandroid.domain.useCases.profile.ProfileUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
@@ -20,10 +20,10 @@ import javax.inject.Inject
 class ProfileViewModel
 @Inject
 constructor(
-  private val userRepository: UserRepository
+  private val profileUseCases: ProfileUseCases
 ) : ViewModel() {
 
-  val user = userRepository.getUser()
+  val user = profileUseCases.getUser()
   private lateinit var sessionExpiredListener: SessionExpiredListener
   private val _passwordRequestCode = MutableLiveData<ResponseUI<Any>>()
 
@@ -49,7 +49,7 @@ constructor(
 
     viewModelScope.launch {
       try {
-        userRepository.changePassword(password)
+        profileUseCases.changePassword(password)
         _passwordRequestCode.value = ResponseUI.success()
       } catch (e: ApiException) {
         _passwordRequestCode.value = ResponseUI.error(e.message)
@@ -65,22 +65,23 @@ constructor(
 
   fun changeAvatar(
     url: String,
-    user: User
+    user: UserModel
   ) {
 
     viewModelScope.launch {
       try {
-        userRepository.changeAvatar(url)
-        val authResponse = userRepository.getUserData()
+        profileUseCases.changeAvatar(url)
+
+        val authResponse = profileUseCases.getUserData()
         Timber.d(authResponse.toString())
         authResponse.let {
-          val mUser = User(
+          val mUser = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL,
             it.crypto, it.twoFactorAuthentication, user.authToken,
             user.authTokenExpiresOn, user.refreshToken, user.refreshTokenExpiresOn,
             user.trustedDevice
           )
-          userRepository.saveUser(mUser)
+          profileUseCases.saveUser(mUser)
         }
         _changeAvatarResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
@@ -98,7 +99,7 @@ constructor(
   fun toggleTwoFactorAuth() {
     viewModelScope.launch {
       try {
-        userRepository.toggleTwoFactorAuth()
+        profileUseCases.toggleTwoFactorAuth()
         _toggleTwoFactorAuthResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
         _toggleTwoFactorAuthResponse.value = ResponseUI.error(e.message)
@@ -113,11 +114,11 @@ constructor(
   }
 
   fun updateUser(
-    user: User
+    user: UserModel
   ) {
     viewModelScope.launch {
       try {
-        val updateUserDto = UpdateUserDto(
+        val updateUserDtoModel = UpdateUserDtoModel(
           identifier = user.username ?: "",
           email = user.email ?: "",
           firstName = user.firstName,
@@ -127,8 +128,8 @@ constructor(
           authToken = AuthToken(user.authToken, user.authTokenExpiresOn),
           refreshToken = AuthToken(user.refreshToken, user.refreshTokenExpiresOn)
         )
-        userRepository.updateUser(updateUserDto)
-        userRepository.saveUser(user)
+        profileUseCases.updateUser(updateUserDtoModel)
+        profileUseCases.saveUser(user)
         _userUpdateResponse.value = ResponseUI.success()
       } catch (e: ApiException) {
         _userUpdateResponse.value = ResponseUI.error(e.message)
