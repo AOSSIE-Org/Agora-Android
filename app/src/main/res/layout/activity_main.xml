@@ -71,6 +71,7 @@
       android:textSize="@dimen/size_10sp"
       app:itemIconSize="@dimen/size_22dp"
       app:menu="@menu/bottom_nav_menu"
+      android:backgroundTint="@color/colorPrimary"
       />
 
 
