@@ -10,8 +10,6 @@ variables:
   ANDROID_SDK_TOOLS: "4333796"
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
-  APPETIZE_API: "tok_vrlnkqegqhuuccr4ligzu2hiwu"
-  APPETIZE_KEY: "fsimpwalygsw5sy5slpn5zfyuq"
 
 before_script:
   - apt-get --quiet update --yes
