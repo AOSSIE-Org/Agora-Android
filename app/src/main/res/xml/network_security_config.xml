@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+  <base-config cleartextTrafficPermitted="true">
+    <base includeSubdomains="true">127.0.0.1</base>
+    <base includeSubdomains="true">localhost</base>
+  </base-config>
+</network-security-config>
