@@ -38,7 +38,7 @@ object AppConstants {
 /* Here in the above base url you have to put the hosted APIs URL, if you are locally hosting your API and testing on either
 emulator or a physical device, you have to put the URL as http://10.0.2.2:9000/v1/api for accessing api on emulator and
 for physical device, you have to put your computer's local IP Address, you can find that in your WiFi settings that is connected
-the computer. The IPv4 address should look something like 192.168.x.xx and URL will be http://192.168.x.xx:9000/v1/api . */
+the computer. The IPv4 address should look something like 192.168.x.xx and URL will be http://192.168.x.xx:9000/api/v1/ . */
 
   const val FCM_URL = "https://fcm.googleapis.com/"
   const val SECRET_KEY_FACTORY_ALGORITHM = "PBKDF2WithHmacSHA1"

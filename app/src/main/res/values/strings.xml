@@ -137,12 +137,14 @@
   </string-array>
 
   <string-array name="ballot_visibility">
+    <item name="ballot_default">Select Ballot</item>
     <item name="ballots_are_completely_secret">Completely secret and never shown to anyone</item>
     <item name="ballots_visible_only_to_me">Visible only to me</item>
     <item name="ballots_visible_to_everyone">Visible to everyone with access to the election</item>
   </string-array>
 
   <string-array name="algorithms">
+    <item name="algo_default">Select Algo</item>
     <item name="oklahoma">Oklahoma</item>
     <item name="rangevoting">RangeVoting</item>
     <item name="rankedpairs">RankedPairs</item>

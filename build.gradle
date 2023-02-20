@@ -5,7 +5,7 @@ buildscript {
   ext {
     compileSdk = 32
     minSdk = 22
-    targetSdk = 32
+    targetSdk = 33
     kotlinVersion = '1.5.0'
     appCompatVersion = '1.4.2'
     constraintLayoutVersion = '2.1.3'
