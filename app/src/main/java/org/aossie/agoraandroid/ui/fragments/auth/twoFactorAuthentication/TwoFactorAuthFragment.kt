@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding

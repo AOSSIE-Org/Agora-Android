@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.adapters.ElectionsAdapter
 import org.aossie.agoraandroid.databinding.FragmentElectionsBinding
@@ -50,6 +49,7 @@ constructor(
     binding = FragmentElectionsBinding.inflate(inflater)
     return binding.root
   }
+
   override fun onFragmentInitiated() {
     mElections = ArrayList()
     electionsAdapter = ElectionsAdapter(onItemClicked)
@@ -65,6 +65,7 @@ constructor(
   override fun onNetworkConnected() {
     bindUI()
   }
+
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     bindUI()
@@ -89,7 +90,6 @@ constructor(
     if (elections.isNotEmpty()) {
       mElections.addAll(elections)
       electionsAdapter.submitList(elections)
-      binding.tvEmptyElection.hide()
     } else {
       binding.tvEmptyElection.show()
     }

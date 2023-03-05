@@ -7,7 +7,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.aossie.agoraandroid.AgoraApp
@@ -59,6 +58,7 @@ abstract class BaseFragment(
   override fun onSessionExpired() {
     hostViewModel.setLogout(true)
   }
+
   fun notify(msg: String?) {
     if (msg == context?.getText(R.string.no_network))
       hostViewModel.onNetworkChanged(false)

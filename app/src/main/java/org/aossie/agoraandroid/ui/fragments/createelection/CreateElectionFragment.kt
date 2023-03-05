@@ -169,6 +169,7 @@ constructor(
   override fun onNetworkConnected() {
     initView()
   }
+
   private fun initView() {
     candidateRecyclerAdapter = CandidateRecyclerAdapter(mCandidates)
     binding.namesRv.layoutManager = LinearLayoutManager(context)

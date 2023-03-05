@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import android.os.Build.VERSION_CODES
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
@@ -83,6 +82,7 @@ private fun Context.isSecured(): Boolean {
     keyguardManager.isDeviceSecure
   else keyguardManager.isKeyguardSecure
 }
+
 fun subscribeToFCM(mail: String?) {
   mail?.let {
     if (it.contains("@")) {
