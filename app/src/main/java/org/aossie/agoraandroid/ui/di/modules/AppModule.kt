@@ -209,7 +209,7 @@ class AppModule {
     return Retrofit.Builder()
       .client(okHttpClient)
       .baseUrl(AppConstants.BASE_URL)
-      .addConverterFactory(MoshiConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create().asLenient())
       .build()
   }
 

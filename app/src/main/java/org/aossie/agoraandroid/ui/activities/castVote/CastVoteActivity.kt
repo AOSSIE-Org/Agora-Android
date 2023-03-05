@@ -87,6 +87,7 @@ class CastVoteActivity :
     binding = ActivityCastVoteBinding.inflate(layoutInflater)
     setContentView(binding.root)
     initObservers()
+    
     checkAndNavigate {
       intent?.let {
         if (it.data != null) {
