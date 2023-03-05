@@ -266,33 +266,33 @@ constructor(
 
     binding.spinnerAlgorithm.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
-        adapterView: AdapterView<*>,
-        view: View,
+        adapterView: AdapterView<*>?,
+        view: View?,
         i: Int,
         l: Long
       ) {
-        votingAlgorithm = adapterView.getItemAtPosition(i)
+        votingAlgorithm = adapterView?.getItemAtPosition(i)
           .toString()
       }
 
       override fun onNothingSelected(adapterView: AdapterView<*>?) {
-        votingAlgorithm = resources.getStringArray(array.security_questions)[0]
+        votingAlgorithm = resources.getStringArray(array.ballot_visibility)[0]
       }
     }
 
     binding.spinnerBallotVisibility.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
-        adapterView: AdapterView<*>,
-        view: View,
+        adapterView: AdapterView<*>?,
+        view: View?,
         i: Int,
         l: Long
       ) {
-        ballotVisibility = adapterView.getItemAtPosition(i)
+        ballotVisibility = adapterView?.getItemAtPosition(i)
           .toString()
       }
 
       override fun onNothingSelected(adapterView: AdapterView<*>?) {
-        ballotVisibility = resources.getStringArray(array.security_questions)[0]
+        ballotVisibility = resources.getStringArray(array.algorithms)[0]
       }
     }
 
