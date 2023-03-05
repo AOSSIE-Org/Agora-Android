@@ -15,6 +15,7 @@ import com.linkedin.android.tachyon.DayView.EventTimeRange
 import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.HorizontalCalendar.Builder
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.color
