@@ -240,9 +240,7 @@ constructor(
 
     lifecycleScope.launch {
       viewModel.user.collect {
-        if (it != null) {
-          updateUI(it)
-        }
+        updateUI(it)
       }
     }
 

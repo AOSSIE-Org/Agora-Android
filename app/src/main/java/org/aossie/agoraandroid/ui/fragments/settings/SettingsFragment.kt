@@ -76,17 +76,15 @@ constructor(
     lifecycleScope.launch {
       val user = viewModel.user
       user.collect {
-        if (it != null) {
-          binding.tvEmailId.text = it.email
-          binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
-          mUser = it
-          if (it.avatarURL != null) {
-            if (it.avatarURL.isUrl())
-              cacheAndSaveImage(it.avatarURL)
-            else {
-              val bitmap = decodeBitmap(it.avatarURL)
-              setAvatar(bitmap)
-            }
+        binding.tvEmailId.text = it.email
+        binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
+        mUser = it
+        if (it.avatarURL != null) {
+          if (it.avatarURL.isUrl())
+            cacheAndSaveImage(it.avatarURL)
+          else {
+            val bitmap = decodeBitmap(it.avatarURL)
+            setAvatar(bitmap)
           }
         }
       }
