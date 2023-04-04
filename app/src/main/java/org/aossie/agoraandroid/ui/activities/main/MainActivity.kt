@@ -1,9 +1,13 @@
 package org.aossie.agoraandroid.ui.activities.main
 
+import android.app.Dialog
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,11 +36,13 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.databinding.ActivityMainBinding
+import org.aossie.agoraandroid.databinding.DialogNoInternetBinding
 import org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeFragment
 import org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment
 import org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.NetworkStateReceiver
 import org.aossie.agoraandroid.utilities.animGone
 import org.aossie.agoraandroid.utilities.animVisible
 import org.aossie.agoraandroid.utilities.canAuthenticateBiometric
@@ -44,12 +50,13 @@ import org.aossie.agoraandroid.utilities.notifyNetworkChanged
 import org.aossie.agoraandroid.utilities.snackbar
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NetworkStateReceiver.NetworkStateReceiverListener {
 
   private lateinit var binding: ActivityMainBinding
 
   private lateinit var navController: NavController
   private var isInitiallyNetworkConnected: Boolean = true
+  private lateinit var noInternetAlert: Dialog
 
   @Inject
   lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -59,6 +66,9 @@ class MainActivity : AppCompatActivity() {
 
   @Inject
   lateinit var prefs: PreferenceProvider
+
+  @Inject
+  lateinit var networkStateReceiver: NetworkStateReceiver
 
   private val viewModel: MainActivityViewModel by viewModels {
     viewModelFactory
@@ -76,6 +86,9 @@ class MainActivity : AppCompatActivity() {
     setContentView(binding.root)
     setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayShowTitleEnabled(false)
+
+    //no internet dialog init
+    setUpNoInternetDialog()
 
     intent?.getStringExtra(AppConstants.SHOW_SNACKBAR_KEY)
       ?.let {
@@ -95,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     GlobalScope.launch {
       prefs.setUpdateNeeded(true)
       if (prefs.getIsLoggedIn()
-        .first()
+          .first()
       ) {
         if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
           withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
@@ -242,7 +255,7 @@ class MainActivity : AppCompatActivity() {
   private fun logout() {
     lifecycleScope.launch {
       if (prefs.getIsLoggedIn()
-        .first()
+          .first()
       ) binding.root.snackbar(resources.getString(R.string.token_expired))
       if (prefs.getIsFacebookUser().first()) {
         LoginManager.getInstance()
@@ -265,4 +278,40 @@ class MainActivity : AppCompatActivity() {
         binding.root.snackbar(it)
       }
   }
+
+  private fun setUpNoInternetDialog() {
+    noInternetAlert = Dialog(this@MainActivity)
+    val noInternetAlertBinding = DialogNoInternetBinding.inflate(layoutInflater)
+    noInternetAlert.apply {
+      setCancelable(false)
+      setContentView(noInternetAlertBinding.root)
+      val width = ViewGroup.LayoutParams.MATCH_PARENT
+      val height = ViewGroup.LayoutParams.WRAP_CONTENT
+      window?.setLayout(width, height)
+    }
+  }
+
+  override fun onStart() {
+    super.onStart()
+    networkStateReceiver.addListener(this@MainActivity)
+    this.registerReceiver(
+      networkStateReceiver,
+      IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+    );
+  }
+
+  override fun onStop() {
+    super.onStop()
+    networkStateReceiver.removeListener(this);
+    this.unregisterReceiver(networkStateReceiver);
+  }
+
+  override fun networkAvailable() {
+    if (noInternetAlert.isShowing) noInternetAlert.dismiss()
+  }
+
+  override fun networkUnavailable() {
+    noInternetAlert.show()
+  }
+
 }
