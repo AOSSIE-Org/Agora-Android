@@ -105,7 +105,7 @@ constructor(
   private fun filter(query: String) {
     val updatedList = displayElectionViewModel.filter(mElections, query)
     electionsAdapter.submitList(updatedList)
-    if (updatedList.isEmpty()) {
+    if (updatedList.isEmpty() && binding.searchView.isFocused) {
       binding.tvEmptyElection.show()
     } else {
       binding.tvEmptyElection.hide()
