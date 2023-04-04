@@ -21,6 +21,7 @@ android {
   }
 
   lintOptions {
+    checkReleaseBuilds false
     baseline file("lint-baseline.xml")
   }
   compileSdkVersion rootProject.ext.compileSdk

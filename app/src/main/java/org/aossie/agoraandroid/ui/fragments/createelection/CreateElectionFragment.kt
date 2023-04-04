@@ -267,7 +267,7 @@ constructor(
     binding.spinnerAlgorithm.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
-        view: View,
+        view: View?,
         i: Int,
         l: Long
       ) {
@@ -529,7 +529,7 @@ constructor(
   private fun checkIsFirstOpen() {
     lifecycleScope.launch {
       if (!prefs.isDisplayed(binding.root.id.toString())
-        .first()
+          .first()
       ) {
         spotlightTargets = getSpotlightTargets()
         prefs.setDisplayed(binding.root.id.toString())
