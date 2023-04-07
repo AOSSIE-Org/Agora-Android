@@ -242,6 +242,7 @@ constructor(
       viewModel.user.collect {
         updateUI(it)
       }
+
     }
 
     viewModel.passwordRequestCode.observe(
