@@ -267,7 +267,7 @@ constructor(
     binding.spinnerAlgorithm.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
-        view: View,
+        view: View?,
         i: Int,
         l: Long
       ) {
@@ -283,7 +283,7 @@ constructor(
     binding.spinnerBallotVisibility.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
-        view: View,
+        view: View?,
         i: Int,
         l: Long
       ) {
