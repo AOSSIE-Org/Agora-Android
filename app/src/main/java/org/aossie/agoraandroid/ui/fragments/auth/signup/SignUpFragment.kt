@@ -73,7 +73,7 @@ constructor(
     binding.signUpSecurityQuestion.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         adapterView: AdapterView<*>,
-        view: View,
+        view: View?,
         i: Int,
         l: Long
       ) {
