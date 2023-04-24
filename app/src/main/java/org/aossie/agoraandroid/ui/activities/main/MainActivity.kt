@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     GlobalScope.launch {
       prefs.setUpdateNeeded(true)
       if (prefs.getIsLoggedIn()
-        .first()
+          .first()
       ) {
         if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
           withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
@@ -105,6 +106,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     initObservers()
+
+    val onBackPressedCallback = object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
+        if (hostFragment is NavHostFragment) {
+          when (hostFragment.childFragmentManager.fragments.first()) {
+            is HomeFragment,
+            is WelcomeFragment -> finish()
+            is SettingsFragment,
+            is CalendarViewElectionFragment -> navController.navigate(R.id.homeFragment)
+            else -> finish()
+          }
+        } else {
+          finish()
+        }
+      }
+    }
+
+    onBackPressedDispatcher.addCallback(onBackPressedCallback)
   }
 
   private fun getPromtInfo() =
@@ -180,21 +200,6 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  override fun onBackPressed() {
-    val hostFragment = supportFragmentManager.findFragmentById(R.id.host_fragment)
-    if (hostFragment is NavHostFragment) {
-      when (hostFragment.childFragmentManager.fragments.first()) {
-        is HomeFragment,
-        is WelcomeFragment -> finish()
-        is SettingsFragment,
-        is CalendarViewElectionFragment -> navController.navigate(R.id.homeFragment)
-        else -> super.onBackPressed()
-      }
-    } else {
-      super.onBackPressed()
-    }
-  }
-
   private fun handleBackButton(id: Int) {
     when (id) {
       R.id.aboutFragment,
@@ -242,7 +247,7 @@ class MainActivity : AppCompatActivity() {
   private fun logout() {
     lifecycleScope.launch {
       if (prefs.getIsLoggedIn()
-        .first()
+          .first()
       ) binding.root.snackbar(resources.getString(R.string.token_expired))
       if (prefs.getIsFacebookUser().first()) {
         LoginManager.getInstance()
