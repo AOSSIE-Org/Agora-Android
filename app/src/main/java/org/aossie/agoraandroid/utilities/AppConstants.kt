@@ -31,7 +31,7 @@ object AppConstants {
   const val USER_ALREADY_FOUND_MESSAGE = "User with this username or emailId already exists"
   const val INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error. Please enter valid input"
   const val URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$"
-  const val BASE_URL = " https://bitter-feather-9060.fly.dev/api/v1/"
+  const val BASE_URL = "https://bitter-feather-9060.fly.dev/api/v1/"
   const val FCM_URL = "https://fcm.googleapis.com/"
   const val SECRET_KEY_FACTORY_ALGORITHM = "PBKDF2WithHmacSHA1"
   const val SECRET_KEY_SPEC_ALGORITHM = "AES"
