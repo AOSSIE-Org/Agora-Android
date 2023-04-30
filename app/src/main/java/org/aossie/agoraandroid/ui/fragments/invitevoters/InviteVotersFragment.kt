@@ -105,27 +105,26 @@ constructor(
 
   private fun initObserver() {
     inviteVotersViewModel.getSendVoterLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> onStarted()
-          ResponseUI.Status.SUCCESS -> onSuccess(it.message ?: "")
-          ResponseUI.Status.ERROR -> onFailure(it.message)
-        }
+      viewLifecycleOwner
+    ) {
+      when (it.status) {
+        ResponseUI.Status.LOADING -> onStarted()
+        ResponseUI.Status.SUCCESS -> onSuccess(it.message ?: "")
+        ResponseUI.Status.ERROR -> onFailure(it.message)
       }
-    )
+    }
     inviteVotersViewModel.getImportVotersLiveData.observe(
-      viewLifecycleOwner,
-      {
-        when (it.status) {
-          ResponseUI.Status.LOADING -> {
-            // Do Nothing
-          }
-          ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
-          ResponseUI.Status.ERROR -> onReadFailure(it.message)
+      viewLifecycleOwner
+    ) {
+      when (it.status) {
+        ResponseUI.Status.LOADING -> {
+          // Do Nothing
         }
+
+        ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
+        ResponseUI.Status.ERROR -> onReadFailure(it.message)
       }
-    )
+    }
   }
 
   private fun initView() {
@@ -211,7 +210,7 @@ constructor(
     voters: List<VotersDto>,
   ) {
     mVoters.addAll(voters)
-    voterRecyclerAdapter!!.notifyDataSetChanged()
+    voterRecyclerAdapter?.notifyDataSetChanged()
   }
 
   private fun onStarted() {

@@ -110,10 +110,8 @@ constructor(
     lifecycleScope.launch {
       electionDetailsViewModel.getElectionById(id!!)
         .collect {
-          if (it != null) {
-            initRecyclerView(it.voterList as List<VotersDtoModel>)
-            binding.progressBar.hide()
-          }
+          initRecyclerView(it.voterList as List<VotersDtoModel>)
+          binding.progressBar.hide()
         }
     }
   }

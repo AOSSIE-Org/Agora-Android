@@ -141,18 +141,18 @@ constructor(
     }
 
     homeViewModel.countMediatorLiveData.observe(
-      viewLifecycleOwner,
-      {
-        binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
-        binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
-        binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
-        binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
-        binding.shimmerViewContainer.stopShimmer()
-        binding.shimmerViewContainer.visibility = View.GONE
-        binding.constraintLayout.visibility = View.VISIBLE
-        binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
-      }
+      viewLifecycleOwner
     )
+    {
+      binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
+      binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
+      binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
+      binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
+      binding.shimmerViewContainer.stopShimmer()
+      binding.shimmerViewContainer.visibility = View.GONE
+      binding.constraintLayout.visibility = View.VISIBLE
+      binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
+    }
     updateUi()
     binding.root.doOnLayout {
       checkIsFirstOpen()

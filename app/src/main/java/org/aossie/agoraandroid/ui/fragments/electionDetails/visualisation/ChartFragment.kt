@@ -71,7 +71,7 @@ class ChartFragment : Fragment() {
 
       val value: ArrayList<BarEntry> = ArrayList()
       value.add(BarEntry(0f, winner.score?.denominator?.toFloat()!!))
-      value.add(BarEntry(1f, winner.score?.numerator?.toFloat()!!))
+      value.add(BarEntry(1f, winner.score.numerator?.toFloat()!!))
 
       val barDataSet = BarDataSet(value, "")
       barDataSet.colors = colorList.asReversed()

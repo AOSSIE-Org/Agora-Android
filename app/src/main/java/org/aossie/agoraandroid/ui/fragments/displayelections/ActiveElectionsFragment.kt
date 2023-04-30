@@ -80,9 +80,7 @@ constructor(
       try {
         val elections = displayElectionViewModel.activeElections.await()
         elections.collect {
-          if (it != null) {
-            addElections(it)
-          }
+          addElections(it)
         }
       } catch (e: IllegalStateException) {
         binding.tvSomethingWentWrong.show()

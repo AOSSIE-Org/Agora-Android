@@ -49,9 +49,7 @@ constructor(
 
     lifecycleScope.launch {
       viewModel.user.collect {
-        if (it != null) {
-          user = it
-        }
+        user = it
       }
     }
 
@@ -67,9 +65,11 @@ constructor(
       } else {
         HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
         if (binding.cbTrustedDevice.isChecked) {
-          viewModel.verifyOTP(
-            otp, binding.cbTrustedDevice.isChecked, user!!.crypto!!
-          )
+          user?.crypto?.let { crypto ->
+            viewModel.verifyOTP(
+              otp, binding.cbTrustedDevice.isChecked, crypto
+            )
+          }
         } else {
           binding.progressBar.hide()
           notify(getString(string.tap_on_checkbox))
@@ -80,7 +80,7 @@ constructor(
     binding.tvResendOtp.setOnClickListener {
       if (user != null) {
         binding.progressBar.show()
-        viewModel.resendOTP(user!!.username!!)
+        viewModel.resendOTP(user?.username!!)
       } else {
         notify(getString(string.something_went_wrong_please_try_again_later))
       }
@@ -107,7 +107,7 @@ constructor(
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      notify(response?.message)
+      notify(response.message)
     }
 
     else -> { // Do Nothing
@@ -121,7 +121,7 @@ constructor(
     }
     ResponseUI.Status.ERROR -> {
       binding.progressBar.hide()
-      notify(response?.message)
+      notify(response.message)
     }
     else -> { // Do Nothing
     }

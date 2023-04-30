@@ -36,8 +36,8 @@ constructor(
     query: String
   ): List<ElectionModel> {
     return mElections.filter {
-      it.name?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true ||
-        it.description?.toLowerCase(Locale.ROOT)?.contains(query.toLowerCase(Locale.ROOT)) == true
+      it.name?.lowercase(Locale.ROOT)?.contains(query.lowercase(Locale.ROOT)) == true ||
+        it.description?.lowercase(Locale.ROOT)?.contains(query.lowercase(Locale.ROOT)) == true
     }
   }
 }

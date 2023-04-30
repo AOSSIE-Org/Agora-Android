@@ -76,9 +76,7 @@ constructor(
       try {
         electionViewModel.getElections()
           .collect {
-            if (it != null) {
-              addElections(it)
-            }
+            addElections(it)
           }
       } catch (e: IllegalStateException) {
         binding.tvSomethingWentWrong.show()

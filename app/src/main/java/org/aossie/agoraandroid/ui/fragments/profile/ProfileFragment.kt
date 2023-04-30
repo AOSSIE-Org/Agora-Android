@@ -240,9 +240,7 @@ constructor(
 
     lifecycleScope.launch {
       viewModel.user.collect {
-        if (it != null) {
-          updateUI(it)
-        }
+        updateUI(it)
       }
     }
 
@@ -402,7 +400,7 @@ constructor(
     try {
       val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
       encodedImage = encodeJpegImage(bitmap!!)
-      val url = encodedImage!!.toUri()
+      val url = encodedImage?.toUri()
       binding.progressBar.show()
       toggleIsEnable()
       viewModel.changeAvatar(
@@ -506,7 +504,7 @@ constructor(
       try {
         val bitmap = GetBitmapFromUri.handleSamplingAndRotationBitmap(requireContext(), imageUri)
         encodedImage = encodeJpegImage(bitmap!!)
-        val url = encodedImage!!.toUri()
+        val url = encodedImage?.toUri()
         binding.progressBar.show()
         toggleIsEnable()
         viewModel.changeAvatar(
@@ -520,7 +518,7 @@ constructor(
       val bitmap = intentData?.extras?.get("data")
       if (bitmap is Bitmap) {
         encodedImage = encodePngImage(bitmap)
-        val url = encodedImage!!.toUri()
+        val url = encodedImage?.toUri()
         binding.progressBar.show()
         toggleIsEnable()
         viewModel.changeAvatar(

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -98,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         .first()
       ) {
         if (prefs.isBiometricEnabled().first() && canAuthenticateBiometric())
-          withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromtInfo()) }
+          withContext(Dispatchers.Main) { provideOfBiometricPrompt().authenticate(getPromptInfo()) }
         else
           withContext(Dispatchers.Main) { navController.navigate(R.id.homeFragment) }
       }
@@ -107,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     initObservers()
   }
 
-  private fun getPromtInfo() =
+  private fun getPromptInfo() =
     PromptInfo.Builder()
       .setTitle(getString(string.bio_auth))
       .setDescription(getString(string.bio_auth_msg))
