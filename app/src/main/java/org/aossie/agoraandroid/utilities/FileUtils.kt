@@ -33,9 +33,9 @@ object FileUtils {
     if (uri == null) return null
     var fileName: String? = null
     val path = uri.path
-    val cut = path!!.lastIndexOf('/')
+    val cut = path?.lastIndexOf('/')
     if (cut != -1) {
-      fileName = path.substring(cut + 1)
+      fileName = path?.substring(cut!!.plus(1))
     }
     return fileName
   }

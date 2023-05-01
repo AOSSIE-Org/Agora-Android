@@ -357,21 +357,21 @@ constructor(
         direction: Int
       ) {
         mCandidates.removeAt(viewHolder.absoluteAdapterPosition)
-        candidateRecyclerAdapter!!.notifyDataSetChanged()
+        candidateRecyclerAdapter?.notifyDataSetChanged()
         if (mCandidates.isEmpty()) binding.textViewSwipe.hide()
       }
     }
 
   private fun addCandidate(cName: String) {
     mCandidates.add(cName)
-    candidateRecyclerAdapter!!.notifyDataSetChanged()
+    candidateRecyclerAdapter?.notifyDataSetChanged()
     binding.candidateTil.editText?.setText("")
     binding.textViewSwipe.show()
   }
 
   private fun importCandidates(cNames: List<String>) {
     mCandidates.addAll(cNames)
-    candidateRecyclerAdapter!!.notifyDataSetChanged()
+    candidateRecyclerAdapter?.notifyDataSetChanged()
     binding.textViewSwipe.show()
   }
 

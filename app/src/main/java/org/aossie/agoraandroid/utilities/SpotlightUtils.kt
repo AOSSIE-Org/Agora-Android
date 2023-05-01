@@ -99,8 +99,7 @@ private fun initOverlayView(
   }
 
   binding.contentLayout.updateLayoutParams<FrameLayout.LayoutParams> {
-    val displayMetrics = DisplayMetrics()
-    activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+    val displayMetrics = activity.resources.displayMetrics
     val containerHeight = displayMetrics.heightPixels
     val containerWidth = displayMetrics.widthPixels
     val containerWidthCenter = containerWidth / 2

@@ -68,11 +68,7 @@ fun Activity.getSpotlight(
 
 fun Context.canAuthenticateBiometric(): Boolean {
   val biometricManager = BiometricManager.from(this)
-
-  val canAuthenticate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-    biometricManager.canAuthenticate(BiometricManager.Authenticators.DEVICE_CREDENTIAL or BiometricManager.Authenticators.BIOMETRIC_STRONG or BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
-  else
-    biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
+  val canAuthenticate = biometricManager.canAuthenticate(BiometricManager.Authenticators.DEVICE_CREDENTIAL or BiometricManager.Authenticators.BIOMETRIC_STRONG or BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
   return canAuthenticate && isSecured()
 }
 

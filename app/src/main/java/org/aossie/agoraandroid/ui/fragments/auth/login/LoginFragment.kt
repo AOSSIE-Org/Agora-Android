@@ -180,7 +180,7 @@ constructor(
     data: Intent?
   ) {
     Timber.d("Activity result")
-    callbackManager!!.onActivityResult(requestCode, resultCode, data)
+    callbackManager?.onActivityResult(requestCode, resultCode, data)
   }
 
   override fun onSessionExpired() {

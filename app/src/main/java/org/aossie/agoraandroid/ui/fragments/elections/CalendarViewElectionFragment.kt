@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -97,7 +98,7 @@ constructor(
       DateFormat.SHORT, Locale.getDefault()
     )
 
-    val hour = day!!.clone() as Calendar
+    val hour = day?.clone() as Calendar
     val hourLabelViews: MutableList<View> =
       ArrayList()
     for (i in binding.calendarLayout.sampleDay.startHour..binding.calendarLayout.sampleDay.endHour) {
@@ -106,11 +107,11 @@ constructor(
         layoutInflater.inflate(
           layout.hour_label, binding.calendarLayout.sampleDay, false
         ) as TextView
-      hourLabelView.text = timeFormat!!.format(hour.time)
+      hourLabelView.text = timeFormat?.format(hour.time)
       hourLabelViews.add(hourLabelView)
     }
     binding.calendarLayout.sampleDay.setHourLabelViews(hourLabelViews)
-    binding.sampleDate.text = dateFormat!!.format(day!!.time)
+    binding.sampleDate.text = day?.time?.let { dateFormat?.format(it) }
 
     val startDate = Calendar.getInstance()
     startDate.add(Calendar.YEAR, -10)
@@ -136,7 +137,7 @@ constructor(
       .defaultSelectedDate(defaultSelectedDate)
       .build()
 
-    horizontalCalendar!!.calendarListener = object : HorizontalCalendarListener() {
+    horizontalCalendar?.calendarListener = object : HorizontalCalendarListener() {
       override fun onDateSelected(
         date: Calendar,
         position: Int
@@ -155,12 +156,10 @@ constructor(
     lifecycleScope.launch {
       electionViewModel.getElections()
         .collect {
-          if (it != null) {
-            allEvents?.clear()
-            for (election in it) {
-              addEvent(election)
-              onDayChange()
-            }
+          allEvents?.clear()
+          for (election in it) {
+            addEvent(election)
+            onDayChange()
           }
         }
     }
@@ -186,8 +185,8 @@ constructor(
       cal.set(Calendar.YEAR, year)
       cal.set(Calendar.MONTH, month)
       cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-      binding.sampleDate.text = dateFormat!!.format(cal.time)
-      horizontalCalendar!!.selectDate(cal, false)
+      binding.sampleDate.text = dateFormat?.format(cal.time)
+      horizontalCalendar?.selectDate(cal, false)
     }
 
     binding.calendarLayout.swipeRefresh.setOnRefreshListener { doYourUpdate() }
@@ -218,12 +217,12 @@ constructor(
 
   private fun onNextDay() {
     day!!.timeInMillis += 86400000 // 24hr = 86400000 ms
-    horizontalCalendar!!.selectDate(day, false)
+    horizontalCalendar?.selectDate(day, false)
   }
 
   private fun onPreviousDay() {
     day!!.timeInMillis -= 86400000 // 24hr = 86400000 ms
-    horizontalCalendar!!.selectDate(day, false)
+    horizontalCalendar?.selectDate(day, false)
   }
 
   override fun onDestroyView() {
@@ -241,7 +240,7 @@ constructor(
   }
 
   private fun onDayChange() {
-    binding.sampleDate.text = dateFormat!!.format(day!!.time)
+    binding.sampleDate.text = dateFormat?.format(day!!.time)
     if (activity != null) {
       onEventsChange()
     }
@@ -250,17 +249,15 @@ constructor(
   private fun onEventsChange() {
     var eventViews: MutableList<View?>? = null
     var eventTimeRanges: MutableList<EventTimeRange?>? = null
-    val events = allEvents!![day!!.timeInMillis]
+    val events = allEvents?.get(day?.timeInMillis)
     if (events != null) {
-      Collections.sort(
-        events
-      ) { o1, o2 -> if (o1.hour < o2.hour) -1 else if (o1.hour == o2.hour) if (o1.minute < o2.minute) -1 else if (o1.minute == o2.minute) 0 else 1 else 1 }
+      val sortedEvents = events.sortedWith(compareBy<Event> { it.hour } .thenBy { it.minute })
       eventViews = ArrayList()
       eventTimeRanges = ArrayList()
 
       val recycled = binding.calendarLayout.sampleDay.removeEventViews()
       var remaining = recycled?.size ?: 0
-      for (event in events) {
+      for (event in sortedEvents) {
         val eventView =
           if (remaining > 0) recycled!![--remaining] else layoutInflater.inflate(
             layout.list_item_event, binding.calendarLayout.sampleDay, false
@@ -270,7 +267,7 @@ constructor(
         (eventView.findViewById<View>(R.id.tv_event_description) as TextView).text =
           event.description
         (eventView.findViewById<View>(R.id.tv_event_status) as TextView).text = status
-        eventView.background = resources.getDrawable(event.color, resources.newTheme())
+        eventView.background = ResourcesCompat.getDrawable(resources,event.color,resources.newTheme())
 
         eventView.setOnTouchListener(object : SwipeDetector(
           requireContext()

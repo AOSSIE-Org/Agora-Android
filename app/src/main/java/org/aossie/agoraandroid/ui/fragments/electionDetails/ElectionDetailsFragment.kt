@@ -175,47 +175,45 @@ constructor(
   private fun getElectionById() {
     lifecycleScope.launch {
       electionDetailsViewModel.getElectionById(id ?: "").collect {
-        if (it != null) {
-          Timber.d(it.toString())
-          try {
-            binding.tvName.text = it.name
-            binding.tvDescription.text = it.description
-            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-            val formattedStartingDate: Date = formatter.parse(it.start!!) as Date
-            val formattedEndingDate: Date = formatter.parse(it.end!!) as Date
-            val currentDate = Calendar.getInstance()
-              .time
-            val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
-            // set end and start date
-            binding.tvEndDate.text = outFormat.format(formattedEndingDate)
-            binding.tvStartDate.text = outFormat.format(formattedStartingDate)
-            // set label color and election status
-            binding.label.text =
-              getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
-            binding.label.setBackgroundResource(
-              getEventColor(
-                currentDate,
-                formattedStartingDate,
-                formattedEndingDate
-              )
+        Timber.d(it.toString())
+        try {
+          binding.tvName.text = it.name
+          binding.tvDescription.text = it.description
+          val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+          val formattedStartingDate: Date = formatter.parse(it.start!!) as Date
+          val formattedEndingDate: Date = formatter.parse(it.end!!) as Date
+          val currentDate = Calendar.getInstance()
+            .time
+          val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
+          // set end and start date
+          binding.tvEndDate.text = outFormat.format(formattedEndingDate)
+          binding.tvStartDate.text = outFormat.format(formattedStartingDate)
+          // set label color and election status
+          binding.label.text =
+            getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)?.name
+          binding.label.setBackgroundResource(
+            getEventColor(
+              currentDate,
+              formattedStartingDate,
+              formattedEndingDate
             )
-            status = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
-          } catch (e: ParseException) {
-            e.printStackTrace()
-          }
-          // add candidates name
-          val mCandidatesName = StringBuilder()
-          val candidates = it.candidates
-          if (candidates != null) {
-            for (j in 0 until candidates.size) {
-              mCandidatesName.append(candidates[j])
-              if (j != candidates.size - 1) {
-                mCandidatesName.append(", ")
-              }
+          )
+          status = getEventStatus(currentDate, formattedStartingDate, formattedEndingDate)
+        } catch (e: ParseException) {
+          e.printStackTrace()
+        }
+        // add candidates name
+        val mCandidatesName = StringBuilder()
+        val candidates = it.candidates
+        if (candidates != null) {
+          for (j in 0 until candidates.size) {
+            mCandidatesName.append(candidates[j])
+            if (j != candidates.size - 1) {
+              mCandidatesName.append(", ")
             }
           }
-          binding.tvCandidateList.text = mCandidatesName
         }
+        binding.tvCandidateList.text = mCandidatesName
       }
     }
   }
