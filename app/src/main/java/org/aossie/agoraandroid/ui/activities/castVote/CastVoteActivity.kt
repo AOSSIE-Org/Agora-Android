@@ -8,8 +8,10 @@ import android.view.WindowManager.LayoutParams
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import kotlinx.coroutines.flow.collect
@@ -177,36 +179,44 @@ class CastVoteActivity :
 
   private fun initObservers() {
     lifecycleScope.launch {
-      viewModel.verifyVoterResponse.collect {
-        if (it != null) {
-          handleVerifyVoter(it)
-        }
-      }
-
-      viewModel.getDeepLinkStateFlow.collect {
-        if (it != null) {
-          when (it.status) {
-            ResponseUI.Status.LOADING -> binding.progressBar.show()
-            ResponseUI.Status.SUCCESS -> {
-              it.message?.let { message ->
-                val strings = message.split("/")
-                passCode = strings[3]
-                id = strings[2]
-                checkAndNavigate {
-                  viewModel.verifyVoter(strings[2])
-                }
-              }
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        launch {
+          viewModel.verifyVoterResponse.collect {
+            if (it != null) {
+              handleVerifyVoter(it)
             }
-            ResponseUI.Status.ERROR -> navigateToMainActivity(
-              it.message ?: getString(string.invalid_url)
-            )
           }
         }
-      }
 
-      viewModel.castVoteResponse.collect {
-        if (it != null) {
-          handleCastVote(it)
+        launch {
+          viewModel.getDeepLinkStateFlow.collect {
+            if (it != null) {
+              when (it.status) {
+                ResponseUI.Status.LOADING -> binding.progressBar.show()
+                ResponseUI.Status.SUCCESS -> {
+                  it.message?.let { message ->
+                    val strings = message.split("/")
+                    passCode = strings[3]
+                    id = strings[2]
+                    checkAndNavigate {
+                      viewModel.verifyVoter(strings[2])
+                    }
+                  }
+                }
+                ResponseUI.Status.ERROR -> navigateToMainActivity(
+                  it.message ?: getString(string.invalid_url)
+                )
+              }
+            }
+          }
+        }
+
+        launch {
+          viewModel.castVoteResponse.collect {
+            if (it != null) {
+              handleCastVote(it)
+            }
+          }
         }
       }
     }

@@ -90,6 +90,7 @@ dependencies {
   // Lifecycle components
   implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
   implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntimeVersion"
   //Design Support Library
   implementation "com.google.android.material:material:$materialDesignVersion"
   //Library for CardView
