@@ -140,6 +140,11 @@ constructor(
         }
     }
 
+    homeViewModel.exceptionLiveData.observe(viewLifecycleOwner) {
+      notify(it)
+      hideShimmerAndShowContent()
+    }
+
     homeViewModel.countMediatorLiveData.observe(
       viewLifecycleOwner,
       {
@@ -147,16 +152,26 @@ constructor(
         binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
         binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
         binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
-        binding.shimmerViewContainer.stopShimmer()
-        binding.shimmerViewContainer.visibility = View.GONE
-        binding.constraintLayout.visibility = View.VISIBLE
-        binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
+        hideShimmerAndShowContent()
       }
     )
     updateUi()
     binding.root.doOnLayout {
       checkIsFirstOpen()
     }
+  }
+
+  private fun showShimmerAndHideContent() {
+    binding.shimmerViewContainer.startShimmer()
+    binding.shimmerViewContainer.visibility = View.VISIBLE
+    binding.constraintLayout.visibility = View.GONE
+  }
+
+  private fun hideShimmerAndShowContent() {
+    binding.shimmerViewContainer.stopShimmer()
+    binding.shimmerViewContainer.visibility = View.GONE
+    binding.constraintLayout.visibility = View.VISIBLE
+    binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
   }
 
   override fun onNetworkConnected() {
@@ -175,9 +190,7 @@ constructor(
       preferenceProvider.setUpdateNeeded(true)
       homeViewModel.getElections()
     }
-    binding.shimmerViewContainer.startShimmer()
-    binding.shimmerViewContainer.visibility = View.VISIBLE
-    binding.constraintLayout.visibility = View.GONE
+    showShimmerAndHideContent()
   }
 
   private fun checkIsFirstOpen() {

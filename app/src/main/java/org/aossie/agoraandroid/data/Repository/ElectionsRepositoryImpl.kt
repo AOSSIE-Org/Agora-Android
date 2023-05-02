@@ -118,9 +118,13 @@ constructor(
         }
         Timber.d(response.toString())
       } catch (e: NoInternetException) {
+        throw e
       } catch (e: ApiException) {
+        throw e
       } catch (e: SessionExpirationException) {
+        throw e
       } catch (e: IOException) {
+        throw e
       }
     }
   }

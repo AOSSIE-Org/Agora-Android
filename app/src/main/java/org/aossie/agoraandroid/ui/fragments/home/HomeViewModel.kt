@@ -1,6 +1,8 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
@@ -13,6 +15,7 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -39,6 +42,10 @@ constructor(
   private val _countMediatorLiveData = MediatorLiveData<MutableMap<String, Int>>()
   val countMediatorLiveData = _countMediatorLiveData
 
+  private val _exceptionLiveData = MutableLiveData<String>()
+  val exceptionLiveData: LiveData<String>
+    get() = _exceptionLiveData
+
   init {
     _countMediatorLiveData.value = mutableMapOf()
     addSource()
@@ -46,7 +53,17 @@ constructor(
 
   fun getElections() {
     GlobalScope.launch {
-      homeViewModelUseCases.fetchAndSaveElection()
+      try {
+        homeViewModelUseCases.fetchAndSaveElection()
+      } catch (e: NoInternetException) {
+        _exceptionLiveData.postValue(e.message)
+      } catch (e: ApiException) {
+        _exceptionLiveData.postValue(e.message)
+      } catch (e: SessionExpirationException) {
+        _exceptionLiveData.postValue(e.message)
+      } catch (e: IOException) {
+        _exceptionLiveData.postValue(e.message)
+      }
     }
   }
 

@@ -164,6 +164,13 @@ constructor(
           }
         }
     }
+
+    electionViewModel.exceptionLiveData.observe(viewLifecycleOwner) {
+      notify(it)
+      if (binding.progressBar.visibility == View.VISIBLE) {
+        binding.progressBar.hide()
+      }
+    }
   }
 
   private fun initListeners() {
