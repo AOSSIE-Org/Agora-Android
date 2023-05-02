@@ -30,7 +30,7 @@ constructor(
       try {
         electionsUseCases.fetchAndSaveElection()
       } catch (e: NoInternetException) {
-        _exceptionLiveData.postValue(e.message) // handling exception from ElectionsRepositoryImpl class
+        _exceptionLiveData.postValue(e.message)
       } catch (e: ApiException) {
         _exceptionLiveData.postValue(e.message)
       } catch (e: SessionExpirationException) {

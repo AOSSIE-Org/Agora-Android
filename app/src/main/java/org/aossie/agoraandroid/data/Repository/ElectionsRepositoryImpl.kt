@@ -118,7 +118,7 @@ constructor(
         }
         Timber.d(response.toString())
       } catch (e: NoInternetException) {
-        throw e // to handle exception in HomeViewModel and ElectionViewModel
+        throw e
       } catch (e: ApiException) {
         throw e
       } catch (e: SessionExpirationException) {

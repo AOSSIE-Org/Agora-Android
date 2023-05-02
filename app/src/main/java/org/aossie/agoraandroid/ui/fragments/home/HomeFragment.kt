@@ -140,7 +140,6 @@ constructor(
         }
     }
 
-    // for handling exceptions with API calls
     homeViewModel.exceptionLiveData.observe(viewLifecycleOwner) {
       notify(it)
       hideShimmerAndShowContent()
@@ -162,13 +161,13 @@ constructor(
     }
   }
 
-  private fun showShimmerAndHideContent() { // refracted this function for re-usability
+  private fun showShimmerAndHideContent() {
     binding.shimmerViewContainer.startShimmer()
     binding.shimmerViewContainer.visibility = View.VISIBLE
     binding.constraintLayout.visibility = View.GONE
   }
 
-  private fun hideShimmerAndShowContent() { // refracted this function for re-usability with exception handling
+  private fun hideShimmerAndShowContent() {
     binding.shimmerViewContainer.stopShimmer()
     binding.shimmerViewContainer.visibility = View.GONE
     binding.constraintLayout.visibility = View.VISIBLE
