@@ -169,7 +169,7 @@
   <string name="last_name_label">Last Name :</string>
   <string name="update_profile">Update Profile</string>
   <string name="password_empty_warn">Password Cannot Be Empty</string>
-  <string name="password_not_match_warn">Passwords Not Matching</string>
+  <string name="password_not_match_warn">Password Not Matching</string>
   <string name="password_change_success">Password changed successfully</string>
   <string name="token_expired">Your session was expired. Please login again!</string>
 
