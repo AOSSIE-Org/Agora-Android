@@ -86,4 +86,5 @@
   <color name="half_hour_divider">#e0e0e0</color>
   <color name="spotlight_background">#BF000000</color>
   <color name="yellow">#f1c40f</color>
+  <color name="bottomNavC">#71D6AC</color>
 </resources>
