@@ -19,7 +19,7 @@ interface UserRepository {
   suspend fun logout()
   fun getUser(): Flow<User>
   suspend fun deleteUser()
-  suspend fun sendForgotPasswordLink(username: String?): String
+  suspend fun sendForgotPasswordLink(username: String?): List<String>
   suspend fun updateUser(updateUserData: UpdateUserDto): List<String>
   suspend fun changeAvatar(url: String): List<String>
   suspend fun changePassword(password: String): List<String>
