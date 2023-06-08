@@ -104,7 +104,6 @@ dependencies {
   testImplementation "junit:junit:$junitVersion"
   androidTestImplementation "androidx.test:runner:$testRunnerVersion"
   androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
-  // Lifecycle components
   implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntime"
   implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExtensions"
   implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
