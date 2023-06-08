@@ -99,6 +99,7 @@ constructor(
             ResponseUI.Status.ERROR -> {
               notify(it.message)
             }
+            else -> {}
           }
         }
       }

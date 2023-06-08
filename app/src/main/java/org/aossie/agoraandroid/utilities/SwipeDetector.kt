@@ -28,7 +28,7 @@ open class SwipeDetector(context: Context) : OnTouchListener {
       return true
     }
 
-    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+    override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
       onClick()
       return super.onSingleTapConfirmed(e)
     }

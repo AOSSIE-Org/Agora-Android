@@ -265,6 +265,7 @@ constructor(
             ResponseUI.Status.ERROR -> {
               onError(it.message)
             }
+            else -> {}
           }
         }
       }
@@ -313,6 +314,7 @@ constructor(
                 )
             }
             ResponseUI.Status.LOADING -> onLoadingStarted()
+            else -> {}
           }
         }
       }
@@ -431,7 +433,6 @@ constructor(
       notify(getString(string.profile_updated))
     }
     ResponseUI.Status.ERROR -> onFailure(response.message)
-
     else -> onStarted()
   }
 
@@ -465,7 +466,6 @@ constructor(
       )
     }
     ResponseUI.Status.ERROR -> onFailure(response.message)
-
     else -> onStarted()
   }
 

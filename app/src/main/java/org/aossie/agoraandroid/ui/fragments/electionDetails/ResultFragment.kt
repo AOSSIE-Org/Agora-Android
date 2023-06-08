@@ -98,6 +98,7 @@ constructor(
               binding.tvNoResult.text = resources.getString(R.string.fetch_result_failed)
               binding.tvNoResult.show()
             }
+            else -> {}
           }
         }
       }
@@ -125,6 +126,7 @@ constructor(
             ResponseUI.Status.ERROR -> {
               notify(responseUI.message)
             }
+            else -> {}
           }
         }
       }
