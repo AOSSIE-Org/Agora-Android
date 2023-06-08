@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.NavGraph
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.takusemba.spotlight.OnSpotlightListener
@@ -98,6 +101,21 @@ fun unsubscribeFromFCM(mail: String?) {
     if (it.contains("@")) {
       it.substring(0, it.indexOf("@")).let { topic ->
         Firebase.messaging.unsubscribeFromTopic(topic)
+      }
+    }
+  }
+}
+
+fun NavController.navigateSafely(direction: NavDirections) {
+  val currentDestination = currentDestination
+  if (currentDestination != null) {
+    val navAction = currentDestination.getAction(direction.actionId)
+    if (navAction != null) {
+      val destinationId: Int = navAction.destinationId ?: 0
+      val currentNode: NavGraph? =
+        if (currentDestination is NavGraph) currentDestination else currentDestination.parent
+      if (destinationId != 0 && currentNode != null && currentNode.findNode(destinationId) != null) {
+        navigate(direction)
       }
     }
   }
