@@ -1,7 +1,7 @@
 package org.aossie.agoraandroid.data.mappers
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import org.aossie.agoraandroid.data.db.entities.Election
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import javax.inject.Inject
@@ -39,14 +39,14 @@ class ElectionEntityMapper @Inject constructor() {
   }
 
   fun mapFromEntityLiveDataList(electionLiveDataList: LiveData<List<Election>>): LiveData<List<ElectionModel>> {
-    return Transformations.map(
-      electionLiveDataList
-    ) { mapFromEntityList(it) }
+    return electionLiveDataList.map {
+      mapFromEntityList(it)
+    }
   }
 
   fun mapFromEntityLiveData(electionLivedata: LiveData<Election>): LiveData<ElectionModel> {
-    return Transformations.map(
-      electionLivedata
-    ) { mapFromEntity(it) }
+    return electionLivedata.map {
+      mapFromEntity(it)
+    }
   }
 }

@@ -89,6 +89,7 @@ constructor(
                 binding.progressBar.hide()
               }
             }
+            else -> {}
           }
         }
       }

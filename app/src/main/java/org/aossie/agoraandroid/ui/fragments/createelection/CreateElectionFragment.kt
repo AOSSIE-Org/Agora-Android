@@ -144,6 +144,7 @@ constructor(
               notify(it.message)
               binding.submitDetailsBtn.toggleIsEnable()
             }
+            else -> {}
           }
         }
       }
@@ -159,6 +160,7 @@ constructor(
             ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
 
             ResponseUI.Status.ERROR -> onReadFailure(it.message)
+            else -> {}
           }
         }
       }

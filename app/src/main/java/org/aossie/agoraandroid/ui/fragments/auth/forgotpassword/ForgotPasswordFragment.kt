@@ -68,6 +68,7 @@ constructor(
               binding.progressBar.hide()
               notify(it.message)
             }
+            else -> {}
           }
         }
       }
