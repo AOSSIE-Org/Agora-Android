@@ -333,6 +333,7 @@
   <string name="authenticating">Authenticating...</string>
   <string name="facebook_login">Facebook Login...</string>
   <string name="login_error">Login error</string>
+  <string name="view_details">View details</string>
   <string name="verifying_otp">Verifying OTP...</string>
   <string name="sending_otp">Sending OTP...</string>
   <string name="didnt_receive_otp">Didn`t receive OTP?</string>

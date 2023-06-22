@@ -215,6 +215,9 @@ dependencies {
   //extended Material Icons
   implementation "androidx.compose.material:material-icons-extended:1.4.3"
 
+  //for live data to state
+  implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
+
   //date and time picker
   implementation "com.maxkeppeler.sheets-compose-dialogs:core:$rootProject.date_time_picker"
   implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$rootProject.date_time_picker"
