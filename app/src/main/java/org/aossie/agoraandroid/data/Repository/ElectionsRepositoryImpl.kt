@@ -16,6 +16,7 @@ import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.data.network.dto.VotersDto
 import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.data.network.responses.Ballots
+import org.aossie.agoraandroid.data.network.responses.ElectionListResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 import org.aossie.agoraandroid.domain.repository.ElectionsRepository
 import org.aossie.agoraandroid.utilities.ApiException
@@ -107,7 +108,7 @@ constructor(
     db.getElectionDao()
       .getPendingElections(currentDate)
 
-  override suspend fun fetchElections() {
+  override suspend fun fetchElections(): ElectionListResponse {
     val isNeeded = prefs.getUpdateNeeded().first()
     if (isNeeded) {
       try {
@@ -117,12 +118,14 @@ constructor(
           elections.postValue(it)
         }
         Timber.d(response.toString())
+        return response
       } catch (e: NoInternetException) {
       } catch (e: ApiException) {
       } catch (e: SessionExpirationException) {
       } catch (e: IOException) {
       }
     }
+    return ElectionListResponse(elections.value!!)
   }
 
   override fun getFinishedElections(currentDate: String): Flow<List<Election>> =

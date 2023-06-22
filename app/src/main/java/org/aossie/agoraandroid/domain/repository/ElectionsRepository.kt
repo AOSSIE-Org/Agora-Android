@@ -7,10 +7,11 @@ import org.aossie.agoraandroid.data.network.dto.ElectionDto
 import org.aossie.agoraandroid.data.network.dto.VotersDto
 import org.aossie.agoraandroid.data.network.dto.WinnerDto
 import org.aossie.agoraandroid.data.network.responses.Ballots
+import org.aossie.agoraandroid.data.network.responses.ElectionListResponse
 import org.aossie.agoraandroid.data.network.responses.ElectionResponse
 
 interface ElectionsRepository {
-  suspend fun fetchAndSaveElections()
+  suspend fun fetchAndSaveElections(): ElectionListResponse
   fun getElections(): Flow<List<Election>>
   fun getFinishedElectionsCount(currentDate: String): LiveData<Int>
   fun getPendingElectionsCount(currentDate: String): LiveData<Int>
@@ -18,7 +19,7 @@ interface ElectionsRepository {
   fun getActiveElectionsCount(currentDate: String): LiveData<Int>
   suspend fun saveElections(elections: List<ElectionResponse>)
   fun getPendingElections(currentDate: String): Flow<List<Election>>
-  suspend fun fetchElections()
+  suspend fun fetchElections(): ElectionListResponse
   fun getFinishedElections(currentDate: String): Flow<List<Election>>
   fun getActiveElections(currentDate: String): Flow<List<Election>>
   fun getElectionById(id: String): Flow<Election>
