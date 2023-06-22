@@ -4,12 +4,16 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.useCases.homeFragment.HomeFragmentUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
@@ -36,22 +40,35 @@ constructor(
     .time
   private val date: String = formatter.format(currentDate)
 
+  private val _progressAndErrorState = MutableStateFlow (ScreensState())
+  val progressAndErrorState = _progressAndErrorState.asStateFlow()
+
   private val _countMediatorLiveData = MediatorLiveData<MutableMap<String, Int>>()
   val countMediatorLiveData = _countMediatorLiveData
 
   init {
-    _countMediatorLiveData.value = mutableMapOf()
+    _countMediatorLiveData.value = mutableMapOf(
+      TOTAL_ELECTION_COUNT to 0,
+      PENDING_ELECTION_COUNT to 0,
+      FINISHED_ELECTION_COUNT to 0,
+      ACTIVE_ELECTION_COUNT to 0
+    )
     addSource()
   }
 
   fun getElections() {
+    showLoading("Loading...")
     GlobalScope.launch {
-      homeViewModelUseCases.fetchAndSaveElection()
+     val response = homeViewModelUseCases.fetchAndSaveElection()
+      response.elections.let {
+        hideLoading()
+      }
     }
   }
 
   private fun addSource() {
     viewModelScope.launch {
+
       _countMediatorLiveData.addSource(homeViewModelUseCases.getTotalElectionsCount()) { value ->
         _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
           this?.let {
@@ -106,5 +123,34 @@ constructor(
         _getLogoutStateFLow.value = ResponseUI.error(e.message)
       }
     }
+  }
+
+  private fun showLoading(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      loading = Pair(message,true)
+    )
+  }
+
+  fun showMessage(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair(message,true),
+      loading = Pair("",false)
+    )
+    viewModelScope.launch {
+      delay(AppConstants.SNACKBAR_DURATION)
+      hideSnackBar()
+    }
+  }
+
+  private fun hideSnackBar() {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair("",false)
+    )
+  }
+
+  private fun hideLoading() {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      loading = Pair("",false)
+    )
   }
 }
