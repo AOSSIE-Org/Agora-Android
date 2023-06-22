@@ -1,28 +1,31 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import com.takusemba.spotlight.Spotlight
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R.color
-import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.databinding.FragmentHomeBinding
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.auth.login.LoginViewModel
+import org.aossie.agoraandroid.ui.screens.home.HomeScreen
+import org.aossie.agoraandroid.ui.screens.home.events.HomeScreenEvents.ActiveElectionClick
+import org.aossie.agoraandroid.ui.screens.home.events.HomeScreenEvents.CreateElectionClick
+import org.aossie.agoraandroid.ui.screens.home.events.HomeScreenEvents.FinishedElectionClick
+import org.aossie.agoraandroid.ui.screens.home.events.HomeScreenEvents.PendingElectionClick
+import org.aossie.agoraandroid.ui.screens.home.events.HomeScreenEvents.Refresh
+import org.aossie.agoraandroid.ui.screens.home.events.HomeScreenEvents.TotalElectionClick
+import org.aossie.agoraandroid.ui.theme.AgoraTheme
 import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.TargetData
-import org.aossie.agoraandroid.utilities.getSpotlight
-import org.aossie.agoraandroid.utilities.scrollToView
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -45,46 +48,53 @@ constructor(
     viewModelFactory
   }
 
-  private lateinit var binding: FragmentHomeBinding
-
-  private var spotlight: Spotlight? = null
-  private var spotlightTargets: ArrayList<TargetData>? = null
-  private var currentSpotlightIndex = 0
+  private lateinit var composeView: ComposeView
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = FragmentHomeBinding.inflate(inflater)
-    return binding.root
+    return ComposeView(requireContext()).also {
+      composeView = it
+    }
   }
 
   override fun onFragmentInitiated() {
     loginViewModel.sessionExpiredListener = this
-    binding.swipeRefresh.setColorSchemeResources(color.logo_yellow, color.logo_green)
-
-    binding.cardViewActiveElections.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(HomeFragmentDirections.actionHomeFragmentToActiveElectionsFragment())
+    composeView.setContent {
+      val homeScreenDataState by homeViewModel.countMediatorLiveData.observeAsState()
+      val progressErrorState by homeViewModel.progressAndErrorState.collectAsState()
+      AgoraTheme {
+        HomeScreen(homeScreenDataState,progressErrorState){ event ->
+          when(event){
+            ActiveElectionClick -> {
+              findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToActiveElectionsFragment())
+            }
+            CreateElectionClick -> {
+              findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToCreateElectionFragment())
+            }
+            FinishedElectionClick -> {
+              findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToFinishedElectionsFragment())
+            }
+            PendingElectionClick -> {
+              findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToPendingElectionsFragment())
+            }
+            TotalElectionClick -> {
+              findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToElectionsFragment())
+            }
+            Refresh -> {
+              updateUi()
+            }
+          }
+        }
+      }
     }
-    binding.cardViewPendingElections.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(HomeFragmentDirections.actionHomeFragmentToPendingElectionsFragment())
-    }
-    binding.cardViewFinishedElections.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(HomeFragmentDirections.actionHomeFragmentToFinishedElectionsFragment())
-    }
-    binding.cardViewTotalElections.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(HomeFragmentDirections.actionHomeFragmentToElectionsFragment())
-    }
-    binding.buttonCreateElection.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(HomeFragmentDirections.actionHomeFragmentToCreateElectionFragment())
-    }
-    binding.swipeRefresh.setOnRefreshListener { updateUi() }
 
     lifecycleScope.launch {
       loginViewModel.getLoginStateFlow.collect {
@@ -141,23 +151,7 @@ constructor(
         }
     }
 
-    homeViewModel.countMediatorLiveData.observe(
-      viewLifecycleOwner,
-      {
-        binding.textViewActiveCount.text = it[ACTIVE_ELECTION_COUNT].toString()
-        binding.textViewTotalCount.text = it[TOTAL_ELECTION_COUNT].toString()
-        binding.textViewPendingCount.text = it[PENDING_ELECTION_COUNT].toString()
-        binding.textViewFinishedCount.text = it[FINISHED_ELECTION_COUNT].toString()
-        binding.shimmerViewContainer.stopShimmer()
-        binding.shimmerViewContainer.visibility = View.GONE
-        binding.constraintLayout.visibility = View.VISIBLE
-        binding.swipeRefresh.isRefreshing = false // Disables the refresh icon
-      }
-    )
     updateUi()
-    binding.root.doOnLayout {
-      checkIsFirstOpen()
-    }
   }
 
   override fun onNetworkConnected() {
@@ -165,7 +159,6 @@ constructor(
   }
 
   override fun onDestroyView() {
-    binding.swipeRefresh.setOnRefreshListener(null)
     homeViewModel.sessionExpiredListener = null
     loginViewModel.sessionExpiredListener = null
     super.onDestroyView()
@@ -176,70 +169,5 @@ constructor(
       preferenceProvider.setUpdateNeeded(true)
       homeViewModel.getElections()
     }
-    binding.shimmerViewContainer.startShimmer()
-    binding.shimmerViewContainer.visibility = View.VISIBLE
-    binding.constraintLayout.visibility = View.GONE
-  }
-
-  private fun checkIsFirstOpen() {
-    lifecycleScope.launch {
-      if (!preferenceProvider.isDisplayed(binding.root.id.toString())
-        .first()
-      ) {
-        spotlightTargets = getSpotlightTargets()
-        preferenceProvider.setDisplayed(binding.root.id.toString())
-        showSpotlight()
-      }
-    }
-  }
-
-  private fun showSpotlight() {
-    spotlightTargets?.let {
-      if (currentSpotlightIndex in it.indices) {
-        scrollToView(binding.scrollView, it[currentSpotlightIndex].targetView)
-        spotlight = requireActivity().getSpotlight(
-          it[currentSpotlightIndex++],
-          {
-            destroySpotlight()
-          },
-          {
-            it.clear()
-            destroySpotlight()
-          },
-          {
-            if (isAdded) {
-              showSpotlight()
-            }
-          }
-        )
-        spotlight?.start()
-      }
-    }
-  }
-
-  private fun getSpotlightTargets(): ArrayList<TargetData> {
-    val targetData = ArrayList<TargetData>()
-    targetData.add(
-      TargetData(
-        binding.buttonCreateElection, getString(string.Create_Election),
-        getString(string.create_election_spotlight)
-      )
-    )
-    return targetData
-  }
-
-  private fun destroySpotlight() {
-    spotlight?.finish()
-    spotlight = null
-  }
-
-  override fun onPause() {
-    super.onPause()
-    destroySpotlight()
-  }
-
-  override fun onConfigurationChanged(newConfig: Configuration) {
-    super.onConfigurationChanged(newConfig)
-    destroySpotlight()
   }
 }

@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.domain.useCases.homeFragment.HomeFragmentUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
@@ -36,22 +38,35 @@ constructor(
     .time
   private val date: String = formatter.format(currentDate)
 
+  private val _progressAndErrorState = MutableStateFlow (ScreensState())
+  val progressAndErrorState = _progressAndErrorState.asStateFlow()
+
   private val _countMediatorLiveData = MediatorLiveData<MutableMap<String, Int>>()
   val countMediatorLiveData = _countMediatorLiveData
 
   init {
-    _countMediatorLiveData.value = mutableMapOf()
+    _countMediatorLiveData.value = mutableMapOf(
+      TOTAL_ELECTION_COUNT to 0,
+      PENDING_ELECTION_COUNT to 0,
+      FINISHED_ELECTION_COUNT to 0,
+      ACTIVE_ELECTION_COUNT to 0
+    )
     addSource()
   }
 
   fun getElections() {
+    showLoading("Loading...")
     GlobalScope.launch {
-      homeViewModelUseCases.fetchAndSaveElection()
+     val response = homeViewModelUseCases.fetchAndSaveElection()
+      response.elections.let {
+        hideLoading()
+      }
     }
   }
 
   private fun addSource() {
     viewModelScope.launch {
+
       _countMediatorLiveData.addSource(homeViewModelUseCases.getTotalElectionsCount()) { value ->
         _countMediatorLiveData.value = _countMediatorLiveData.value.apply {
           this?.let {
@@ -106,5 +121,38 @@ constructor(
         _getLogoutStateFLow.value = ResponseUI.error(e.message)
       }
     }
+  }
+
+  private fun showLoading(message: String?) {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      isLoading = Pair(message!!,true)
+    )
+  }
+
+  fun showMessage(message: String) {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      error = Pair(message,true),
+      errorResource = Pair(0,false)
+    )
+  }
+
+  fun showMessageResource(messageResource: Int) {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      error = Pair("",false),
+      errorResource = Pair(messageResource,true)
+    )
+  }
+
+  fun hideSnackBar() {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      error = Pair("",false),
+      errorResource = Pair(0,false)
+    )
+  }
+
+  fun hideLoading() {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      isLoading = Pair("",false)
+    )
   }
 }

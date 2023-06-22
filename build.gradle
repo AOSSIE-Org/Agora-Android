@@ -57,6 +57,7 @@ buildscript {
     composeActivityVersion = '1.6.1'
     accompanist_version = '0.31.2-alpha'
     coilVersion = '2.4.0'
+    composeLiveData = '1.4.3'
   }
 
   repositories {
