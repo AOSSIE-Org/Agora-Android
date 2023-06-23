@@ -136,8 +136,7 @@
   <fragment
     android:id="@+id/settingsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment"
-    android:label="Settings"
-    tools:layout="@layout/fragment_settings">
+    android:label="Settings">
     <action
       android:id="@+id/action_settingsFragment_to_aboutFragment"
       app:destination="@+id/aboutFragment"
