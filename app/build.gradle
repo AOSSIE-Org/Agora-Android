@@ -218,6 +218,9 @@ dependencies {
   //for live data to state
   implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
 
+  //for language change
+  implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
+
   //date and time picker
   implementation "com.maxkeppeler.sheets-compose-dialogs:core:$rootProject.date_time_picker"
   implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$rootProject.date_time_picker"
