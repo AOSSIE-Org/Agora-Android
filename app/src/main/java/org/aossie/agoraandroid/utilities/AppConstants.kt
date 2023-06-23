@@ -38,6 +38,7 @@ object AppConstants {
   const val CIPHER_TRANSFORMATION = "AES/CBC/PKCS7Padding"
   const val SALT = "QWlGNHNhMTJTQWZ2bGhpV3U="
   const val IV = "bVQzNFNhRkQ1Njc4UUFaWA=="
+  const val DEFAULT_LANG = "en"
   enum class Status {
     PENDING, ACTIVE, FINISHED
   }

@@ -7,32 +7,39 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.facebook.login.LoginManager
-import com.squareup.picasso.NetworkPolicy.OFFLINE
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
-import org.aossie.agoraandroid.databinding.FragmentSettingsBinding
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel
+import org.aossie.agoraandroid.ui.fragments.home.HomeViewModel.UiEvents.UserLoggedOut
 import org.aossie.agoraandroid.ui.fragments.profile.ProfileViewModel
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
+import org.aossie.agoraandroid.ui.screens.settings.SettingScreen
+import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.ChangeAppLanguage
+import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnAboutUsClick
+import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnAccountSettingClick
+import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnContactUsClick
+import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnLogoutClick
+import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnShareWithOthersClick
+import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnSnackBarActionClick
+import org.aossie.agoraandroid.ui.theme.AgoraTheme
 import org.aossie.agoraandroid.utilities.isUrl
-import org.aossie.agoraandroid.utilities.loadImage
-import org.aossie.agoraandroid.utilities.loadImageFromMemoryNoCache
-import org.aossie.agoraandroid.utilities.show
 import org.aossie.agoraandroid.utilities.toByteArray
-import org.aossie.agoraandroid.utilities.toggleIsEnable
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -54,7 +61,7 @@ constructor(
 
   private var mAvatar = MutableLiveData<File>()
 
-  private lateinit var binding: FragmentSettingsBinding
+ private lateinit var composeView: ComposeView
 
   private lateinit var mUser: UserModel
 
@@ -67,23 +74,70 @@ constructor(
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = FragmentSettingsBinding.inflate(inflater)
-    return binding.root
+    return ComposeView(requireContext()).also {
+      composeView = it
+    }
   }
 
   override fun onFragmentInitiated() {
+
+    homeViewModel.sessionExpiredListener = this
+
+    composeView.setContent {
+
+      val context = LocalContext.current
+      val userState by viewModel.user.collectAsState(UserModel())
+      val appLanguageState by homeViewModel.appLanguage.collectAsState("")
+      val supportedLang = homeViewModel.getSupportedLanguages
+      val avatar by mAvatar.observeAsState()
+      val progressErrorState by homeViewModel.progressAndErrorState.collectAsState()
+
+
+      AgoraTheme {
+        SettingScreen(userState,avatar,appLanguageState,supportedLang,progressErrorState){ event->
+          when(event){
+            OnAboutUsClick -> {
+              findNavController().navigate(
+                SettingsFragmentDirections.actionSettingsFragmentToAboutFragment()
+              )
+            }
+            OnAccountSettingClick -> {
+              findNavController().navigate(
+                SettingsFragmentDirections.actionSettingsFragmentToProfileFragment()
+              )
+            }
+            OnContactUsClick -> {
+              findNavController().navigate(
+                SettingsFragmentDirections.actionSettingsFragmentToContactUsFragment()
+              )
+            }
+            OnLogoutClick -> {
+              homeViewModel.doLogout()
+            }
+            OnShareWithOthersClick -> {
+              findNavController().navigate(
+                SettingsFragmentDirections.actionSettingsFragmentToShareWithOthersFragment()
+              )
+            }
+            OnSnackBarActionClick -> {
+              homeViewModel.hideSnackBar()
+            }
+
+            is ChangeAppLanguage -> {
+              homeViewModel.changeLanguage(event.language,context)
+            }
+          }
+        }
+      }
+    }
 
     lifecycleScope.launch {
       val user = viewModel.user
       user.collect {
         if (it != null) {
-          binding.tvEmailId.text = it.email
-          binding.tvName.text = (it.firstName ?: "") + " " + (it.lastName ?: "")
           mUser = it
           if (it.avatarURL != null) {
-            if (it.avatarURL.isUrl())
-              cacheAndSaveImage(it.avatarURL)
-            else {
+            if (!it.avatarURL.isUrl()) {
               val bitmap = decodeBitmap(it.avatarURL)
               setAvatar(bitmap)
             }
@@ -92,82 +146,24 @@ constructor(
       }
     }
 
-    mAvatar.observe(
-      viewLifecycleOwner,
-      Observer {
-        binding.imageView.loadImageFromMemoryNoCache(it)
-      }
-    )
-
     lifecycleScope.launch {
-      homeViewModel.getLogoutStateFlow.collect {
-        if (it != null) {
-          when (it.status) {
-            ResponseUI.Status.ERROR -> {
-              binding.progressBar.hide()
-              notify(it.message)
-              binding.tvLogout.toggleIsEnable()
-            }
-            ResponseUI.Status.SUCCESS -> {
-              binding.progressBar.hide()
-              lifecycleScope.launch {
-                if (prefs.getIsFacebookUser().first()) {
-                  LoginManager.getInstance()
-                    .logOut()
-                }
+      homeViewModel.uiEvents.collectLatest { event ->
+        when(event){
+          UserLoggedOut -> {
+            lifecycleScope.launch {
+              if (prefs.getIsFacebookUser().first()) {
+                LoginManager.getInstance()
+                  .logOut()
               }
-              homeViewModel.deleteUserData()
-              notify("Logged Out")
-              Navigation.findNavController(binding.root)
-                .navigate(
-                  SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
-                )
             }
-            ResponseUI.Status.LOADING -> {
-              binding.progressBar.show()
-              binding.tvLogout.toggleIsEnable()
-            }
-            else -> {}
+            homeViewModel.deleteUserData()
+            notify("Logged Out")
+            findNavController().navigate(
+              SettingsFragmentDirections.actionSettingsFragmentToWelcomeFragment()
+            )
           }
         }
       }
-    }
-    homeViewModel.sessionExpiredListener = this
-
-    binding.tvAccountSettings.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(SettingsFragmentDirections.actionSettingsFragmentToProfileFragment())
-    }
-
-    binding.tvShare.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(
-          SettingsFragmentDirections.actionSettingsFragmentToShareWithOthersFragment()
-        )
-    }
-
-    binding.tvAbout.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(
-          SettingsFragmentDirections.actionSettingsFragmentToAboutFragment()
-        )
-    }
-
-    binding.tvContactUs.setOnClickListener {
-      Navigation.findNavController(binding.root)
-        .navigate(
-          SettingsFragmentDirections.actionSettingsFragmentToContactUsFragment()
-        )
-    }
-
-    binding.tvLogout.setOnClickListener {
-      homeViewModel.doLogout()
-    }
-  }
-
-  private fun cacheAndSaveImage(url: String) {
-    binding.imageView.loadImage(url, OFFLINE) {
-      binding.imageView.loadImage(url)
     }
   }
 
