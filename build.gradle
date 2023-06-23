@@ -57,6 +57,7 @@ buildscript {
     accompanist_version = '0.31.2-alpha'
     coilVersion = '2.4.0'
     composeLiveData = '1.4.3'
+    languageLibrary = '1.3.0'
   }
 
   repositories {

@@ -218,4 +218,7 @@ dependencies {
 
   //for live data to state
   implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
+
+  //for language change
+  implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
 }
