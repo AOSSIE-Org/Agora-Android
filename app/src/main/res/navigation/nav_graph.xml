@@ -190,8 +190,7 @@
   <fragment
     android:id="@+id/shareWithOthersFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.share.ShareWithOthersFragment"
-    android:label="Share with Others"
-    tools:layout="@layout/fragment_share_with_others" />
+    android:label="Share with Others" />
   <fragment
     android:id="@+id/activeElectionsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment"
