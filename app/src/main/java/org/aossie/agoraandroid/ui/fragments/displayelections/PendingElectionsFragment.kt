@@ -4,21 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doAfterTextChanged
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.data.adapters.ElectionsAdapter
-import org.aossie.agoraandroid.databinding.FragmentPendingElectionsBinding
-import org.aossie.agoraandroid.domain.model.ElectionModel
+import androidx.navigation.fragment.findNavController
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.ui.screens.elections.ElectionsScreen
+import org.aossie.agoraandroid.ui.theme.AgoraTheme
 import javax.inject.Inject
 
 /**
@@ -33,37 +28,44 @@ constructor(
   private val displayElectionViewModel: DisplayElectionViewModel by viewModels {
     viewModelFactory
   }
-  private lateinit var binding: FragmentPendingElectionsBinding
+  private lateinit var composeView: ComposeView
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = FragmentPendingElectionsBinding.inflate(inflater)
-    return binding.root
+    return ComposeView(requireContext()).also {
+      composeView = it
+    }
   }
-
-  lateinit var mElections: ArrayList<ElectionModel>
-  private lateinit var electionsAdapter: ElectionsAdapter
 
   private val onItemClicked = { _id: String ->
     val action = PendingElectionsFragmentDirections
       .actionPendingElectionsFragmentToElectionDetailsFragment(_id)
-    Navigation.findNavController(binding.root)
-      .navigate(action)
+    findNavController().navigate(action)
   }
 
   override fun onFragmentInitiated() {
-
-    mElections = ArrayList()
-    electionsAdapter = ElectionsAdapter(onItemClicked)
-    binding.rvPendingElections.apply {
-      layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-      adapter = electionsAdapter
-    }
-    binding.searchView.doAfterTextChanged {
-      filter(it.toString())
+    bindUI()
+    composeView.setContent {
+      val elections by displayElectionViewModel.pendingElections.collectAsState()
+      val progressErrorState by displayElectionViewModel.progressAndErrorState.collectAsState()
+      val searchText by displayElectionViewModel.search
+      AgoraTheme {
+        ElectionsScreen(
+          screenState = progressErrorState,
+          elections = elections,
+          searchText = searchText,
+          onSearch = {
+            displayElectionViewModel.getPendingElectionsState(it)
+          },
+          onItemClicked = onItemClicked,
+          onSnackActionClick = {
+            displayElectionViewModel.hideSnackBar()
+          }
+        )
+      }
     }
   }
 
@@ -71,42 +73,7 @@ constructor(
     bindUI()
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
-    bindUI()
-  }
-
   private fun bindUI() {
-    lifecycleScope.launch {
-      try {
-        val elections = displayElectionViewModel.pendingElections.await()
-        elections.collect {
-          if (it != null) {
-            addElections(it)
-          }
-        }
-      } catch (e: IllegalStateException) {
-        binding.tvSomethingWentWrong.show()
-      }
-    }
-  }
-
-  private fun addElections(elections: List<ElectionModel>) {
-    if (elections.isNotEmpty()) {
-      mElections.addAll(elections)
-      electionsAdapter.submitList(elections)
-    } else {
-      binding.tvEmptyElection.show()
-    }
-  }
-
-  private fun filter(query: String) {
-    val updatedList = displayElectionViewModel.filter(mElections, query)
-    electionsAdapter.submitList(updatedList)
-    if (updatedList.isEmpty()) {
-      binding.tvEmptyElection.show()
-    } else {
-      binding.tvEmptyElection.hide()
-    }
+    displayElectionViewModel.getPendingElectionsState("")
   }
 }
