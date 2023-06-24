@@ -217,8 +217,7 @@
   <fragment
     android:id="@+id/pendingElectionsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.displayelections.PendingElectionsFragment"
-    android:label="Pending Elections"
-    tools:layout="@layout/fragment_pending_elections">
+    android:label="Pending Elections">
     <action
       android:id="@+id/action_pendingElectionsFragment_to_electionDetailsFragment"
       app:destination="@+id/electionDetailsFragment"
