@@ -53,7 +53,7 @@ buildscript {
     spotlight = '2.0.5'
     biometricLibraryVersion = '1.1.0'
     kotlinCoroutineTest = '1.7.1'
-    composeBomVersion = '2023.04.01'
+    composeBomVersion = '2023.05.01'
     composeActivityVersion = '1.6.1'
     accompanist_version = '0.31.2-alpha'
     coilVersion = '2.4.0'
