@@ -11,7 +11,6 @@ import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.domain.useCases.displayElection.DisplayElectionsUseCases
 import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
-import org.aossie.agoraandroid.utilities.lazyDeferred
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -30,10 +29,7 @@ constructor(
   private val date: String = formatter.format(currentDate)
 
   val activeElections = MutableStateFlow<List<ElectionModel>>(emptyList())
-  val pendingElections by lazyDeferred {
-    displayElectionsUseCases.getPendingElections(date)
-  }
-
+  val pendingElections = MutableStateFlow<List<ElectionModel>>(emptyList())
   val finishedElections = MutableStateFlow<List<ElectionModel>>(emptyList())
   val search = mutableStateOf("")
 
@@ -66,6 +62,23 @@ constructor(
             activeElections.emit(list)
           }else{
             activeElections.emit(filter(list, query))
+          }
+        }
+      } catch (e: IllegalStateException) {
+        showMessageResource(R.string.something_went_wrong_please_try_again_later)
+      }
+    }
+  }
+
+  fun getPendingElectionsState(query:String) {
+    viewModelScope.launch {
+      try {
+        displayElectionsUseCases.getPendingElections(date).collectLatest { list ->
+          search.value = query
+          if(query.isEmpty()) {
+            pendingElections.emit(list)
+          }else{
+            pendingElections.emit(filter(list, query))
           }
         }
       } catch (e: IllegalStateException) {
