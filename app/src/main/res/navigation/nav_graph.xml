@@ -179,8 +179,7 @@
   <fragment
     android:id="@+id/contactUsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.contactUs.ContactUsFragment"
-    android:label="Contact Us"
-    tools:layout="@layout/fragment_contact_us" />
+    android:label="Contact Us" />
   <fragment
     android:id="@+id/aboutFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.about.AboutFragment"
