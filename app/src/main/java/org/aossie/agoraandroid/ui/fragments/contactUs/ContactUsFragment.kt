@@ -5,38 +5,53 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.databinding.FragmentContactUsBinding
+import org.aossie.agoraandroid.ui.screens.contactUs.ContactUsScreen
+import org.aossie.agoraandroid.ui.theme.AgoraTheme
 import org.aossie.agoraandroid.utilities.browse
-import org.aossie.agoraandroid.utilities.snackbar
 
 /**
  * A simple [Fragment] subclass.
  */
 class ContactUsFragment : Fragment() {
 
-  lateinit var binding: FragmentContactUsBinding
+  private lateinit var composeView: ComposeView
+  private val messageState = MutableStateFlow ("")
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    binding = FragmentContactUsBinding.inflate(layoutInflater)
-    initListeners()
-    return binding.root
+    return ComposeView(requireContext()).also {
+      composeView = it
+    }
   }
 
-  private fun initListeners() {
-    binding.btnGitter.setOnClickListener {
-      openUrl("https://gitter.im/aossie/home")
-    }
-    binding.btnGitlab.setOnClickListener {
-      openUrl("https://gitlab.com/aossie")
-    }
-    binding.btnReport.setOnClickListener {
-      openUrl("https://gitlab.com/aossie/agora-android/issues/new")
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    composeView.setContent {
+      val message = messageState.collectAsState()
+      AgoraTheme {
+        ContactUsScreen(
+          message,
+          onBtnGitlabClicked = {
+            openUrl("https://gitlab.com/aossie")
+          },
+          onBtnGitterClicked = {
+            openUrl("https://gitter.im/aossie/home")
+          },
+          onBtnReportBugClicked = {
+            openUrl("https://gitlab.com/aossie/agora-android/issues/new")
+          }
+        ) {
+          messageState.value = ""
+        }
+      }
     }
   }
 
@@ -44,7 +59,7 @@ class ContactUsFragment : Fragment() {
     try {
       context?.browse(url)
     } catch (e: ActivityNotFoundException) {
-      binding.root.snackbar(resources.getString(string.no_browser))
+      messageState.value = resources.getString(string.no_browser)
     }
   }
 }
