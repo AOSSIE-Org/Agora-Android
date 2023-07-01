@@ -1,13 +1,13 @@
 package org.aossie.agoraandroid.ui.di.modules
 
 import android.content.Context
-import androidx.viewbinding.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
+import org.aossie.agoraandroid.BuildConfig
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
 import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl

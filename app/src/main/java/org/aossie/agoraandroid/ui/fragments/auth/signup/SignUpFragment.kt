@@ -112,6 +112,7 @@ constructor(
               binding.progressBar.hide()
               makeFieldsToggleEnable()
             }
+            else -> {}
           }
         }
       }
