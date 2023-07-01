@@ -110,6 +110,7 @@ constructor(
               binding.progressBar.hide()
               binding.buttonDelete.toggleIsEnable()
             }
+            else -> {}
           }
         }
       }
@@ -168,6 +169,7 @@ constructor(
         )
         AppConstants.Status.FINISHED -> electionDetailsViewModel.deleteElection(id)
         AppConstants.Status.PENDING -> electionDetailsViewModel.deleteElection(id)
+        else -> {}
       }
     }
   }

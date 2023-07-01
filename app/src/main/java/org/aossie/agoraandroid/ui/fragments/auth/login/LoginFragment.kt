@@ -90,6 +90,7 @@ constructor(
               makeFieldsToggleEnable()
               enableBtnFacebook()
             }
+            else -> {}
           }
         }
       }

@@ -109,7 +109,6 @@ constructor(
       binding.progressBar.hide()
       notify(response?.message)
     }
-
     else -> { // Do Nothing
     }
   }

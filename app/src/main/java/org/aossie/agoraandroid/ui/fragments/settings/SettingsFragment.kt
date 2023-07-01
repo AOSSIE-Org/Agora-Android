@@ -127,6 +127,7 @@ constructor(
               binding.progressBar.show()
               binding.tvLogout.toggleIsEnable()
             }
+            else -> {}
           }
         }
       }

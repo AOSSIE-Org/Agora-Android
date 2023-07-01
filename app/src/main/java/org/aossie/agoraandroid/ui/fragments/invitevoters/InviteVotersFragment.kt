@@ -111,6 +111,7 @@ constructor(
           ResponseUI.Status.LOADING -> onStarted()
           ResponseUI.Status.SUCCESS -> onSuccess(it.message ?: "")
           ResponseUI.Status.ERROR -> onFailure(it.message)
+          else -> {}
         }
       }
     )
@@ -123,6 +124,7 @@ constructor(
           }
           ResponseUI.Status.SUCCESS -> onReadSuccess(it.dataList)
           ResponseUI.Status.ERROR -> onReadFailure(it.message)
+          else -> {}
         }
       }
     )
