@@ -56,6 +56,7 @@
   <string name="end_date_format">End Date</string>
   <string name="datePicker">datePicker</string>
   <string name="select_voting_algorithm">Select Voting Algorithm</string>
+  <string name="ballot_visibility">Ballot Visibility</string>
   <string name="baldwin">Baldwin</string>
   <string name="exhaustive_ballot">ExhaustiveBallot</string>
   <string name="logout">Logout</string>
@@ -329,6 +330,10 @@
   <string name="pie_chart">• Pie Chart</string>
   <string name="time_tracker">Start time is smaller than Current time </string>
   <string name="total_votes">Total Votes</string>
+  <string name="invalid_election_name">Invalid election name</string>
+  <string name="invalid_election_description">Invalid election description</string>
+  <string name="invalid_start_date">Invalid start date</string>
+  <string name="invalid_end_date">Invalid end date</string>
   <string name="voters_invited">Voters Invited.</string>
   <string name="empty_voters_list">Please add voters to Invite.</string>
   <string name="verifying_otp">Verifying OTP...</string>
