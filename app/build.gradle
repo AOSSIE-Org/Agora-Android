@@ -213,4 +213,10 @@ dependencies {
 
   //extended Material Icons
   implementation "androidx.compose.material:material-icons-extended:1.4.3"
+
+  //for live data to state
+  implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
+
+  //for language change
+  implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
 }

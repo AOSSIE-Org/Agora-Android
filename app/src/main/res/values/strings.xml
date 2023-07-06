@@ -325,5 +325,6 @@
   <string name="bar_chart">Bar Chart</string>
   <string name="pie_chart">Pie Chart</string>
   <string name="time_tracker">Start time is smaller than Current time </string>
+  <string name="language">Language</string>
 </resources>
 
