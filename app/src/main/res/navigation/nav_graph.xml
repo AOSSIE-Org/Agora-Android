@@ -72,8 +72,7 @@
   <fragment
     android:id="@+id/homeFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.home.HomeFragment"
-    android:label="Home"
-    tools:layout="@layout/fragment_home">
+    android:label="Home">
     <action
       android:id="@+id/action_homeFragment_to_activeElectionsFragment"
       app:destination="@+id/activeElectionsFragment"
