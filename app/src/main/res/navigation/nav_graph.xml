@@ -113,8 +113,7 @@
   <fragment
     android:id="@+id/electionsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment"
-    android:label="Elections"
-    tools:layout="@layout/fragment_elections">
+    android:label="Elections">
     <action
       android:id="@+id/action_electionsFragment_to_electionDetailsFragment"
       app:destination="@+id/electionDetailsFragment"
@@ -208,8 +207,7 @@
   <fragment
     android:id="@+id/finishedElectionsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment"
-    android:label="Finished Elections"
-    tools:layout="@layout/fragment_finished_elections">
+    android:label="Finished Elections">
     <action
       android:id="@+id/action_finishedElectionsFragment_to_electionDetailsFragment"
       app:destination="@+id/electionDetailsFragment"
