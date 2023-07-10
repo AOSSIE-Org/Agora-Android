@@ -1,20 +1,35 @@
 package org.aossie.agoraandroid.ui.fragments.invitevoters
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
 import org.aossie.agoraandroid.data.Repository.FCMRepository
 import org.aossie.agoraandroid.data.network.dto.VotersDto
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
+import org.aossie.agoraandroid.ui.screens.inviteVoters.InviteVotersScreenEvent
+import org.aossie.agoraandroid.ui.screens.inviteVoters.InviteVotersScreenEvent.AddVoterClick
+import org.aossie.agoraandroid.ui.screens.inviteVoters.InviteVotersScreenEvent.DeleteVoterClick
+import org.aossie.agoraandroid.ui.screens.inviteVoters.InviteVotersScreenEvent.EnteredVoterEmail
+import org.aossie.agoraandroid.ui.screens.inviteVoters.InviteVotersScreenEvent.EnteredVoterName
+import org.aossie.agoraandroid.ui.screens.inviteVoters.InviteVotersScreenEvent.OpenCSVFileClick
+import org.aossie.agoraandroid.ui.screens.inviteVoters.InviteVotersScreenEvent.SnackBarActionClick
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException
 import org.apache.poi.xssf.usermodel.XSSFSheet
@@ -25,7 +40,6 @@ import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
-import java.util.ArrayList
 import javax.inject.Inject
 
 internal class InviteVotersViewModel
@@ -35,18 +49,90 @@ constructor(
   private val fcmRepository: FCMRepository
 ) : ViewModel() {
 
-  private val _getSendVoterLiveData: MutableLiveData<ResponseUI<Any>> = MutableLiveData()
-  val getSendVoterLiveData = _getSendVoterLiveData
-  private val _getImportVotersLiveData: MutableLiveData<ResponseUI<VotersDto>> = MutableLiveData()
-  val getImportVotersLiveData = _getImportVotersLiveData
+  private val _inviteVotersDataState = MutableStateFlow (VotersDto("",""))
+  val inviteVotersDataState = _inviteVotersDataState.asStateFlow()
+
+  private val _votersListState = MutableStateFlow<List<VotersDto>>(emptyList())
+  val votersListState = _votersListState.asStateFlow()
+
   lateinit var sessionExpiredListener: SessionExpiredListener
   var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
+  private val _progressAndErrorState = mutableStateOf(ScreensState())
+  val progressAndErrorState: State<ScreensState> = _progressAndErrorState
+
+  private val _uiEvents = MutableSharedFlow<InviteVotersUiEvents>()
+  val uiEvents = _uiEvents.asSharedFlow()
+
+  fun onEvent(event: InviteVotersScreenEvent){
+    when(event) {
+      AddVoterClick -> {
+        if(nameValidator(inviteVotersDataState.value.voterName)
+          && emailValidator(inviteVotersDataState.value.voterEmail)){
+          _votersListState.value = votersListState.value + inviteVotersDataState.value
+          _inviteVotersDataState.value = inviteVotersDataState.value.copy(
+            voterEmail = "",
+            voterName = ""
+          )
+        }
+
+      }
+      is EnteredVoterEmail -> {
+        _inviteVotersDataState.value = inviteVotersDataState.value.copy(
+          voterEmail = event.voterEmail
+        )
+      }
+      is EnteredVoterName -> {
+        _inviteVotersDataState.value = inviteVotersDataState.value.copy(
+          voterName = event.voterName
+        )
+      }
+      SnackBarActionClick -> {
+        hideSnackBar()
+      }
+      is DeleteVoterClick -> {
+        _votersListState.value = votersListState.value - event.votersDto
+      }
+
+      is OpenCSVFileClick -> {
+        readExcelData(event.context,event.path,votersListState.value)
+      }
+      else -> {}
+    }
+  }
+
+  private fun emailValidator(
+    email: String?,
+  ): Boolean {
+    if (email.isNullOrEmpty()) {
+      showMessage(string.enter_voter_email)
+      return false
+    } else if (!email.matches(emailPattern.toRegex())) {
+      showMessage(string.enter_valid_voter_email)
+      return false
+    } else if (getEmailList(_votersListState.value).contains(email)) {
+      showMessage(string.voter_same_email)
+      return false
+    }
+    return true
+  }
+
+  private fun nameValidator(name: String?): Boolean {
+    if (name.isNullOrEmpty()) {
+      showMessage(string.enter_voter_name)
+      return false
+    }
+    return true
+  }
+
   fun inviteVoters(
-    mVoters: ArrayList<VotersDto>,
+    mVoters: List<VotersDto>,
     id: String
   ) {
-
+    if(mVoters.isEmpty()){
+      showMessage(R.string.empty_voters_list)
+      return
+    }
     sendVoters(id, mVoters)
   }
 
@@ -54,20 +140,22 @@ constructor(
     id: String,
     body: List<VotersDto>
   ) {
-    _getSendVoterLiveData.value = ResponseUI.loading()
+    showLoading("Inviting voters...")
     viewModelScope.launch {
       try {
         val response = electionsRepository.sendVoters(id, body)
         Timber.d(response.toString())
-        _getSendVoterLiveData.value = ResponseUI.success(response[1])
+        showMessage(string.voters_invited)
+        delay(1000)
+        _uiEvents.emit(InviteVotersUiEvents.VotersInvited)
       } catch (e: ApiException) {
-        _getSendVoterLiveData.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getSendVoterLiveData.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: Exception) {
-        _getSendVoterLiveData.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       }
     }
   }
@@ -75,7 +163,7 @@ constructor(
   private fun importValidator(
     email: String,
     name: String,
-    mVoters: ArrayList<VotersDto>
+    mVoters: List<VotersDto>
   ): Boolean {
     val isNameValid = name.isNotEmpty()
     val isEmailValid =
@@ -85,7 +173,7 @@ constructor(
     return isNameValid && isEmailValid
   }
 
-  fun getEmailList(mVoters: ArrayList<VotersDto>): ArrayList<String> {
+  private fun getEmailList(mVoters: List<VotersDto>): ArrayList<String> {
     val list: ArrayList<String> = ArrayList()
     for (voter in mVoters) {
       voter.voterEmail?.let { list.add(it) }
@@ -96,16 +184,16 @@ constructor(
   fun readExcelData(
     context: Context,
     excelFilePath: String,
-    existingVoters: ArrayList<VotersDto>
+    existingVoters: List<VotersDto>
   ) {
-    _getImportVotersLiveData.value = ResponseUI.loading()
+    showLoading("Reading file...")
     viewModelScope.launch(Dispatchers.IO) {
       try {
         val inputStream: InputStream = FileInputStream(File(excelFilePath))
         val workbook = XSSFWorkbook(inputStream)
         val sheet: XSSFSheet = workbook.getSheetAt(0) ?: run {
           withContext(Dispatchers.Main) {
-            _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.no_sheet))
+            showMessage(string.no_sheet)
           }
           return@launch
         }
@@ -116,21 +204,20 @@ constructor(
           if (importValidator(email, name, existingVoters)) list.add(VotersDto(name, email))
         }
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value = ResponseUI.success(list)
+          hideLoading()
+          _votersListState.value = votersListState.value + list
         }
       } catch (e: NotOfficeXmlFileException) {
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value = ResponseUI.error(context.getString(string.not_excel))
+          showMessage(string.not_excel)
         }
       } catch (e: FileNotFoundException) {
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value =
-            ResponseUI.error(context.getString(string.file_not_available))
+          showMessage(string.file_not_available)
         }
       } catch (e: IOException) {
         withContext(Dispatchers.Main) {
-          _getImportVotersLiveData.value =
-            ResponseUI.error(context.getString(string.cannot_read_file))
+          showMessage(string.cannot_read_file)
         }
       }
     }
@@ -153,5 +240,38 @@ constructor(
         Timber.d(e)
       }
     }
+  }
+
+  private fun showLoading(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      loading = Pair(message,true)
+    )
+  }
+
+  fun showMessage(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair(message,true),
+      loading = Pair("",false)
+    )
+    viewModelScope.launch {
+      delay(AppConstants.SNACKBAR_DURATION)
+      hideSnackBar()
+    }
+  }
+
+  private fun hideSnackBar() {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair("",false)
+    )
+  }
+
+  private fun hideLoading() {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      loading = Pair("",false)
+    )
+  }
+
+  sealed class InviteVotersUiEvents{
+    object VotersInvited: InviteVotersUiEvents()
   }
 }

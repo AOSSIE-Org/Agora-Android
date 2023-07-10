@@ -8,26 +8,26 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun PermissionsDialog(
-    title:String,
-    description:String,
-    onDialogDismiss:() -> Unit,
-    onDialogConfirm:() -> Unit
+  title:String,
+  description:String,
+  onDialogDismiss:() -> Unit,
+  onDialogConfirm:() -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onDialogDismiss,
-        title = { Text(title, style = MaterialTheme.typography.titleLarge) },
-        text = {
-               Text(text = description, style = MaterialTheme.typography.bodyMedium)
-        },
-        confirmButton = {
-            Button(onClick = onDialogConfirm) {
-                Text("OK")
-            }
-        },
-        dismissButton = {
-            Button(onClick = onDialogDismiss) {
-                Text("Cancel")
-            }
-        }
-    )
+  AlertDialog(
+    onDismissRequest = onDialogDismiss,
+    title = { Text(title, style = MaterialTheme.typography.titleLarge) },
+    text = {
+      Text(text = description, style = MaterialTheme.typography.bodyMedium)
+    },
+    confirmButton = {
+      Button(onClick = onDialogConfirm) {
+        Text("OK")
+      }
+    },
+    dismissButton = {
+      Button(onClick = onDialogDismiss) {
+        Text("Cancel")
+      }
+    }
+  )
 }
