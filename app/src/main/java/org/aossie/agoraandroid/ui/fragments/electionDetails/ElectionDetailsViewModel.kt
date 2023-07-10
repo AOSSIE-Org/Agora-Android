@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -56,8 +57,6 @@ constructor(
   private val electionDetailsUseCases: ElectionDetailsUseCases
 ) : ViewModel() {
 
-  private val _getVoterResponseStateFlow = MutableStateFlow<ResponseUI<VotersDtoModel>?>(null)
-  var getVoterResponseStateFlow: StateFlow<ResponseUI<VotersDtoModel>?> = _getVoterResponseStateFlow
   private val _getBallotResponseStateFlow = MutableStateFlow<ResponseUI<BallotDtoModel>?>(null)
   var getBallotResponseStateFlow: StateFlow<ResponseUI<BallotDtoModel>?> =
     _getBallotResponseStateFlow
@@ -74,6 +73,9 @@ constructor(
 
   private val _progressAndErrorState = mutableStateOf(ScreensState())
   val progressAndErrorState: State<ScreensState> = _progressAndErrorState
+
+  private val _votersListState = MutableStateFlow<List<VotersDtoModel>>(emptyList())
+  val votersListState = _votersListState.asStateFlow()
 
   private var _electionState = mutableStateOf<ElectionModel?>(null)
   val electionState: State<ElectionModel?> = _electionState
@@ -125,21 +127,38 @@ constructor(
   fun getVoter(
     id: String?
   ) {
-    _getVoterResponseStateFlow.value = ResponseUI.loading()
+    showLoading("Listing voters...")
     viewModelScope.launch {
       try {
         val response = electionDetailsUseCases.getVoters(id)
         Timber.d(response.toString())
-        _getVoterResponseStateFlow.value = ResponseUI.success(response)
+        _votersListState.value = response
+        hideLoading()
       } catch (e: ApiException) {
-        _getVoterResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getVotersFromDb(id)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getVoterResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getVotersFromDb(id)
       } catch (e: Exception) {
-        _getVoterResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getVotersFromDb(id)
       }
+    }
+  }
+
+  private fun getVotersFromDb(id: String?) {
+    showLoading("Listing voters...")
+    viewModelScope.launch {
+      getElectionById(id!!)
+        .collect {
+          if (it != null) {
+            _votersListState.value = (it.voterList as List<VotersDtoModel>)
+          }
+          hideLoading()
+        }
     }
   }
 
