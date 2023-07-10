@@ -329,6 +329,8 @@
   <string name="bar_chart">• Bar Chart</string>
   <string name="pie_chart">• Pie Chart</string>
   <string name="time_tracker">Start time is smaller than Current time </string>
+  <string name="voters_invited">Voters Invited.</string>
+  <string name="empty_voters_list">Please add voters to Invite.</string>
   <string name="total_votes">Total Votes</string>
   <string name="invalid_election_name">Invalid election name</string>
   <string name="invalid_election_description">Invalid election description</string>
