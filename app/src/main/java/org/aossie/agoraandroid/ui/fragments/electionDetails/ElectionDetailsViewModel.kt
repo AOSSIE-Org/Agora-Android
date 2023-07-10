@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,6 +56,9 @@ constructor(
   private val electionDetailsUseCases: ElectionDetailsUseCases
 ) : ViewModel() {
 
+  private val _getBallotResponseStateFlow = MutableStateFlow<ResponseUI<BallotDtoModel>?>(null)
+  var getBallotResponseStateFlow: StateFlow<ResponseUI<BallotDtoModel>?> =
+    _getBallotResponseStateFlow
   private val _getShareResponseStateFlow = MutableStateFlow<ResponseUI<Uri>?>(null)
   var getShareResponseStateFlow: StateFlow<ResponseUI<Uri>?> = _getShareResponseStateFlow
   private val _getResultResponseStateFlow = MutableStateFlow<ResponseUI<WinnerDtoModel>?>(null)
