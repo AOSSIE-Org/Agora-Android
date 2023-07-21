@@ -1,6 +1,12 @@
 name: Android Build
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - '*'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -68,6 +74,7 @@ jobs:
       - name: Run lint
         run: |
           fastlane lint
+
   assembleRelease:
     needs: [lintDebug]
     runs-on: ubuntu-latest
@@ -124,7 +131,7 @@ jobs:
       - name: Upload APK Release
         uses: actions/upload-artifact@v3
         with:
-          name: agora-release.apk
+          name: app-release
           path: app/build/outputs/apk/release/app-release.apk
 
   debugTests:
@@ -180,16 +187,17 @@ jobs:
       - name: Run tests
         run: |
           fastlane test
+
   deploy:
     needs: [debugTests]
     runs-on: ubuntu-latest
     steps:
 
-      - name: Download APK Release
+      - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: agora-release.apk
-          path: app/build/outputs/apk/release/app-release.apk
+          name: app-release
+          path: app/build/outputs/apk/release/
 
       - name: Upload App to Appetize
         run: |
