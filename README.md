@@ -42,3 +42,5 @@ Join the discussion channels [Discord](https://discord.com/invite/6mFZ2S846n) [G
 - Write test cases ( both UI and unit as applicable for new features )
 - Do-Not create any nested xml layouts, in case the view is complex to have more than two level nesting create a custom view
 - Follow SOLID, clean code principles.
+
+- Amit
