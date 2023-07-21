@@ -18,7 +18,7 @@ To run the development environment for this frontend, you need [Git](https://git
     - [Troubleshooting your local environment](#troubleshooting-your-local-environment)
     - [Best Practices](#best-practices)
     - [Some Don'ts](#some-donts)
-    - [Further Reading / Useful Links](#further-reading-useful-links)
+    - [Further Reading/ Useful Links](#further-reading-useful-links)
 
 
 
@@ -64,7 +64,7 @@ Always `git pull` and get the latest from master. [Google](https://www.google.co
 5. Add unnecessary spacing or indentation to the code.
 
 
-## Further Reading / Useful Links
+## Further Reading / Useful Links 
 
 * [Retrofit](https://square.github.io/retrofit/)-A type-safe HTTP client for Android and Java.
 * [Material Design For Android](https://developer.android.com/guide/topics/ui/look-and-feel)-Material design is a comprehensive guide for visual, motion, and interaction design across platforms and devices.
