@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/white_cornered_background"
+  android:backgroundTint="@color/white"
+  android:gravity="center"
+  android:orientation="vertical"
+  tools:context=".ui.fragments.profile.ProfileFragment"
+  >
+
+  <LinearLayout
+    android:id="@+id/delete_profile"
+    android:layout_width="@dimen/size_40dp"
+    android:layout_height="@dimen/size_40dp"
+    android:layout_gravity="right"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables"
+    android:layout_margin="@dimen/size_20dp"
+    >
+
+    <ImageView
+      android:layout_width="@dimen/size_40dp"
+      android:layout_height="@dimen/size_40dp"
+      android:layout_gravity="center"
+      android:src="@drawable/ic_delete_24"
+      />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/camera_view"
+    android:layout_width="@dimen/size_175dp"
+    android:layout_height="@dimen/size_200dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables"
+    >
+    <ImageView
+      android:layout_width="@dimen/size_100dp"
+      android:layout_height="@dimen/size_100dp"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/size_30dp"
+      android:contentDescription="@string/camera_option"
+      android:src="@drawable/ic_camera"
+      />
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/camera"
+      android:textAlignment="center"
+      android:textColor="@color/black"
+      android:textSize="@dimen/size_24sp"
+      />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/gallery_view"
+    android:layout_width="@dimen/size_175dp"
+    android:layout_height="@dimen/size_200dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables"
+    >
+    <ImageView
+      android:layout_width="@dimen/size_100dp"
+      android:layout_height="@dimen/size_100dp"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/size_30dp"
+      android:contentDescription="@string/gallery_option"
+      android:src="@drawable/ic_art"
+      />
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/gallery"
+      android:textAlignment="center"
+      android:textColor="@color/black"
+      android:textSize="@dimen/size_24sp"
+      />
+  </LinearLayout>
+
+</LinearLayout>

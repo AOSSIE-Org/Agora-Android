@@ -1,0 +1,12 @@
+{
+  "identifier": "james.bond",
+  "password": "this!Password!Is!Very!Very!Strong!",
+  "email": "james.bond@test.com",
+  "firstName": "James",
+  "lastName": "Bond",
+  "securityQuestion": {
+    "crypto": "string",
+    "question": "string",
+    "answer": "string"
+  }
+}

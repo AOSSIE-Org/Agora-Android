@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/grey_color"
+  tools:context=".ui.fragments.invitevoters.InviteVotersFragment"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/size_12dp"
+    android:layout_marginEnd="@dimen/size_12dp"
+    >
+
+    <RelativeLayout
+      android:id="@+id/relative_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/text_input_voter_email"
+      >
+
+      <ImageView
+        android:id="@+id/import_voter"
+        android:layout_width="@dimen/size_35dp"
+        android:layout_height="@dimen/size_35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/import_xlsx"
+        android:tooltipText="@string/import_xlsx"
+        />
+
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_add_voter"
+        style="@style/MainButtonStyle"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="@dimen/size_12dp"
+        android:layout_toStartOf="@id/import_voter"
+        android:backgroundTint="@color/yellow_color"
+        android:text="@string/add_voter"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        />
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/button_invite_voter"
+      style="@style/MainButtonStyle"
+      android:layout_marginTop="15dp"
+      android:layout_marginBottom="15dp"
+      android:backgroundTint="@color/yellow_color"
+      android:text="@string/invite_voter"
+      android:textColor="@android:color/white"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/text_view_swipe"
+      />
+
+    <TextView
+      android:id="@+id/textView13"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      android:text="@string/enter_details_of_voters"
+      android:textColor="@color/black_color"
+      android:textSize="30sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.492"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <TextView
+      android:id="@+id/text_view_swipe"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginRight="8dp"
+      android:gravity="center"
+      android:text="@string/swipe_to_delete_voter"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/recycler_view_voters"
+      />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view_voters"
+      android:layout_width="match_parent"
+      android:layout_height="380dp"
+      android:layout_marginTop="8dp"
+      android:padding="@dimen/size_8dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/relative_layout"
+      tools:item_layout="@layout/list_item_voter_details"
+      />
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/text_input_voter_name"
+      style="@style/TextInputLayoutStyle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:hint="@string/name_of_the_voter"
+      app:boxStrokeColor="@color/colorPrimary"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textView13"
+      >
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/text_input_voter_email"
+      style="@style/TextInputLayoutStyle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:hint="@string/email_of_voter"
+      app:boxStrokeColor="@color/colorPrimary"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/text_input_voter_name"
+      >
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+      android:id="@+id/progress_bar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/progressbar_background"
+      android:padding="@dimen/size_10dp"
+      android:visibility="invisible"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

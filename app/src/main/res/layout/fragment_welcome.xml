@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".ui.fragments.welcome.WelcomeFragment"
+  >
+
+  <androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/view_pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/tab_layout"
+    android:overScrollMode="never"
+    />
+
+  <com.google.android.material.tabs.TabLayout
+    android:id="@+id/tab_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/btn_layout"
+    android:layout_gravity="bottom|center"
+    app:tabBackground="@drawable/tab_selector"
+    app:tabGravity="center"
+    app:tabIndicatorHeight="0dp"
+    app:tabPaddingEnd="@dimen/size_10dp"
+    app:tabPaddingStart="@dimen/size_10dp"
+    app:tabRippleColor="@android:color/transparent"
+    />
+
+  <LinearLayout
+    android:id="@+id/btn_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/size_20dp"
+    android:paddingBottom="@dimen/size_40dp"
+    >
+
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/btn_signup"
+      style="@style/MainButtonStyle"
+      android:layout_width="@dimen/size_300dp"
+      android:layout_height="@dimen/size_48sp"
+      android:layout_gravity="center"
+      android:background="@drawable/yellow_border"
+      android:clickable="true"
+      android:focusable="true"
+      android:text="@string/get_started"
+      android:textColor="@color/black_text_color"
+      />
+
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/btn_login"
+      style="@style/MainButtonStyle"
+      android:layout_width="@dimen/size_300dp"
+      android:layout_height="@dimen/size_48sp"
+      android:layout_gravity="center"
+      android:layout_marginTop="@dimen/size_15dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:text="@string/login"
+      />
+  </LinearLayout>
+</RelativeLayout>
+
+
+
