@@ -9,7 +9,6 @@ on:
       - '*'
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   FB_API_KEY: ${{ secrets.FB_API_KEY }}
   FB_API_SCHEME: ${{ secrets.FB_API_SCHEME }}
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
