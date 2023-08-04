@@ -57,9 +57,6 @@ constructor(
   private val electionDetailsUseCases: ElectionDetailsUseCases
 ) : ViewModel() {
 
-  private val _getBallotResponseStateFlow = MutableStateFlow<ResponseUI<BallotDtoModel>?>(null)
-  var getBallotResponseStateFlow: StateFlow<ResponseUI<BallotDtoModel>?> =
-    _getBallotResponseStateFlow
   private val _getShareResponseStateFlow = MutableStateFlow<ResponseUI<Uri>?>(null)
   var getShareResponseStateFlow: StateFlow<ResponseUI<Uri>?> = _getShareResponseStateFlow
   private val _getResultResponseStateFlow = MutableStateFlow<ResponseUI<WinnerDtoModel>?>(null)
@@ -76,6 +73,9 @@ constructor(
 
   private val _votersListState = MutableStateFlow<List<VotersDtoModel>>(emptyList())
   val votersListState = _votersListState.asStateFlow()
+
+  private val _ballotsListState = MutableStateFlow<List<BallotDtoModel>>(emptyList())
+  val ballotsListState = _ballotsListState.asStateFlow()
 
   private var _electionState = mutableStateOf<ElectionModel?>(null)
   val electionState: State<ElectionModel?> = _electionState
@@ -106,21 +106,38 @@ constructor(
   fun getBallot(
     id: String?
   ) {
-    _getBallotResponseStateFlow.value = ResponseUI.loading()
+    showLoading("Listing ballots...")
     viewModelScope.launch {
       try {
         val response: List<BallotDtoModel> = electionDetailsUseCases.getBallots(id)
         Timber.d(response.toString())
-        _getBallotResponseStateFlow.value = ResponseUI.success(response)
+        _ballotsListState.value = response
+        hideLoading()
       } catch (e: ApiException) {
-        _getBallotResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getBallotsFromDb(id)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getBallotResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getBallotsFromDb(id)
       } catch (e: Exception) {
-        _getBallotResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getBallotsFromDb(id)
       }
+    }
+  }
+
+  private fun getBallotsFromDb(id: String?) {
+    showLoading("Listing ballots...")
+    viewModelScope.launch {
+      getElectionById(id!!)
+        .collect {
+          if (it != null) {
+            _ballotsListState.value = (it.ballot as List<BallotDtoModel>)
+          }
+          hideLoading()
+        }
     }
   }
 

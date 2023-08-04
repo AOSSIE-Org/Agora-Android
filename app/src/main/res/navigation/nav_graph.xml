@@ -272,8 +272,7 @@
   <fragment
     android:id="@+id/ballotFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.electionDetails.BallotFragment"
-    android:label="Ballot"
-    tools:layout="@layout/fragment_ballot">
+    android:label="Ballot">
     <argument
       android:name="id"
       app:argType="string" />
