@@ -11,7 +11,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.data.db.PreferenceProvider
@@ -44,9 +43,6 @@ constructor(
   private val currentDate: Date = Calendar.getInstance()
     .time
   private val date: String = formatter.format(currentDate)
-
-  private val _progressAndErrorState = MutableStateFlow (ScreensState())
-  val progressAndErrorState = _progressAndErrorState.asStateFlow()
 
   private val _countMediatorLiveData = MediatorLiveData<MutableMap<String, Int>>()
   val countMediatorLiveData = _countMediatorLiveData
