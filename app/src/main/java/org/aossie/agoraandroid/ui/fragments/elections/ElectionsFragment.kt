@@ -1,9 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.elections
 
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
@@ -15,6 +17,7 @@ import org.aossie.agoraandroid.ui.screens.elections.ElectionsScreen
 import org.aossie.agoraandroid.ui.theme.AgoraTheme
 import javax.inject.Inject
 
+@RequiresApi(VERSION_CODES.O)
 class ElectionsFragment
 @Inject
 constructor(

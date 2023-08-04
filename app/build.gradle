@@ -147,10 +147,6 @@ dependencies {
   // coroutine
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion"
-  //horizontal calendar
-  implementation "devs.mulham.horizontalcalendar:horizontalcalendar:$calendarVersion"
-  //day view lib
-  implementation "com.linkedin.android.tachyon:tachyon:$tachyonVersion"
   //picasso
   implementation "com.squareup.picasso:picasso:$picassoVersion"
   //timber
@@ -213,4 +209,8 @@ dependencies {
 
   //extended Material Icons
   implementation "androidx.compose.material:material-icons-extended:1.4.3"
+
+  //date and time picker
+  implementation "com.maxkeppeler.sheets-compose-dialogs:core:$rootProject.date_time_picker"
+  implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$rootProject.date_time_picker"
 }
