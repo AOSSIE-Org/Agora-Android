@@ -262,7 +262,7 @@
   <string name="active_elections_not_started">Active Elections Cannot Be Deleted</string>
   <string name="election_result_pie_chart">Election Result in percentage</string>
   <string name="election_result_bar_chart">Election Result in votes</string>
-  <string name="winner_is">Winner is</string>
+  <string name="winner_is">is the winner</string>
   <string name="login_cancelled">Login Cancelled</string>
   <string name="otp_sent">OTP is sent to your registered email address</string>
   <string name="import_xlsx">Import</string>
@@ -325,9 +325,10 @@
   <string name="auth_failed">Authentication Failed.</string>
   <string name="bio_auth">Biometric Authentication</string>
   <string name="bio_auth_msg">User needs to be authenticated before using the app</string>
-  <string name="bar_chart">Bar Chart</string>
-  <string name="pie_chart">Pie Chart</string>
+  <string name="bar_chart">• Bar Chart</string>
+  <string name="pie_chart">• Pie Chart</string>
   <string name="time_tracker">Start time is smaller than Current time </string>
+  <string name="total_votes">Total Votes</string>
   <string name="voters_invited">Voters Invited.</string>
   <string name="empty_voters_list">Please add voters to Invite.</string>
   <string name="verifying_otp">Verifying OTP...</string>

@@ -57,6 +57,7 @@ buildscript {
     date_time_picker = '1.0.2'
     composeLiveData = '1.4.3'
     languageLibrary = '1.3.0'
+    composeScreenShot = '1.0.3'
   }
 
   repositories {
