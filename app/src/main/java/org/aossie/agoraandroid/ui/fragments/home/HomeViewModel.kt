@@ -8,11 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -24,7 +21,6 @@ import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.LocaleUtil
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -42,8 +38,6 @@ constructor(
   private val homeViewModelUseCases: HomeFragmentUseCases,
   private val prefs: PreferenceProvider
 ) : ViewModel() {
-  private val _getLogoutStateFLow: MutableStateFlow<ResponseUI<Any>?> = MutableStateFlow(null)
-  val getLogoutStateFlow: StateFlow<ResponseUI<Any>?> = _getLogoutStateFLow
   var sessionExpiredListener: SessionExpiredListener? = null
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
   private val currentDate: Date = Calendar.getInstance()
@@ -125,25 +119,20 @@ constructor(
 
   fun doLogout() {
     showLoading("Logging you out...")
-    _getLogoutStateFLow.value = ResponseUI.loading()
     viewModelScope.launch {
       try {
         homeViewModelUseCases.logOut()
         hideSnackBar()
         hideLoading()
         _uiEvents.emit(UiEvents.UserLoggedOut)
-        _getLogoutStateFLow.value = ResponseUI.success()
       } catch (e: ApiException) {
         showMessage(e.message!!)
-        _getLogoutStateFLow.value = ResponseUI.error(e.message)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
         showMessage(e.message!!)
-        _getLogoutStateFLow.value = ResponseUI.error(e.message)
       } catch (e: Exception) {
         showMessage(e.message!!)
-        _getLogoutStateFLow.value = ResponseUI.error(e.message)
       }
     }
   }

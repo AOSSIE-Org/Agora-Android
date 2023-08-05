@@ -332,5 +332,7 @@
   <string name="login_error">Login error</string>
   <string name="view_details">View details</string>
   <string name="language">Language</string>
+  <string name="storage_permission_required">Storage permission required for this feature to be available. Please grant the permission.</string>
+  <string name="camera_permission_required">Camera permission required for this feature to be available. Please grant the permission.</string>
 </resources>
 
