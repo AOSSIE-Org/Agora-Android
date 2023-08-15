@@ -198,6 +198,7 @@ dependencies {
   androidTestImplementation composeBom
   implementation 'androidx.compose.material3:material3'
   implementation 'androidx.compose.material:material'
+  implementation 'androidx.compose.ui:ui-viewbinding'
   implementation 'androidx.compose.ui:ui-tooling-preview'
   debugImplementation 'androidx.compose.ui:ui-tooling'
   androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
@@ -231,4 +232,10 @@ dependencies {
 
   //for language change
   implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
+
+  //navigation
+  implementation "androidx.navigation:navigation-compose:$rootProject.nav_version"
+
+  //Splash Screen
+  implementation "androidx.core:core-splashscreen:$rootProject.splash_screen"
 }

@@ -1,6 +1,5 @@
 package org.aossie.agoraandroid.utilities
 
-import android.app.Activity
 import android.app.KeyguardManager
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -8,7 +7,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
@@ -18,10 +16,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavGraph
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
-import com.takusemba.spotlight.OnSpotlightListener
-import com.takusemba.spotlight.Spotlight
-import org.aossie.agoraandroid.R.color
-import org.aossie.agoraandroid.utilities.AppConstants.SPOTLIGHT_ANIMATION_DURATION
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 
@@ -45,28 +39,6 @@ fun Bitmap.toByteArray(type: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG):
   val bos = ByteArrayOutputStream()
   this.compress(type, 10, bos)
   return bos.toByteArray()
-}
-
-fun Activity.getSpotlight(
-  targetData: TargetData,
-  dismissSpotlight: () -> Unit,
-  skipSpotlight: () -> Unit,
-  showNextSpotlight: () -> Unit
-): Spotlight {
-  return Spotlight.Builder(this)
-    .setTargets(getTarget(this, targetData, dismissSpotlight, skipSpotlight))
-    .setBackgroundColorRes(color.spotlight_background)
-    .setDuration(SPOTLIGHT_ANIMATION_DURATION)
-    .setAnimation(DecelerateInterpolator(2f))
-    .setOnSpotlightListener(object : OnSpotlightListener {
-      override fun onEnded() {
-        showNextSpotlight.invoke()
-      }
-
-      override fun onStarted() {
-      }
-    })
-    .build()
 }
 
 fun Context.canAuthenticateBiometric(): Boolean {
