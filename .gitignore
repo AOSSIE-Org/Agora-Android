@@ -1,11 +1,8 @@
 *.iml
 .gradle
+.idea/
 /local.properties
-/app/google-services.json
-/signing.properties
 .DS_Store
 /build
 /captures
 .externalNativeBuild
-.idea
-lint/* 

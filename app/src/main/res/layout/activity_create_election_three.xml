@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white_background"
+    tools:context=".createElection.CreateElectionThree">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/select_voting_algorithm"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="351dp"
+                    android:layout_height="618dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.166"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_oklahoma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/oklahoma"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_button_range_voting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/rangevoting"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_ranked_pairs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/rankedpairs"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_sav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/satisfaction_approval_voting"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_smith_set"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/smithset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_spav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/sequential_proportional_approval_voting"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_approval"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/approval"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_exhaustive_ballot_with_dropoff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/exhaustive_ballot_with_dropoff"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_copeland"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/copeland"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_uncovered_set"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/uncovered_set"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_broda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/borda"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_minimax_condorcet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/minimax_condorcet"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_nanson"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/nanson"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_kemeny_young"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/kemeny_young"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_random_ballot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/random_ballot"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_contingent_method"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/contingent_method"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+
+                    <RadioButton
+                        android:id="@+id/radio_button_instant_runoff_2_round"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/instant_runoff_2_round"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_baldwin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/baldwin"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_exhaustive_ballot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#FCD116"
+                        android:text="@string/exhaustive_ballot"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/button_to_final_step"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="20sp"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="#FCD116"
+                    android:text="@string/next"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_to_final_step" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
