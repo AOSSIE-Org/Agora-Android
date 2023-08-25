@@ -1,79 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context=".ui.activities.main.MainActivity"
-  >
-
-  <LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:background="@drawable/white_background"
+    tools:context=".main.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-      android:id="@+id/toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:animateLayoutChanges="true"
-      android:background="@color/colorPrimaryDark"
-      app:layout_scrollFlags="scroll|snap|enterAlways"
-      >
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="146dp"
+        android:layout_height="138dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:contentDescription="@string/content_description_for_agora_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/agora" />
 
-      <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_back"
-        android:layout_width="@dimen/size_30dp"
-        android:layout_height="@dimen/size_30dp"
-        android:layout_gravity="start"
-        android:layout_marginEnd="@dimen/size_15dp"
-        android:padding="@dimen/size_5dp"
-        app:srcCompat="@drawable/ic_arrow_back_white_24dp"
-        />
+    <TextView
+        android:id="@+id/agoratext"
+        android:layout_width="212dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center"
+        android:text="@string/agora_vote"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-      <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="@string/title"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="@dimen/size_18sp"
-        />
-    </androidx.appcompat.widget.Toolbar>
+    <Button
+        android:id="@+id/signup"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/sign_up"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/button_facebook_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      >
+    <Button
+        android:id="@+id/button_facebook_login"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#3B5998"
+        android:text="@string/continue_with_facebook"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/signin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-      <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
-        />
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-      android:id="@+id/bottom_navigation"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:animateLayoutChanges="true"
-      android:foreground="?attr/selectableItemBackground"
-      android:textSize="@dimen/size_10sp"
-      app:itemIconSize="@dimen/size_22dp"
-      app:menu="@menu/bottom_nav_menu"
-      />
-
-
-  </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <Button
+        android:id="@+id/signin"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#FCD116"
+        android:text="@string/log_in"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,291 +2,391 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_color"
-    >
-
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      >
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_8dp"
-        android:padding="@dimen/size_8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-      <TextView
-          android:id="@+id/tv_dashboard"
-          android:layout_width="@dimen/size_150dp"
-          android:layout_height="wrap_content"
-          android:background="@drawable/grey_cornered_background"
-          android:textColor="@color/black"
-          android:textSize="@dimen/size_24sp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          />
+        android:layout_height="wrap_content">
 
-      <androidx.appcompat.widget.AppCompatButton
-          android:id="@+id/button_create_election"
-          style="@style/MainButtonStyle"
-          android:enabled="false"
-          android:layout_marginHorizontal="@dimen/size_24dp"
-          android:layout_marginTop="@dimen/size_75dp"
-          android:textColor="@android:color/white"
-          android:textSize="14sp"
-          android:textStyle="bold"
-          android:backgroundTint="#A9A9A9"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/card_view_finished_elections"
-          />
-      <androidx.cardview.widget.CardView
-          android:id="@+id/card_view_total_elections"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/size_12dp"
-          app:cardCornerRadius="@dimen/size_10dp"
-          app:cardBackgroundColor="#DCDCDC"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_dashboard"
-          >
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_total_elections"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-          <TextView
-              android:id="@+id/total_elections"
-              android:layout_width="@dimen/size_200dp"
-              android:layout_height="wrap_content"
-              android:gravity="center"
-              android:singleLine="true"
-              android:background="@drawable/grey_cornered_background"
-              android:textSize="@dimen/size_18sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toStartOf="@+id/text_view_total_count"
-              app:layout_constraintStart_toEndOf="@+id/constraintLayout1"
-              app:layout_constraintTop_toTopOf="parent"
-              />
+                <TextView
+                    android:id="@+id/total_elections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:text="@string/total_nelections"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView8"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-          <TextView
-              android:id="@+id/text_view_total_count"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="wrap_content"
-              android:layout_marginEnd="@dimen/size_8dp"
-              android:singleLine="true"
-              android:background="@drawable/grey_cornered_background"
-              android:textSize="@dimen/size_24sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toEndOf="@+id/total_elections"
-              app:layout_constraintTop_toTopOf="parent"
-              />
+                <TextView
+                    android:id="@+id/text_view_total_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/zero"
+                    android:textSize="70sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView8"
+                    app:layout_constraintTop_toBottomOf="@+id/total_elections" />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView8"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="#FE9D18"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-          <androidx.constraintlayout.widget.ConstraintLayout
-              android:id="@+id/constraintLayout1"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="@dimen/size_35dp"
-              android:layout_margin="@dimen/size_16dp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              android:background="@drawable/grey_cornered_background">
-          </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-      </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/agora_vote"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_view_carousel_white" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-      <androidx.cardview.widget.CardView
-          android:id="@+id/card_view_pending_elections"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/size_12dp"
-          app:cardCornerRadius="@dimen/size_10dp"
-          app:cardBackgroundColor="#DCDCDC"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/card_view_total_elections"
-          >
+                </androidx.cardview.widget.CardView>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-          <TextView
-              android:id="@+id/pending_elections"
-              android:layout_width="@dimen/size_200dp"
-              android:layout_height="wrap_content"
-              android:gravity="center"
-              android:singleLine="true"
-              android:background="@drawable/grey_cornered_background"
-              android:textSize="@dimen/size_18sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toStartOf="@+id/text_view_pending_count"
-              app:layout_constraintStart_toEndOf="@+id/constraintLayout2"
-              app:layout_constraintTop_toTopOf="parent"
-              />
-
-          <TextView
-              android:id="@+id/text_view_pending_count"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="wrap_content"
-              android:singleLine="true"
-              android:layout_marginEnd="@dimen/size_8dp"
-              android:background="@drawable/grey_cornered_background"
-              android:textSize="@dimen/size_24sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toEndOf="@+id/pending_elections"
-              app:layout_constraintTop_toTopOf="parent"
-              />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_pending_elections"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_total_elections">
 
 
-          <androidx.constraintlayout.widget.ConstraintLayout
-              android:id="@+id/constraintLayout2"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="@dimen/size_35dp"
-              android:layout_margin="@dimen/size_16dp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              android:background="@drawable/grey_cornered_background"
-              >
-          </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-      </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/pending_elections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:text="@string/pending_nelections"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView9"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-      <androidx.cardview.widget.CardView
-          android:id="@+id/card_view_active_elections"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/size_12dp"
-          app:cardCornerRadius="@dimen/size_10dp"
-          app:cardBackgroundColor="#DCDCDC"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/card_view_pending_elections"
-          >
+                <TextView
+                    android:id="@+id/text_view_pending_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/zero"
+                    android:textSize="70sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView9"
+                    app:layout_constraintTop_toBottomOf="@+id/pending_elections"
+                    app:layout_constraintVertical_bias="0.518" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView9"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="#4BA64F"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-          <TextView
-              android:id="@+id/active_elections"
-              android:layout_width="@dimen/size_200dp"
-              android:layout_height="wrap_content"
-              android:gravity="center"
-              android:singleLine="true"
-              android:background="@drawable/grey_cornered_background"
-              android:textSize="@dimen/size_18sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toStartOf="@+id/text_view_active_count"
-              app:layout_constraintStart_toEndOf="@+id/constraintLayout3"
-              app:layout_constraintTop_toTopOf="parent"
-              />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-          <TextView
-              android:id="@+id/text_view_active_count"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="wrap_content"
-              android:singleLine="true"
-              android:background="@drawable/grey_cornered_background"
-              android:layout_marginEnd="@dimen/size_8dp"
-              android:textSize="@dimen/size_24sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toEndOf="@+id/active_elections"
-              app:layout_constraintTop_toTopOf="parent"
-              />
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/agora_vote"
 
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_access_time" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-          <androidx.constraintlayout.widget.ConstraintLayout
-              android:id="@+id/constraintLayout3"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="@dimen/size_35dp"
-              android:layout_margin="@dimen/size_16dp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              android:background="@drawable/grey_cornered_background"
-              >
-          </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-      </androidx.cardview.widget.CardView>
-
-      <androidx.cardview.widget.CardView
-          android:id="@+id/card_view_finished_elections"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/size_12dp"
-          app:cardCornerRadius="@dimen/size_10dp"
-          app:cardBackgroundColor="#DCDCDC"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/card_view_active_elections"
-          >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-          <TextView
-              android:id="@+id/finished_elections"
-              android:layout_width="@dimen/size_200dp"
-              android:layout_height="wrap_content"
-              android:gravity="center"
-              android:textColor="@color/black_text_color"
-              android:textSize="@dimen/size_18sp"
-              android:singleLine="true"
-              android:background="@drawable/grey_cornered_background"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toStartOf="@+id/text_view_finished_count"
-              app:layout_constraintStart_toEndOf="@+id/constraintLayout4"
-              app:layout_constraintTop_toTopOf="parent"
-              />
-
-          <TextView
-              android:id="@+id/text_view_finished_count"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="wrap_content"
-              android:singleLine="true"
-              android:background="@drawable/grey_cornered_background"
-              android:layout_marginEnd="@dimen/size_8dp"
-              android:textSize="@dimen/size_24sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toEndOf="@+id/finished_elections"
-              app:layout_constraintTop_toTopOf="parent"
-              />
+                </androidx.cardview.widget.CardView>
 
 
-          <androidx.constraintlayout.widget.ConstraintLayout
-              android:id="@+id/constraintLayout4"
-              android:layout_width="@dimen/size_35dp"
-              android:layout_height="@dimen/size_35dp"
-              android:layout_margin="@dimen/size_16dp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              android:background="@drawable/grey_cornered_background"
-              >
-          </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-      </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_active_elections"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_pending_elections">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/active_elections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:text="@string/active_nelections"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView10"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_view_active_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/zero"
+                    android:textSize="70sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView10"
+                    app:layout_constraintTop_toBottomOf="@+id/active_elections" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView10"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="#E53A36"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/agora_vote"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_play_arrow" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_finished_elections"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_active_elections">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/finished_elections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:text="@string/finished_nelections"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView11"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_view_finished_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/zero"
+                    android:textSize="70sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView11"
+                    app:layout_constraintTop_toBottomOf="@+id/finished_elections" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView11"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="#05b0c5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/agora_vote"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_done_all" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_create_election"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#FCD116"
+            android:text="@string/Create_Election"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_finished_elections" />
+
+        <TextView
+            android:layout_width="380dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_create_election" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </ScrollView>

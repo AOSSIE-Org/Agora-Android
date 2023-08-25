@@ -19,32 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
--keep,allowobfuscation,allowshrinking interface retrofit2.Call
--keep,allowobfuscation,allowshrinking class retrofit2.Response
-
-# With R8 full mode generic signatures are stripped for classes that are not
-# kept. Suspend functions are wrapped in continuations where the type argument
-# is used.
--keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
-
-#DataStore
--keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
-     <fields>;
- }
-
-#Facebook Login
--keepnames class com.facebook.FacebookActivity
--keepnames class com.facebook.CustomTabActivity
--keep class com.facebook.login.Login
--keep class com.facebook.android.*
--keep class android.webkit.WebViewClient
--keep class * extends android.webkit.WebViewClient
--keepclassmembers class * extends android.webkit.WebViewClient {
-    <methods>;
-}
-
--keepattributes Signature
--keepattributes *Annotation*
-
