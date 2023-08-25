@@ -50,7 +50,7 @@
         android:name=".ui.activities.main.MainActivity"
         android:configChanges="orientation|screenSize"
         android:theme="@style/SplashTheme"
-        android:windowSoftInputMode="adjustResize|stateVisible"
+        android:windowSoftInputMode="adjustResize|stateHidden"
         android:launchMode="singleTask"
         android:exported="true">
     <intent-filter>

@@ -8,8 +8,7 @@
   <fragment
     android:id="@+id/welcomeFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.welcome.WelcomeFragment"
-    android:label="Welcome"
-    tools:layout="@layout/fragment_welcome">
+    android:label="Welcome">
     <action
       android:id="@+id/action_welcomeFragment_to_loginFragment"
       app:destination="@+id/loginFragment"
