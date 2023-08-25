@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.fragments.electionDetails.ResultFragment"
+  >
+
+  <androidx.cardview.widget.CardView
+    android:id="@+id/result_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:layout_marginHorizontal="@dimen/size_20dp"
+    android:layout_marginVertical="@dimen/size_40dp"
+    >
+
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      >
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="@dimen/size_10dp"
+          >
+
+          <ImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/size_150dp"
+            android:layout_height="@dimen/size_150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/size_8dp"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/agora"
+            />
+
+          <ImageView
+            android:id="@+id/share_result"
+            android:layout_width="@dimen/size_28dp"
+            android:layout_height="@dimen/size_28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/size_8dp"
+            android:src="@drawable/ic_share_black_24dp"
+            android:tooltipText="@string/share"
+            app:tint="@color/yellow"
+            />
+
+          <ImageView
+            android:id="@+id/export_result"
+            android:layout_width="@dimen/size_28dp"
+            android:layout_height="@dimen/size_28dp"
+            android:layout_below="@id/share_result"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/size_8dp"
+            android:src="@drawable/import_xlsx"
+            android:tooltipText="@string/export_xlsx"
+            />
+        </RelativeLayout>
+
+        <TextView
+          android:id="@+id/tv_title"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="8dp"
+          android:text="@string/winner_is"
+          android:textSize="36sp"
+          android:textStyle="bold"
+          />
+
+        <TextView
+          android:id="@+id/text_view_winner_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="8dp"
+          android:layout_marginVertical="@dimen/size_12dp"
+          android:text="@string/winner_name"
+          android:textColor="@color/colorPrimary"
+          android:textSize="30sp"
+          android:textStyle="bold"
+          />
+
+        <com.google.android.material.tabs.TabLayout
+          android:id="@+id/tab_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom|center"
+          app:tabGravity="center"
+          />
+
+        <androidx.viewpager2.widget.ViewPager2
+          android:id="@+id/view_pager"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:overScrollMode="never"
+          />
+
+      </LinearLayout>
+
+    </ScrollView>
+
+  </androidx.cardview.widget.CardView>
+
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="invisible"
+    />
+
+  <TextView
+    android:id="@+id/tv_no_result"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:text="@string/no_result"
+    android:textSize="@dimen/size_18sp"
+    android:visibility="invisible"
+    />
+
+</RelativeLayout>

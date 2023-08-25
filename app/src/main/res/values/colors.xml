@@ -1,7 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#FCD116</color>
-    <color name="whiteColor">#FFFFFF</color>
+  <color name="colorPrimary">#53D69F</color>
+  <color name="colorPrimaryDark">#29A47F</color>
+  <color name="colorAccent">#F3B63A</color>
+  <color name="whiteColor">#FFFFFF</color>
+  <color name="ic_launcher_background">@color/white</color>
+
+  //logo colors
+  <color name="logo_green">#008751</color>
+  <color name="logo_yellow">#fcd116</color>
+
+  //election colors for reference
+  <color name="red_active_elections">#FF4155</color>
+  <color name="blue_finished_elections">#05b0c5</color>
+  <color name="orange_total_elections">#fe9d18</color>
+  <color name="green_pending_elections">#4ba64f</color>
+
+  <color name="transparent_red_active_elections">#80FF4155</color>
+  <color name="transparent_blue_finished_elections">#8005b0c5</color>
+  <color name="transparent_green_pending_elections">#804ba64f</color>
+
+
+  //main screen tint colors
+  <color name="greenTint">#FF01643D</color>
+  <color name="blueTint">#3B5998</color>
+  <color name="yellowTint">#F3B63A</color>
+
+  //random colors that might be helpful later
+  <color name="hint">#f2f2f2</color>
+  <color name="white">#ffffff</color>
+  <color name="teal100">#B2DFDB</color>
+  <color name="teal400">#26A69A</color>
+  <color name="teal600">#00897B</color>
+  <color name="teal500">#009688</color>
+  <color name="teal700">#00796B</color>
+  <color name="teal900">#004D40</color>
+  <color name="black">#000000</color>
+  <color name="red500">#f44336</color>
+  <color name="deepPurple500">#673AB7</color>
+  <color name="blue500">#2196F3</color>
+  <color name="green500">#4CAF50</color>
+  <color name="deeporange500">#FF5722</color>
+  <color name="grey300">#E0E0E0</color>
+  <color name="grey500">#9E9E9E</color>
+  <color name="grey700">#616161</color>
+  <color name="black_background">#f0000000</color>
+  <color name="seventyBlack">#32000000</color>
+  <color name="black_transparent">#48000000</color>
+  <color name="dark_black_transparent">#68000000</color>
+  <color name="lightgreen800">#558b2f</color>
+  <color name="indigo800">#283593</color>
+  <color name="lightblue600">#039be5</color>
+  <color name="red400">#ef5350</color>
+  <color name="yellow200">#fff59d</color>
+  <color name="yellow700">#fbc02d</color>
+  <color name="red700">#d32f2f</color>
+  <color name="deeppurple700">#512da8</color>
+  <color name="deeppurple100">#D1C4E9</color>
+  <color name="green700">#388e3c</color>
+  <color name="dark_theme_surface">#121212</color>
+  <color name="dark_theme_chat_layout">#212121</color>
+  <color name="dark_theme_chat_bubble">#424242</color>
+  <color name="placeholder_bg">#B3AFAF</color>
+  <color name="darkgreyforavatarbg">#989898</color>
+  <color name="gray_holo_dark">#ff000000</color>
+  <color name="gray_holo_light">#fff3f3f3</color>
+
+  <color name="bottomNav">#F2F2F2</color>
+  <color name="grey">#808080</color>
+  <color name="splash_status_bar">#FFFFFF</color>
+  <color name="splash_navigation_bar">#FFFFFF</color>
+  <color name="splash_background">#FFFFFF</color>
+  <color name="yellow_color">#F3CF40</color>
+  <color name="yellow_gradient_color">#F3CF40</color>
+  <color name="green_gradient_color">#29A47F</color>
+  <color name="button_white_color">#FFFFFF</color>
+  <color name="black_text_color">#000000</color>
+  <color name="grey_background">#A9A9A9</color>
+  <color name="grey_color">#F6F6F6</color>
+  <color name="black_color">#000000</color>
+  <color name="mainButtonColor">#F3B63A</color>
+  <color name="darkSlateColor">#30363d</color>
+
+  <color name="hour_divider">#b0b0b0</color>
+  <color name="half_hour_divider">#e0e0e0</color>
+  <color name="spotlight_background">#BF000000</color>
+  <color name="yellow">#f1c40f</color>
 </resources>

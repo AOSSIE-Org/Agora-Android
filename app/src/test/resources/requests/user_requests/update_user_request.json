@@ -1,0 +1,10 @@
+{
+  "username": "string",
+  "email": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "avatarURL": "string",
+  "twoFactorAuthentication": true,
+  "authToken": {},
+  "trustedDevice": "string"
+}
