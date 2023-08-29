@@ -13,6 +13,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def fbApiScheme = properties.getProperty('fbApiScheme')
 def fbApiKey = properties.getProperty('fbApiKey')
+def fbClientSecret = properties.getProperty('fbClientSecret')
 def secretKey = properties.getProperty('secretKey')
 def serverKey = properties.getProperty('serverKey')
 
@@ -30,6 +31,7 @@ android {
   compileSdkVersion rootProject.ext.compileSdk
   defaultConfig {
     resValue("string", "fbApiKey", fbApiKey)
+    resValue("string", "fbClientSecret", fbClientSecret)
     resValue("string", "fbApiScheme", fbApiScheme)
     resValue("string", "secretKey", secretKey)
     resValue("string", "serverKey", serverKey)
@@ -104,7 +106,6 @@ dependencies {
   testImplementation "junit:junit:$junitVersion"
   androidTestImplementation "androidx.test:runner:$testRunnerVersion"
   androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
-  // Lifecycle components
   implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntime"
   implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExtensions"
   implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
@@ -121,7 +122,6 @@ dependencies {
   //Shimmer
   implementation "com.facebook.shimmer:shimmer:$facebookShimmerVersion"
   //Facebook Login
-  implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
   implementation "com.facebook.android:facebook-android-sdk:$facebookAndroidSDK"
   //Pie Chart
   implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
