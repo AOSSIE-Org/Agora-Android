@@ -1,8 +1,9 @@
 <resources>
   <string name="app_name">Agora Vote</string>
-  <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
+  <string name="continue_with_facebook">Continue With Facebook</string>
   <string name="log_in">LOG IN</string>
   <string name="sign_up">Sign Up</string>
+  <string name="create_account">Create Account</string>
   <string name="content_description_for_agora_logo">Agora Logo</string>
   <string name="user_name">User Name</string>
   <string name="password">Password</string>
@@ -97,11 +98,13 @@
   <string name="swipe_to_delete_candidate">Swipe to delete Candidate</string>
   <string name="enter_details_of_voters">Enter Details of Voters</string>
   <string name="winner_name">Winner Name</string>
+  <string name="answer">Answer</string>
   <string name="security_question_answer">Please Write Your Answer Here</string>
   <string name="security_dropdown">Security Question</string>
   <string name="welcome">Welcome, %1$s!</string>
   <string name="link_sent_please_check_your_email">Link Sent, Please Check Your Emails</string>
   <string name="invalid_username">Invalid Username</string>
+  <string name="invalid_password">Invalid Password</string>
   <string name="something_went_wrong_please_try_again_later">Something Went Wrong. Please Try Again Later</string>
   <string name="internet_connected">Connection Established Successfully</string>
   <string name="ballots_are_completely_secret">Completely secret and never shown to anyone</string>
@@ -325,5 +328,9 @@
   <string name="bar_chart">Bar Chart</string>
   <string name="pie_chart">Pie Chart</string>
   <string name="time_tracker">Start time is smaller than Current time </string>
+  <string name="title_activity_new">NewActivity</string>
+  <string name="authenticating">Authenticating...</string>
+  <string name="facebook_login">Facebook Login...</string>
+  <string name="login_error">Login error</string>
 </resources>
 

@@ -34,8 +34,7 @@
   <fragment
     android:id="@+id/loginFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment"
-    android:label="Login"
-    tools:layout="@layout/fragment_login">
+    android:label="Login">
     <action
       android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
       app:destination="@+id/forgotPasswordFragment"
@@ -61,8 +60,7 @@
   <fragment
     android:id="@+id/signUpFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment"
-    android:label="Sing Up"
-    tools:layout="@layout/fragment_sign_up" />
+    android:label="Sing Up" />
   <fragment
     android:id="@+id/forgotPasswordFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment"
