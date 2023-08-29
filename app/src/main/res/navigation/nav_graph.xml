@@ -60,13 +60,11 @@
   <fragment
     android:id="@+id/signUpFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment"
-    android:label="Sing Up"
-    tools:layout="@layout/fragment_sign_up" />
+    android:label="Sing Up" />
   <fragment
     android:id="@+id/forgotPasswordFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment"
-    android:label="Forgot Password"
-    tools:layout="@layout/fragment_forgot_password" />
+    android:label="Forgot Password" />
   <fragment
     android:id="@+id/homeFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.home.HomeFragment"

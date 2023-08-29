@@ -3,6 +3,7 @@
   <string name="continue_with_facebook">Continue With Facebook</string>
   <string name="log_in">LOG IN</string>
   <string name="sign_up">Sign Up</string>
+  <string name="create_account">Create Account</string>
   <string name="content_description_for_agora_logo">Agora Logo</string>
   <string name="user_name">User Name</string>
   <string name="password">Password</string>
@@ -97,6 +98,7 @@
   <string name="swipe_to_delete_candidate">Swipe to delete Candidate</string>
   <string name="enter_details_of_voters">Enter Details of Voters</string>
   <string name="winner_name">Winner Name</string>
+  <string name="answer">Answer</string>
   <string name="security_question_answer">Please Write Your Answer Here</string>
   <string name="security_dropdown">Security Question</string>
   <string name="welcome">Welcome, %1$s!</string>
