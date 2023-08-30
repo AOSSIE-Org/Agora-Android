@@ -315,8 +315,7 @@
   <fragment
     android:id="@+id/calendarViewElectionFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment"
-    android:label="Elections"
-    tools:layout="@layout/fragment_calendar_view_election">
+    android:label="Elections">
     <action
       android:id="@+id/action_calendarViewElectionFragment_to_electionDetailsFragment"
       app:destination="@id/electionDetailsFragment"
