@@ -1,18 +1,24 @@
 package org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.R
+import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.domain.model.VerifyOtpDtoModel
 import org.aossie.agoraandroid.domain.useCases.authentication.twoFactorAuthentication.TwoFactorAuthUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
+import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import timber.log.Timber
 import javax.inject.Inject
@@ -24,31 +30,43 @@ constructor(
 ) : ViewModel() {
   lateinit var sessionExpiredListener: SessionExpiredListener
 
-  val user = twoFactorAuthUseCases.getUser()
+  private var user:UserModel? = null
 
-  private val mVerifyOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
+  private val _uiEventsFlow = MutableSharedFlow<UiEvents>()
+  val uiEventsFlow = _uiEventsFlow.asSharedFlow()
 
-  val verifyOtpResponse: StateFlow<ResponseUI<Any>?>
-    get() = mVerifyOtpResponse
+  private val _progressAndErrorState = mutableStateOf(ScreensState())
+  val progressAndErrorState: State<ScreensState> = _progressAndErrorState
 
-  private val mResendOtpResponse = MutableStateFlow<ResponseUI<Any>?>(null)
-
-  val resendOtpResponse: StateFlow<ResponseUI<Any>?>
-    get() = mResendOtpResponse
+  init {
+    viewModelScope.launch {
+      twoFactorAuthUseCases.getUser().collectLatest {
+        user = it
+      }
+    }
+  }
 
   fun verifyOTP(
     otp: String,
-    trustedDevice: Boolean,
-    crypto: String
+    trustedDevice: Boolean
   ) {
     if (otp.isEmpty()) {
-      mVerifyOtpResponse.value = ResponseUI.error(AppConstants.INVALID_OTP_MESSAGE)
+      showMessage(string.enter_otp)
+      return
+    }
+    if(!trustedDevice) {
+      showMessage(R.string.tap_on_checkbox)
+      return
+    }
+    if(user == null) {
+      showMessage(R.string.something_went_wrong_please_try_again_later)
       return
     }
     viewModelScope.launch {
+      showLoading(R.string.verifying_otp)
       try {
         val authResponse =
-          twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(crypto, otp, trustedDevice))
+          twoFactorAuthUseCases.verifyOTP(VerifyOtpDtoModel(user!!.crypto, otp, trustedDevice))
         authResponse.let {
           val user = UserModel(
             it.username, it.email, it.firstName, it.lastName, it.avatarURL, it.crypto,
@@ -58,28 +76,33 @@ constructor(
           )
           twoFactorAuthUseCases.saveUser(user)
           Timber.d(user.toString())
-          mVerifyOtpResponse.value = ResponseUI.success()
+          hideLoading()
+          _uiEventsFlow.emit(UiEvents.TwoFactorAuthComplete)
         }
       } catch (e: ApiException) {
-        mVerifyOtpResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mVerifyOtpResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: Exception) {
-        mVerifyOtpResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       }
     }
   }
 
-  fun resendOTP(
-    username: String,
-  ) {
-    if (username.isEmpty()) {
-      mResendOtpResponse.value = ResponseUI.error(AppConstants.LOGIN_AGAIN_MESSAGE)
+  fun resendOTP() {
+    if(user == null) {
+      showMessage(R.string.something_went_wrong_please_try_again_later)
+      return
+    }
+    val username = user!!.username
+    if (username!!.isEmpty()) {
+      showMessage(AppConstants.LOGIN_AGAIN_MESSAGE)
       return
     }
     viewModelScope.launch {
+      showLoading(R.string.sending_otp)
       try {
         val authResponse = twoFactorAuthUseCases.resendOTP(username)
         authResponse.let {
@@ -90,17 +113,50 @@ constructor(
             it.refreshToken?.expiresOn, it.trustedDevice
           )
           twoFactorAuthUseCases.saveUser(user)
-          mResendOtpResponse.value = ResponseUI.success()
+          showMessage(R.string.otp_sent)
         }
       } catch (e: ApiException) {
-        mResendOtpResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        mResendOtpResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: Exception) {
-        mResendOtpResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       }
     }
+  }
+
+  private fun showLoading(message: Any) {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      loading = Pair(message,true)
+    )
+  }
+
+  private fun showMessage(message: Any) {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      message = Pair(message,true),
+      loading = Pair("",false)
+    )
+    viewModelScope.launch {
+      delay(AppConstants.SNACKBAR_DURATION)
+      hideSnackBar()
+    }
+  }
+
+  private fun hideSnackBar() {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      message = Pair("",false),
+    )
+  }
+
+  private fun hideLoading() {
+    _progressAndErrorState.value=progressAndErrorState.value.copy(
+      loading = Pair("",false)
+    )
+  }
+
+  sealed class UiEvents{
+    object TwoFactorAuthComplete:UiEvents()
   }
 }

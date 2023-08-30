@@ -82,7 +82,7 @@
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
-  <string name="delete_election">delete election</string>
+  <string name="delete_election">Delete election</string>
   <string name="invite_voter">Invite Voters</string>
   <string name="voters">Voters</string>
   <string name="ballot">Ballot</string>
@@ -328,9 +328,17 @@
   <string name="bar_chart">Bar Chart</string>
   <string name="pie_chart">Pie Chart</string>
   <string name="time_tracker">Start time is smaller than Current time </string>
+  <string name="voters_invited">Voters Invited.</string>
+  <string name="empty_voters_list">Please add voters to Invite.</string>
+  <string name="verifying_otp">Verifying OTP...</string>
+  <string name="sending_otp">Sending OTP...</string>
+  <string name="didnt_receive_otp">Didn`t receive OTP?</string>
   <string name="title_activity_new">NewActivity</string>
   <string name="authenticating">Authenticating...</string>
   <string name="facebook_login">Facebook Login...</string>
   <string name="login_error">Login error</string>
+  <string name="view_details">View details</string>
+  <string name="language">Language</string>
+  <string name="storage_permission_required">Storage permission required for this feature to be available. Please grant the permission.</string>
+  <string name="camera_permission_required">Camera permission required for this feature to be available. Please grant the permission.</string>
 </resources>
-
