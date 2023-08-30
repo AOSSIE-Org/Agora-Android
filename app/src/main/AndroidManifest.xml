@@ -2,14 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <uses-feature
-    android:name="android.hardware.camera"
-    android:required="true" />
-
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-feature android:name="android.hardware.camera.any"/>
 
   <application
     android:name=".AgoraApp"
@@ -67,10 +64,8 @@
         android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
-
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-
         <data
             android:scheme="@string/fbApiScheme"
             tools:ignore="AppLinkUrlError" />
@@ -80,6 +75,9 @@
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/fbApiKey" />
+    <meta-data
+      android:name="com.facebook.sdk.ClientToken"
+      android:value="@string/fbClientSecret" />
     <service
       android:name=".FcmService"
       android:exported="false">

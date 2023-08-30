@@ -1,8 +1,9 @@
 <resources>
   <string name="app_name">Agora Vote</string>
-  <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
+  <string name="continue_with_facebook">Continue With Facebook</string>
   <string name="log_in">LOG IN</string>
   <string name="sign_up">Sign Up</string>
+  <string name="create_account">Create Account</string>
   <string name="content_description_for_agora_logo">Agora Logo</string>
   <string name="user_name">User Name</string>
   <string name="password">Password</string>
@@ -81,7 +82,7 @@
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
-  <string name="delete_election">delete election</string>
+  <string name="delete_election">Delete election</string>
   <string name="invite_voter">Invite Voters</string>
   <string name="voters">Voters</string>
   <string name="ballot">Ballot</string>
@@ -97,11 +98,13 @@
   <string name="swipe_to_delete_candidate">Swipe to delete Candidate</string>
   <string name="enter_details_of_voters">Enter Details of Voters</string>
   <string name="winner_name">Winner Name</string>
+  <string name="answer">Answer</string>
   <string name="security_question_answer">Please Write Your Answer Here</string>
   <string name="security_dropdown">Security Question</string>
   <string name="welcome">Welcome, %1$s!</string>
   <string name="link_sent_please_check_your_email">Link Sent, Please Check Your Emails</string>
   <string name="invalid_username">Invalid Username</string>
+  <string name="invalid_password">Invalid Password</string>
   <string name="something_went_wrong_please_try_again_later">Something Went Wrong. Please Try Again Later</string>
   <string name="internet_connected">Connection Established Successfully</string>
   <string name="ballots_are_completely_secret">Completely secret and never shown to anyone</string>
@@ -327,6 +330,15 @@
   <string name="time_tracker">Start time is smaller than Current time </string>
   <string name="voters_invited">Voters Invited.</string>
   <string name="empty_voters_list">Please add voters to Invite.</string>
+  <string name="verifying_otp">Verifying OTP...</string>
+  <string name="sending_otp">Sending OTP...</string>
+  <string name="didnt_receive_otp">Didn`t receive OTP?</string>
+  <string name="title_activity_new">NewActivity</string>
+  <string name="authenticating">Authenticating...</string>
+  <string name="facebook_login">Facebook Login...</string>
+  <string name="login_error">Login error</string>
+  <string name="view_details">View details</string>
+  <string name="language">Language</string>
   <string name="storage_permission_required">Storage permission required for this feature to be available. Please grant the permission.</string>
+  <string name="camera_permission_required">Camera permission required for this feature to be available. Please grant the permission.</string>
 </resources>
-
