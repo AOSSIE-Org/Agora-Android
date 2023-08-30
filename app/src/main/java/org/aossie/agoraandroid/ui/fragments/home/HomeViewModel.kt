@@ -131,9 +131,13 @@ constructor(
         _uiEvents.emit(UiEvents.UserLoggedOut)
       } catch (e: ApiException) {
         showMessage(e.message!!)
+      } catch (e: ApiException) {
+        showMessage(e.message!!)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
+        showMessage(e.message!!)
+      } catch (e: Exception) {
         showMessage(e.message!!)
       } catch (e: Exception) {
         showMessage(e.message!!)
