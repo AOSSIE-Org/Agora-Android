@@ -264,8 +264,7 @@
   <fragment
     android:id="@+id/votersFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.electionDetails.VotersFragment"
-    android:label="Voters"
-    tools:layout="@layout/fragment_voters">
+    android:label="Voters">
     <argument
       android:name="id"
       app:argType="string" />
