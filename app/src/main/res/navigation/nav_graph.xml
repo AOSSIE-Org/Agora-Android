@@ -178,8 +178,7 @@
   <fragment
     android:id="@+id/aboutFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.about.AboutFragment"
-    android:label="About Agora"
-    tools:layout="@layout/fragment_about" />
+    android:label="About Agora" />
   <fragment
     android:id="@+id/shareWithOthersFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.share.ShareWithOthersFragment"
