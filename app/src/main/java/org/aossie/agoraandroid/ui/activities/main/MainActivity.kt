@@ -173,6 +173,10 @@ class MainActivity : AppCompatActivity() {
       -> {
         supportActionBar?.hide()
       }
+      R.id.twoFactorAuthFragment
+      -> {
+        supportActionBar?.hide()
+      }
       else -> {
         window.clearFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
         supportActionBar?.show()

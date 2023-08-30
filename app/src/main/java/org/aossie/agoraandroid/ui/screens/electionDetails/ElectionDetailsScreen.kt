@@ -1,6 +1,9 @@
 package org.aossie.agoraandroid.ui.screens.electionDetails
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,12 +21,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.ui.screens.common.component.PrimaryProgressSnackView
+import org.aossie.agoraandroid.ui.screens.common.component.PrimaryProgressView
+import org.aossie.agoraandroid.ui.screens.common.component.PrimarySnackBar
 import org.aossie.agoraandroid.ui.screens.electionDetails.component.ElectionData
 import org.aossie.agoraandroid.ui.screens.electionDetails.component.ElectionDetailsBottomSheet
 import org.aossie.agoraandroid.ui.screens.electionDetails.events.ElectionDetailsScreenEvent
@@ -76,7 +82,6 @@ fun ElectionDetailsScreen(
             contentDescription = "")
         }
       }
-
     }
   }
 }

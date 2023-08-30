@@ -73,6 +73,7 @@ import org.aossie.agoraandroid.domain.useCases.profile.GetUserDataUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.ProfileUseCases
 import org.aossie.agoraandroid.domain.useCases.profile.ToggleTwoFactorAuthUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.UpdateUserUseCase
+import org.aossie.agoraandroid.ui.di.models.AppContext
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -500,5 +501,11 @@ class AppModule {
     verifyVotersUseCase: VerifyVotersUseCase
   ): CastVoteActivityUseCases {
     return CastVoteActivityUseCases(castVoteUseCase, verifyVotersUseCase)
+  }
+
+  @Singleton
+  @Provides
+  fun provideAppContext(context: Context): AppContext {
+    return AppContext(context)
   }
 }

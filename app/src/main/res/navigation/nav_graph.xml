@@ -34,8 +34,7 @@
   <fragment
     android:id="@+id/loginFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.login.LoginFragment"
-    android:label="Login"
-    tools:layout="@layout/fragment_login">
+    android:label="Login">
     <action
       android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
       app:destination="@+id/forgotPasswordFragment"
@@ -61,18 +60,15 @@
   <fragment
     android:id="@+id/signUpFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.signup.SignUpFragment"
-    android:label="Sing Up"
-    tools:layout="@layout/fragment_sign_up" />
+    android:label="Sing Up" />
   <fragment
     android:id="@+id/forgotPasswordFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.forgotpassword.ForgotPasswordFragment"
-    android:label="Forgot Password"
-    tools:layout="@layout/fragment_forgot_password" />
+    android:label="Forgot Password" />
   <fragment
     android:id="@+id/homeFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.home.HomeFragment"
-    android:label="Home"
-    tools:layout="@layout/fragment_home">
+    android:label="Home">
     <action
       android:id="@+id/action_homeFragment_to_activeElectionsFragment"
       app:destination="@+id/activeElectionsFragment"
@@ -112,8 +108,7 @@
   <fragment
     android:id="@+id/electionsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.elections.ElectionsFragment"
-    android:label="Elections"
-    tools:layout="@layout/fragment_elections">
+    android:label="Elections">
     <action
       android:id="@+id/action_electionsFragment_to_electionDetailsFragment"
       app:destination="@+id/electionDetailsFragment"
@@ -138,8 +133,7 @@
   <fragment
     android:id="@+id/settingsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment"
-    android:label="Settings"
-    tools:layout="@layout/fragment_settings">
+    android:label="Settings">
     <action
       android:id="@+id/action_settingsFragment_to_aboutFragment"
       app:destination="@+id/aboutFragment"
@@ -179,23 +173,19 @@
   <fragment
     android:id="@+id/contactUsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.contactUs.ContactUsFragment"
-    android:label="Contact Us"
-    tools:layout="@layout/fragment_contact_us" />
+    android:label="Contact Us" />
   <fragment
     android:id="@+id/aboutFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.about.AboutFragment"
-    android:label="About Agora"
-    tools:layout="@layout/fragment_about" />
+    android:label="About Agora" />
   <fragment
     android:id="@+id/shareWithOthersFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.share.ShareWithOthersFragment"
-    android:label="Share with Others"
-    tools:layout="@layout/fragment_share_with_others" />
+    android:label="Share with Others" />
   <fragment
     android:id="@+id/activeElectionsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.displayelections.ActiveElectionsFragment"
-    android:label="Active Elections"
-    tools:layout="@layout/fragment_active_elections">
+    android:label="Active Elections">
     <action
       android:id="@+id/action_activeElectionsFragment_to_electionDetailsFragment"
       app:destination="@+id/electionDetailsFragment"
@@ -207,8 +197,7 @@
   <fragment
     android:id="@+id/finishedElectionsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.displayelections.FinishedElectionsFragment"
-    android:label="Finished Elections"
-    tools:layout="@layout/fragment_finished_elections">
+    android:label="Finished Elections">
     <action
       android:id="@+id/action_finishedElectionsFragment_to_electionDetailsFragment"
       app:destination="@+id/electionDetailsFragment"
@@ -346,8 +335,7 @@
   <fragment
     android:id="@+id/twoFactorAuthFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthFragment"
-    android:label="Two Factor Authentication"
-    tools:layout="@layout/fragment_two_factor_auth">
+    android:label="Two Factor Authentication">
     <argument
       android:name="crypto"
       app:argType="string" />
