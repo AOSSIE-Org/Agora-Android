@@ -208,6 +208,7 @@ dependencies {
   debugImplementation 'androidx.compose.ui:ui-test-manifest'
   implementation "androidx.activity:activity-compose:$rootProject.composeActivityVersion"
   implementation "com.google.accompanist:accompanist-systemuicontroller:$rootProject.accompanist_version"
+  implementation "com.google.accompanist:accompanist-permissions:$rootProject.accompanist_version"
 
   //Coil
   implementation("io.coil-kt:coil-compose:$rootProject.coilVersion")
@@ -217,4 +218,7 @@ dependencies {
 
   //for live data to state
   implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
+
+  //for language change
+  implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
 }

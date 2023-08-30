@@ -27,6 +27,7 @@ constructor(
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FACEBOOK_ACCESS_TOKEN = stringPreferencesKey("facebookAccessToken")
     private val ENABLE_BIOMETRIC = booleanPreferencesKey("isBiometricEnabled")
+    private val APP_LANGUAGE = stringPreferencesKey("appLanguage")
   }
 
   private val userDataStore = context.userDataStore
@@ -164,6 +165,23 @@ constructor(
   private suspend fun clearSpotlightData() {
     spotlightDataStore.edit {
       it.clear()
+    }
+  }
+
+  suspend fun updateAppLanguage(lang: String) {
+    userDataStore.edit {
+      it[APP_LANGUAGE] = lang?.let { _lang ->
+        securityUtil.encryptToken(_lang)
+      } ?: ""
+    }
+  }
+
+  fun getAppLanguage(): Flow<String> {
+    return userDataStore.data.map {
+      val language = it[APP_LANGUAGE]?.let { _lang ->
+        securityUtil.decryptToken(_lang)
+      }
+      language ?: "en"
     }
   }
 }
