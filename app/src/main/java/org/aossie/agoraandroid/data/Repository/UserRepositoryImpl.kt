@@ -79,7 +79,7 @@ class UserRepositoryImpl(
       .deleteAllElections()
   }
 
-  override suspend fun sendForgotPasswordLink(username: String?): String {
+  override suspend fun sendForgotPasswordLink(username: String?): List<String> {
     return apiRequest { api.sendForgotPassword(username) }
   }
 

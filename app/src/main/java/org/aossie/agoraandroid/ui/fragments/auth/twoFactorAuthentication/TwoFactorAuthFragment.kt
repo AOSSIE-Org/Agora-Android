@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.databinding.FragmentTwoFactorAuthBinding
-import org.aossie.agoraandroid.domain.model.UserModel
+import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collectLatest
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.HideKeyboard
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.ui.fragments.auth.twoFactorAuthentication.TwoFactorAuthViewModel.UiEvents.TwoFactorAuthComplete
+import org.aossie.agoraandroid.ui.screens.auth.twoFactorAuth.TwoFactorAuthScreen
+import org.aossie.agoraandroid.ui.screens.auth.twoFactorAuth.TwoFactorAuthScreenEvent.OnBackClick
+import org.aossie.agoraandroid.ui.screens.auth.twoFactorAuth.TwoFactorAuthScreenEvent.ResendOtpClick
+import org.aossie.agoraandroid.ui.screens.auth.twoFactorAuth.TwoFactorAuthScreenEvent.VerifyOtpClick
+import org.aossie.agoraandroid.ui.theme.AgoraTheme
+import org.aossie.agoraandroid.utilities.navigateSafely
 import javax.inject.Inject
 
 class TwoFactorAuthFragment
@@ -27,102 +28,49 @@ constructor(
 ) : BaseFragment(viewModelFactory) {
 
   private var crypto: String? = null
-  private var user: UserModel? = null
 
   private val viewModel: TwoFactorAuthViewModel by viewModels {
     viewModelFactory
   }
-  private lateinit var binding: FragmentTwoFactorAuthBinding
+  private lateinit var composeView: ComposeView
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = FragmentTwoFactorAuthBinding.inflate(inflater)
-    return binding.root
+    return ComposeView(requireContext()).also {
+      composeView = it
+    }
   }
 
   override fun onFragmentInitiated() {
     crypto = TwoFactorAuthFragmentArgs.fromBundle(requireArguments()).crypto
     viewModel.sessionExpiredListener = this
 
-    lifecycleScope.launch {
-      viewModel.user.collect {
-        if (it != null) {
-          user = it
+    composeView.setContent {
+      val progressErrorState by viewModel.progressAndErrorState
+      LaunchedEffect(key1 = viewModel) {
+        viewModel.uiEventsFlow.collectLatest {
+          when(it) {
+            TwoFactorAuthComplete -> {
+              findNavController()
+                .navigateSafely(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
+            }
+          }
         }
       }
-    }
-
-    binding.btnVerifyOtp.setOnClickListener {
-      binding.progressBar.show()
-      val otp = binding.otpTil.editText
-        ?.text
-        .toString()
-        .trim { it <= ' ' }
-      if (otp.isEmpty()) {
-        notify(getString(string.enter_otp))
-        binding.progressBar.hide()
-      } else {
-        HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        if (binding.cbTrustedDevice.isChecked) {
-          viewModel.verifyOTP(
-            otp, binding.cbTrustedDevice.isChecked, user!!.crypto!!
-          )
-        } else {
-          binding.progressBar.hide()
-          notify(getString(string.tap_on_checkbox))
+      AgoraTheme {
+        TwoFactorAuthScreen(
+          progressErrorState = progressErrorState
+        ) {event ->
+          when(event) {
+            ResendOtpClick -> viewModel.resendOTP()
+            is VerifyOtpClick -> viewModel.verifyOTP(event.otp, event.trustedDevice)
+            OnBackClick -> findNavController().navigateUp()
+          }
         }
       }
-    }
-
-    binding.tvResendOtp.setOnClickListener {
-      if (user != null) {
-        binding.progressBar.show()
-        viewModel.resendOTP(user!!.username!!)
-      } else {
-        notify(getString(string.something_went_wrong_please_try_again_later))
-      }
-    }
-
-    lifecycleScope.launch {
-      viewModel.verifyOtpResponse.collect {
-        handleVerifyOtp(it)
-      }
-    }
-
-    lifecycleScope.launch {
-      viewModel.resendOtpResponse.collect {
-        handleResendOtp(it)
-      }
-    }
-  }
-
-  private fun handleVerifyOtp(response: ResponseUI<Any>?) = when (response?.status) {
-    ResponseUI.Status.SUCCESS -> {
-      binding.progressBar.hide()
-      Navigation.findNavController(binding.root)
-        .navigate(TwoFactorAuthFragmentDirections.actionTwoFactorAuthFragmentToHomeFragment())
-    }
-    ResponseUI.Status.ERROR -> {
-      binding.progressBar.hide()
-      notify(response?.message)
-    }
-    else -> { // Do Nothing
-    }
-  }
-
-  private fun handleResendOtp(response: ResponseUI<Any>?) = when (response?.status) {
-    ResponseUI.Status.SUCCESS -> {
-      binding.progressBar.hide()
-      notify(getString(string.otp_sent))
-    }
-    ResponseUI.Status.ERROR -> {
-      binding.progressBar.hide()
-      notify(response?.message)
-    }
-    else -> { // Do Nothing
     }
   }
 }
