@@ -39,7 +39,7 @@ interface Api {
   suspend fun resendOTP(@Path("userName") userName: String?): Response<AuthResponse>
 
   @POST("auth/forgotPassword/send/{userName}")
-  suspend fun sendForgotPassword(@Path("userName") userName: String?): Response<String>
+  suspend fun sendForgotPassword(@Path("userName") userName: String?): Response<List<String>>
 
   @GET("election")
   suspend fun getAllElections(): Response<ElectionListResponse>
