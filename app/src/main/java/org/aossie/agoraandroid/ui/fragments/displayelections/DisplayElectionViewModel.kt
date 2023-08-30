@@ -32,10 +32,86 @@ constructor(
   private val date: String = formatter.format(currentDate)
 
   val activeElections = MutableStateFlow<List<ElectionModel>>(emptyList())
-  val pendingElections by lazyDeferred {
-    displayElectionsUseCases.getPendingElections(date)
+  val pendingElections = MutableStateFlow<List<ElectionModel>>(emptyList())
+  val finishedElections = MutableStateFlow<List<ElectionModel>>(emptyList())
+  val search = mutableStateOf("")
+
+  private val _progressAndErrorState = MutableStateFlow (ScreensState())
+  val progressAndErrorState = _progressAndErrorState.asStateFlow()
+
+  fun getFinishedElectionsState(query:String){
+    viewModelScope.launch {
+      try {
+        displayElectionsUseCases.getFinishedElections(date).collectLatest { list ->
+          search.value = query
+          if(query.isEmpty()) {
+            finishedElections.emit(list)
+          }else{
+            finishedElections.emit(filter(list, query))
+          }
+        }
+      } catch (e: IllegalStateException) {
+        showMessage(R.string.something_went_wrong_please_try_again_later)
+      }
+    }
   }
 
+  fun getActiveElectionsState(query:String) {
+    viewModelScope.launch {
+      try {
+        displayElectionsUseCases.getActiveElections(date).collectLatest { list ->
+          search.value = query
+          if(query.isEmpty()) {
+            activeElections.emit(list)
+          }else{
+            activeElections.emit(filter(list, query))
+          }
+        }
+      } catch (e: IllegalStateException) {
+        showMessage(R.string.something_went_wrong_please_try_again_later)
+      }
+    }
+
+  fun getPendingElectionsState(query:String) {
+    viewModelScope.launch {
+      try {
+        displayElectionsUseCases.getPendingElections(date).collectLatest { list ->
+          search.value = query
+          if(query.isEmpty()) {
+            pendingElections.emit(list)
+          }else{
+            pendingElections.emit(filter(list, query))
+          }
+        }
+      } catch (e: IllegalStateException) {
+        showMessage(R.string.something_went_wrong_please_try_again_later)
+      }
+    }
+  }
+
+  private fun showLoading(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      loading = Pair(message,true)
+    )
+  }
+
+  fun showMessage(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair(message,true),
+      loading = Pair("",false)
+    )
+    viewModelScope.launch {
+      delay(AppConstants.SNACKBAR_DURATION)
+      hideSnackBar()
+    }
+  }
+
+  private fun hideSnackBar() {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair("",false)
+    )
+  }
+  
   val finishedElections = MutableStateFlow<List<ElectionModel>>(emptyList())
   val search = mutableStateOf("")
 
@@ -98,7 +174,7 @@ constructor(
       message = Pair("",false)
     )
   }
-
+  
   private fun hideLoading() {
     _progressAndErrorState.value = progressAndErrorState.value.copy(
       loading = Pair("",false)
