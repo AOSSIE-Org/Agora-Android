@@ -8,7 +8,7 @@ class SendForgotPasswordLinkUseCase @Inject constructor(
 ) {
   suspend operator fun invoke(
     username: String?
-  ): String {
+  ): List<String> {
     return repository.sendForgotPasswordLink(username)
   }
 }

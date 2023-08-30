@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R
-import org.aossie.agoraandroid.databinding.FragmentForgotPasswordBinding
+import androidx.navigation.fragment.findNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
-import org.aossie.agoraandroid.utilities.HideKeyboard
-import org.aossie.agoraandroid.utilities.ResponseUI
-import org.aossie.agoraandroid.utilities.hide
-import org.aossie.agoraandroid.utilities.show
+import org.aossie.agoraandroid.ui.screens.auth.forgotPassword.ForgotPasswordScreen
+import org.aossie.agoraandroid.ui.screens.auth.forgotPassword.ForgotPasswordScreenEvents.OnBackIconClick
+import org.aossie.agoraandroid.ui.theme.AgoraTheme
 import javax.inject.Inject
 
 /**
@@ -31,44 +33,44 @@ constructor(
   private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels {
     viewModelFactory
   }
-  private lateinit var binding: FragmentForgotPasswordBinding
+  private lateinit var composeView: ComposeView
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    binding = FragmentForgotPasswordBinding.inflate(inflater)
-    return binding.root
+    return ComposeView(requireContext()).also {
+      composeView = it
+    }
   }
 
   override fun onFragmentInitiated() {
 
-    binding.buttonSendLink.setOnClickListener {
-      val userName = binding.editTextUserName.editText?.text.toString().trim()
-      if (userName.isEmpty()) {
-        notify("Please Enter User Name")
-      } else {
-        HideKeyboard.hideKeyboardInActivity(activity as AppCompatActivity)
-        binding.progressBar.show()
-        forgotPasswordViewModel.sendResetLink(userName)
-      }
-    }
+    composeView.setContent {
 
-    lifecycleScope.launch {
-      forgotPasswordViewModel.getSendResetLinkStateFlow.collect {
-        if (it != null) {
-          when (it.status) {
-            ResponseUI.Status.LOADING -> binding.progressBar.show()
-            ResponseUI.Status.SUCCESS -> {
-              binding.progressBar.hide()
-              notify(getString(R.string.link_sent_please_check_your_email))
+      val userNameState by forgotPasswordViewModel.userNameState.collectAsState()
+      val progressErrorState by forgotPasswordViewModel.progressAndErrorState.collectAsState()
+
+      val systemUiController = rememberSystemUiController()
+      val useDarkIcons = !isSystemInDarkTheme()
+
+      DisposableEffect(systemUiController, useDarkIcons) {
+        systemUiController.setStatusBarColor(
+          color = Color.Transparent,
+          darkIcons = useDarkIcons
+        )
+        onDispose {}
+      }
+      AgoraTheme {
+        ForgotPasswordScreen(progressErrorState,userNameState) { event ->
+          when(event){
+            OnBackIconClick -> {
+              findNavController().navigateUp()
             }
-            ResponseUI.Status.ERROR -> {
-              binding.progressBar.hide()
-              notify(it.message)
+            else -> {
+              forgotPasswordViewModel.onEvent(event)
             }
-            else -> {}
           }
         }
       }
