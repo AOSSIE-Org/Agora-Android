@@ -82,7 +82,7 @@
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
-  <string name="delete_election">delete election</string>
+  <string name="delete_election">Delete election</string>
   <string name="invite_voter">Invite Voters</string>
   <string name="voters">Voters</string>
   <string name="ballot">Ballot</string>
@@ -336,5 +336,8 @@
   <string name="facebook_login">Facebook Login...</string>
   <string name="login_error">Login error</string>
   <string name="view_details">View details</string>
+  <string name="language">Language</string>
+  <string name="storage_permission_required">Storage permission required for this feature to be available. Please grant the permission.</string>
+  <string name="camera_permission_required">Camera permission required for this feature to be available. Please grant the permission.</string>
 </resources>
 

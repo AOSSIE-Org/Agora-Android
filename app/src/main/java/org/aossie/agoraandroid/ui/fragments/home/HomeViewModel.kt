@@ -1,21 +1,27 @@
 package org.aossie.agoraandroid.ui.fragments.home
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.useCases.homeFragment.HomeFragmentUseCases
 import org.aossie.agoraandroid.ui.fragments.auth.SessionExpiredListener
 import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.utilities.ApiException
 import org.aossie.agoraandroid.utilities.AppConstants
+import org.aossie.agoraandroid.utilities.LocaleUtil
 import org.aossie.agoraandroid.utilities.NoInternetException
-import org.aossie.agoraandroid.utilities.ResponseUI
 import org.aossie.agoraandroid.utilities.SessionExpirationException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -30,10 +36,9 @@ const val ACTIVE_ELECTION_COUNT = "activeElectionsCount"
 
 class HomeViewModel @Inject
 constructor(
-  private val homeViewModelUseCases: HomeFragmentUseCases
+  private val homeViewModelUseCases: HomeFragmentUseCases,
+  private val prefs: PreferenceProvider
 ) : ViewModel() {
-  private val _getLogoutStateFLow: MutableStateFlow<ResponseUI<Any>?> = MutableStateFlow(null)
-  val getLogoutStateFlow: StateFlow<ResponseUI<Any>?> = _getLogoutStateFLow
   var sessionExpiredListener: SessionExpiredListener? = null
   private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
   private val currentDate: Date = Calendar.getInstance()
@@ -45,6 +50,15 @@ constructor(
 
   private val _countMediatorLiveData = MediatorLiveData<MutableMap<String, Int>>()
   val countMediatorLiveData = _countMediatorLiveData
+
+  private val _progressAndErrorState = MutableStateFlow (ScreensState())
+  val progressAndErrorState = _progressAndErrorState.asStateFlow()
+
+  private val _uiEvents = MutableSharedFlow<UiEvents>()
+  val uiEvents = _uiEvents.asSharedFlow()
+
+  val appLanguage = prefs.getAppLanguage()
+  val getSupportedLanguages = LocaleUtil.getSupportedLanguages()
 
   init {
     _countMediatorLiveData.value = mutableMapOf(
@@ -108,21 +122,42 @@ constructor(
   }
 
   fun doLogout() {
-    _getLogoutStateFLow.value = ResponseUI.loading()
+    showLoading("Logging you out...")
     viewModelScope.launch {
       try {
         homeViewModelUseCases.logOut()
-        _getLogoutStateFLow.value = ResponseUI.success()
+        hideSnackBar()
+        hideLoading()
+        _uiEvents.emit(UiEvents.UserLoggedOut)
       } catch (e: ApiException) {
-        _getLogoutStateFLow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener?.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getLogoutStateFLow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: Exception) {
-        _getLogoutStateFLow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       }
     }
+  }
+
+  fun changeLanguage(newLanguage: Pair<String, String>, context: Context) {
+    viewModelScope.launch {
+      prefs.updateAppLanguage(newLanguage.second)
+      Lingver.getInstance().setLocale(context, newLanguage.second)
+      delay(500)
+      restartApp(context)
+    }
+  }
+
+  private fun restartApp(context: Context) {
+    val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+    intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+    context.startActivity(intent)
+  }
+
+  sealed class UiEvents{
+    object UserLoggedOut:UiEvents()
   }
 
   private fun showLoading(message: Any) {

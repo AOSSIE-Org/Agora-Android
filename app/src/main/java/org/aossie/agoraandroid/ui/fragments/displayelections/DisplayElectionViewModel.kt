@@ -71,7 +71,6 @@ constructor(
         showMessage(R.string.something_went_wrong_please_try_again_later)
       }
     }
-  }
 
   fun getPendingElectionsState(query:String) {
     viewModelScope.launch {
@@ -128,6 +127,23 @@ constructor(
             finishedElections.emit(list)
           }else{
             finishedElections.emit(filter(list, query))
+          }
+        }
+      } catch (e: IllegalStateException) {
+        showMessage(R.string.something_went_wrong_please_try_again_later)
+      }
+    }
+  }
+
+  fun getActiveElectionsState(query:String) {
+    viewModelScope.launch {
+      try {
+        displayElectionsUseCases.getActiveElections(date).collectLatest { list ->
+          search.value = query
+          if(query.isEmpty()) {
+            activeElections.emit(list)
+          }else{
+            activeElections.emit(filter(list, query))
           }
         }
       } catch (e: IllegalStateException) {
