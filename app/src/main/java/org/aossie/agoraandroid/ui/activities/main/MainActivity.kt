@@ -169,6 +169,9 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS)
         supportActionBar?.hide()
       }
+      R.id.resultFragment -> {
+        supportActionBar?.hide()
+      }
       R.id.settingsFragment
       -> {
         supportActionBar?.hide()
