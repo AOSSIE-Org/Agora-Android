@@ -1,9 +1,11 @@
 package org.aossie.agoraandroid.ui.fragments.electionDetails
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -17,14 +19,18 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.db.PreferenceProvider
+import org.aossie.agoraandroid.ui.activities.castVote.CastVoteActivity
+import org.aossie.agoraandroid.ui.activities.castVote.CastVoteViewModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
 import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsViewModel.UiEvents.ElectionDeleted
 import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsViewModel.UiEvents.InviteVoters
 import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsViewModel.UiEvents.ViewResults
 import org.aossie.agoraandroid.ui.screens.electionDetails.ElectionDetailsScreen
 import org.aossie.agoraandroid.ui.screens.electionDetails.events.ElectionDetailsScreenEvent.BallotClick
+import org.aossie.agoraandroid.ui.screens.electionDetails.events.ElectionDetailsScreenEvent.CastVoteClick
 import org.aossie.agoraandroid.ui.screens.electionDetails.events.ElectionDetailsScreenEvent.ViewVotersClick
 import org.aossie.agoraandroid.ui.theme.AgoraTheme
+import org.aossie.agoraandroid.utilities.AppConstants
 import javax.inject.Inject
 
 /**
@@ -40,6 +46,9 @@ constructor(
 
   private var id: String? = null
   private val electionDetailsViewModel: ElectionDetailsViewModel by viewModels {
+    viewModelFactory
+  }
+  private val castVoteViewModel: CastVoteViewModel by viewModels {
     viewModelFactory
   }
   private lateinit var composeView: ComposeView
@@ -66,10 +75,12 @@ constructor(
     composeView.setContent {
       val progressErrorState by electionDetailsViewModel.progressAndErrorState
       val electionDetails by electionDetailsViewModel.electionState
+      val verifiedVoterStatus by castVoteViewModel.verifiedVoter.collectAsState()
       AgoraTheme {
         ElectionDetailsScreen(
           screenState =  progressErrorState,
-          electionDetails = electionDetails
+          electionDetails = electionDetails,
+          verifiedVoterStatus = verifiedVoterStatus
         ) { event->
           when(event){
             BallotClick -> {
@@ -86,10 +97,22 @@ constructor(
                 )
               findNavController().navigate(action)
             }
+            CastVoteClick -> {
+              val intent = Intent(requireActivity(), CastVoteActivity::class.java)
+              intent.putExtra(AppConstants.ELECTION_ID, id!!)
+              startActivity(intent)
+            }
             else -> electionDetailsViewModel.onEvent(event)
           }
         }
       }
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    id?.let {
+      castVoteViewModel.verifyVoter(it)
     }
   }
 

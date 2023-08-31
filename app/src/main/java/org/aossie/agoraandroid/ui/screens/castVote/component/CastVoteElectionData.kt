@@ -1,4 +1,4 @@
-package org.aossie.agoraandroid.ui.screens.electionDetails.component
+package org.aossie.agoraandroid.ui.screens.castVote.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,11 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +25,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.domain.model.ElectionModel
+import org.aossie.agoraandroid.domain.model.ElectionDtoModel
+import org.aossie.agoraandroid.ui.screens.electionDetails.component.TimeItem
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.AppConstants.Status.ACTIVE
 import org.aossie.agoraandroid.utilities.AppConstants.Status.FINISHED
@@ -42,10 +39,10 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ElectionData(election: ElectionModel, electionStatus: (AppConstants.Status) -> Unit) {
+fun CastVoteElectionData(election: ElectionDtoModel, electionStatus: (AppConstants.Status) -> Unit) {
   val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-  val formattedStartingDate: Date? = formatter.parse(election.start!!)
-  val formattedEndingDate: Date? = formatter.parse(election.end!!)
+  val formattedStartingDate: Date? = formatter.parse(election.startingDate!!)
+  val formattedEndingDate: Date? = formatter.parse(election.endingDate!!)
   val currentDate = Calendar.getInstance().time
   val outFormat = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.ENGLISH)
   val endDate = outFormat.format(formattedEndingDate!!)
@@ -82,15 +79,14 @@ fun ElectionData(election: ElectionModel, electionStatus: (AppConstants.Status) 
       colorContent = MaterialTheme.colorScheme.onPrimaryContainer
     }
   }
-
-  LaunchedEffect(key1 = election) {
+  LaunchedEffect(key1 = true) {
     status?.let(electionStatus)
   }
 
   Column(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(25.dp),
+      .padding(20.dp),
     verticalArrangement = Arrangement.spacedBy(15.dp)
   ) {
     Row(
@@ -132,31 +128,6 @@ fun ElectionData(election: ElectionModel, electionStatus: (AppConstants.Status) 
         text = election.description!!,
         style = MaterialTheme.typography.bodyLarge,
       )
-    }
-    Column(
-      verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-      Text(
-        text = stringResource(id = string.candidates) + " :-",
-        style = MaterialTheme.typography.labelLarge,
-      )
-      LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        itemsIndexed(election.candidates!!) { index, item ->
-          AssistChip(
-            label = {
-              Text(
-                text = item,
-                style = MaterialTheme.typography.titleMedium
-              )
-            },
-            onClick = { },
-            border = AssistChipDefaults.assistChipBorder(
-              borderWidth = 1.dp,
-              borderColor = colorContent
-            )
-          )
-        }
-      }
     }
     TimeItem(
       label = stringResource(id = string.start_at),

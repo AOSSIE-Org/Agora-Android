@@ -6,4 +6,5 @@ sealed class ElectionDetailsScreenEvent{
   object ViewVotersClick:ElectionDetailsScreenEvent()
   object BallotClick:ElectionDetailsScreenEvent()
   object ResultClick:ElectionDetailsScreenEvent()
+  object CastVoteClick:ElectionDetailsScreenEvent()
 }

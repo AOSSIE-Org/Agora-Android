@@ -14,6 +14,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,16 +25,20 @@ import kotlinx.coroutines.launch
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.domain.model.ElectionModel
 import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
+import org.aossie.agoraandroid.ui.screens.common.component.PrimaryButton
 import org.aossie.agoraandroid.ui.screens.common.component.PrimaryProgressSnackView
 import org.aossie.agoraandroid.ui.screens.electionDetails.component.ElectionData
 import org.aossie.agoraandroid.ui.screens.electionDetails.component.ElectionDetailsBottomSheet
 import org.aossie.agoraandroid.ui.screens.electionDetails.events.ElectionDetailsScreenEvent
+import org.aossie.agoraandroid.ui.screens.electionDetails.events.ElectionDetailsScreenEvent.CastVoteClick
+import org.aossie.agoraandroid.utilities.AppConstants.Status
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ElectionDetailsScreen(
   screenState: ScreensState,
   electionDetails: ElectionModel?,
+  verifiedVoterStatus: Boolean,
   onEvent: (ElectionDetailsScreenEvent) -> Unit
 ){
 
@@ -42,6 +48,10 @@ fun ElectionDetailsScreen(
     skipHalfExpanded = false
   )
   val coroutineScope = rememberCoroutineScope()
+
+  val electionStatus = remember {
+    mutableStateOf<Status?>(null)
+  }
 
   ModalBottomSheetLayout(
     sheetState = modalSheetState,
@@ -56,7 +66,18 @@ fun ElectionDetailsScreen(
       electionDetails?.let {election ->
         LazyColumn {
           item {
-            ElectionData(election)
+            ElectionData(election) {
+              electionStatus.value = it
+            }
+          }
+          if(verifiedVoterStatus && electionStatus.value == Status.ACTIVE) {
+            item {
+              Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                PrimaryButton(text = stringResource(id = R.string.cast_vote)) {
+                  onEvent(CastVoteClick)
+                }
+              }
+            }
           }
         }
       }
