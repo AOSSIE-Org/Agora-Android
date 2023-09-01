@@ -57,9 +57,6 @@ constructor(
   private val electionDetailsUseCases: ElectionDetailsUseCases
 ) : ViewModel() {
 
-  private val _getBallotResponseStateFlow = MutableStateFlow<ResponseUI<BallotDtoModel>?>(null)
-  var getBallotResponseStateFlow: StateFlow<ResponseUI<BallotDtoModel>?> =
-    _getBallotResponseStateFlow
   private val _getShareResponseStateFlow = MutableStateFlow<ResponseUI<Uri>?>(null)
   var getShareResponseStateFlow: StateFlow<ResponseUI<Uri>?> = _getShareResponseStateFlow
   private val _getResultResponseStateFlow = MutableStateFlow<ResponseUI<WinnerDtoModel>?>(null)
@@ -77,8 +74,14 @@ constructor(
   private val _votersListState = MutableStateFlow<List<VotersDtoModel>>(emptyList())
   val votersListState = _votersListState.asStateFlow()
 
+  private val _ballotsListState = MutableStateFlow<List<BallotDtoModel>>(emptyList())
+  val ballotsListState = _ballotsListState.asStateFlow()
+
   private var _electionState = mutableStateOf<ElectionModel?>(null)
   val electionState: State<ElectionModel?> = _electionState
+
+  private var _resultState = mutableStateOf<WinnerDtoModel?>(null)
+  val resultState: State<WinnerDtoModel?> = _resultState
 
   private var status: AppConstants.Status? = null
 
@@ -106,21 +109,38 @@ constructor(
   fun getBallot(
     id: String?
   ) {
-    _getBallotResponseStateFlow.value = ResponseUI.loading()
+    showLoading("Listing ballots...")
     viewModelScope.launch {
       try {
         val response: List<BallotDtoModel> = electionDetailsUseCases.getBallots(id)
         Timber.d(response.toString())
-        _getBallotResponseStateFlow.value = ResponseUI.success(response)
+        _ballotsListState.value = response
+        hideLoading()
       } catch (e: ApiException) {
-        _getBallotResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getBallotsFromDb(id)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getBallotResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getBallotsFromDb(id)
       } catch (e: Exception) {
-        _getBallotResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        getBallotsFromDb(id)
       }
+    }
+  }
+
+  private fun getBallotsFromDb(id: String?) {
+    showLoading("Listing ballots...")
+    viewModelScope.launch {
+      getElectionById(id!!)
+        .collect {
+          if (it != null) {
+            _ballotsListState.value = (it.ballot as List<BallotDtoModel>)
+          }
+          hideLoading()
+        }
     }
   }
 
@@ -187,22 +207,23 @@ constructor(
   fun getResult(
     id: String?
   ) {
-    _getResultResponseStateFlow.value = ResponseUI.loading()
+    showLoading("Loading result...")
     viewModelScope.launch {
       try {
         val response = electionDetailsUseCases.getResult(id)
+        hideLoading()
         if (!response.isNullOrEmpty())
-          _getResultResponseStateFlow.value = ResponseUI.success(response[0])
+          _resultState.value = response[0]
         else
-          _getResultResponseStateFlow.value = ResponseUI.success()
+          showMessage("Result Not Found!!")
       } catch (e: ApiException) {
-        _getResultResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: SessionExpirationException) {
         sessionExpiredListener.onSessionExpired()
       } catch (e: NoInternetException) {
-        _getResultResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: Exception) {
-        _getResultResponseStateFlow.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       }
     }
   }
@@ -211,42 +232,44 @@ constructor(
     context: Context,
     bitmap: Bitmap
   ) {
+    showLoading("Sharing result...")
     viewModelScope.launch {
       val btm = withContext(Dispatchers.IO) {
         FileUtils.saveBitmap(context, bitmap)
       }
       btm?.let {
-        _getShareResponseStateFlow.value = ResponseUI.success(it)
+        hideLoading()
+        _uiEventsFlow.emit(UiEvents.ShareFile(it))
       } ?: run {
-        _getShareResponseStateFlow.value =
-          ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
+        showMessage(string.something_went_wrong_please_try_again_later)
       }
     }
   }
 
   fun createExcelFile(
     context: Context,
-    winnerDto: WinnerDtoModel,
     id: String
   ) {
+    if(resultState.value==null){
+      return
+    }
+    showLoading("Creating excel file...")
     viewModelScope.launch {
       val workbook = withContext(Dispatchers.Default) {
-        createWorkbook(context, winnerDto)
+        createWorkbook(context, resultState.value!!)
       }
       try {
         val uri = withContext(Dispatchers.IO) {
           writeToExcelFile(context, workbook, id)
         }
-        _getShareResponseStateFlow.value = ResponseUI.success(uri)
+        hideLoading()
+        _uiEventsFlow.emit(UiEvents.ShareFile(uri))
       } catch (e: FileNotFoundException) {
-        _getShareResponseStateFlow.value =
-          ResponseUI.error(context.getString(string.file_not_available))
+        showMessage(string.file_not_available)
       } catch (e: IOException) {
-        _getShareResponseStateFlow.value =
-          ResponseUI.error(context.getString(string.cannot_write_file))
+        showMessage(string.cannot_write_file)
       } catch (e: Exception) {
-        _getShareResponseStateFlow.value =
-          ResponseUI.error(context.getString(string.something_went_wrong_please_try_again_later))
+        showMessage(string.something_went_wrong_please_try_again_later)
       }
     }
   }
@@ -364,5 +387,6 @@ constructor(
     object ElectionDeleted:UiEvents()
     object InviteVoters:UiEvents()
     object ViewResults:UiEvents()
+    data class ShareFile(val uri: Uri):UiEvents()
   }
 }

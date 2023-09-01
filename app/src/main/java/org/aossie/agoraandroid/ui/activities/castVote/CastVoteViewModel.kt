@@ -1,15 +1,25 @@
 package org.aossie.agoraandroid.ui.activities.castVote
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.domain.model.ElectionDtoModel
 import org.aossie.agoraandroid.domain.useCases.castVoteActivity.CastVoteActivityUseCases
+import org.aossie.agoraandroid.ui.fragments.electionDetails.ElectionDetailsViewModel.UiEvents
+import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.utilities.ApiException
+import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.NoInternetException
 import org.aossie.agoraandroid.utilities.ResponseUI
 import java.net.HttpURLConnection
@@ -23,39 +33,45 @@ constructor(
   private val castVoteActivityUseCases: CastVoteActivityUseCases
 ) : ViewModel() {
 
-  private val mVerifyVoterResponse = MutableStateFlow<ResponseUI<Any>?>(null)
-
-  val verifyVoterResponse: StateFlow<ResponseUI<Any>?>
-    get() = mVerifyVoterResponse
-
   private val _getDeepLinkStateFlow = MutableStateFlow<ResponseUI<String>?>(null)
 
   val getDeepLinkStateFlow: StateFlow<ResponseUI<String>?>
     get() = _getDeepLinkStateFlow
-
-  private val mCastVoteResponse = MutableStateFlow<ResponseUI<Any>?>(null)
-
-  val castVoteResponse: StateFlow<ResponseUI<Any>?>
-    get() = mCastVoteResponse
 
   private val mElection = MutableStateFlow<ElectionDtoModel?>(null)
 
   val election: StateFlow<ElectionDtoModel?>
     get() = mElection
 
+  private val _progressAndErrorState = mutableStateOf(ScreensState())
+  val progressAndErrorState: State<ScreensState> = _progressAndErrorState
+
+  private val _verifiedVoter = MutableStateFlow(false)
+  val verifiedVoter = _verifiedVoter.asStateFlow()
+
+  private val _uiEventsFlow = MutableSharedFlow<UiEvents>()
+  val uiEventsFlow = _uiEventsFlow.asSharedFlow()
+
   fun verifyVoter(id: String) {
+    _verifiedVoter.value = false
     viewModelScope.launch {
       try {
         val electionDtoModel = castVoteActivityUseCases.verifyVotersUseCase(id)
         electionDtoModel._id = id
-        mVerifyVoterResponse.value = ResponseUI.success()
+        _verifiedVoter.value = true
         mElection.value = electionDtoModel
       } catch (e: ApiException) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        delay(2000)
+        _uiEventsFlow.emit(UiEvents.VerifyVoterError)
       } catch (e: NoInternetException) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        delay(2000)
+        _uiEventsFlow.emit(UiEvents.VerifyVoterError)
       } catch (e: Exception) {
-        mVerifyVoterResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
+        delay(2000)
+        _uiEventsFlow.emit(UiEvents.VerifyVoterError)
       }
     }
   }
@@ -65,16 +81,19 @@ constructor(
     ballotInput: String,
     passCode: String
   ) {
+    showLoading("Casting your vote...")
     viewModelScope.launch {
       try {
         castVoteActivityUseCases.castVoteUseCase(id, ballotInput, passCode)
-        mCastVoteResponse.value = ResponseUI.success()
+        showMessage(R.string.vote_successful)
+        delay(2000)
+        _uiEventsFlow.emit(UiEvents.VoteCastSuccessFull)
       } catch (e: ApiException) {
-        mCastVoteResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: NoInternetException) {
-        mCastVoteResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       } catch (e: Exception) {
-        mCastVoteResponse.value = ResponseUI.error(e.message)
+        showMessage(e.message!!)
       }
     }
   }
@@ -100,5 +119,39 @@ constructor(
         }
       }
     }
+  }
+
+  private fun showLoading(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      loading = Pair(message,true)
+    )
+  }
+
+  fun showMessage(message: Any) {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair(message,true),
+      loading = Pair("",false)
+    )
+    viewModelScope.launch {
+      delay(AppConstants.SNACKBAR_DURATION)
+      hideSnackBar()
+    }
+  }
+
+  private fun hideSnackBar() {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      message = Pair("",false)
+    )
+  }
+
+  private fun hideLoading() {
+    _progressAndErrorState.value = progressAndErrorState.value.copy(
+      loading = Pair("",false)
+    )
+  }
+
+  sealed class UiEvents{
+    object VoteCastSuccessFull:UiEvents()
+    object VerifyVoterError:UiEvents()
   }
 }
