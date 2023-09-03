@@ -106,7 +106,6 @@ dependencies {
   testImplementation "junit:junit:$junitVersion"
   androidTestImplementation "androidx.test:runner:$testRunnerVersion"
   androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
-  // Lifecycle components
   implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntime"
   implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExtensions"
   implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
@@ -199,6 +198,7 @@ dependencies {
   androidTestImplementation composeBom
   implementation 'androidx.compose.material3:material3'
   implementation 'androidx.compose.material:material'
+  implementation 'androidx.compose.ui:ui-viewbinding'
   implementation 'androidx.compose.ui:ui-tooling-preview'
   debugImplementation 'androidx.compose.ui:ui-tooling'
   androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
@@ -216,6 +216,12 @@ dependencies {
   //extended Material Icons
   implementation "androidx.compose.material:material-icons-extended:1.4.3"
 
+  //for live data to state
+  implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
+
+  //for language change
+  implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
+
   //date and time picker
   implementation "com.maxkeppeler.sheets-compose-dialogs:core:$rootProject.date_time_picker"
   implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$rootProject.date_time_picker"
@@ -226,4 +232,10 @@ dependencies {
 
   //for language change
   implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
+
+  //navigation
+  implementation "androidx.navigation:navigation-compose:$rootProject.nav_version"
+
+  //Splash Screen
+  implementation "androidx.core:core-splashscreen:$rootProject.splash_screen"
 }

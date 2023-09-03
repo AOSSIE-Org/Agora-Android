@@ -18,7 +18,7 @@
     android:resizeableActivity="true"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/Theme.Agora"
+    android:theme="@style/Theme.App.Starting"
     tools:targetApi="31"
     >
     <activity
@@ -46,7 +46,7 @@
     <activity
         android:name=".ui.activities.main.MainActivity"
         android:configChanges="orientation|screenSize"
-        android:theme="@style/SplashTheme"
+        android:theme="@style/Theme.App.Starting"
         android:windowSoftInputMode="adjustResize|stateHidden"
         android:launchMode="singleTask"
         android:exported="true">

@@ -1,21 +1,16 @@
 package org.aossie.agoraandroid.ui.fragments.settings
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,7 +18,6 @@ import com.facebook.login.LoginManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.data.db.PreferenceProvider
 import org.aossie.agoraandroid.domain.model.UserModel
 import org.aossie.agoraandroid.ui.fragments.BaseFragment
@@ -38,11 +32,6 @@ import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnContact
 import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnLogoutClick
 import org.aossie.agoraandroid.ui.screens.settings.SettingsScreenEvent.OnShareWithOthersClick
 import org.aossie.agoraandroid.ui.theme.AgoraTheme
-import org.aossie.agoraandroid.utilities.isUrl
-import org.aossie.agoraandroid.utilities.toByteArray
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -58,12 +47,7 @@ constructor(
   private val homeViewModel: HomeViewModel by viewModels {
     viewModelFactory
   }
-
-  private var mAvatar = MutableLiveData<File>()
-
- private lateinit var composeView: ComposeView
-
-  private lateinit var mUser: UserModel
+  private lateinit var composeView: ComposeView
 
   private val viewModel: ProfileViewModel by viewModels {
     viewModelFactory
@@ -87,9 +71,9 @@ constructor(
 
       val context = LocalContext.current
       val userState by viewModel.user.collectAsState(UserModel())
+      val profileDataState by viewModel.profileDataState.collectAsState()
       val appLanguageState by homeViewModel.appLanguage.collectAsState("")
       val supportedLang = homeViewModel.getSupportedLanguages
-      val avatar by mAvatar.observeAsState()
       val progressErrorState by homeViewModel.progressAndErrorState.collectAsState()
 
       LaunchedEffect(key1 = Unit) {
@@ -110,22 +94,10 @@ constructor(
             }
           }
         }
-
-        viewModel.user.collect {
-          if (it != null) {
-            mUser = it
-            if (it.avatarURL != null) {
-              if (!it.avatarURL.isUrl()) {
-                val bitmap = decodeBitmap(it.avatarURL)
-                setAvatar(bitmap)
-              }
-            }
-          }
-        }
       }
 
       AgoraTheme {
-        SettingScreen(userState,avatar,appLanguageState,supportedLang,progressErrorState){ event->
+        SettingScreen(userState,profileDataState.avatar,appLanguageState,supportedLang,progressErrorState){ event->
           when(event){
             OnAboutUsClick -> {
               findNavController().navigate(
@@ -159,26 +131,8 @@ constructor(
     }
   }
 
-  private fun decodeBitmap(encodedBitmap: String): Bitmap {
-    val decodedString = Base64.decode(encodedBitmap, Base64.NO_WRAP)
-    return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-  }
-
-  private fun setAvatar(bitmap: Bitmap) {
-    val bytes = bitmap.toByteArray(Bitmap.CompressFormat.PNG)
-    try {
-      val avatar = File(context?.cacheDir, "avatar")
-      if (avatar.exists()) {
-        avatar.delete()
-      }
-      val fos = FileOutputStream(avatar)
-      fos.write(bytes)
-      fos.flush()
-      fos.close()
-      mAvatar.value = avatar
-    } catch (e: IOException) {
-      e.printStackTrace()
-      notify(getString(string.error_loading_image))
-    }
+  override fun onResume() {
+    super.onResume()
+    viewModel.loadData()
   }
 }

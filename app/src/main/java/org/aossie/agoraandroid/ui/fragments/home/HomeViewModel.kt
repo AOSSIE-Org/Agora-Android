@@ -135,8 +135,6 @@ constructor(
         showMessage(e.message!!)
       } catch (e: Exception) {
         showMessage(e.message!!)
-      } catch (e: Exception) {
-        showMessage(e.message!!)
       }
     }
   }

@@ -18,7 +18,6 @@ import androidx.compose.material.icons.rounded.NavigateNext
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -45,7 +44,6 @@ import org.aossie.agoraandroid.ui.screens.common.component.PrimaryProgressSnackV
 import org.aossie.agoraandroid.ui.screens.settings.component.LanguageUpdateDialog
 import java.io.File
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
   userModel: UserModel,

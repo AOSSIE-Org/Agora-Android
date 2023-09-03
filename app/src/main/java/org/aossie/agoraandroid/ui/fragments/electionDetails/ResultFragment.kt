@@ -51,13 +51,7 @@ constructor(
     }
   }
 
-  override fun onFragmentInitiated() {
-    electionDetailsViewModel.sessionExpiredListener = this
-
-    id = VotersFragmentArgs.fromBundle(
-      requireArguments()
-    ).id
-    electionDetailsViewModel.getResult(id)
+  private fun setContent() {
     composeView.setContent {
 
       val progressErrorState by electionDetailsViewModel.progressAndErrorState
@@ -104,5 +98,15 @@ constructor(
         }
       }
     }
+  }
+
+  override fun onFragmentInitiated() {
+    electionDetailsViewModel.sessionExpiredListener = this
+
+    id = VotersFragmentArgs.fromBundle(
+      requireArguments()
+    ).id
+    electionDetailsViewModel.getResult(id)
+    setContent()
   }
 }

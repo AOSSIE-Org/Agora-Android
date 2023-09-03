@@ -59,7 +59,13 @@ fun ElectionDetailsScreen(
     sheetBackgroundColor = MaterialTheme.colorScheme.background,
     sheetContentColor = MaterialTheme.colorScheme.onBackground,
     sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-    sheetContent = ElectionDetailsBottomSheet(onEvent = onEvent,screenState = screenState)
+    sheetContent = ElectionDetailsBottomSheet(
+      onEvent = {
+        coroutineScope.launch {
+          modalSheetState.hide()
+        }
+        onEvent.invoke(it)
+      })
   ) {
     Box(
       modifier = Modifier.fillMaxSize()
@@ -82,7 +88,6 @@ fun ElectionDetailsScreen(
           }
         }
       }
-      PrimaryProgressSnackView(screenState = screenState)
       if(!screenState.loading.second || !screenState.message.second){
         FloatingActionButton(
           modifier = Modifier
@@ -98,6 +103,7 @@ fun ElectionDetailsScreen(
             contentDescription = "")
         }
       }
+      PrimaryProgressSnackView(screenState = screenState)
     }
   }
 }

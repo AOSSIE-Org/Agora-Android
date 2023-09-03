@@ -71,13 +71,15 @@ constructor(
   val uiEvents = _uiEvents.asSharedFlow()
 
   init {
+    loadData()
+  }
+
+  fun loadData() {
     viewModelScope.launch {
       user.collectLatest {
         _userModelState.value = it
-        if(profileDataState.value.avatar==null){
-          val bitmap = decodeBitmap(it.avatarURL!!)
-          setAvatar(bitmap)
-        }
+        val bitmap = decodeBitmap(it.avatarURL!!)
+        setAvatar(bitmap)
         _profileDataState.value = profileDataState.value.copy(
           firstName = it.firstName?:"",
           lastName = it.lastName?:"",
