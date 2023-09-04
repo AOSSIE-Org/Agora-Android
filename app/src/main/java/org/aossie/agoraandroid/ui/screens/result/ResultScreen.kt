@@ -1,5 +1,7 @@
 package org.aossie.agoraandroid.ui.screens.result
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,18 +9,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBackIos
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material.icons.Icons.Rounded
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,7 +39,6 @@ import com.smarttoolfactory.screenshot.ScreenshotBox
 import com.smarttoolfactory.screenshot.rememberScreenshotState
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.R.drawable
-import org.aossie.agoraandroid.R.string
 import org.aossie.agoraandroid.domain.model.WinnerDtoModel
 import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.ui.screens.common.component.PermissionsDialog
@@ -71,65 +70,75 @@ fun ResultScreen(
       onEvent(ResultScreenEvent.OnShareClick(it))
     }
   }
+  var animateFloat by remember {
+    mutableStateOf(0f)
+  }
+  var animateClose = animateFloatAsState(targetValue = animateFloat, label = "")
 
   Scaffold(
-    topBar = {
-      TopAppBar(
-        colors = TopAppBarDefaults.largeTopAppBarColors(
-          containerColor = MaterialTheme.colorScheme.background,
-          titleContentColor = MaterialTheme.colorScheme.onBackground,
-          navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
-          actionIconContentColor = MaterialTheme.colorScheme.primary
-        ),
-        title = {
-          Text(text = stringResource(id = R.string.result))
-        },
-        navigationIcon = {
-          IconButton(onClick = {
-            onEvent(ResultScreenEvent.OnBackClick)
-          }) {
-            Icon(imageVector = Icons.Rounded.ArrowBackIos, contentDescription = "")
-          }
-        },
-        actions = {
-          IconButton(onClick = {
-            mDisplayMenu = !mDisplayMenu
-          }) {
-            Icon(painter = painterResource(id = R.drawable.ic_menu), contentDescription = "")
-          }
-          if(winnerDto?.score?.numerator != null) {
-            DropdownMenu(
-              expanded = mDisplayMenu,
-              onDismissRequest = { mDisplayMenu = false }
-            ) {
-              MenuItem(
-                text = stringResource(id = string.share),
-                icon = painterResource(id = drawable.ic_share_icon),
-                onClick = {
-                  mDisplayMenu = !mDisplayMenu
-                  screenshotState.capture()
+    floatingActionButton = {
+      if(!progressErrorState.loading.second && !progressErrorState.message.second) {
+        Column(
+          verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+          if (winnerDto?.score?.numerator != null && mDisplayMenu) {
+            FloatingActionButton(
+              onClick = {
+                mDisplayMenu = !mDisplayMenu
+                if (mDisplayMenu) {
+                  animateFloat = 45f
+                } else {
+                  animateFloat = 0f
                 }
-              )
-              MenuItem(
-                text = stringResource(id = string.export_xlsx),
-                icon = painterResource(id = drawable.ic_csv_upload),
-                onClick = {
-                  mDisplayMenu = !mDisplayMenu
-                  if(storagePermissionState.status.isGranted){
-                    onEvent(OnExportCSVClick)
-                  }else{
-                    if (storagePermissionState.status.shouldShowRationale) {
-                      permissionDialog.value = Pair(storagePermissionText, true)
-                    } else {
-                      permissionDialog.value = Pair(storagePermissionText, true)
-                    }
+                screenshotState.capture()
+              }
+            ) {
+              Icon(painter = painterResource(id = drawable.ic_share_icon), contentDescription = "")
+            }
+            FloatingActionButton(
+              onClick = {
+                mDisplayMenu = !mDisplayMenu
+                if (mDisplayMenu) {
+                  animateFloat = 45f
+                } else {
+                  animateFloat = 0f
+                }
+                if (storagePermissionState.status.isGranted) {
+                  onEvent(OnExportCSVClick)
+                } else {
+                  if (storagePermissionState.status.shouldShowRationale) {
+                    permissionDialog.value = Pair(storagePermissionText, true)
+                  } else {
+                    permissionDialog.value = Pair(storagePermissionText, true)
                   }
                 }
-              )
+              }
+            ) {
+              Icon(painter = painterResource(id = drawable.ic_csv_upload), contentDescription = "")
             }
           }
+          FloatingActionButton(
+            onClick = {
+              mDisplayMenu = !mDisplayMenu
+              if (mDisplayMenu) {
+                animateFloat = 45f
+              } else {
+                animateFloat = 0f
+              }
+            },
+            containerColor = if (mDisplayMenu) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primaryContainer,
+            contentColor = if (mDisplayMenu) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onPrimaryContainer,
+          ) {
+            Icon(
+              imageVector = Rounded.Add,
+              contentDescription = "",
+              modifier = Modifier
+                .animateContentSize()
+                .rotate(animateClose.value)
+            )
+          }
         }
-      )
+      }
     }
   ) {
     Box(modifier = Modifier

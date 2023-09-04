@@ -68,7 +68,7 @@
   <fragment
     android:id="@+id/homeFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.home.HomeFragment"
-    android:label="Home">
+    android:label="@string/home">
     <action
       android:id="@+id/action_homeFragment_to_activeElectionsFragment"
       app:destination="@+id/activeElectionsFragment"
@@ -120,8 +120,7 @@
   <fragment
     android:id="@+id/profileFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.profile.ProfileFragment"
-    android:label="Account Settings"
-    tools:layout="@layout/fragment_profile">
+    android:label="Account Settings">
     <action
       android:id="@+id/action_profileFragment_to_welcomeFragment"
       app:destination="@id/welcomeFragment"
@@ -133,7 +132,7 @@
   <fragment
     android:id="@+id/settingsFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.settings.SettingsFragment"
-    android:label="Settings">
+    android:label="@string/settings">
     <action
       android:id="@+id/action_settingsFragment_to_aboutFragment"
       app:destination="@+id/aboutFragment"
@@ -311,7 +310,7 @@
   <fragment
     android:id="@+id/calendarViewElectionFragment"
     android:name="org.aossie.agoraandroid.ui.fragments.elections.CalendarViewElectionFragment"
-    android:label="Elections">
+    android:label="@string/calendar">
     <action
       android:id="@+id/action_calendarViewElectionFragment_to_electionDetailsFragment"
       app:destination="@id/electionDetailsFragment"

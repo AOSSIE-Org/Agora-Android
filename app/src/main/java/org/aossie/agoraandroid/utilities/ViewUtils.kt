@@ -46,7 +46,7 @@ fun View.snackbar(message: String?) {
   }
 }
 
-fun View.notifyNetworkChanged(isConnected: Boolean, view: BottomNavigationView) {
+fun View.notifyNetworkChanged(isConnected: Boolean, view: View) {
   val msg: String = if (isConnected)context.getString(R.string.internet_connected) else context.getString(R.string.no_network)
   Snackbar.make(this, msg, Snackbar.LENGTH_INDEFINITE).apply {
     setActionTextColor(ContextCompat.getColor(context, R.color.white))

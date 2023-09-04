@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.Agora</item>
+        <item name="exitAnim">@android:anim/fade_out</item>
+        <item name="enterAnim">@android:anim/fade_in</item>
+    </style>
+</resources>

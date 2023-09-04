@@ -22,14 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.aossie.agoraandroid.R.drawable
 import org.aossie.agoraandroid.R.string
-import org.aossie.agoraandroid.ui.screens.common.Util.ScreensState
 import org.aossie.agoraandroid.ui.screens.common.component.BottomSheetIconActionButton
-import org.aossie.agoraandroid.ui.screens.common.component.PrimaryProgressSnackView
 import org.aossie.agoraandroid.ui.screens.electionDetails.events.ElectionDetailsScreenEvent
 
 @Composable
 fun ElectionDetailsBottomSheet(
-  screenState: ScreensState,
   onEvent: (ElectionDetailsScreenEvent) -> Unit
 ): @Composable() (ColumnScope.() -> Unit) {
   return {
@@ -85,7 +82,6 @@ fun ElectionDetailsBottomSheet(
         }
         Spacer(modifier = Modifier.height(20.dp))
       }
-      PrimaryProgressSnackView(screenState = screenState)
     }
   }
 }

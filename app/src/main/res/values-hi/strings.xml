@@ -327,4 +327,26 @@
   <string name="pie_chart">पाई चार्ट</string>
   <string name="time_tracker">प्रारंभ समय वर्तमान समय से छोटा है</string>
   <string name="language">भाषा</string>
+  <string name="calendar">कैलेंडर</string>
+  <string name="ballot_visibility">बैलेट विजिबिलिटी</string>
+  <string name="create_account">खाता बनाएं</string>
+  <string name="answer">उत्तर</string>
+  <string name="invalid_password">अवैध पासवर्ड</string>
+  <string name="title_activity_new">नई गतिविधि</string>
+  <string name="authenticating">प्रमाणित किया जा रहा है...</string>
+  <string name="facebook_login">फेसबुक लॉगिन...</string>
+  <string name="login_error">लॉगिन त्रुटि</string>
+  <string name="view_details">विवरण देखें</string>
+  <string name="verifying_otp">OTP सत्यापित किया जा रहा है...</string>
+  <string name="sending_otp">OTP भेजा जा रहा है...</string>
+  <string name="didnt_receive_otp">OTP प्राप्त नहीं हुआ?</string>
+  <string name="voters_invited">मतदाताओं को आमंत्रित किया गया।</string>
+  <string name="empty_voters_list">कृपया आमंत्रित करने के लिए मतदाताओं को जोड़ें।</string>
+  <string name="total_votes">कुल मत</string>
+  <string name="invalid_election_name">अमान्य चुनाव का नाम</string>
+  <string name="invalid_election_description">अमान्य चुनाव का विवरण</string>
+  <string name="invalid_start_date">अमान्य प्रारंभ तिथि</string>
+  <string name="invalid_end_date">अमान्य समाप्ति तिथि</string>
+  <string name="storage_permission_required">इस सुविधा के लिए भंडारण अनुमति आवश्यक है। कृपया अनुमति प्रदान करें।</string>
+  <string name="camera_permission_required">इस सुविधा के लिए कैमरा अनुमति आवश्यक है। कृपया अनुमति प्रदान करें।</string>
 </resources>
