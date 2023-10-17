@@ -9,29 +9,28 @@
 _Android Application for Agora Web that uses [Agora](https://gitlab.com/aossie/Agora/): An Electronic Voting Library implemented in Scala. This application uses [Agora Web API](https://gitlab.com/aossie/Agora-Web) as backend application_
 
 ---
-
-#### Screenshots
-
+### Screenshots
 <table>
-    <tr>
-     <td><kbd><img src="./Screenshots/GETSTARTED.jpg"></kbd></td>
-     <td><kbd><img src="./Screenshots/LOGIN.jpg"></kbd></td>
-     <td><kbd><img src="./Screenshots/SIGNUP.jpg"></kbd></td>
-     <td><kbd><img src="./Screenshots/DASHBOARD.jpg"></kbd></td>
-     <td><kbd><img src="./Screenshots/CREATE.jpg"></kbd></td>
-     <tr> 
-      <td><kbd><img src="./Screenshots/CALENDER.jpg"></kbd></td>
-      <td><kbd><img src="./Screenshots/SETTINGS.jpg"></kbd></td>
-      <td><kbd><img src="./Screenshots/PROFILE.jpg"></kbd></td>
-      <td><kbd><img src="./Screenshots/CONTACT.jpg"></kbd></td>
-      <td><kbd><img src="./Screenshots/DETAIL.jpg"></kbd></td>
-    </tr>
-  </table>
+  <tr>
+    <td><img src="./screenshots/GETSTARTED.png" alt="6" width="248px" ></td>
+    <td><img src="./screenshots/LOGIN.png" alt="2" width="248px" ></td>
+    <td><img src="./screenshots/SIGNUP.png" alt="3" width="248px" ></td>
+    <td><img src="./screenshots/DASHBOARD.png" alt="4" width="248px" ></td>
+    <td><img src="./screenshots/CREATE.png" alt="5" width="248px" ></td>
+  </tr>
+  <tr>
+    <td><img src="./screenshots/CALENDAR.png" alt="6" width="248px" ></td>
+    <td><img src="./screenshots/SETTINGS.png" alt="7" width="248px" ></td>
+    <td><img src="./screenshots/PROFILE.png" alt="8" width="248px" ></td>
+    <td><img src="./screenshots/CONTACT.png" alt="9" width="248px" ></td>
+    <td><img src="./screenshots/DETAIL.png" alt="10" width="248px" ></td>
+  </tr>
+</table>
 
 ---
 
 ## Contributing Guidelines
-Please refer to [CONTRIBUTING.md](https://gitlab.com/aossie/agora-android/-/blob/develop/CONTRIBUTING.md)
+Please refer to [CONTRIBUTING.md](https://github.com/narendraanjana09/Agora-Android/CONTRIBUTING.md)
 
 ## Discussion
 Join the discussion channels [Discord](https://discord.com/invite/6mFZ2S846n) [Gitter](https://gitter.im/AOSSIE/Agora-Android)
