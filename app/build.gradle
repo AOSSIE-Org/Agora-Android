@@ -1,15 +1,19 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs"
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'kotlin-parcelize'
+//apply plugin: 'kotlin-android'
+plugins {
+  id 'com.android.application'
+  id 'org.jetbrains.kotlin.android'
+  id 'kotlin-kapt'
+  id 'com.google.gms.google-services'
+  id 'com.google.firebase.crashlytics'
+  id 'kotlin-parcelize'
+  id 'androidx.navigation.safeargs.kotlin'
+}
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def fbApiScheme = properties.getProperty('fbApiScheme')
 def fbApiKey = properties.getProperty('fbApiKey')
+def fbClientSecret = properties.getProperty('fbClientSecret')
 def secretKey = properties.getProperty('secretKey')
 def serverKey = properties.getProperty('serverKey')
 
@@ -23,19 +27,24 @@ android {
   lintOptions {
     baseline file("lint-baseline.xml")
   }
+  namespace 'org.aossie.agoraandroid'
   compileSdkVersion rootProject.ext.compileSdk
   defaultConfig {
     resValue("string", "fbApiKey", fbApiKey)
+    resValue("string", "fbClientSecret", fbClientSecret)
     resValue("string", "fbApiScheme", fbApiScheme)
     resValue("string", "secretKey", secretKey)
     resValue("string", "serverKey", serverKey)
-    vectorDrawables.useSupportLibrary = true
-    applicationId "org.aossie.agoraandroid"
+
+    applicationId 'org.aossie.agoraandroid'
     minSdkVersion rootProject.ext.minSdk
     targetSdkVersion targetSdk
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    vectorDrawables {
+      useSupportLibrary true
+    }
   }
   signingConfigs {
     file(rootProject.file('signing.properties')).with { propFile ->
@@ -67,15 +76,25 @@ android {
       debuggable true
     }
   }
+  kotlinOptions {
+    jvmTarget = '1.8'
+  }
   buildFeatures {
     viewBinding true
+    compose true
+    buildConfig true
   }
-  kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_1_8.toString()
+  composeOptions {
+    kotlinCompilerExtensionVersion "1.3.2"
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
+  }
+  packagingOptions {
+    resources {
+      excludes += '/META-INF/{AL2.0,LGPL2.1}'
+    }
   }
 }
 
@@ -87,8 +106,8 @@ dependencies {
   testImplementation "junit:junit:$junitVersion"
   androidTestImplementation "androidx.test:runner:$testRunnerVersion"
   androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
-  // Lifecycle components
-  implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRuntime"
+  implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExtensions"
   implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
   //Design Support Library
   implementation "com.google.android.material:material:$materialDesignVersion"
@@ -103,7 +122,6 @@ dependencies {
   //Shimmer
   implementation "com.facebook.shimmer:shimmer:$facebookShimmerVersion"
   //Facebook Login
-  implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
   implementation "com.facebook.android:facebook-android-sdk:$facebookAndroidSDK"
   //Pie Chart
   implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
@@ -129,10 +147,6 @@ dependencies {
   // coroutine
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion"
-  //horizontal calendar
-  implementation "devs.mulham.horizontalcalendar:horizontalcalendar:$calendarVersion"
-  //day view lib
-  implementation "com.linkedin.android.tachyon:tachyon:$tachyonVersion"
   //picasso
   implementation "com.squareup.picasso:picasso:$picassoVersion"
   //timber
@@ -177,16 +191,51 @@ dependencies {
 
   //Biometric
   implementation "androidx.biometric:biometric:$biometricLibraryVersion"
+
   // Compose
-  implementation "androidx.compose.runtime:runtime:$rootProject.composeVersion"
-  implementation "androidx.compose.ui:ui:$rootProject.composeVersion"
-  implementation "androidx.compose.foundation:foundation:$rootProject.composeVersion"
-  implementation "androidx.compose.foundation:foundation-layout:$rootProject.composeVersion"
-  implementation "androidx.compose.material:material:$rootProject.composeVersion"
-  implementation "androidx.compose.runtime:runtime-livedata:$rootProject.composeVersion"
-  implementation "androidx.compose.ui:ui-tooling-preview:$rootProject.composeVersion"
-  debugImplementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
-}
-repositories {
-  mavenCentral()
+  def composeBom = platform("androidx.compose:compose-bom:$rootProject.composeBomVersion")
+  implementation composeBom
+  androidTestImplementation composeBom
+  implementation 'androidx.compose.material3:material3'
+  implementation 'androidx.compose.material:material'
+  implementation 'androidx.compose.ui:ui-viewbinding'
+  implementation 'androidx.compose.ui:ui-tooling-preview'
+  debugImplementation 'androidx.compose.ui:ui-tooling'
+  androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+  debugImplementation 'androidx.compose.ui:ui-test-manifest'
+  implementation "androidx.activity:activity-compose:$rootProject.composeActivityVersion"
+  implementation "com.google.accompanist:accompanist-systemuicontroller:$rootProject.accompanist_version"
+  implementation "com.google.accompanist:accompanist-permissions:$rootProject.accompanist_version"
+
+  //compose screenshot
+  implementation "com.github.SmartToolFactory:Compose-Screenshot:$rootProject.composeScreenShot"
+
+  //Coil
+  implementation("io.coil-kt:coil-compose:$rootProject.coilVersion")
+
+  //extended Material Icons
+  implementation "androidx.compose.material:material-icons-extended:1.4.3"
+
+  //for live data to state
+  implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
+
+  //for language change
+  implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
+
+  //date and time picker
+  implementation "com.maxkeppeler.sheets-compose-dialogs:core:$rootProject.date_time_picker"
+  implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:$rootProject.date_time_picker"
+  implementation "com.maxkeppeler.sheets-compose-dialogs:clock:$rootProject.date_time_picker"
+
+  //for live data to state
+  implementation("androidx.compose.runtime:runtime-livedata:$rootProject.composeLiveData")
+
+  //for language change
+  implementation "com.github.YarikSOffice:lingver:$rootProject.languageLibrary"
+
+  //navigation
+  implementation "androidx.navigation:navigation-compose:$rootProject.nav_version"
+
+  //Splash Screen
+  implementation "androidx.core:core-splashscreen:$rootProject.splash_screen"
 }

@@ -1,8 +1,9 @@
 <resources>
   <string name="app_name">Agora Vote</string>
-  <string name="continue_with_facebook">CONTINUE WITH FACEBOOK</string>
+  <string name="continue_with_facebook">Continue With Facebook</string>
   <string name="log_in">LOG IN</string>
   <string name="sign_up">Sign Up</string>
+  <string name="create_account">Create Account</string>
   <string name="content_description_for_agora_logo">Agora Logo</string>
   <string name="user_name">User Name</string>
   <string name="password">Password</string>
@@ -55,6 +56,7 @@
   <string name="end_date_format">End Date</string>
   <string name="datePicker">datePicker</string>
   <string name="select_voting_algorithm">Select Voting Algorithm</string>
+  <string name="ballot_visibility">Ballot Visibility</string>
   <string name="baldwin">Baldwin</string>
   <string name="exhaustive_ballot">ExhaustiveBallot</string>
   <string name="logout">Logout</string>
@@ -81,7 +83,7 @@
   <string name="pending_elections">Pending Elections</string>
   <string name="total_elections">Total Elections</string>
   <string name="share_with_others_to_make_open_source_a_more_beautiful_place">Share with others to make open source a more beautiful place</string>
-  <string name="delete_election">delete election</string>
+  <string name="delete_election">Delete election</string>
   <string name="invite_voter">Invite Voters</string>
   <string name="voters">Voters</string>
   <string name="ballot">Ballot</string>
@@ -97,11 +99,13 @@
   <string name="swipe_to_delete_candidate">Swipe to delete Candidate</string>
   <string name="enter_details_of_voters">Enter Details of Voters</string>
   <string name="winner_name">Winner Name</string>
+  <string name="answer">Answer</string>
   <string name="security_question_answer">Please Write Your Answer Here</string>
   <string name="security_dropdown">Security Question</string>
   <string name="welcome">Welcome, %1$s!</string>
   <string name="link_sent_please_check_your_email">Link Sent, Please Check Your Emails</string>
   <string name="invalid_username">Invalid Username</string>
+  <string name="invalid_password">Invalid Password</string>
   <string name="something_went_wrong_please_try_again_later">Something Went Wrong. Please Try Again Later</string>
   <string name="internet_connected">Connection Established Successfully</string>
   <string name="ballots_are_completely_secret">Completely secret and never shown to anyone</string>
@@ -202,10 +206,10 @@
   <string name="empty_elections">Empty Elections</string>
   <string name="get_started">Get Started</string>
   <string name="agora">AGORA</string>
-  <string name="first_welcome_message">Don\'t just be there,\nbe present</string>
-  <string name="second_welcome_message">Schedule elections\nand invite voters</string>
-  <string name="third_welcome_message">Vote and elect\nthe candidate</string>
-  <string name="fourth_welcome_message">Visualize and\ndeclare results</string>
+  <string name="first_welcome_message">Empowering Democracy\n</string>
+  <string name="second_welcome_message">Create and schedule\nelections</string>
+  <string name="third_welcome_message">Invite voters and\nelect the candidate</string>
+  <string name="fourth_welcome_message">Visualize results and\ndeclare winner</string>
   <string name="secret_security_question">Secret Security Question</string>
   <string name="welcome_string">Welcome,</string>
   <string name="or">——————— OR ———————</string>
@@ -259,7 +263,7 @@
   <string name="active_elections_not_started">Active Elections Cannot Be Deleted</string>
   <string name="election_result_pie_chart">Election Result in percentage</string>
   <string name="election_result_bar_chart">Election Result in votes</string>
-  <string name="winner_is">Winner is</string>
+  <string name="winner_is">is the winner</string>
   <string name="login_cancelled">Login Cancelled</string>
   <string name="otp_sent">OTP is sent to your registered email address</string>
   <string name="import_xlsx">Import</string>
@@ -322,8 +326,26 @@
   <string name="auth_failed">Authentication Failed.</string>
   <string name="bio_auth">Biometric Authentication</string>
   <string name="bio_auth_msg">User needs to be authenticated before using the app</string>
-  <string name="bar_chart">Bar Chart</string>
-  <string name="pie_chart">Pie Chart</string>
+  <string name="bar_chart">• Bar Chart</string>
+  <string name="pie_chart">• Pie Chart</string>
   <string name="time_tracker">Start time is smaller than Current time </string>
+  <string name="title_activity_new">NewActivity</string>
+  <string name="authenticating">Authenticating...</string>
+  <string name="facebook_login">Facebook Login...</string>
+  <string name="login_error">Login error</string>
+  <string name="view_details">View details</string>
+  <string name="language">Language</string>
+  <string name="verifying_otp">Verifying OTP...</string>
+  <string name="sending_otp">Sending OTP...</string>
+  <string name="didnt_receive_otp">Didn`t receive OTP?</string>
+  <string name="voters_invited">Voters Invited.</string>
+  <string name="empty_voters_list">Please add voters to Invite.</string>
+  <string name="total_votes">Total Votes</string>
+  <string name="invalid_election_name">Invalid election name</string>
+  <string name="invalid_election_description">Invalid election description</string>
+  <string name="invalid_start_date">Invalid start date</string>
+  <string name="invalid_end_date">Invalid end date</string>
+  <string name="storage_permission_required">Storage permission required for this feature to be available. Please grant the permission.</string>
+  <string name="camera_permission_required">Camera permission required for this feature to be available. Please grant the permission.</string>
+  <string name="calendar">Calendar</string>
 </resources>
-

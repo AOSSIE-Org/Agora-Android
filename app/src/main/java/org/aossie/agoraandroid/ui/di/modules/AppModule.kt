@@ -1,13 +1,13 @@
 package org.aossie.agoraandroid.ui.di.modules
 
 import android.content.Context
-import androidx.viewbinding.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
+import org.aossie.agoraandroid.BuildConfig
 import org.aossie.agoraandroid.R
 import org.aossie.agoraandroid.data.Repository.ElectionsRepositoryImpl
 import org.aossie.agoraandroid.data.Repository.UserRepositoryImpl
@@ -73,6 +73,7 @@ import org.aossie.agoraandroid.domain.useCases.profile.GetUserDataUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.ProfileUseCases
 import org.aossie.agoraandroid.domain.useCases.profile.ToggleTwoFactorAuthUseCase
 import org.aossie.agoraandroid.domain.useCases.profile.UpdateUserUseCase
+import org.aossie.agoraandroid.ui.di.models.AppContext
 import org.aossie.agoraandroid.utilities.AppConstants
 import org.aossie.agoraandroid.utilities.InternetManager
 import org.aossie.agoraandroid.utilities.SecurityUtil
@@ -500,5 +501,11 @@ class AppModule {
     verifyVotersUseCase: VerifyVotersUseCase
   ): CastVoteActivityUseCases {
     return CastVoteActivityUseCases(castVoteUseCase, verifyVotersUseCase)
+  }
+
+  @Singleton
+  @Provides
+  fun provideAppContext(context: Context): AppContext {
+    return AppContext(context)
   }
 }

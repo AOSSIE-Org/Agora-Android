@@ -38,10 +38,13 @@ object AppConstants {
   const val CIPHER_TRANSFORMATION = "AES/CBC/PKCS7Padding"
   const val SALT = "QWlGNHNhMTJTQWZ2bGhpV3U="
   const val IV = "bVQzNFNhRkQ1Njc4UUFaWA=="
+  const val DEFAULT_LANG = "en"
   enum class Status {
     PENDING, ACTIVE, FINISHED
   }
   const val SPOTLIGHT_ANIMATION_DURATION = 500L
   const val SPOTLIGHT_SCROLL_DURATION = 0L
   const val GRAPH_ANIMATION_DURATION = 1000
+  const val SNACKBAR_DURATION = 2000L
+  const val WELCOME_SCREEN_SCROLL_DELAY = 3000L
 }
