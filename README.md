@@ -79,3 +79,28 @@ Always `git pull` and get the latest from master. [Google](https://www.google.co
 * [Load Toast](https://github.com/code-mc/loadtoast)-Pretty material design toasts with feedback animations.
 
 
+## Verified Working Setup
+
+The project was successfully built, installed, and run with the following configuration.
+
+### Environment
+- **Android Studio**: Giraffe | 2022.3.1 Patch 2
+- **JDK**: 8 (Eclipse Temurin)
+- **Emulator**: Android Emulator
+- **Android API Level**: 28
+- **Operating System**: Windows 11
+
+### Steps to Run the Project
+1. Clone the repository and open it in Android Studio.
+2. Wait for Gradle synchronization to complete.
+3. Ensure **JDK 8 (Temurin)** is selected in:  
+   `File → Settings → Build, Execution, Deployment → Build Tools → Gradle`
+4. Create an Android Emulator with **API Level 28**.
+5. Run the application using the default `app` configuration.
+
+### Notes
+- Initial setup issues (including installation failures) were resolved by
+  recreating the emulator and verifying the correct Gradle JDK configuration.
+- With this setup, the application installs successfully and launches
+  without runtime errors.
+- This setup was verified while resolving local build and installation issues on Windows.
